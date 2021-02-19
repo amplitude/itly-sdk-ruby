@@ -8,3 +8,4 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'itly'
 
 require_relative 'amplitude/version'
+require_relative 'amplitude/amplitude_plugin'
