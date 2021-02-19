@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
 
   # TODO: before publication to RubyGems, switch to version 1
   spec.add_dependency 'itly', '~> 0.1', '< 1'
+  spec.add_development_dependency 'rspec'
 end
