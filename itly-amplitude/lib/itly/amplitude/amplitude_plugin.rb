@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Itly
+class Itly
   class AmplitudePlugin < Plugin
     register_plugin self
   end

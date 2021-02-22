@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-module Itly
+class Itly
   # Parent class for all plugins
   class Plugin
     class << self
       # Called by plugins that need to register themselves with Iteratively
       def register_plugin(plugin)
-        Itly::Plugins.plugins << plugin
+        Itly.plugins << plugin
       end
     end
 

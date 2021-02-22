@@ -5,10 +5,7 @@
 RSpec.configure do |config|
   config.after(:each) do |example|
     if example.metadata[:unload_itly]
-      Itly::Plugins.plugins.clear
-      Itly::Plugins.plugins_instances.clear
-
-      Itly.instance_variable_set '@is_initialized', false
+      Itly.plugins.clear
     end
   end
 end
