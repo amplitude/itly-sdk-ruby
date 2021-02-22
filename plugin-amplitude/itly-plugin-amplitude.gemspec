@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly/amplitude/version'
+require_relative 'lib/itly/plugin-amplitude/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'itly-amplitude'
+  spec.name          = 'itly-plugin-amplitude'
   spec.version       = Itly::Amplitude::VERSION
   spec.authors       = ['Benjamin Bouchet']
   spec.email         = ['randoum@gmail.com']
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.metadata['allowed_push_host'] = 'https://rubygems.org/'
 
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/iterativelyhq/itly-sdk-ruby/itly-amplitude'
+  spec.metadata['source_code_uri'] = 'https://github.com/iterativelyhq/itly-sdk-ruby/plugin-amplitude'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
@@ -28,6 +28,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   # TODO: before publication to RubyGems, switch to version 1
-  spec.add_dependency 'itly', '~> 0.1', '< 1'
+  spec.add_dependency 'itly-sdk', '~> 0.1', '< 1'
   spec.add_development_dependency 'rspec'
 end

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly/version'
+require_relative 'lib/itly-sdk/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'itly'
+  spec.name          = 'itly-sdk'
   spec.version       = Itly::VERSION
   spec.authors       = ['Benjamin Bouchet']
   spec.email         = ['randoum@gmail.com']
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.metadata['allowed_push_host'] = 'https://rubygems.org/'
 
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/iterativelyhq/itly-sdk-ruby/itly'
+  spec.metadata['source_code_uri'] = 'https://github.com/iterativelyhq/itly-sdk-ruby/sdk'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
