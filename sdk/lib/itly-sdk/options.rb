@@ -6,13 +6,6 @@ require 'logger'
 class Itly
   attr_reader :options
 
-  def initialize
-    super
-
-    @options = Itly::Options.new
-    yield @options if block_given?
-  end
-
   # Options class for Itly object initialisation
   class Options
     attr_accessor :context, :disabled, :environment, :destinations, :logger

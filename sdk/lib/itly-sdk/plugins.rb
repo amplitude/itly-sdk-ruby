@@ -14,15 +14,6 @@ class Itly
     # List of registered plugins objects
     attr_reader :plugins_instances
 
-    # Instanciate all plugins when creating a new Itly object
-    def initialize
-      @plugins_instances = []
-
-      # Initialize plugins
-      instantiate_plugins
-      send_to_plugins :init
-    end
-
     private
 
     # Initialize all registered plugins

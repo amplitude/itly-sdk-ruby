@@ -4,6 +4,22 @@
 class Itly
   include Itly::Plugins
 
+  def initialize
+    @plugins_instances = []
+
+    # Load options
+    @options = Itly::Options.new
+    yield @options if block_given?
+
+    # Log
+    logger.info 'Itly is disabled!' if disabled?
+    logger.info 'load()'
+
+    # Initialize plugins
+    instantiate_plugins
+    send_to_plugins :init
+  end
+
   def alias(user_id:, previous_id:)
     return if disabled?
 

@@ -36,13 +36,15 @@ describe Itly do
     end
 
     context 'with a block' do
+      let(:fake_logger) { double 'logger', info: nil }
+
       let!(:itly) do
         Itly.new do |o|
           o.context = :test_context
           o.disabled = :test_disabled
           o.environment = :test_environment
           o.destinations = :test_destinations
-          o.logger = :test_logger
+          o.logger = fake_logger
         end
       end
 
@@ -51,7 +53,37 @@ describe Itly do
         expect(itly.options.disabled).to eq(:test_disabled)
         expect(itly.options.environment).to eq(:test_environment)
         expect(itly.options.destinations).to eq(:test_destinations)
-        expect(itly.options.logger).to eq(:test_logger)
+        expect(itly.options.logger).to eq(fake_logger)
+      end
+    end
+
+    describe 'logging' do
+      let(:fake_logger) { double 'logger', info: nil }
+
+      context 'enabled' do
+        before do
+          expect(fake_logger).to receive(:info).once.with('load()')
+          expect(fake_logger).not_to receive(:info)
+        end
+
+        it do
+          Itly.new { |o| o.logger = fake_logger }
+        end
+      end
+
+      context 'disabled' do
+        before do
+          expect(fake_logger).to receive(:info).once.with('Itly is disabled!')
+          expect(fake_logger).to receive(:info).once.with('load()')
+          expect(fake_logger).not_to receive(:info)
+        end
+
+        it do
+          Itly.new do |o|
+            o.disabled = true
+            o.logger = fake_logger
+          end
+        end
       end
     end
   end
@@ -87,6 +119,8 @@ describe Itly do
   end
 
   describe '#logger' do
+    let(:fake_logger) { double 'logger', info: nil }
+
     context 'default' do
       let!(:itly) { Itly.new }
 
@@ -97,11 +131,11 @@ describe Itly do
 
     context 'set to a value' do
       let!(:itly) do
-        Itly.new { |o| o.logger = :a_logger }
+        Itly.new { |o| o.logger = fake_logger }
       end
 
       it do
-        expect(itly.send(:logger)).to eq(:a_logger)
+        expect(itly.send(:logger)).to eq(fake_logger)
       end
     end
   end
