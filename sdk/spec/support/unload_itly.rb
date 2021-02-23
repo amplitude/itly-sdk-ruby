@@ -4,8 +4,6 @@
 
 RSpec.configure do |config|
   config.after(:each) do |example|
-    if example.metadata[:unload_itly]
-      Itly.plugins.clear
-    end
+    Itly.plugins.clear if example.metadata[:unload_itly]
   end
 end

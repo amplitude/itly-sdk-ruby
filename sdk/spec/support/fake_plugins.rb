@@ -21,7 +21,9 @@ RSpec.configure do |config|
         klass = Class.new(Itly::Plugin) do
           register_plugin self
           methods.each do |method|
-            define_method(method) { |*| }
+            define_method(method) do |*|
+              # nothing
+            end
           end
         end
         Object.const_set "FakePlugin#{i}", klass

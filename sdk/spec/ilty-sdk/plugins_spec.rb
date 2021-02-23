@@ -59,7 +59,7 @@ describe Itly::Plugins do
     end
   end
 
-  describe '#send_to_plugins', :unload_itly, fake_plugins: 2, fake_plugins_methods: [:some_method, :init] do
+  describe '#send_to_plugins', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[some_method init] do
     # Instantiate 2 FakePlugin
     let!(:itly) { Itly.new }
 

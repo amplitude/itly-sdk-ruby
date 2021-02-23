@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Itly main class
 class Itly
   # Parent class for all plugins
   class Plugin
