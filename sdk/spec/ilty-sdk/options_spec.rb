@@ -40,7 +40,7 @@ describe Itly do
 
       let!(:itly) do
         Itly.new do |o|
-          o.context = :test_context
+          o.context = {some: 'data'}
           o.disabled = :test_disabled
           o.environment = :test_environment
           o.destinations = :test_destinations
@@ -49,11 +49,15 @@ describe Itly do
       end
 
       it do
-        expect(itly.options.context).to eq(:test_context)
         expect(itly.options.disabled).to eq(:test_disabled)
         expect(itly.options.environment).to eq(:test_environment)
         expect(itly.options.destinations).to eq(:test_destinations)
         expect(itly.options.logger).to eq(fake_logger)
+
+        context = itly.options.context
+        expect(context).to be_a_kind_of(Itly::Event)
+        expect(context.name).to eq('context')
+        expect(context.properties).to eq(some: 'data')
       end
     end
 

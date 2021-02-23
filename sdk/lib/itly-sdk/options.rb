@@ -8,7 +8,8 @@ class Itly
 
   # Options class for Itly object initialisation
   class Options
-    attr_accessor :context, :disabled, :environment, :destinations, :logger
+    attr_accessor :disabled, :environment, :destinations, :logger
+    attr_reader :context
 
     def initialize
       @context = nil
@@ -16,6 +17,10 @@ class Itly
       @environment = :development
       @destinations = nil
       @logger = ::Logger.new $stdout, level: Logger::Severity::ERROR
+    end
+
+    def context=(properties)
+      @context = Itly::Event.new name: 'context', properties: properties
     end
   end
 
