@@ -25,4 +25,15 @@ class Itly
       @logger = ::Logger.new $stdout, level: Logger::Severity::ERROR
     end
   end
+
+  # Shortcut methods
+  private
+
+  def disabled?
+    !!options.disabled
+  end
+
+  def logger
+    options.logger
+  end
 end

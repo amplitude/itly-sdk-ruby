@@ -16,5 +16,13 @@ class Itly
     def init
       raise NotImplementedError
     end
+
+    def alias(user_id:, previous_id:); end
+
+    def post_alias(user_id:, previous_id:); end
+
+    def flush; end
+
+    def reset; end
   end
 end

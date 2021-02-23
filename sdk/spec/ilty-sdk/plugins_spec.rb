@@ -60,21 +60,36 @@ describe Itly::Plugins do
   end
 
   describe '#send_to_plugins', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[some_method init] do
-    # Instantiate 2 FakePlugin
     let!(:itly) { Itly.new }
 
     let!(:plugin_a) { itly.plugins_instances[0] }
     let!(:plugin_b) { itly.plugins_instances[1] }
 
-    # Set expectation
-    before do
-      expect(plugin_a).to receive(:some_method).with('param 1', 2, :param3)
-      expect(plugin_b).to receive(:some_method).with('param 1', 2, :param3)
+    describe 'send message to all plugins' do
+      before do
+        expect(plugin_a).to receive(:some_method).with('param 1', 2, :param3)
+        expect(plugin_b).to receive(:some_method).with('param 1', 2, :param3)
+
+        expect(itly.options.logger).not_to receive(:error)
+      end
+
+      it 'send message to all instanciated plugins' do
+        itly.send :send_to_plugins, :some_method, 'param 1', 2, :param3
+      end
     end
 
-    # Call method
-    it 'send message to all instanciated plugins' do
-      itly.send :send_to_plugins, :some_method, 'param 1', 2, :param3
+    describe 'rescue exceptions' do
+      before do
+        expect(plugin_a).to receive(:some_method).and_raise('Testing 1 2 3')
+        expect(plugin_b).to receive(:some_method).with(:params)
+
+        expect(itly.options.logger).to receive(:error)
+          .with('Itly Error in FakePlugin0. RuntimeError: Testing 1 2 3')
+      end
+
+      it 'send message to all instanciated plugins' do
+        itly.send :send_to_plugins, :some_method, :params
+      end
     end
   end
 end

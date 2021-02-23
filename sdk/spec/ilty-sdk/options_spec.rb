@@ -14,6 +14,8 @@ describe Itly::Options do
 end
 
 describe Itly do
+  include RspecOptionsDefaultValues
+
   describe 'instance attributes' do
     it 'can read' do
       expect(Itly.new.respond_to?(:options)).to be(true)
@@ -50,6 +52,56 @@ describe Itly do
         expect(itly.options.environment).to eq(:test_environment)
         expect(itly.options.destinations).to eq(:test_destinations)
         expect(itly.options.logger).to eq(:test_logger)
+      end
+    end
+  end
+
+  describe '#disabled?' do
+    context 'default' do
+      let!(:itly) { Itly.new }
+
+      it do
+        expect(itly.send(:disabled?)).to be(false)
+      end
+    end
+
+    context 'set to false' do
+      let!(:itly) do
+        Itly.new { |o| o.disabled = false }
+      end
+
+      it do
+        expect(itly.send(:disabled?)).to be(false)
+      end
+    end
+
+    context 'set to true' do
+      let!(:itly) do
+        Itly.new { |o| o.disabled = true }
+      end
+
+      it do
+        expect(itly.send(:disabled?)).to be(true)
+      end
+    end
+  end
+
+  describe '#logger' do
+    context 'default' do
+      let!(:itly) { Itly.new }
+
+      it do
+        expect(itly.send(:logger)).to be_a_kind_of(::Logger)
+      end
+    end
+
+    context 'set to a value' do
+      let!(:itly) do
+        Itly.new { |o| o.logger = :a_logger }
+      end
+
+      it do
+        expect(itly.send(:logger)).to eq(:a_logger)
       end
     end
   end
