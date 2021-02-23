@@ -19,6 +19,6 @@ describe Itly::Plugin do
   end
 
   it 'init' do
-    expect { Itly::Plugin.new.init }.to raise_error(NotImplementedError)
+    expect { Itly::Plugin.new.init options: Itly::Options.new }.to raise_error(NotImplementedError)
   end
 end

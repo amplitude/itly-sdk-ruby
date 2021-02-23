@@ -17,7 +17,7 @@ class Itly
 
     # Initialize plugins
     instantiate_plugins
-    send_to_plugins :init
+    send_to_plugins :init, options: @options
   end
 
   def alias(user_id:, previous_id:)

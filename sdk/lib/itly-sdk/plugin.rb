@@ -13,7 +13,7 @@ class Itly
 
     # A plugin must ovewrite the #init method
     # Otherwise a NotImplementedError exception would remind the developer
-    def init
+    def init(options:)
       raise NotImplementedError
     end
 

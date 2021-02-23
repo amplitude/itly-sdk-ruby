@@ -33,7 +33,12 @@ describe Itly::Plugins do
   describe 'initialize' do
     before do
       expect_any_instance_of(Itly).to receive(:instantiate_plugins)
-      expect_any_instance_of(Itly).to receive(:send_to_plugins).with(:init)
+      expect_any_instance_of(Itly).to receive(:send_to_plugins).and_wrap_original do |_, *args|
+        expect(args.count).to eq(2)
+        expect(args[0]).to eq(:init)
+        expect(args[1].keys).to eq([:options])
+        expect(args[1][:options].class).to eq(Itly::Options)
+      end
     end
 
     let!(:itly) { Itly.new }
@@ -46,7 +51,12 @@ describe Itly::Plugins do
   describe '#instantiate_plugins', :unload_itly, fake_plugins: 2 do
     before do
       expect_any_instance_of(Itly).to receive(:instantiate_plugins).and_call_original
-      expect_any_instance_of(Itly).to receive(:send_to_plugins).with(:init)
+      expect_any_instance_of(Itly).to receive(:send_to_plugins).and_wrap_original do |_, *args|
+        expect(args.count).to eq(2)
+        expect(args[0]).to eq(:init)
+        expect(args[1].keys).to eq([:options])
+        expect(args[1][:options].class).to eq(Itly::Options)
+      end
     end
 
     let!(:itly) { Itly.new }
