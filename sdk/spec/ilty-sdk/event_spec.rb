@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
 describe Itly::Event do
   describe 'instance attributes' do
     describe 'default values' do
@@ -15,8 +16,10 @@ describe Itly::Event do
     end
 
     describe 'with params' do
-      let(:event) { Itly::Event.new name: 'the_event',properties: {a: :b},
-        id: '123', version: '2.1.6', metadata: {some: 'data'} }
+      let(:event) do
+        Itly::Event.new name: 'the_event', properties: { a: :b },
+                        id: '123', version: '2.1.6', metadata: { some: 'data' }
+      end
 
       it do
         expect(event.name).to eq('the_event')
@@ -39,3 +42,4 @@ describe Itly::Event do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -26,11 +26,9 @@ class Itly
     # Send message to all instanciated plugins
     def send_to_plugins(method, *args)
       plugins_instances.each do |plugin|
-        begin
-          plugin.send method, *args
-        rescue StandardError => e
-          logger.error "Itly Error in #{plugin.class.name}. #{e.class.name}: #{e.message}"
-        end
+        plugin.send method, *args
+      rescue StandardError => e
+        logger.error "Itly Error in #{plugin.class.name}. #{e.class.name}: #{e.message}"
       end
     end
   end

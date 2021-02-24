@@ -11,11 +11,29 @@ describe Itly::Options do
   end
 
   it '#context=' do
-    options.context = {a: 1, b: 'two'}
+    options.context = { a: 1, b: 'two' }
 
     expect(options.context).to be_a_kind_of(Itly::Event)
     expect(options.context.name).to eq('context')
     expect(options.context.properties).to eq(a: 1, b: 'two')
+  end
+
+  describe '#destinations=' do
+    it 'set underlying values' do
+      options.destinations = { a: 1, b: 'two' }
+
+      expect(options.destinations).to be_a_kind_of(Itly::OptionsWrapper)
+      expect(options.destinations.a).to eq(1)
+      expect(options.destinations.b).to eq('two')
+    end
+
+    it 'clean befor allowating' do
+      options.destinations = { a: 1 }
+      options.destinations = { b: 2 }
+
+      expect(options.destinations.b).to eq(2)
+      expect { options.destinations.a }.to raise_error(NoMethodError)
+    end
   end
 end
 

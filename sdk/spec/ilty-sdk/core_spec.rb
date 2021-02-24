@@ -41,10 +41,10 @@ describe 'Itly' do
       context 'with a block' do
         before do
           itly.load do |o|
-            o.context = {some: 'data'}
+            o.context = { some: 'data' }
             o.disabled = :test_disabled
             o.environment = :test_environment
-            o.destinations = :test_destinations
+            o.destinations = { plugin_config: 'data' }
             o.logger = fake_logger
           end
         end
@@ -52,8 +52,11 @@ describe 'Itly' do
         it do
           expect(itly.options.disabled).to eq(:test_disabled)
           expect(itly.options.environment).to eq(:test_environment)
-          expect(itly.options.destinations).to eq(:test_destinations)
           expect(itly.options.logger).to eq(fake_logger)
+
+          destinations = itly.options.destinations
+          expect(destinations).to be_a_kind_of(Itly::OptionsWrapper)
+          expect(destinations.plugin_config).to eq('data')
 
           context = itly.options.context
           expect(context).to be_a_kind_of(Itly::Event)

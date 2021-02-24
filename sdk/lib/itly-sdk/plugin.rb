@@ -13,6 +13,8 @@ class Itly
 
     # A plugin must ovewrite the #init method
     # Otherwise a NotImplementedError exception would remind the developer
+    # The param `options` contains the all the options passed to Itly#Init
+    # Call #get_plugin_options to get plugin specific options as a Hash
     def init(options:)
       raise NotImplementedError
     end
@@ -24,5 +26,14 @@ class Itly
     def flush; end
 
     def reset; end
+
+    private
+
+    def get_plugin_options(options)
+      name = self.class.name.gsub(/([A-Z]+)/, '_\1').gsub(/^_/, '')
+      options.destinations.send name.downcase.to_sym
+    rescue NoMethodError
+      {}
+    end
   end
 end
