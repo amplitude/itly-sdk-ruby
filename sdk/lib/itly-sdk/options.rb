@@ -15,7 +15,7 @@ class Itly
     def initialize
       @context = nil
       @disabled = false
-      @environment = :development
+      @environment = Itly::EnvironmentOptions::DEVELOPMENT
       @validation = Itly::ValidationOptions::DEFAULT
       @destinations = Itly::OptionsWrapper.new
       @logger = ::Logger.new $stdout, level: Logger::Severity::ERROR
@@ -34,7 +34,7 @@ class Itly
 
     def validation
       if @validation == Itly::ValidationOptions::DEFAULT
-        if @environment == :development
+        if @environment == Itly::EnvironmentOptions::DEVELOPMENT
           Itly::ValidationOptions::ERROR_ON_INVALID
         else
           Itly::ValidationOptions::TRACK_INVALID

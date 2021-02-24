@@ -39,7 +39,7 @@ describe Itly::Options do
   describe 'validation' do
     context 'development' do
       before do
-        options.environment = :development
+        options.environment = Itly::EnvironmentOptions::DEVELOPMENT
       end
 
       it 'default value' do
@@ -57,7 +57,7 @@ describe Itly::Options do
 
     context 'production' do
       before do
-        options.environment = :production
+        options.environment = Itly::EnvironmentOptions::PRODUCTION
       end
 
       it 'default value' do
