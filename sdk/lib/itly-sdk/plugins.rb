@@ -23,10 +23,10 @@ class Itly
       end
     end
 
-    # Send message to all instanciated plugins
-    def send_to_plugins(method, *args)
+    # Call lambda to all instanciated plugins
+    def run_on_plugins(action)
       plugins_instances.collect do |plugin|
-        plugin.send method, *args
+        action.call(plugin)
       rescue StandardError => e
         logger.error "Itly Error in #{plugin.class.name}. #{e.class.name}: #{e.message}"
         nil

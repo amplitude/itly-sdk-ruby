@@ -5,3 +5,9 @@ describe Itly::InitializationError do
     expect(Itly::InitializationError.superclass).to eq(StandardError)
   end
 end
+
+describe Itly::ValidationError do
+  it do
+    expect(Itly::ValidationError.superclass).to eq(StandardError)
+  end
+end

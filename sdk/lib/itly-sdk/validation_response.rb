@@ -2,9 +2,7 @@
 
 class Itly
   class ValidationResponse
-    attr_accessor :valid
-    attr_accessor :plugin_id
-    attr_accessor :message
+    attr_accessor :valid, :plugin_id, :message
 
     def initialize(valid:, plugin_id:, message:)
       @valid = valid

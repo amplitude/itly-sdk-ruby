@@ -34,18 +34,10 @@ describe Itly::Plugins do
     let!(:itly) { Itly.new }
 
     before do
-      expect(itly).to receive(:instantiate_plugins).and_call_original
-      expect(itly).to receive(:send_to_plugins).and_wrap_original do |_, *args|
-        expect(args.count).to eq(2)
-        expect(args[0]).to eq(:init)
-        expect(args[1].keys).to eq([:options])
-        expect(args[1][:options].class).to eq(Itly::Options)
-      end
+      itly.send :instantiate_plugins
     end
 
-    it 'instanciates all registered plugins' do
-      itly.load
-
+    it do
       instances = itly.plugins_instances
       expect(instances.length).to eq(2)
       expect(instances[0]).to be_a(FakePlugin0)
@@ -53,13 +45,13 @@ describe Itly::Plugins do
     end
   end
 
-  describe '#send_to_plugins', :unload_itly, fake_plugins_methods: %i[some_method init] do
+  describe '#run_on_plugins', :unload_itly, fake_plugins_methods: %i[some_method init] do
     create_itly_object
 
     let!(:plugin_a) { itly.plugins_instances[0] }
     let!(:plugin_b) { itly.plugins_instances[1] }
 
-    describe 'send message to all plugins', fake_plugins: 2 do
+    describe 'call lambda with each plugin', fake_plugins: 2 do
       before do
         expect(plugin_a).to receive(:some_method).with('param 1', 2, :param3)
         expect(plugin_b).to receive(:some_method).with('param 1', 2, :param3)
@@ -68,7 +60,9 @@ describe Itly::Plugins do
       end
 
       it do
-        itly.send :send_to_plugins, :some_method, 'param 1', 2, :param3
+        itly.send :run_on_plugins, lambda { |plugin|
+          plugin.some_method 'param 1', 2, :param3
+        }
       end
     end
 
@@ -82,7 +76,9 @@ describe Itly::Plugins do
       end
 
       it do
-        itly.send :send_to_plugins, :some_method, :params
+        itly.send :run_on_plugins, lambda { |plugin|
+          plugin.some_method :params
+        }
       end
     end
 
@@ -100,7 +96,11 @@ describe Itly::Plugins do
       end
 
       it do
-        expect(itly.send(:send_to_plugins, :some_method)).to eq(%i[val1 val2])
+        expect(
+          itly.send(:run_on_plugins, lambda { |plugin|
+            plugin.some_method :params
+          })
+        ).to eq(%i[val1 val2])
       end
     end
   end

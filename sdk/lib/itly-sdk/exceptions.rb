@@ -3,4 +3,6 @@
 # Itly main class
 class Itly
   class InitializationError < StandardError; end
+
+  class ValidationError < StandardError; end
 end
