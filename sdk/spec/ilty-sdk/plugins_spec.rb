@@ -53,13 +53,13 @@ describe Itly::Plugins do
     end
   end
 
-  describe '#send_to_plugins', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[some_method init] do
+  describe '#send_to_plugins', :unload_itly, fake_plugins_methods: %i[some_method init] do
     create_itly_object
 
     let!(:plugin_a) { itly.plugins_instances[0] }
     let!(:plugin_b) { itly.plugins_instances[1] }
 
-    describe 'send message to all plugins' do
+    describe 'send message to all plugins', fake_plugins: 2 do
       before do
         expect(plugin_a).to receive(:some_method).with('param 1', 2, :param3)
         expect(plugin_b).to receive(:some_method).with('param 1', 2, :param3)
@@ -67,12 +67,12 @@ describe Itly::Plugins do
         expect(itly.options.logger).not_to receive(:error)
       end
 
-      it 'send message to all instanciated plugins' do
+      it do
         itly.send :send_to_plugins, :some_method, 'param 1', 2, :param3
       end
     end
 
-    describe 'rescue exceptions' do
+    describe 'rescue exceptions', fake_plugins: 2 do
       before do
         expect(plugin_a).to receive(:some_method).and_raise('Testing 1 2 3')
         expect(plugin_b).to receive(:some_method).with(:params)
@@ -81,8 +81,26 @@ describe Itly::Plugins do
           .with('Itly Error in FakePlugin0. RuntimeError: Testing 1 2 3')
       end
 
-      it 'send message to all instanciated plugins' do
+      it do
         itly.send :send_to_plugins, :some_method, :params
+      end
+    end
+
+    describe 'collect returning values', fake_plugins: 4 do
+      let!(:plugin_c) { itly.plugins_instances[2] }
+      let!(:plugin_d) { itly.plugins_instances[3] }
+
+      before do
+        expect(plugin_a).to receive(:some_method).and_return(:val1)
+        expect(plugin_b).to receive(:some_method).and_raise('Test')
+        expect(plugin_c).to receive(:some_method).and_return(:val2)
+        expect(plugin_d).to receive(:some_method).and_return(nil)
+
+        expect(itly.options.logger).to receive(:error)
+      end
+
+      it do
+        expect(itly.send(:send_to_plugins, :some_method)).to eq(%i[val1 val2])
       end
     end
   end

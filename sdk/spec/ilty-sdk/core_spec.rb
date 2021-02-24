@@ -233,5 +233,43 @@ describe 'Itly' do
       end
     end
   end
+
+  describe 'validate', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
+    context 'default' do
+      create_itly_object
+
+      let!(:plugin_a) { itly.plugins_instances[0] }
+      let!(:plugin_b) { itly.plugins_instances[1] }
+
+      before do
+        expect(itly.options.logger).to receive(:info).with('validate(event: an_event)')
+
+        expect(plugin_a).to receive(:validate).with(event: 'an_event').and_return(nil)
+        expect(plugin_b).to receive(:validate).with(event: 'an_event').and_return(:valitation_result)
+      end
+
+      it do
+        expect(itly.validate(event: 'an_event')).to eq([:valitation_result])
+      end
+    end
+
+    context 'disabled' do
+      create_itly_object validation: Itly::ValidationOptions::DISABLED
+
+      let!(:plugin_a) { itly.plugins_instances[0] }
+      let!(:plugin_b) { itly.plugins_instances[1] }
+
+      before do
+        expect(itly.options.logger).not_to receive(:info)
+
+        expect(plugin_a).not_to receive(:validate)
+        expect(plugin_b).not_to receive(:validate)
+      end
+
+      it do
+        expect(itly.validate(event: 'an_event')).to be(nil)
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

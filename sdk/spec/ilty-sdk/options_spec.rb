@@ -114,6 +114,32 @@ describe Itly do
     end
   end
 
+  describe '#validation_disabled?' do
+    context 'default' do
+      create_itly_object
+
+      it do
+        expect(itly.send(:validation_disabled?)).to be(false)
+      end
+    end
+
+    context 'set to disabled' do
+      create_itly_object validation: Itly::ValidationOptions::DISABLED
+
+      it do
+        expect(itly.send(:validation_disabled?)).to be(true)
+      end
+    end
+
+    context 'set to another value' do
+      create_itly_object validation: Itly::ValidationOptions::TRACK_INVALID
+
+      it do
+        expect(itly.send(:validation_disabled?)).to be(false)
+      end
+    end
+  end
+
   describe '#logger' do
     let(:fake_logger) { double 'logger', info: nil }
 

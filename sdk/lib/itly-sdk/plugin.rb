@@ -27,6 +27,9 @@ class Itly
 
     def reset; end
 
+    # A plug-in can return a ValidationResponse object
+    def validate(event:); end
+
     private
 
     def get_plugin_options(options)

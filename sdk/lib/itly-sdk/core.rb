@@ -53,4 +53,12 @@ class Itly
 
     send_to_plugins :reset
   end
+
+  def validate(event:)
+    return if validation_disabled?
+
+    logger.info "validate(event: #{event})"
+
+    send_to_plugins :validate, event: event
+  end
 end
