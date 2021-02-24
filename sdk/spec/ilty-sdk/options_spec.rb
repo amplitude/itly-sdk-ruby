@@ -4,12 +4,18 @@
 describe Itly::Options do
   include RspecOptionsDefaultValues
 
-  describe 'default values' do
-    let!(:options) { Itly::Options.new }
+  let!(:options) { Itly::Options.new }
 
-    it do
-      expect_options_default_values options
-    end
+  it 'default values' do
+    expect_options_default_values options
+  end
+
+  it '#context=' do
+    options.context = {a: 1, b: 'two'}
+
+    expect(options.context).to be_a_kind_of(Itly::Event)
+    expect(options.context.name).to eq('context')
+    expect(options.context.properties).to eq(a: 1, b: 'two')
   end
 end
 
@@ -26,75 +32,9 @@ describe Itly do
     end
   end
 
-  describe '#initialize' do
-    context 'no block' do
-      let!(:itly) { Itly.new }
-
-      it do
-        expect_options_default_values itly.options
-      end
-    end
-
-    context 'with a block' do
-      let(:fake_logger) { double 'logger', info: nil }
-
-      let!(:itly) do
-        Itly.new do |o|
-          o.context = {some: 'data'}
-          o.disabled = :test_disabled
-          o.environment = :test_environment
-          o.destinations = :test_destinations
-          o.logger = fake_logger
-        end
-      end
-
-      it do
-        expect(itly.options.disabled).to eq(:test_disabled)
-        expect(itly.options.environment).to eq(:test_environment)
-        expect(itly.options.destinations).to eq(:test_destinations)
-        expect(itly.options.logger).to eq(fake_logger)
-
-        context = itly.options.context
-        expect(context).to be_a_kind_of(Itly::Event)
-        expect(context.name).to eq('context')
-        expect(context.properties).to eq(some: 'data')
-      end
-    end
-
-    describe 'logging' do
-      let(:fake_logger) { double 'logger', info: nil }
-
-      context 'enabled' do
-        before do
-          expect(fake_logger).to receive(:info).once.with('load()')
-          expect(fake_logger).not_to receive(:info)
-        end
-
-        it do
-          Itly.new { |o| o.logger = fake_logger }
-        end
-      end
-
-      context 'disabled' do
-        before do
-          expect(fake_logger).to receive(:info).once.with('Itly is disabled!')
-          expect(fake_logger).to receive(:info).once.with('load()')
-          expect(fake_logger).not_to receive(:info)
-        end
-
-        it do
-          Itly.new do |o|
-            o.disabled = true
-            o.logger = fake_logger
-          end
-        end
-      end
-    end
-  end
-
   describe '#disabled?' do
     context 'default' do
-      let!(:itly) { Itly.new }
+      create_itly_object
 
       it do
         expect(itly.send(:disabled?)).to be(false)
@@ -102,9 +42,7 @@ describe Itly do
     end
 
     context 'set to false' do
-      let!(:itly) do
-        Itly.new { |o| o.disabled = false }
-      end
+      create_itly_object disabled: false
 
       it do
         expect(itly.send(:disabled?)).to be(false)
@@ -112,9 +50,7 @@ describe Itly do
     end
 
     context 'set to true' do
-      let!(:itly) do
-        Itly.new { |o| o.disabled = true }
-      end
+      create_itly_object disabled: true
 
       it do
         expect(itly.send(:disabled?)).to be(true)
@@ -126,16 +62,18 @@ describe Itly do
     let(:fake_logger) { double 'logger', info: nil }
 
     context 'default' do
-      let!(:itly) { Itly.new }
+      create_itly_object
 
       it do
         expect(itly.send(:logger)).to be_a_kind_of(::Logger)
       end
     end
 
-    context 'set to a value' do
-      let!(:itly) do
-        Itly.new { |o| o.logger = fake_logger }
+    context 'set a value' do
+      let(:itly) { Itly.new }
+
+      before do
+        itly.load { |o| o.logger = fake_logger }
       end
 
       it do

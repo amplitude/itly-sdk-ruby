@@ -2,9 +2,116 @@
 
 # rubocop:disable Metrics/BlockLength
 describe 'Itly' do
+  include RspecOptionsDefaultValues
+
+  describe '#initialize' do
+    let!(:itly) { Itly.new }
+
+    it do
+      expect(itly.instance_variable_get('@plugins_instances')).to eq([])
+      expect(itly.instance_variable_get('@is_initialized')).to be(false)
+    end
+  end
+
+  describe '#load' do
+    let!(:itly) { Itly.new }
+    let(:fake_logger) { double 'logger', info: nil }
+
+    describe 'cannot be called twice' do
+      before do
+        itly.load
+      end
+
+      it do
+        expect { itly.load }.to raise_error(Itly::InitializationError, 'Itly is already initialized.')
+      end
+    end
+
+    describe '@options' do
+      context 'without a block' do
+        before do
+          itly.load
+        end
+
+        it do
+          expect_options_default_values itly.options
+        end
+      end
+
+      context 'with a block' do
+        before do
+          itly.load do |o|
+            o.context = {some: 'data'}
+            o.disabled = :test_disabled
+            o.environment = :test_environment
+            o.destinations = :test_destinations
+            o.logger = fake_logger
+          end
+        end
+
+        it do
+          expect(itly.options.disabled).to eq(:test_disabled)
+          expect(itly.options.environment).to eq(:test_environment)
+          expect(itly.options.destinations).to eq(:test_destinations)
+          expect(itly.options.logger).to eq(fake_logger)
+
+          context = itly.options.context
+          expect(context).to be_a_kind_of(Itly::Event)
+          expect(context.name).to eq('context')
+          expect(context.properties).to eq(some: 'data')
+        end
+      end
+    end
+
+    describe 'logging' do
+      context 'enabled' do
+        before do
+          expect(fake_logger).to receive(:info).once.with('load()')
+          expect(fake_logger).not_to receive(:info)
+        end
+
+        it do
+          itly.load { |o| o.logger = fake_logger }
+        end
+      end
+
+      context 'disabled' do
+        before do
+          expect(fake_logger).to receive(:info).once.with('Itly is disabled!')
+          expect(fake_logger).to receive(:info).once.with('load()')
+          expect(fake_logger).not_to receive(:info)
+        end
+
+        it do
+          itly.load do |o|
+            o.disabled = true
+            o.logger = fake_logger
+          end
+        end
+      end
+    end
+
+    describe 'plugins' do
+      before do
+        expect_any_instance_of(Itly).to receive(:instantiate_plugins)
+        expect_any_instance_of(Itly).to receive(:send_to_plugins).and_wrap_original do |_, *args|
+          expect(args.count).to eq(2)
+          expect(args[0]).to eq(:init)
+          expect(args[1].keys).to eq([:options])
+          expect(args[1][:options].class).to eq(Itly::Options)
+        end
+      end
+
+      it do
+        itly.load
+        expect(itly.plugins_instances).to eq([])
+      end
+    end
+  end
+
   describe 'alias', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
     context 'default' do
-      let!(:itly) { Itly.new }
+      create_itly_object
 
       let!(:plugin_a) { itly.plugins_instances[0] }
       let!(:plugin_b) { itly.plugins_instances[1] }
@@ -25,9 +132,7 @@ describe 'Itly' do
     end
 
     context 'disabled' do
-      let!(:itly) do
-        Itly.new { |o| o.disabled = true }
-      end
+      create_itly_object disabled: true
 
       let!(:plugin_a) { itly.plugins_instances[0] }
       let!(:plugin_b) { itly.plugins_instances[1] }
@@ -49,7 +154,7 @@ describe 'Itly' do
 
   describe 'flush', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
     context 'default' do
-      let!(:itly) { Itly.new }
+      create_itly_object
 
       let!(:plugin_a) { itly.plugins_instances[0] }
       let!(:plugin_b) { itly.plugins_instances[1] }
@@ -67,9 +172,7 @@ describe 'Itly' do
     end
 
     context 'disabled' do
-      let!(:itly) do
-        Itly.new { |o| o.disabled = true }
-      end
+      create_itly_object disabled: true
 
       let!(:plugin_a) { itly.plugins_instances[0] }
       let!(:plugin_b) { itly.plugins_instances[1] }
@@ -89,7 +192,7 @@ describe 'Itly' do
 
   describe 'reset', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
     context 'default' do
-      let!(:itly) { Itly.new }
+      create_itly_object
 
       let!(:plugin_a) { itly.plugins_instances[0] }
       let!(:plugin_b) { itly.plugins_instances[1] }
@@ -107,9 +210,7 @@ describe 'Itly' do
     end
 
     context 'disabled' do
-      let!(:itly) do
-        Itly.new { |o| o.disabled = true }
-      end
+      create_itly_object disabled: true
 
       let!(:plugin_a) { itly.plugins_instances[0] }
       let!(:plugin_b) { itly.plugins_instances[1] }

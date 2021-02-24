@@ -6,6 +6,12 @@ class Itly
 
   def initialize
     @plugins_instances = []
+    @is_initialized = false
+  end
+
+  def load
+    # Can call load only once
+    raise InitializationError, 'Itly is already initialized.' if @is_initialized
 
     # Load options
     @options = Itly::Options.new
@@ -18,6 +24,9 @@ class Itly
     # Initialize plugins
     instantiate_plugins
     send_to_plugins :init, options: @options
+
+    # Flag indicating that #load was called
+    @is_initialized = true
   end
 
   def alias(user_id:, previous_id:)

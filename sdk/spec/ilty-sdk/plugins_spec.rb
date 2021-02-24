@@ -30,38 +30,22 @@ describe Itly::Plugins do
     end
   end
 
-  describe 'initialize' do
-    before do
-      expect_any_instance_of(Itly).to receive(:instantiate_plugins)
-      expect_any_instance_of(Itly).to receive(:send_to_plugins).and_wrap_original do |_, *args|
-        expect(args.count).to eq(2)
-        expect(args[0]).to eq(:init)
-        expect(args[1].keys).to eq([:options])
-        expect(args[1][:options].class).to eq(Itly::Options)
-      end
-    end
-
-    let!(:itly) { Itly.new }
-
-    it do
-      expect(itly.plugins_instances).to eq([])
-    end
-  end
-
   describe '#instantiate_plugins', :unload_itly, fake_plugins: 2 do
+    let!(:itly) { Itly.new }
+
     before do
-      expect_any_instance_of(Itly).to receive(:instantiate_plugins).and_call_original
-      expect_any_instance_of(Itly).to receive(:send_to_plugins).and_wrap_original do |_, *args|
+      expect(itly).to receive(:instantiate_plugins).and_call_original
+      expect(itly).to receive(:send_to_plugins).and_wrap_original do |_, *args|
         expect(args.count).to eq(2)
         expect(args[0]).to eq(:init)
         expect(args[1].keys).to eq([:options])
         expect(args[1][:options].class).to eq(Itly::Options)
       end
     end
-
-    let!(:itly) { Itly.new }
 
     it 'instanciates all registered plugins' do
+      itly.load
+
       instances = itly.plugins_instances
       expect(instances.length).to eq(2)
       expect(instances[0]).to be_a(FakePlugin0)
@@ -70,7 +54,7 @@ describe Itly::Plugins do
   end
 
   describe '#send_to_plugins', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[some_method init] do
-    let!(:itly) { Itly.new }
+    create_itly_object
 
     let!(:plugin_a) { itly.plugins_instances[0] }
     let!(:plugin_b) { itly.plugins_instances[1] }
