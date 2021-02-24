@@ -35,6 +35,44 @@ describe Itly::Options do
       expect { options.destinations.a }.to raise_error(NoMethodError)
     end
   end
+
+  describe 'validation' do
+    context 'development' do
+      before do
+        options.environment = :development
+      end
+
+      it 'default value' do
+        expect(options.instance_variable_get('@validation')).to eq(Itly::ValidationOptions::DEFAULT)
+        expect(options.validation).to eq(Itly::ValidationOptions::ERROR_ON_INVALID)
+      end
+
+      it 'overwite value' do
+        options.validation = Itly::ValidationOptions::DISABLED
+
+        expect(options.instance_variable_get('@validation')).to eq(Itly::ValidationOptions::DISABLED)
+        expect(options.validation).to eq(Itly::ValidationOptions::DISABLED)
+      end
+    end
+
+    context 'production' do
+      before do
+        options.environment = :production
+      end
+
+      it 'default value' do
+        expect(options.instance_variable_get('@validation')).to eq(Itly::ValidationOptions::DEFAULT)
+        expect(options.validation).to eq(Itly::ValidationOptions::TRACK_INVALID)
+      end
+
+      it 'overwite value' do
+        options.validation = Itly::ValidationOptions::DISABLED
+
+        expect(options.instance_variable_get('@validation')).to eq(Itly::ValidationOptions::DISABLED)
+        expect(options.validation).to eq(Itly::ValidationOptions::DISABLED)
+      end
+    end
+  end
 end
 
 describe Itly do

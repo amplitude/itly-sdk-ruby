@@ -44,6 +44,7 @@ describe 'Itly' do
             o.context = { some: 'data' }
             o.disabled = :test_disabled
             o.environment = :test_environment
+            o.validation = Itly::ValidationOptions::DISABLED
             o.destinations = { plugin_config: 'data' }
             o.logger = fake_logger
           end
@@ -52,6 +53,8 @@ describe 'Itly' do
         it do
           expect(itly.options.disabled).to eq(:test_disabled)
           expect(itly.options.environment).to eq(:test_environment)
+          expect(itly.options.validation).to eq(Itly::ValidationOptions::DISABLED)
+
           expect(itly.options.logger).to eq(fake_logger)
 
           destinations = itly.options.destinations
