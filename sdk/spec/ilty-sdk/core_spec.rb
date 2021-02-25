@@ -121,6 +121,192 @@ describe 'Itly' do
     end
   end
 
+  describe '#identify', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
+    context 'without context' do
+      context 'no validation error' do
+        include_examples 'validate and run on plugins', method: :identify,
+          method_params: {user_id: '123', properties: {data: 1, info: 'yes'}},
+          expected_event_properties: {data: 1, info: 'yes'},
+          expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})'
+      end
+
+      context 'validation error' do
+        context 'options.validation = DISABLED' do
+          include_examples 'validate and run on plugins', method: :identify,
+            method_params: {user_id: '123', properties: {data: 1, info: 'yes'}},
+            validation_value: Itly::ValidationOptions::DISABLED,
+            expected_event_properties: {data: 1, info: 'yes'},
+            expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})',
+            generate_validation_error: true, expect_validation: false
+        end
+
+        context 'options.validation = TRACK_INVALID' do
+          include_examples 'validate and run on plugins', method: :identify,
+            method_params: {user_id: '123', properties: {data: 1, info: 'yes'}},
+            validation_value: Itly::ValidationOptions::TRACK_INVALID,
+            expected_event_properties: {data: 1, info: 'yes'},
+            expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})',
+            generate_validation_error: true
+        end
+
+        context 'options.validation = ERROR_ON_INVALID' do
+          include_examples 'validate and run on plugins', method: :identify,
+            method_params: {user_id: '123', properties: {data: 1, info: 'yes'}},
+            validation_value: Itly::ValidationOptions::ERROR_ON_INVALID,
+            expected_event_properties: {data: 1, info: 'yes'},
+            expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})',
+            generate_validation_error: true, expect_to_call_action: false, expect_exception: true
+        end
+      end
+    end
+
+    context 'with context' do
+      include_examples 'validate and run on plugins', method: :identify,
+        method_params: {user_id: '123', properties: {data: 1, info: 'yes'}},
+        context_properties: {context_data: 'ABC'},
+        expected_event_properties: {data: 1, info: 'yes'},
+        expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})'
+    end
+
+    context 'disabled' do
+      create_itly_object disabled: true
+
+      before do
+        expect(itly.options.logger).not_to receive(:info)
+        expect(itly.options.logger).not_to receive(:error)
+        expect(itly).not_to receive(:validate_and_send_to_plugins)
+      end
+
+      it do
+        itly.identify user_id: '123', properties: {data: 1, info: 'yes'}
+      end
+    end
+  end
+
+  describe '#group', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
+    context 'without context' do
+      context 'no validation error' do
+        include_examples 'validate and run on plugins', method: :group,
+          method_params: {user_id: '123', group_id: '456', properties: {data: 1, info: 'yes'}},
+          expected_event_properties: {data: 1, info: 'yes'},
+          expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})'
+      end
+
+      context 'validation error' do
+        context 'options.validation = DISABLED' do
+          include_examples 'validate and run on plugins', method: :group,
+            method_params: {user_id: '123', group_id: '456', properties: {data: 1, info: 'yes'}},
+            validation_value: Itly::ValidationOptions::DISABLED,
+            expected_event_properties: {data: 1, info: 'yes'},
+            expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})',
+            generate_validation_error: true, expect_validation: false
+        end
+
+        context 'options.validation = TRACK_INVALID' do
+          include_examples 'validate and run on plugins', method: :group,
+            method_params: {user_id: '123', group_id: '456', properties: {data: 1, info: 'yes'}},
+            validation_value: Itly::ValidationOptions::TRACK_INVALID,
+            expected_event_properties: {data: 1, info: 'yes'},
+            expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})',
+            generate_validation_error: true
+        end
+
+        context 'options.validation = ERROR_ON_INVALID' do
+          include_examples 'validate and run on plugins', method: :group,
+            method_params: {user_id: '123', group_id: '456', properties: {data: 1, info: 'yes'}},
+            validation_value: Itly::ValidationOptions::ERROR_ON_INVALID,
+            expected_event_properties: {data: 1, info: 'yes'},
+            expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})',
+            generate_validation_error: true, expect_to_call_action: false, expect_exception: true
+        end
+      end
+    end
+
+    context 'with context' do
+      include_examples 'validate and run on plugins', method: :group,
+        method_params: {user_id: '123', group_id: '456', properties: {data: 1, info: 'yes'}},
+        context_properties: {context_data: 'ABC'},
+        expected_event_properties: {data: 1, info: 'yes'},
+        expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})'
+    end
+
+    context 'disabled' do
+      create_itly_object disabled: true
+
+      before do
+        expect(itly.options.logger).not_to receive(:info)
+        expect(itly.options.logger).not_to receive(:error)
+        expect(itly).not_to receive(:validate_and_send_to_plugins)
+      end
+
+      it do
+        itly.group user_id: '123', group_id: '456', properties: {data: 1, info: 'yes'}
+      end
+    end
+  end
+
+  describe '#track', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
+    context 'without context' do
+      context 'no validation error' do
+        include_examples 'validate and run on plugins', method: :track,
+          method_params: {user_id: '123', event: Itly::Event.new(name: 'my_action', properties: {my: 'property'})},
+          event_keyword_name: :event, expected_validation_name: 'my_action', expected_event_properties: {my: 'property'},
+          expected_log_info: 'track(user_id: 123, event: my_action, properties: {:my=>"property"})'
+      end
+
+      context 'validation error' do
+        context 'options.validation = DISABLED' do
+          include_examples 'validate and run on plugins', method: :track,
+            method_params: {user_id: '123', event: Itly::Event.new(name: 'my_action', properties: {my: 'property'})},
+            validation_value: Itly::ValidationOptions::DISABLED,
+            event_keyword_name: :event, expected_validation_name: 'my_action', expected_event_properties: {my: 'property'},
+            expected_log_info: 'track(user_id: 123, event: my_action, properties: {:my=>"property"})',
+            generate_validation_error: true, expect_validation: false
+        end
+
+        context 'options.validation = TRACK_INVALID' do
+          include_examples 'validate and run on plugins', method: :track,
+            method_params: {user_id: '123', event: Itly::Event.new(name: 'my_action', properties: {my: 'property'})},
+            validation_value: Itly::ValidationOptions::TRACK_INVALID,
+            event_keyword_name: :event, expected_validation_name: 'my_action', expected_event_properties: {my: 'property'},
+            expected_log_info: 'track(user_id: 123, event: my_action, properties: {:my=>"property"})',
+            generate_validation_error: true
+        end
+
+        context 'options.validation = ERROR_ON_INVALID' do
+          include_examples 'validate and run on plugins', method: :track,
+            method_params: {user_id: '123', event: Itly::Event.new(name: 'my_action', properties: {my: 'property'})},
+            validation_value: Itly::ValidationOptions::ERROR_ON_INVALID,
+            event_keyword_name: :event, expected_validation_name: 'my_action', expected_event_properties: {my: 'property'},
+            expected_log_info: 'track(user_id: 123, event: my_action, properties: {:my=>"property"})',
+            generate_validation_error: true, expect_to_call_action: false, expect_exception: true
+        end
+      end
+    end
+
+    context 'with context' do
+      include_examples 'validate and run on plugins', method: :track,
+        method_params: {user_id: '123', event: Itly::Event.new(name: 'my_action', properties: {my: 'property'})},
+        context_properties: {context_data: 'ABC'},
+        event_keyword_name: :event, expected_validation_name: 'my_action', expected_event_properties: {my: 'property'},
+        expected_log_info: 'track(user_id: 123, event: my_action, properties: {:my=>"property"})'
+    end
+
+    context 'disabled' do
+      create_itly_object disabled: true
+
+      before do
+        expect(itly.options.logger).not_to receive(:info)
+        expect(itly.options.logger).not_to receive(:error)
+        expect(itly).not_to receive(:validate_and_send_to_plugins)
+      end
+
+      it do
+        itly.track user_id: '123', event: Itly::Event.new(name: 'my_action', properties: {my: 'property'})
+      end
+    end
+  end
+
   describe '#alias' do
     include_examples 'runs on plugins', method: :alias,
       method_params: {user_id: '123', previous_id: '456'},

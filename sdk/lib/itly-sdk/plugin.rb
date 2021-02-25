@@ -19,6 +19,18 @@ class Itly
       raise NotImplementedError
     end
 
+    def identify(user_id:, properties:); end
+
+    def post_identify(user_id:, properties:, validation_results:); end
+
+    def group(user_id:, group_id:, properties:); end
+
+    def post_group(user_id:, group_id:, properties:, validation_results:); end
+
+    def track(user_id:, event:); end
+
+    def post_track(user_id:, event:, validation_results:); end
+
     def alias(user_id:, previous_id:); end
 
     def post_alias(user_id:, previous_id:); end

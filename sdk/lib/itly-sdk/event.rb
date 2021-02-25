@@ -13,5 +13,14 @@ class Itly
       @version = version
       @metadata = metadata
     end
+
+    def to_s
+      "<name: #{name}, properties: #{properties}>"
+    end
+
+    def ==(o)
+      o.class == self.class && [name, properties, id, version, metadata] ==
+        [o.name, o.properties, o.id, o.version, o.metadata]
+    end
   end
 end

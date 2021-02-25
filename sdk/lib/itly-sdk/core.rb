@@ -31,6 +31,52 @@ class Itly
     @is_initialized = true
   end
 
+  def identify(user_id:, properties:)
+    return if disabled?
+
+    logger.info "identify(user_id: #{user_id}, properties: #{properties})"
+
+    event = Event.new name: 'identify', properties: properties
+
+    validate_and_send_to_plugins event: event, include_context: true,
+      action: lambda { |plugin, combined_event|
+        plugin.identify user_id: user_id, properties: combined_event
+      },
+      post_action: lambda { |plugin, combined_event, validation_results|
+        plugin.post_identify user_id: user_id, properties: combined_event, validation_results: validation_results
+      }
+  end
+
+  def group(user_id:, group_id:, properties:)
+    return if disabled?
+
+    logger.info "group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties})"
+
+    event = Event.new name: 'group', properties: properties
+
+    validate_and_send_to_plugins event: event, include_context: true,
+      action: lambda { |plugin, combined_event|
+        plugin.group user_id: user_id, group_id: group_id, properties: combined_event
+      },
+      post_action: lambda { |plugin, combined_event, validation_results|
+        plugin.post_group user_id: user_id, group_id: group_id, properties: combined_event, validation_results: validation_results
+      }
+  end
+
+  def track(user_id:, event:)
+    return if disabled?
+
+    logger.info "track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
+
+    validate_and_send_to_plugins event: event, include_context: true,
+      action: lambda { |plugin, combined_event|
+        plugin.track user_id: user_id, event: combined_event
+      },
+      post_action: lambda { |plugin, combined_event, validation_results|
+        plugin.post_track user_id: user_id, event: combined_event, validation_results: validation_results
+      }
+  end
+
   def alias(user_id:, previous_id:)
     return if disabled?
 
