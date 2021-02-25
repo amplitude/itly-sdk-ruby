@@ -121,123 +121,20 @@ describe 'Itly' do
     end
   end
 
-  describe '#alias', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
-    context 'default' do
-      create_itly_object
-
-      let!(:plugin_a) { itly.plugins_instances[0] }
-      let!(:plugin_b) { itly.plugins_instances[1] }
-
-      before do
-        expect(itly.options.logger).to receive(:info)
-          .with('alias(user_id: 123, previous_id: 456)')
-
-        expect(plugin_a).to receive(:alias).with(user_id: '123', previous_id: '456')
-        expect(plugin_b).to receive(:alias).with(user_id: '123', previous_id: '456')
-        expect(plugin_a).to receive(:post_alias).with(user_id: '123', previous_id: '456')
-        expect(plugin_b).to receive(:post_alias).with(user_id: '123', previous_id: '456')
-      end
-
-      it do
-        itly.alias user_id: '123', previous_id: '456'
-      end
-    end
-
-    context 'disabled' do
-      create_itly_object disabled: true
-
-      let!(:plugin_a) { itly.plugins_instances[0] }
-      let!(:plugin_b) { itly.plugins_instances[1] }
-
-      before do
-        expect(itly.options.logger).not_to receive(:info)
-
-        expect(plugin_a).not_to receive(:alias)
-        expect(plugin_b).not_to receive(:alias)
-        expect(plugin_a).not_to receive(:post_alias)
-        expect(plugin_b).not_to receive(:post_alias)
-      end
-
-      it do
-        itly.alias user_id: '123', previous_id: '456'
-      end
-    end
+  describe '#alias' do
+    include_examples 'runs on plugins', method: :alias,
+      method_params: {user_id: '123', previous_id: '456'},
+      expected_log_info: 'alias(user_id: 123, previous_id: 456)'
   end
 
-  describe '#flush', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
-    context 'default' do
-      create_itly_object
-
-      let!(:plugin_a) { itly.plugins_instances[0] }
-      let!(:plugin_b) { itly.plugins_instances[1] }
-
-      before do
-        expect(itly.options.logger).to receive(:info).with('flush()')
-
-        expect(plugin_a).to receive(:flush)
-        expect(plugin_b).to receive(:flush)
-      end
-
-      it do
-        itly.flush
-      end
-    end
-
-    context 'disabled' do
-      create_itly_object disabled: true
-
-      let!(:plugin_a) { itly.plugins_instances[0] }
-      let!(:plugin_b) { itly.plugins_instances[1] }
-
-      before do
-        expect(itly.options.logger).not_to receive(:info)
-
-        expect(plugin_a).not_to receive(:flush)
-        expect(plugin_b).not_to receive(:flush)
-      end
-
-      it do
-        itly.flush
-      end
-    end
+  describe '#flush' do
+    include_examples 'runs on plugins', method: :flush, no_post_method: true,
+      expected_log_info: 'flush()'
   end
 
-  describe '#reset', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
-    context 'default' do
-      create_itly_object
-
-      let!(:plugin_a) { itly.plugins_instances[0] }
-      let!(:plugin_b) { itly.plugins_instances[1] }
-
-      before do
-        expect(itly.options.logger).to receive(:info).with('reset()')
-
-        expect(plugin_a).to receive(:reset)
-        expect(plugin_b).to receive(:reset)
-      end
-
-      it do
-        itly.reset
-      end
-    end
-
-    context 'disabled' do
-      create_itly_object disabled: true
-
-      let!(:plugin_a) { itly.plugins_instances[0] }
-      let!(:plugin_b) { itly.plugins_instances[1] }
-
-      before do
-        expect(itly.options.logger).not_to receive(:info)
-
-        expect(plugin_a).not_to receive(:reset)
-        expect(plugin_b).not_to receive(:reset)
-      end
-
-      it do
-        itly.reset
-      end
-    end
+  describe '#reset' do
+    include_examples 'runs on plugins', method: :reset, no_post_method: true,
+      expected_log_info: 'reset()'
   end
 
   describe '#validate', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
@@ -283,25 +180,15 @@ fake_plugins_methods: %i[init mock_action mock_post_action] do
     create_itly_object context: { data: 'for_context' }
     let!(:event) { Itly::Event.new name: 'Test' }
 
+    let(:generates_context_errors) { [] }
+    let(:generates_event_errors) { [] }
+
     let!(:plugin_a) { itly.plugins_instances[0] }
     let!(:plugin_b) { itly.plugins_instances[1] }
 
-    describe 'calls' do
+    describe 'default' do
       context 'no context' do
-        before do
-          expect(itly).to receive(:validate_context_and_event).with(false, event)
-            .and_return([[], [], true])
-
-          expect(plugin_a).to receive(:mock_action).with(event, :param)
-          expect(plugin_b).to receive(:mock_action).with(event, :param)
-
-          expect(itly).to receive(:log_validation_errors).with([], event)
-
-          expect(plugin_a).to receive(:mock_post_action).with(event, [], :other_param)
-          expect(plugin_b).to receive(:mock_post_action).with(event, [], :other_param)
-
-          expect(itly).to receive(:raise_validation_errors).with(true, [], event)
-        end
+        include_examples 'validate and send to plugins'
 
         it do
           itly.send :validate_and_send_to_plugins, include_context: false, event: event,
@@ -311,20 +198,7 @@ fake_plugins_methods: %i[init mock_action mock_post_action] do
       end
 
       context 'with context' do
-        before do
-          expect(itly).to receive(:validate_context_and_event).with(true, event)
-            .and_return([[], [], true])
-
-          expect(plugin_a).to receive(:mock_action).with(event, :param)
-          expect(plugin_b).to receive(:mock_action).with(event, :param)
-
-          expect(itly).to receive(:log_validation_errors).with([], event)
-
-          expect(plugin_a).to receive(:mock_post_action).with(event, [], :other_param)
-          expect(plugin_b).to receive(:mock_post_action).with(event, [], :other_param)
-
-          expect(itly).to receive(:raise_validation_errors).with(true, [], event)
-        end
+        include_examples 'validate and send to plugins', with_context: true
 
         it do
           itly.send :validate_and_send_to_plugins, include_context: true, event: event,
@@ -336,26 +210,15 @@ fake_plugins_methods: %i[init mock_action mock_post_action] do
 
     context 'with context validation errors' do
       let(:response) { Itly::ValidationResponse.new valid: true, plugin_id: 'ABC', message: 'Error message' }
-
-      before do
-        expect(itly).to receive(:validate_context_and_event).with(true, event)
-          .and_return([[response], [], false])
-
-        expect(itly).to receive(:log_validation_errors).with([response], event)
-
-        expect(plugin_a).to receive(:mock_post_action).with(event, [response], :other_param)
-        expect(plugin_b).to receive(:mock_post_action).with(event, [response], :other_param)
-
-        expect(itly).to receive(:raise_validation_errors).with(false, [response], event)
-      end
+      let(:generates_context_errors) { [response] }
 
       context 'options.validation = DISABLED' do
         before do
           itly.options.validation = Itly::ValidationOptions::DISABLED
-
-          expect(plugin_a).not_to receive(:mock_action)
-          expect(plugin_b).not_to receive(:mock_action)
         end
+
+        include_examples 'validate and send to plugins', with_context: true,
+          receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins, include_context: true, event: event,
@@ -364,13 +227,12 @@ fake_plugins_methods: %i[init mock_action mock_post_action] do
         end
       end
 
-      context 'options.validation = TRACK_INVALID'do
+      context 'options.validation = TRACK_INVALID' do
         before do
           itly.options.validation = Itly::ValidationOptions::TRACK_INVALID
-
-          expect(plugin_a).to receive(:mock_action).with(event, :param)
-          expect(plugin_b).to receive(:mock_action).with(event, :param)
         end
+
+        include_examples 'validate and send to plugins', with_context: true, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins, include_context: true, event: event,
@@ -382,10 +244,10 @@ fake_plugins_methods: %i[init mock_action mock_post_action] do
       context 'options.validation = ERROR_ON_INVALID' do
         before do
           itly.options.validation = Itly::ValidationOptions::ERROR_ON_INVALID
-
-          expect(plugin_a).not_to receive(:mock_action)
-          expect(plugin_b).not_to receive(:mock_action)
         end
+
+        include_examples 'validate and send to plugins', with_context: true,
+          receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins, include_context: true, event: event,
@@ -397,26 +259,15 @@ fake_plugins_methods: %i[init mock_action mock_post_action] do
 
     context 'with event validation errors' do
       let(:response) { Itly::ValidationResponse.new valid: true, plugin_id: 'ABC', message: 'Error message' }
-
-      before do
-        expect(itly).to receive(:validate_context_and_event).with(true, event)
-          .and_return([[], [response], false])
-
-        expect(itly).to receive(:log_validation_errors).with([response], event)
-
-        expect(plugin_a).to receive(:mock_post_action).with(event, [response], :other_param)
-        expect(plugin_b).to receive(:mock_post_action).with(event, [response], :other_param)
-
-        expect(itly).to receive(:raise_validation_errors).with(false, [response], event)
-      end
+      let(:generates_event_errors) { [response] }
 
       context 'options.validation = DISABLED' do
         before do
           itly.options.validation = Itly::ValidationOptions::DISABLED
-
-          expect(plugin_a).not_to receive(:mock_action)
-          expect(plugin_b).not_to receive(:mock_action)
         end
+
+        include_examples 'validate and send to plugins', with_context: true,
+          receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins, include_context: true, event: event,
@@ -425,13 +276,12 @@ fake_plugins_methods: %i[init mock_action mock_post_action] do
         end
       end
 
-      context 'options.validation = TRACK_INVALID'do
+      context 'options.validation = TRACK_INVALID' do
         before do
           itly.options.validation = Itly::ValidationOptions::TRACK_INVALID
-
-          expect(plugin_a).to receive(:mock_action).with(event, :param)
-          expect(plugin_b).to receive(:mock_action).with(event, :param)
         end
+
+        include_examples 'validate and send to plugins', with_context: true, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins, include_context: true, event: event,
@@ -443,10 +293,10 @@ fake_plugins_methods: %i[init mock_action mock_post_action] do
       context 'options.validation = ERROR_ON_INVALID' do
         before do
           itly.options.validation = Itly::ValidationOptions::ERROR_ON_INVALID
-
-          expect(plugin_a).not_to receive(:mock_action)
-          expect(plugin_b).not_to receive(:mock_action)
         end
+
+        include_examples 'validate and send to plugins', with_context: true,
+          receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins, include_context: true, event: event,
@@ -459,26 +309,16 @@ fake_plugins_methods: %i[init mock_action mock_post_action] do
     context 'with validations errors' do
       let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: 'ABC', message: 'Error message' }
       let(:response2) { Itly::ValidationResponse.new valid: true, plugin_id: 'ABC', message: 'Error message' }
-
-      before do
-        expect(itly).to receive(:validate_context_and_event).with(true, event)
-          .and_return([[response1], [response2], false])
-
-        expect(itly).to receive(:log_validation_errors).with([response1, response2], event)
-
-        expect(plugin_a).to receive(:mock_post_action).with(event, [response1, response2], :other_param)
-        expect(plugin_b).to receive(:mock_post_action).with(event, [response1, response2], :other_param)
-
-        expect(itly).to receive(:raise_validation_errors).with(false, [response1, response2], event)
-      end
+      let(:generates_context_errors) { [response1] }
+      let(:generates_event_errors) { [response2] }
 
       context 'options.validation = DISABLED' do
         before do
           itly.options.validation = Itly::ValidationOptions::DISABLED
-
-          expect(plugin_a).not_to receive(:mock_action)
-          expect(plugin_b).not_to receive(:mock_action)
         end
+
+        include_examples 'validate and send to plugins', with_context: true,
+          receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins, include_context: true, event: event,
@@ -487,13 +327,12 @@ fake_plugins_methods: %i[init mock_action mock_post_action] do
         end
       end
 
-      context 'options.validation = TRACK_INVALID'do
+      context 'options.validation = TRACK_INVALID' do
         before do
           itly.options.validation = Itly::ValidationOptions::TRACK_INVALID
-
-          expect(plugin_a).to receive(:mock_action).with(event, :param)
-          expect(plugin_b).to receive(:mock_action).with(event, :param)
         end
+
+        include_examples 'validate and send to plugins', with_context: true, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins, include_context: true, event: event,
@@ -505,10 +344,10 @@ fake_plugins_methods: %i[init mock_action mock_post_action] do
       context 'options.validation = ERROR_ON_INVALID' do
         before do
           itly.options.validation = Itly::ValidationOptions::ERROR_ON_INVALID
-
-          expect(plugin_a).not_to receive(:mock_action)
-          expect(plugin_b).not_to receive(:mock_action)
         end
+
+        include_examples 'validate and send to plugins', with_context: true,
+          receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins, include_context: true, event: event,
