@@ -11,11 +11,11 @@ class Itly
       end
     end
 
-    # A plugin must ovewrite the #init method
+    # A plugin must ovewrite the #load method
     # Otherwise a NotImplementedError exception would remind the developer
     # The param `options` contains the all the options passed to Itly#Init
     # Call #get_plugin_options to get plugin specific options as a Hash
-    def init(options:)
+    def load(options:)
       raise NotImplementedError
     end
 

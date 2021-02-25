@@ -24,7 +24,7 @@ class Itly
     # Initialize plugins
     instantiate_plugins
     run_on_plugins lambda { |plugin|
-      plugin.init options: @options
+      plugin.load options: @options
     }
 
     # Flag indicating that #load was called

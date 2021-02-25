@@ -1,5 +1,5 @@
 shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_method: false, expected_log_info: nil|
-  context 'default', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
+  context 'default', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[load] do
     create_itly_object
 
     let!(:plugin_a) { itly.plugins_instances[0] }
@@ -38,7 +38,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
     end
   end
 
-  context 'disabled', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[init] do
+  context 'disabled', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[load] do
     create_itly_object disabled: true
 
     let!(:plugin_a) { itly.plugins_instances[0] }
