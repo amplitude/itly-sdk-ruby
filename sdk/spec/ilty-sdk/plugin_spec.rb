@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 describe Itly::Plugin do
   describe 'self.register_plugin' do
     before do
@@ -50,4 +49,3 @@ describe Itly::Plugin do
     end
   end
 end
-# rubocop:enable Metrics/BlockLength

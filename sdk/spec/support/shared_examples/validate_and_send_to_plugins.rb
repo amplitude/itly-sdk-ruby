@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples 'validate and send to plugins' do |with_context: false, receive_action_methods: true, is_valid: true|
   let(:all_errors) { generates_context_errors + generates_event_errors }
 

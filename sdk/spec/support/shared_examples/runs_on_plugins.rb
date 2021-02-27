@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_method: false, expected_log_info: nil|
   context 'default', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[load] do
     create_itly_object

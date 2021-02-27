@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 describe Itly::Options do
   include RspecOptionsDefaultValues
 
@@ -164,4 +163,3 @@ describe Itly do
     end
   end
 end
-# rubocop:enable Metrics/BlockLength

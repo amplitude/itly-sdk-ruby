@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 describe Itly::Plugins do
   describe 'class attributes' do
     it 'default values' do
@@ -105,4 +104,3 @@ describe Itly::Plugins do
     end
   end
 end
-# rubocop:enable Metrics/BlockLength

@@ -18,9 +18,9 @@ class Itly
       "<name: #{name}, properties: #{properties}>"
     end
 
-    def ==(o)
-      o.class == self.class && [name, properties, id, version, metadata] ==
-        [o.name, o.properties, o.id, o.version, o.metadata]
+    def ==(other)
+      other.class == self.class && [name, properties, id, version, metadata] ==
+        [other.name, other.properties, other.id, other.version, other.metadata]
     end
   end
 end

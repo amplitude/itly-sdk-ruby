@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 describe Itly::Event do
   describe 'instance attributes' do
     describe 'default values' do
@@ -42,4 +41,3 @@ describe Itly::Event do
     end
   end
 end
-# rubocop:enable Metrics/BlockLength

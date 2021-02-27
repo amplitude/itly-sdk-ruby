@@ -1,11 +1,17 @@
 AllCops:
   NewCops: enable
-
 Layout/HashAlignment:
   Enabled: false
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
-
+Metrics/ClassLength:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
 Naming/FileName:
   Exclude:
     - lib/itly-sdk.rb

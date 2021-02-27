@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 describe Itly::OptionsWrapper do
   describe 'default values' do
     let(:wrapper) { Itly::OptionsWrapper.new }
@@ -58,4 +57,3 @@ describe Itly::OptionsWrapper do
     end
   end
 end
-# rubocop:enable Metrics/BlockLength

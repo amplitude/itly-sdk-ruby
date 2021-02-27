@@ -59,7 +59,8 @@ class Itly
         plugin.group user_id: user_id, group_id: group_id, properties: combined_event
       },
       post_action: lambda { |plugin, combined_event, validation_results|
-        plugin.post_group user_id: user_id, group_id: group_id, properties: combined_event, validation_results: validation_results
+        plugin.post_group user_id: user_id, group_id: group_id,
+          properties: combined_event, validation_results: validation_results
       }
   end
 
