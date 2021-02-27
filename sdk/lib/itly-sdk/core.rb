@@ -38,7 +38,7 @@ class Itly
 
     event = Event.new name: 'identify', properties: properties
 
-    validate_and_send_to_plugins event: event, include_context: true,
+    validate_and_send_to_plugins event: event,
       action: lambda { |plugin, combined_event|
         plugin.identify user_id: user_id, properties: combined_event
       },
@@ -54,7 +54,7 @@ class Itly
 
     event = Event.new name: 'group', properties: properties
 
-    validate_and_send_to_plugins event: event, include_context: true,
+    validate_and_send_to_plugins event: event,
       action: lambda { |plugin, combined_event|
         plugin.group user_id: user_id, group_id: group_id, properties: combined_event
       },
@@ -122,7 +122,7 @@ class Itly
 
   private
 
-  def validate_and_send_to_plugins(action:, post_action:, event:, include_context:)
+  def validate_and_send_to_plugins(action:, post_action:, event:, include_context: false)
     # Perform validations
     context_validations, event_validations, is_valid = validate_context_and_event include_context, event
     validations = context_validations + event_validations
