@@ -19,7 +19,6 @@ RSpec.configure do |config|
 
       nbr_plugins.times do |i|
         klass = Class.new(Itly::Plugin) do
-          register_plugin self
           methods.each do |method|
             define_method(method) do |*|
               # nothing

@@ -29,7 +29,7 @@ describe Itly::Plugins do
     end
   end
 
-  describe '#instantiate_plugins', :unload_itly, fake_plugins: 2 do
+  describe '#instantiate_plugins', fake_plugins: 2 do
     let!(:itly) { Itly.new }
 
     before do
@@ -44,7 +44,7 @@ describe Itly::Plugins do
     end
   end
 
-  describe '#run_on_plugins', :unload_itly, fake_plugins_methods: %i[some_method load] do
+  describe '#run_on_plugins', fake_plugins_methods: %i[some_method load] do
     create_itly_object
 
     let!(:plugin_a) { itly.plugins_instances[0] }

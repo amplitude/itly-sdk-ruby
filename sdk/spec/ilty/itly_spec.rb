@@ -96,7 +96,7 @@ describe 'Itly' do
       end
     end
 
-    describe 'plugins', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[load] do
+    describe 'plugins', fake_plugins: 2, fake_plugins_methods: %i[load] do
       before do
         expect(itly).to receive(:instantiate_plugins).and_call_original
         expect_any_instance_of(FakePlugin0).to receive(:load).and_wrap_original do |_, *args|
@@ -120,7 +120,7 @@ describe 'Itly' do
     end
   end
 
-  describe '#identify', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[load] do
+  describe '#identify', fake_plugins: 2, fake_plugins_methods: %i[load] do
     context 'no validation error' do
       include_examples 'validate and run on plugins', method: :identify,
         method_params: { user_id: '123', properties: { data: 1, info: 'yes' } },
@@ -172,7 +172,7 @@ describe 'Itly' do
     end
   end
 
-  describe '#group', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[load] do
+  describe '#group', fake_plugins: 2, fake_plugins_methods: %i[load] do
     context 'no validation error' do
       include_examples 'validate and run on plugins', method: :group,
         method_params: { user_id: '123', group_id: '456', properties: { data: 1, info: 'yes' } },
@@ -224,7 +224,7 @@ describe 'Itly' do
     end
   end
 
-  describe '#track', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[load] do
+  describe '#track', fake_plugins: 2, fake_plugins_methods: %i[load] do
     context 'without context' do
       context 'no validation error' do
         include_examples 'validate and run on plugins',
@@ -324,7 +324,7 @@ describe 'Itly' do
       expected_log_info: 'reset()'
   end
 
-  describe '#validate', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[load] do
+  describe '#validate', fake_plugins: 2, fake_plugins_methods: %i[load] do
     context 'default' do
       create_itly_object
 
@@ -362,7 +362,7 @@ describe 'Itly' do
     end
   end
 
-  describe '#validate_and_send_to_plugins', :unload_itly, fake_plugins: 2,
+  describe '#validate_and_send_to_plugins', fake_plugins: 2,
 fake_plugins_methods: %i[load mock_action mock_post_action] do
     create_itly_object context: { data: 'for_context' }
     let!(:event) { Itly::Event.new name: 'Test' }
@@ -545,7 +545,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
     end
   end
 
-  describe 'validate_context_and_event', :unload_itly, fake_plugins: 2, fake_plugins_methods: %i[load validate] do
+  describe 'validate_context_and_event', fake_plugins: 2, fake_plugins_methods: %i[load validate] do
     context 'without context' do
       create_itly_object
       let!(:event) { Itly::Event.new name: 'Test' }

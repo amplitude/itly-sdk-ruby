@@ -1,23 +1,6 @@
 # frozen_string_literal: true
 
 describe Itly::Plugin do
-  describe 'self.register_plugin' do
-    before do
-      Object.const_set 'TestPluginRegister', Class.new
-      expect(Itly.registered_plugins).to eq([])
-    end
-
-    after do
-      Itly.registered_plugins.clear
-      Object.send :remove_const, :TestPluginRegister
-    end
-
-    it 'add plugin class `plugins` module attribute' do
-      Itly::Plugin.register_plugin TestPluginRegister
-      expect(Itly.registered_plugins).to eq([TestPluginRegister])
-    end
-  end
-
   it '#load' do
     expect { Itly::Plugin.new.load options: Itly::Options.new }.to raise_error(NotImplementedError)
   end

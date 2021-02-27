@@ -10,10 +10,11 @@ class Itly
   class Plugin
     class << self
       ##
-      # Allow a plugin to register itslef with Itly, so taht it can be instanciated
+      # Trigger for a plugin to register itslef with Itly, so that it can be instanciated
       #
-      def register_plugin(plugin)
-        Itly.registered_plugins << plugin
+      def inherited(subclass)
+        super
+        Itly.registered_plugins << subclass
       end
     end
 
