@@ -9,7 +9,9 @@ class Itly
     attr_reader :registered_plugins
   end
 
+  ##
   # Manage list of Plugins
+  #
   module Plugins
     # List of registered plugins objects
     attr_reader :plugins_instances

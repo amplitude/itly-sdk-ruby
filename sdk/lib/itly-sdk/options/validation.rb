@@ -2,6 +2,9 @@
 
 class Itly
   class Options
+    ##
+    # This module contains values for the field +validation+ of the +Option+ object
+    #
     module Validation
       DEFAULT = -1
       DISABLED = 0
