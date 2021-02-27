@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require_relative 'itly-sdk/version'
-require_relative 'itly-sdk/environment_options'
-require_relative 'itly-sdk/validation_options'
+require_relative 'itly-sdk/options/environment'
+require_relative 'itly-sdk/options/validation'
 require_relative 'itly-sdk/exceptions'
 require_relative 'itly-sdk/validation_response'
 require_relative 'itly-sdk/plugins'

@@ -39,37 +39,37 @@ describe Itly::Options do
   describe 'validation' do
     context 'development' do
       before do
-        options.environment = Itly::EnvironmentOptions::DEVELOPMENT
+        options.environment = Itly::Options::Environment::DEVELOPMENT
       end
 
       it 'default value' do
-        expect(options.instance_variable_get('@validation')).to eq(Itly::ValidationOptions::DEFAULT)
-        expect(options.validation).to eq(Itly::ValidationOptions::ERROR_ON_INVALID)
+        expect(options.instance_variable_get('@validation')).to eq(Itly::Options::Validation::DEFAULT)
+        expect(options.validation).to eq(Itly::Options::Validation::ERROR_ON_INVALID)
       end
 
       it 'overwite value' do
-        options.validation = Itly::ValidationOptions::DISABLED
+        options.validation = Itly::Options::Validation::DISABLED
 
-        expect(options.instance_variable_get('@validation')).to eq(Itly::ValidationOptions::DISABLED)
-        expect(options.validation).to eq(Itly::ValidationOptions::DISABLED)
+        expect(options.instance_variable_get('@validation')).to eq(Itly::Options::Validation::DISABLED)
+        expect(options.validation).to eq(Itly::Options::Validation::DISABLED)
       end
     end
 
     context 'production' do
       before do
-        options.environment = Itly::EnvironmentOptions::PRODUCTION
+        options.environment = Itly::Options::Environment::PRODUCTION
       end
 
       it 'default value' do
-        expect(options.instance_variable_get('@validation')).to eq(Itly::ValidationOptions::DEFAULT)
-        expect(options.validation).to eq(Itly::ValidationOptions::TRACK_INVALID)
+        expect(options.instance_variable_get('@validation')).to eq(Itly::Options::Validation::DEFAULT)
+        expect(options.validation).to eq(Itly::Options::Validation::TRACK_INVALID)
       end
 
       it 'overwite value' do
-        options.validation = Itly::ValidationOptions::DISABLED
+        options.validation = Itly::Options::Validation::DISABLED
 
-        expect(options.instance_variable_get('@validation')).to eq(Itly::ValidationOptions::DISABLED)
-        expect(options.validation).to eq(Itly::ValidationOptions::DISABLED)
+        expect(options.instance_variable_get('@validation')).to eq(Itly::Options::Validation::DISABLED)
+        expect(options.validation).to eq(Itly::Options::Validation::DISABLED)
       end
     end
   end
@@ -124,7 +124,7 @@ describe Itly do
     end
 
     context 'set to disabled' do
-      create_itly_object validation: Itly::ValidationOptions::DISABLED
+      create_itly_object validation: Itly::Options::Validation::DISABLED
 
       it do
         expect(itly.send(:validation_disabled?)).to be(true)
@@ -132,7 +132,7 @@ describe Itly do
     end
 
     context 'set to another value' do
-      create_itly_object validation: Itly::ValidationOptions::TRACK_INVALID
+      create_itly_object validation: Itly::Options::Validation::TRACK_INVALID
 
       it do
         expect(itly.send(:validation_disabled?)).to be(false)

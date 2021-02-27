@@ -43,8 +43,8 @@ describe 'Itly' do
           itly.load do |o|
             o.context = { some: 'data' }
             o.disabled = :test_disabled
-            o.environment = Itly::EnvironmentOptions::PRODUCTION
-            o.validation = Itly::ValidationOptions::DISABLED
+            o.environment = Itly::Options::Environment::PRODUCTION
+            o.validation = Itly::Options::Validation::DISABLED
             o.plugins = { plugin_config: 'data' }
             o.logger = fake_logger
           end
@@ -52,8 +52,8 @@ describe 'Itly' do
 
         it do
           expect(itly.options.disabled).to eq(:test_disabled)
-          expect(itly.options.environment).to eq(Itly::EnvironmentOptions::PRODUCTION)
-          expect(itly.options.validation).to eq(Itly::ValidationOptions::DISABLED)
+          expect(itly.options.environment).to eq(Itly::Options::Environment::PRODUCTION)
+          expect(itly.options.validation).to eq(Itly::Options::Validation::DISABLED)
 
           expect(itly.options.logger).to eq(fake_logger)
 
@@ -133,7 +133,7 @@ describe 'Itly' do
       context 'options.validation = DISABLED' do
         include_examples 'validate and run on plugins', method: :identify,
           method_params: {user_id: '123', properties: {data: 1, info: 'yes'}},
-          validation_value: Itly::ValidationOptions::DISABLED,
+          validation_value: Itly::Options::Validation::DISABLED,
           expected_event_properties: {data: 1, info: 'yes'},
           expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})',
           generate_validation_error: true, expect_validation: false
@@ -142,7 +142,7 @@ describe 'Itly' do
       context 'options.validation = TRACK_INVALID' do
         include_examples 'validate and run on plugins', method: :identify,
           method_params: {user_id: '123', properties: {data: 1, info: 'yes'}},
-          validation_value: Itly::ValidationOptions::TRACK_INVALID,
+          validation_value: Itly::Options::Validation::TRACK_INVALID,
           expected_event_properties: {data: 1, info: 'yes'},
           expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})',
           generate_validation_error: true
@@ -151,7 +151,7 @@ describe 'Itly' do
       context 'options.validation = ERROR_ON_INVALID' do
         include_examples 'validate and run on plugins', method: :identify,
           method_params: {user_id: '123', properties: {data: 1, info: 'yes'}},
-          validation_value: Itly::ValidationOptions::ERROR_ON_INVALID,
+          validation_value: Itly::Options::Validation::ERROR_ON_INVALID,
           expected_event_properties: {data: 1, info: 'yes'},
           expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})',
           generate_validation_error: true, expect_to_call_action: false, expect_exception: true
@@ -185,7 +185,7 @@ describe 'Itly' do
       context 'options.validation = DISABLED' do
         include_examples 'validate and run on plugins', method: :group,
           method_params: {user_id: '123', group_id: '456', properties: {data: 1, info: 'yes'}},
-          validation_value: Itly::ValidationOptions::DISABLED,
+          validation_value: Itly::Options::Validation::DISABLED,
           expected_event_properties: {data: 1, info: 'yes'},
           expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})',
           generate_validation_error: true, expect_validation: false
@@ -194,7 +194,7 @@ describe 'Itly' do
       context 'options.validation = TRACK_INVALID' do
         include_examples 'validate and run on plugins', method: :group,
           method_params: {user_id: '123', group_id: '456', properties: {data: 1, info: 'yes'}},
-          validation_value: Itly::ValidationOptions::TRACK_INVALID,
+          validation_value: Itly::Options::Validation::TRACK_INVALID,
           expected_event_properties: {data: 1, info: 'yes'},
           expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})',
           generate_validation_error: true
@@ -203,7 +203,7 @@ describe 'Itly' do
       context 'options.validation = ERROR_ON_INVALID' do
         include_examples 'validate and run on plugins', method: :group,
           method_params: {user_id: '123', group_id: '456', properties: {data: 1, info: 'yes'}},
-          validation_value: Itly::ValidationOptions::ERROR_ON_INVALID,
+          validation_value: Itly::Options::Validation::ERROR_ON_INVALID,
           expected_event_properties: {data: 1, info: 'yes'},
           expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})',
           generate_validation_error: true, expect_to_call_action: false, expect_exception: true
@@ -238,7 +238,7 @@ describe 'Itly' do
         context 'options.validation = DISABLED' do
           include_examples 'validate and run on plugins', method: :track,
             method_params: {user_id: '123', event: Itly::Event.new(name: 'my_action', properties: {my: 'property'})},
-            validation_value: Itly::ValidationOptions::DISABLED,
+            validation_value: Itly::Options::Validation::DISABLED,
             event_keyword_name: :event, expected_validation_name: 'my_action', expected_event_properties: {my: 'property'},
             expected_log_info: 'track(user_id: 123, event: my_action, properties: {:my=>"property"})',
             generate_validation_error: true, expect_validation: false
@@ -247,7 +247,7 @@ describe 'Itly' do
         context 'options.validation = TRACK_INVALID' do
           include_examples 'validate and run on plugins', method: :track,
             method_params: {user_id: '123', event: Itly::Event.new(name: 'my_action', properties: {my: 'property'})},
-            validation_value: Itly::ValidationOptions::TRACK_INVALID,
+            validation_value: Itly::Options::Validation::TRACK_INVALID,
             event_keyword_name: :event, expected_validation_name: 'my_action', expected_event_properties: {my: 'property'},
             expected_log_info: 'track(user_id: 123, event: my_action, properties: {:my=>"property"})',
             generate_validation_error: true
@@ -256,7 +256,7 @@ describe 'Itly' do
         context 'options.validation = ERROR_ON_INVALID' do
           include_examples 'validate and run on plugins', method: :track,
             method_params: {user_id: '123', event: Itly::Event.new(name: 'my_action', properties: {my: 'property'})},
-            validation_value: Itly::ValidationOptions::ERROR_ON_INVALID,
+            validation_value: Itly::Options::Validation::ERROR_ON_INVALID,
             event_keyword_name: :event, expected_validation_name: 'my_action', expected_event_properties: {my: 'property'},
             expected_log_info: 'track(user_id: 123, event: my_action, properties: {:my=>"property"})',
             generate_validation_error: true, expect_to_call_action: false, expect_exception: true
@@ -323,7 +323,7 @@ describe 'Itly' do
     end
 
     context 'disabled' do
-      create_itly_object validation: Itly::ValidationOptions::DISABLED
+      create_itly_object validation: Itly::Options::Validation::DISABLED
 
       let!(:plugin_a) { itly.plugins_instances[0] }
       let!(:plugin_b) { itly.plugins_instances[1] }
@@ -380,7 +380,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
 
       context 'options.validation = DISABLED' do
         before do
-          itly.options.validation = Itly::ValidationOptions::DISABLED
+          itly.options.validation = Itly::Options::Validation::DISABLED
         end
 
         include_examples 'validate and send to plugins', with_context: true,
@@ -395,7 +395,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
 
       context 'options.validation = TRACK_INVALID' do
         before do
-          itly.options.validation = Itly::ValidationOptions::TRACK_INVALID
+          itly.options.validation = Itly::Options::Validation::TRACK_INVALID
         end
 
         include_examples 'validate and send to plugins', with_context: true, is_valid: false
@@ -409,7 +409,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
 
       context 'options.validation = ERROR_ON_INVALID' do
         before do
-          itly.options.validation = Itly::ValidationOptions::ERROR_ON_INVALID
+          itly.options.validation = Itly::Options::Validation::ERROR_ON_INVALID
         end
 
         include_examples 'validate and send to plugins', with_context: true,
@@ -429,7 +429,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
 
       context 'options.validation = DISABLED' do
         before do
-          itly.options.validation = Itly::ValidationOptions::DISABLED
+          itly.options.validation = Itly::Options::Validation::DISABLED
         end
 
         include_examples 'validate and send to plugins', with_context: true,
@@ -444,7 +444,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
 
       context 'options.validation = TRACK_INVALID' do
         before do
-          itly.options.validation = Itly::ValidationOptions::TRACK_INVALID
+          itly.options.validation = Itly::Options::Validation::TRACK_INVALID
         end
 
         include_examples 'validate and send to plugins', with_context: true, is_valid: false
@@ -458,7 +458,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
 
       context 'options.validation = ERROR_ON_INVALID' do
         before do
-          itly.options.validation = Itly::ValidationOptions::ERROR_ON_INVALID
+          itly.options.validation = Itly::Options::Validation::ERROR_ON_INVALID
         end
 
         include_examples 'validate and send to plugins', with_context: true,
@@ -480,7 +480,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
 
       context 'options.validation = DISABLED' do
         before do
-          itly.options.validation = Itly::ValidationOptions::DISABLED
+          itly.options.validation = Itly::Options::Validation::DISABLED
         end
 
         include_examples 'validate and send to plugins', with_context: true,
@@ -495,7 +495,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
 
       context 'options.validation = TRACK_INVALID' do
         before do
-          itly.options.validation = Itly::ValidationOptions::TRACK_INVALID
+          itly.options.validation = Itly::Options::Validation::TRACK_INVALID
         end
 
         include_examples 'validate and send to plugins', with_context: true, is_valid: false
@@ -509,7 +509,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
 
       context 'options.validation = ERROR_ON_INVALID' do
         before do
-          itly.options.validation = Itly::ValidationOptions::ERROR_ON_INVALID
+          itly.options.validation = Itly::Options::Validation::ERROR_ON_INVALID
         end
 
         include_examples 'validate and send to plugins', with_context: true,
@@ -782,7 +782,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
     let!(:event) { Itly::Event.new name: 'Test event' }
 
     before do
-      itly.options.validation = Itly::ValidationOptions::ERROR_ON_INVALID
+      itly.options.validation = Itly::Options::Validation::ERROR_ON_INVALID
     end
 
     it 'is valid' do
@@ -791,7 +791,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
 
     context 'validation is DISABLED' do
       before do
-        itly.options.validation = Itly::ValidationOptions::DISABLED
+        itly.options.validation = Itly::Options::Validation::DISABLED
       end
 
       it do
@@ -801,7 +801,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
 
     context 'validation is TRACK_INVALID' do
       before do
-        itly.options.validation = Itly::ValidationOptions::TRACK_INVALID
+        itly.options.validation = Itly::Options::Validation::TRACK_INVALID
       end
 
       it do

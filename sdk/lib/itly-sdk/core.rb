@@ -130,7 +130,7 @@ class Itly
     # Call the action on all plugins
     event.properties.merge! @options.context.properties if @options.context
 
-    if is_valid || @options.validation == Itly::ValidationOptions::TRACK_INVALID
+    if is_valid || @options.validation == Itly::Options::Validation::TRACK_INVALID
       run_on_plugins lambda { |plugin|
         action.call(plugin, event)
       }
@@ -168,7 +168,7 @@ class Itly
   end
 
   def raise_validation_errors(is_valid, validations, event)
-    return unless !is_valid && @options.validation == Itly::ValidationOptions::ERROR_ON_INVALID
+    return unless !is_valid && @options.validation == Itly::Options::Validation::ERROR_ON_INVALID
 
     message = begin
       validations.reject(&:valid).first.message
