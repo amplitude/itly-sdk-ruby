@@ -2,6 +2,6 @@
 
 describe Itly::AmplitudePlugin do
   it 'register itself' do
-    expect(Itly.plugins).to eq([Itly::AmplitudePlugin])
+    expect(Itly.registered_plugins).to eq([Itly::AmplitudePlugin])
   end
 end

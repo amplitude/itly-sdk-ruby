@@ -5,17 +5,17 @@ describe Itly::Plugin do
   describe 'self.register_plugin' do
     before do
       Object.const_set 'TestPluginRegister', Class.new
-      expect(Itly.plugins).to eq([])
+      expect(Itly.registered_plugins).to eq([])
     end
 
     after do
-      Itly.plugins.clear
+      Itly.registered_plugins.clear
       Object.send :remove_const, :TestPluginRegister
     end
 
     it 'add plugin class `plugins` module attribute' do
       Itly::Plugin.register_plugin TestPluginRegister
-      expect(Itly.plugins).to eq([TestPluginRegister])
+      expect(Itly.registered_plugins).to eq([TestPluginRegister])
     end
   end
 

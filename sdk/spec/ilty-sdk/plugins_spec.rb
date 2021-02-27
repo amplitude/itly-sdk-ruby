@@ -4,15 +4,15 @@
 describe Itly::Plugins do
   describe 'class attributes' do
     it 'default values' do
-      expect(Itly.plugins).to eq([])
+      expect(Itly.registered_plugins).to eq([])
     end
 
     it 'can read' do
-      expect(Itly.respond_to?(:plugins)).to be(true)
+      expect(Itly.respond_to?(:registered_plugins)).to be(true)
     end
 
     it 'cannot write' do
-      expect(Itly.respond_to?(:plugins=)).to be(false)
+      expect(Itly.respond_to?(:registered_plugins=)).to be(false)
     end
   end
 

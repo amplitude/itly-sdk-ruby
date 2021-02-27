@@ -3,10 +3,10 @@
 # Itly main class
 class Itly
   # List of registered plugins classes
-  @plugins = []
+  @registered_plugins = []
 
   class << self
-    attr_reader :plugins
+    attr_reader :registered_plugins
   end
 
   # Manage list of Plugins
@@ -18,7 +18,7 @@ class Itly
 
     # Initialize all registered plugins
     def instantiate_plugins
-      Itly.plugins.each do |plugin|
+      Itly.registered_plugins.each do |plugin|
         plugins_instances << plugin.new
       end
     end

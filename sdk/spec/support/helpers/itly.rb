@@ -3,7 +3,7 @@
 RSpec.configure do |config|
   # Clean Itly class instance variables after a test
   config.after(:each) do |example|
-    Itly.plugins.clear if example.metadata[:unload_itly]
+    Itly.registered_plugins.clear if example.metadata[:unload_itly]
   end
 end
 

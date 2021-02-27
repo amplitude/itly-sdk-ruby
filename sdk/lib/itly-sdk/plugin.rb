@@ -7,7 +7,7 @@ class Itly
     class << self
       # Called by plugins that need to register themselves with Iteratively
       def register_plugin(plugin)
-        Itly.plugins << plugin
+        Itly.registered_plugins << plugin
       end
     end
 
