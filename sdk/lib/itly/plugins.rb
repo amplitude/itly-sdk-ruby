@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
+require 'concurrent-ruby'
+
 # Itly main class
 class Itly
   # List of registered plugins classes
-  @registered_plugins = []
+  @registered_plugins = Concurrent::Array.new
 
   class << self
     attr_reader :registered_plugins

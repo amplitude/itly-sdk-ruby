@@ -2,10 +2,12 @@ PATH
   remote: .
   specs:
     itly-sdk (0.1.0)
+      concurrent-ruby (>= 1.1.8, < 1.2)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    concurrent-ruby (1.1.8)
     diff-lcs (1.4.4)
     rake (13.0.3)
     rspec (3.10.0)

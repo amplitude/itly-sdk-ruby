@@ -14,7 +14,7 @@ class Itly
       #
       def inherited(subclass)
         super
-        Itly.registered_plugins << subclass
+        Itly.registered_plugins.push subclass
       end
     end
 

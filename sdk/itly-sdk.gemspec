@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly-sdk/version'
+require_relative 'lib/itly/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'itly-sdk'
@@ -27,5 +27,6 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'concurrent-ruby', '>= 1.1.8', '< 1.2'
   spec.add_development_dependency 'rspec'
 end
