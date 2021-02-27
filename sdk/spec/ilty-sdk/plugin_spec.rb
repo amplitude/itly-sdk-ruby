@@ -41,7 +41,7 @@ describe Itly::Plugin do
 
     describe 'with values' do
       before do
-        options.destinations.test_plugin_options = { option_a: true, option_b: 'ABC' }
+        options.plugins.test_plugin_options = { option_a: true, option_b: 'ABC' }
       end
 
       it do

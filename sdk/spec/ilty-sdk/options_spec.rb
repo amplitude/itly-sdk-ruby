@@ -18,21 +18,21 @@ describe Itly::Options do
     expect(options.context.properties).to eq(a: 1, b: 'two')
   end
 
-  describe '#destinations=' do
+  describe '#plugins=' do
     it 'set underlying values' do
-      options.destinations = { a: 1, b: 'two' }
+      options.plugins = { a: 1, b: 'two' }
 
-      expect(options.destinations).to be_a_kind_of(Itly::OptionsWrapper)
-      expect(options.destinations.a).to eq(1)
-      expect(options.destinations.b).to eq('two')
+      expect(options.plugins).to be_a_kind_of(Itly::OptionsWrapper)
+      expect(options.plugins.a).to eq(1)
+      expect(options.plugins.b).to eq('two')
     end
 
     it 'clean befor allowating' do
-      options.destinations = { a: 1 }
-      options.destinations = { b: 2 }
+      options.plugins = { a: 1 }
+      options.plugins = { b: 2 }
 
-      expect(options.destinations.b).to eq(2)
-      expect { options.destinations.a }.to raise_error(NoMethodError)
+      expect(options.plugins.b).to eq(2)
+      expect { options.plugins.a }.to raise_error(NoMethodError)
     end
   end
 

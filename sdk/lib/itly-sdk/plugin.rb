@@ -46,7 +46,7 @@ class Itly
 
     def get_plugin_options(options)
       name = self.class.name.gsub(/([A-Z]+)/, '_\1').gsub(/^_/, '')
-      options.destinations.send name.downcase.to_sym
+      options.plugins.send name.downcase.to_sym
     rescue NoMethodError
       {}
     end

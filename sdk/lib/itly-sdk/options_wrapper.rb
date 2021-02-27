@@ -2,7 +2,7 @@
 
 # Itly main class
 class Itly
-  # OptionsWrapper class for options.destinations keys
+  # OptionsWrapper class for options.plugins keys
   class OptionsWrapper
     def initialize
       @values = {}

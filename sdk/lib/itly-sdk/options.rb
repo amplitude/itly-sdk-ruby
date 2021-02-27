@@ -9,7 +9,7 @@ class Itly
   # Options class for Itly object initialisation
   class Options
     attr_accessor :disabled, :environment, :logger
-    attr_reader :context, :destinations
+    attr_reader :context, :plugins
     attr_writer :validation
 
     def initialize
@@ -17,7 +17,7 @@ class Itly
       @disabled = false
       @environment = Itly::EnvironmentOptions::DEVELOPMENT
       @validation = Itly::ValidationOptions::DEFAULT
-      @destinations = Itly::OptionsWrapper.new
+      @plugins = Itly::OptionsWrapper.new
       @logger = ::Logger.new $stdout, level: Logger::Severity::ERROR
     end
 
@@ -25,10 +25,10 @@ class Itly
       @context = Itly::Event.new name: 'context', properties: properties
     end
 
-    def destinations=(properties)
-      @destinations.clear!
+    def plugins=(properties)
+      @plugins.clear!
       properties.each do |key, value|
-        @destinations.send :"#{key}=", value
+        @plugins.send :"#{key}=", value
       end
     end
 
