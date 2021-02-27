@@ -76,14 +76,6 @@ class Itly
       @context = Itly::Event.new name: 'context', properties: properties
     end
 
-    # TODO: rework on this
-    def plugins=(properties)
-      @plugins.clear!
-      properties.each do |key, value|
-        @plugins.send :"#{key}=", value
-      end
-    end
-
     ##
     # Return the current validation behavior
     #

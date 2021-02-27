@@ -44,7 +44,7 @@ describe 'Itly' do
             o.disabled = :test_disabled
             o.environment = Itly::Options::Environment::PRODUCTION
             o.validation = Itly::Options::Validation::DISABLED
-            o.plugins = { plugin_config: 'data' }
+            o.plugins.plugin_config = 'data'
             o.logger = fake_logger
           end
         end
