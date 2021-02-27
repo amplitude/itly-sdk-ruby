@@ -774,7 +774,8 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       let(:response2) { Itly::ValidationResponse.new valid: false, plugin_id: 'pg_2', message: 'Two' }
 
       before do
-        expect(itly.options.logger).to receive(:error).once.with('Validation error for "Test event" in pg_2. Message: Two')
+        expect(itly.options.logger).to receive(:error).once
+          .with('Validation error for "Test event" in pg_2. Message: Two')
         expect(itly.options.logger).not_to receive(:error)
       end
 
@@ -787,8 +788,10 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       let(:response2) { Itly::ValidationResponse.new valid: false, plugin_id: 'pg_2', message: 'Two' }
 
       before do
-        expect(itly.options.logger).to receive(:error).once.with('Validation error for "Test event" in pg_1. Message: One')
-        expect(itly.options.logger).to receive(:error).once.with('Validation error for "Test event" in pg_2. Message: Two')
+        expect(itly.options.logger).to receive(:error).once
+          .with('Validation error for "Test event" in pg_1. Message: One')
+        expect(itly.options.logger).to receive(:error).once
+          .with('Validation error for "Test event" in pg_2. Message: Two')
         expect(itly.options.logger).not_to receive(:error)
       end
 

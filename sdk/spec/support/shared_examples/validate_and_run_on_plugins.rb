@@ -66,14 +66,15 @@ shared_examples 'validate and run on plugins' do |
           .with("validate(event: #<Itly::Event: name: context, properties: #{context_properties}>)")
       end
       expect(itly.options.logger).to receive(:info).once
-        .with("validate(event: #<Itly::Event: name: #{expected_validation_name}, properties: #{expected_event_properties}>)")
+        .with("validate(event: #<Itly::Event: name: #{expected_validation_name}, "\
+              "properties: #{expected_event_properties}>)")
     end
     expect(itly.options.logger).to receive(:info).once.with(expected_log_info) if expected_log_info
     expect(itly.options.logger).not_to receive(:info)
 
     if generate_validation_error && expect_validation
       expect(itly.options.logger).to receive(:error)
-        .with(%Q{Validation error for "#{expected_validation_name}" in plugin123. Message: Response2 message})
+        .with(%(Validation error for "#{expected_validation_name}" in plugin123. Message: Response2 message))
     end
     expect(itly.options.logger).not_to receive(:error)
 

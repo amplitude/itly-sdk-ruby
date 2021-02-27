@@ -256,7 +256,7 @@ class Itly
     validations = context_validations + event_validations
 
     # Call the action on all plugins
-    event.properties.merge! @options.context.properties if @options.context
+    event.properties.merge! @options.context.properties if @options.context && include_context
 
     if is_valid || @options.validation == Itly::Options::Validation::TRACK_INVALID
       run_on_plugins lambda { |plugin|
@@ -284,14 +284,15 @@ class Itly
     event_validations = validate(event: event) || []
 
     # Check if all validation succedded
-    is_valid = context_validations.all?(&:valid) && event_validations.all?(&:valid)
+    is_valid = (context_validations + event_validations).all?(&:valid)
 
     [context_validations, event_validations, is_valid]
   end
 
   def log_validation_errors(validations, event)
     validations.reject(&:valid).each do |response|
-      @options.logger.error %Q{Validation error for "#{event.name}" in #{response.plugin_id}. Message: #{response.message}}
+      @options.logger.error %(Validation error for "#{event.name}" )\
+        "in #{response.plugin_id}. Message: #{response.message}"
     end
   end
 

@@ -37,7 +37,7 @@ class Itly
     # @return [String] the object description
     #
     def to_s
-      "<name: #{name}, properties: #{properties}>"
+      "#<#{self.class.name}: name: #{name}, properties: #{properties}>"
     end
 
     ##

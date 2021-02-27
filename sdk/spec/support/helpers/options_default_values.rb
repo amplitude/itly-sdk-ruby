@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module RspecOptionsDefaultValues
-  # rubocop:disable Metrics/AbcSize
   def expect_options_default_values(options)
     expect(options.context).to be(nil)
     expect(options.disabled).to be(false)
@@ -11,5 +10,4 @@ module RspecOptionsDefaultValues
     expect(options.plugins).to be_a_kind_of(Itly::OptionsWrapper)
     expect(options.logger).to be_a_kind_of(::Logger)
   end
-  # rubocop:enable Metrics/AbcSize
 end
