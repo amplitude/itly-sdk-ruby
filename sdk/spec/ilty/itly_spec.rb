@@ -770,11 +770,11 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
     end
 
     context 'one error' do
-      let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: '1', message: 'One' }
-      let(:response2) { Itly::ValidationResponse.new valid: false, plugin_id: '2', message: 'Two' }
+      let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: 'pg_1', message: 'One' }
+      let(:response2) { Itly::ValidationResponse.new valid: false, plugin_id: 'pg_2', message: 'Two' }
 
       before do
-        expect(itly.options.logger).to receive(:error).once.with('Validation error for Test event: Two')
+        expect(itly.options.logger).to receive(:error).once.with('Validation error for "Test event" in pg_2. Message: Two')
         expect(itly.options.logger).not_to receive(:error)
       end
 
@@ -783,12 +783,12 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       end
     end
     context 'multiple errors' do
-      let(:response1) { Itly::ValidationResponse.new valid: false, plugin_id: '1', message: 'One' }
-      let(:response2) { Itly::ValidationResponse.new valid: false, plugin_id: '2', message: 'Two' }
+      let(:response1) { Itly::ValidationResponse.new valid: false, plugin_id: 'pg_1', message: 'One' }
+      let(:response2) { Itly::ValidationResponse.new valid: false, plugin_id: 'pg_2', message: 'Two' }
 
       before do
-        expect(itly.options.logger).to receive(:error).once.with('Validation error for Test event: One')
-        expect(itly.options.logger).to receive(:error).once.with('Validation error for Test event: Two')
+        expect(itly.options.logger).to receive(:error).once.with('Validation error for "Test event" in pg_1. Message: One')
+        expect(itly.options.logger).to receive(:error).once.with('Validation error for "Test event" in pg_2. Message: Two')
         expect(itly.options.logger).not_to receive(:error)
       end
 
@@ -836,8 +836,8 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
     end
 
     context 'no failing validation message' do
-      let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: '1', message: 'One' }
-      let(:response2) { Itly::ValidationResponse.new valid: true, plugin_id: '2', message: 'Two' }
+      let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: 'pg_1', message: 'One' }
+      let(:response2) { Itly::ValidationResponse.new valid: true, plugin_id: 'pg_2', message: 'Two' }
 
       it do
         expect { itly.send :raise_validation_errors, false, [response1, response2], event }
@@ -846,8 +846,8 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
     end
 
     context 'with failing validation message' do
-      let(:response1) { Itly::ValidationResponse.new valid: false, plugin_id: '1', message: 'One' }
-      let(:response2) { Itly::ValidationResponse.new valid: false, plugin_id: '2', message: 'Two' }
+      let(:response1) { Itly::ValidationResponse.new valid: false, plugin_id: 'pg_1', message: 'One' }
+      let(:response2) { Itly::ValidationResponse.new valid: false, plugin_id: 'pg_2', message: 'Two' }
 
       it do
         expect { itly.send :raise_validation_errors, false, [response1, response2], event }

@@ -44,11 +44,11 @@ shared_examples 'validate and run on plugins' do |
     let(:expected_merged_event) { expected_event }
   end
 
-  let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: 'ABC', message: 'Response1 message' }
+  let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: 'plugin123', message: 'Response1 message' }
   let(:response2) do
-    Itly::ValidationResponse.new valid: !generate_validation_error, plugin_id: 'ABC', message: 'Response2 message'
+    Itly::ValidationResponse.new valid: !generate_validation_error, plugin_id: 'plugin123', message: 'Response2 message'
   end
-  let(:response3) { Itly::ValidationResponse.new valid: true, plugin_id: 'ABC', message: 'Response3 message' }
+  let(:response3) { Itly::ValidationResponse.new valid: true, plugin_id: 'plugin123', message: 'Response3 message' }
   let(:all_responses) do
     if !expect_validation
       []
@@ -63,17 +63,17 @@ shared_examples 'validate and run on plugins' do |
     if expect_validation
       if context_properties
         expect(itly.options.logger).to receive(:info).once
-          .with("validate(event: <name: context, properties: #{context_properties}>)")
+          .with("validate(event: #<Itly::Event: name: context, properties: #{context_properties}>)")
       end
       expect(itly.options.logger).to receive(:info).once
-        .with("validate(event: <name: #{expected_validation_name}, properties: #{expected_event_properties}>)")
+        .with("validate(event: #<Itly::Event: name: #{expected_validation_name}, properties: #{expected_event_properties}>)")
     end
     expect(itly.options.logger).to receive(:info).once.with(expected_log_info) if expected_log_info
     expect(itly.options.logger).not_to receive(:info)
 
     if generate_validation_error && expect_validation
       expect(itly.options.logger).to receive(:error)
-        .with("Validation error for #{expected_validation_name}: Response2 message")
+        .with(%Q{Validation error for "#{expected_validation_name}" in plugin123. Message: Response2 message})
     end
     expect(itly.options.logger).not_to receive(:error)
 

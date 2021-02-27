@@ -2,7 +2,7 @@
 
 RSpec.configure do |config|
   # Clean Itly class instance variables after each test
-  config.after(:each) do |example|
+  config.after(:each) do
     Itly.registered_plugins.clear
   end
 end

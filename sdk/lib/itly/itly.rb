@@ -291,7 +291,7 @@ class Itly
 
   def log_validation_errors(validations, event)
     validations.reject(&:valid).each do |response|
-      @options.logger.error "Validation error for #{event.name}: #{response.message}"
+      @options.logger.error %Q{Validation error for "#{event.name}" in #{response.plugin_id}. Message: #{response.message}}
     end
   end
 

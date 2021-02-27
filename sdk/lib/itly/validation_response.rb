@@ -19,5 +19,14 @@ class Itly
       @plugin_id = plugin_id
       @message = message
     end
+
+    ##
+    # Describe the object
+    #
+    # @return [String] the object description
+    #
+    def to_s
+      "#<#{self.class.name}: valid: #{valid}, plugin_id: #{plugin_id}, message: #{message}>"
+    end
   end
 end
