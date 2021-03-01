@@ -103,13 +103,21 @@ class Itly
     # @return [Hash] the plugin specific options
     #
     def get_plugin_options(options)
-      # Get the underscored version of the plugin's class name
-      name = self.class.name.gsub(/([A-Z]+)/, '_\1').gsub(/^_/, '')
-      # Retrieve the options
-      options.plugins.send name.downcase.to_sym
+      options.plugins.send plugin_id.to_sym
     rescue NoMethodError
-      # If the underscored class name wans not found in the options, return an empty hash
+      # If the underscored class name was not found in the options, return an empty hash
       {}
+    end
+
+    ##
+    # Get the plugin ID, which is the underscored class name. Use only the child class in case of nested classes
+    #
+    # @return [String] plugin id
+    #
+    def plugin_id
+      self.class.name
+        .split('::').last
+        .gsub(/([A-Z]+)/, '_\1').gsub(/^_/, '').downcase
     end
   end
 end
