@@ -88,18 +88,18 @@ describe Itly::AmplitudePlugin do
     let(:itly) { Itly.new }
     let(:event) { Itly::Event.new name: 'custom_event', properties: { view: 'video' } }
 
-    before do
-      itly.load { |o| o.logger = ::Logger.new logs }
-
-      expect(AmplitudeAPI).to receive(:send_event)
-        .with('custom_event', 'user_123', nil, event_properties: { view: 'video' })
-        .and_return(response)
-
-      itly.track user_id: 'user_123', event: event
-    end
-
     context 'success' do
       let(:response) { double 'response', status: 200 }
+
+      before do
+        itly.load { |o| o.logger = ::Logger.new logs }
+
+        expect(AmplitudeAPI).to receive(:send_event)
+          .with('custom_event', 'user_123', nil, event_properties: { view: 'video' })
+          .and_return(response)
+
+        itly.track user_id: 'user_123', event: event
+      end
 
       it do
         expect_log_lines_to_equal [
@@ -112,8 +112,46 @@ describe Itly::AmplitudePlugin do
       end
     end
 
+    context 'with context' do
+      let(:response) { double 'response', status: 200 }
+
+      before do
+        itly.load do |options|
+          options.logger = ::Logger.new logs
+
+        expect(AmplitudeAPI).to receive(:send_event)
+          .with('custom_event', 'user_123', nil, event_properties: { app_version: '1.2.3', view: 'video' })
+          .and_return(response)
+
+          options.context = {app_version: '1.2.3'}
+        end
+        itly.track user_id: 'user_123', event: event
+      end
+
+      it do
+        expect_log_lines_to_equal [
+          ['info', 'load()'],
+          ['info', 'amplitude_plugin: load()'],
+          ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+          ['info', 'validate(event: #<Itly::Event: name: context, properties: {:app_version=>"1.2.3"}>)'],
+          ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
+          ['info', 'amplitude_plugin: track(user_id: user_123, event: custom_event, properties: {:view=>"video", :app_version=>"1.2.3"})']
+        ]
+      end
+    end
+
     context 'failure' do
       let(:response) { double 'response', status: 500, body: 'wrong params' }
+
+      before do
+        itly.load { |o| o.logger = ::Logger.new logs }
+
+        expect(AmplitudeAPI).to receive(:send_event)
+          .with('custom_event', 'user_123', nil, event_properties: { view: 'video' })
+          .and_return(response)
+
+        itly.track user_id: 'user_123', event: event
+      end
 
       it do
         expect_log_lines_to_equal [
