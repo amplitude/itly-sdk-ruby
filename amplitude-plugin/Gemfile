@@ -7,5 +7,10 @@ gemspec
 
 gem 'rake', '~> 13.0'
 
-# TODO: before publication to RubyGems, remove this:
-gem 'itly-sdk', path: '..'
+  # TODO: before publication to RubyGems, switch to version 1
+
+if ENV['LOCAL_ITLY_GEM']
+  gem 'itly-sdk', '~> 0.1', path: '../sdk'
+else
+  gem 'itly-sdk', '~> 0.1'
+end
