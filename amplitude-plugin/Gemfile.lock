@@ -2,16 +2,18 @@ PATH
   remote: ..
   specs:
     itly-sdk (0.1.0)
+      concurrent-ruby (~> 1.1.8)
 
 PATH
   remote: .
   specs:
-    itly-plugin-amplitude (0.1.0)
-      itly-sdk (~> 0.1, < 1)
+    itly-amplitude-plugin (0.1.0)
+      itly-sdk (~> 0.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    concurrent-ruby (1.1.8)
     diff-lcs (1.4.4)
     rake (13.0.3)
     rspec (3.10.0)
@@ -32,7 +34,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  itly-plugin-amplitude!
+  itly-amplitude-plugin!
   itly-sdk!
   rake (~> 13.0)
   rspec

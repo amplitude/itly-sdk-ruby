@@ -7,5 +7,5 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'itly-sdk'
 
-require_relative 'plugin-amplitude/version'
-require_relative 'plugin-amplitude/amplitude_plugin'
+require_relative 'amplitude-plugin/amplitude_plugin'
+require_relative 'amplitude-plugin/version'
