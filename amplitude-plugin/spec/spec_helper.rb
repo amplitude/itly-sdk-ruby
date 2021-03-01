@@ -2,7 +2,7 @@
 
 # Load files
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
-require 'itly/amplitude-plugin'
+require 'itly/amplitude_plugin'
 
 # Auto-requiring all files in the support directories
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }

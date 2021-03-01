@@ -11,3 +11,10 @@ describe Itly::ValidationError do
     expect(Itly::ValidationError.superclass).to eq(StandardError)
   end
 end
+
+
+describe Itly::RemoteError do
+  it do
+    expect(Itly::RemoteError.superclass).to eq(StandardError)
+  end
+end

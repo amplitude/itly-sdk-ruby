@@ -5,5 +5,5 @@ if ENV['LOCAL_ITLY_GEM']
   $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 end
 
-require_relative 'amplitude-plugin/amplitude_plugin'
-require_relative 'amplitude-plugin/version'
+require_relative 'amplitude_plugin/amplitude_plugin'
+require_relative 'amplitude_plugin/version'

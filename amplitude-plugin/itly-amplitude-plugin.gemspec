@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly/amplitude-plugin'
+require_relative 'lib/itly/amplitude_plugin'
 
 Gem::Specification.new do |spec|
   spec.name          = 'itly-amplitude-plugin'
@@ -27,5 +27,6 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'amplitude-api', '~> 0.3'
   spec.add_development_dependency 'rspec'
 end
