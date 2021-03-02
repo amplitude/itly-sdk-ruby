@@ -12,9 +12,9 @@ class Itly
     attr_accessor :valid, :plugin_id, :message
 
     ##
-    # Create a nnew ValidationResponse object
+    # Create a new ValidationResponse object
     #
-    def initialize(valid:, plugin_id:, message:)
+    def initialize(valid:, plugin_id:, message: '')
       @valid = valid
       @plugin_id = plugin_id
       @message = message

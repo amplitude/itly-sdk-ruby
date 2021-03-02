@@ -18,12 +18,24 @@ describe Itly::ValidationResponse do
   end
 
   describe '#initialize' do
-    let(:object) { Itly::ValidationResponse.new valid: true, plugin_id: 'ABC', message: 'text' }
+    describe 'default' do
+      let(:object) { Itly::ValidationResponse.new valid: true, plugin_id: 'ABC', message: 'text' }
 
-    it do
-      expect(object.valid).to be(true)
-      expect(object.plugin_id).to eq('ABC')
-      expect(object.message).to eq('text')
+      it do
+        expect(object.valid).to be(true)
+        expect(object.plugin_id).to eq('ABC')
+        expect(object.message).to eq('text')
+      end
+    end
+
+    describe 'without message' do
+      let(:object) { Itly::ValidationResponse.new valid: true, plugin_id: 'ABC' }
+
+      it do
+        expect(object.valid).to be(true)
+        expect(object.plugin_id).to eq('ABC')
+        expect(object.message).to eq('')
+      end
     end
   end
 end

@@ -59,7 +59,7 @@ describe 'integration' do
           end
         when 'user_signed_in'
           if event.properties.key? :email
-            Itly::ValidationResponse.new valid: true, plugin_id: 'sign_validation_id', message: 'Green light'
+            Itly::ValidationResponse.new valid: true, plugin_id: 'sign_validation_id'
           else
             Itly::ValidationResponse.new valid: false, plugin_id: 'sign_validation_id', message: 'Missing email'
           end
@@ -310,14 +310,14 @@ describe 'integration' do
               ['debug',
                '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:email=>"user@mail.com", :version=>"1.2"}>]'],
               ['debug', '(spec) post_track [userID, #<Itly::Event: name: user_signed_in, properties: {:email=>"user@mail.com", :version=>"1.2"}>, '\
-                '[#<Itly::ValidationResponse: valid: true, plugin_id: sign_validation_id, message: Green light>]]']
+                '[#<Itly::ValidationResponse: valid: true, plugin_id: sign_validation_id, message: >]]']
             ]
           else
             expected += [
               ['debug',
                '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:email=>"user@mail.com"}>]'],
               ['debug', '(spec) post_track [userID, #<Itly::Event: name: user_signed_in, properties: {:email=>"user@mail.com"}>, '\
-                '[#<Itly::ValidationResponse: valid: true, plugin_id: sign_validation_id, message: Green light>]]']
+                '[#<Itly::ValidationResponse: valid: true, plugin_id: sign_validation_id, message: >]]']
             ]
           end
 
