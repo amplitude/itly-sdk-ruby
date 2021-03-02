@@ -5,5 +5,6 @@ if ENV['LOCAL_ITLY_GEM']
   $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 end
 
+require_relative 'mixpanel_plugin/error_handler'
 require_relative 'mixpanel_plugin/mixpanel_plugin'
 require_relative 'mixpanel_plugin/version'
