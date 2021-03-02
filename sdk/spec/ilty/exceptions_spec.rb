@@ -12,7 +12,6 @@ describe Itly::ValidationError do
   end
 end
 
-
 describe Itly::RemoteError do
   it do
     expect(Itly::RemoteError.superclass).to eq(StandardError)

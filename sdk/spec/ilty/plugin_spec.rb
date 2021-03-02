@@ -74,7 +74,7 @@ describe Itly::Plugin do
       end
 
       it do
-        expect(TestPluginId.new.send :plugin_id).to eq('test_plugin_id')
+        expect(TestPluginId.new.send(:plugin_id)).to eq('test_plugin_id')
       end
     end
 
@@ -90,7 +90,7 @@ describe Itly::Plugin do
       end
 
       it do
-        expect(TestPluginId::NestedClass.new.send :plugin_id).to eq('nested_class')
+        expect(TestPluginId::NestedClass.new.send(:plugin_id)).to eq('nested_class')
       end
     end
   end
