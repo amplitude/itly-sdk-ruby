@@ -69,12 +69,12 @@ describe Itly do
     end
   end
 
-  describe '#disabled?' do
+  describe '#enabled?' do
     context 'default' do
       create_itly_object
 
       it do
-        expect(itly.send(:disabled?)).to be(false)
+        expect(itly.send(:enabled?)).to be(true)
       end
     end
 
@@ -82,7 +82,7 @@ describe Itly do
       create_itly_object disabled: false
 
       it do
-        expect(itly.send(:disabled?)).to be(false)
+        expect(itly.send(:enabled?)).to be(true)
       end
     end
 
@@ -90,7 +90,7 @@ describe Itly do
       create_itly_object disabled: true
 
       it do
-        expect(itly.send(:disabled?)).to be(true)
+        expect(itly.send(:enabled?)).to be(false)
       end
     end
   end

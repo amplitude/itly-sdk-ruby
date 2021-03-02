@@ -39,7 +39,7 @@ class Itly
     yield @options if block_given?
 
     # Log
-    logger.info 'Itly is disabled!' if disabled?
+    logger.info 'Itly is disabled!' unless enabled?
     logger.info 'load()'
 
     # Initialize plugins, passing the options to their #load methods
@@ -70,8 +70,8 @@ class Itly
   # @param [Hash] properties: the user's traits to pass to your application
   #
   def identify(user_id:, properties:)
-    # Run only if the object is not disabled
-    return if disabled?
+    # Run only if the object is enabled and was initialized
+    return unless enabled? && was_initialized?
 
     # Log
     logger.info "identify(user_id: #{user_id}, properties: #{properties})"
@@ -107,8 +107,8 @@ class Itly
   # @param [Hash] properties: The list of properties to pass to your application
   #
   def group(user_id:, group_id:, properties:)
-    # Run only if the object is not disabled
-    return if disabled?
+    # Run only if the object is enabled and was initialized
+    return unless enabled? && was_initialized?
 
     # Log
     logger.info "group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties})"
@@ -149,8 +149,8 @@ class Itly
   # @param [Event] event: the Event object to pass to your application
   #
   def track(user_id:, event:)
-    # Run only if the object is not disabled
-    return if disabled?
+    # Run only if the object is enabled and was initialized
+    return unless enabled? && was_initialized?
 
     # Log
     logger.info "track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
@@ -176,8 +176,8 @@ class Itly
   # @param [String] previous_id: The ID the user has been identified by so far.
   #
   def alias(user_id:, previous_id:)
-    # Run only if the object is not disabled
-    return if disabled?
+    # Run only if the object is enabled and was initialized
+    return unless enabled? && was_initialized?
 
     # Log
     logger.info "alias(user_id: #{user_id}, previous_id: #{previous_id})"
@@ -197,8 +197,8 @@ class Itly
   # Call +flush+ on all plugins.
   #
   def flush
-    # Run only if the object is not disabled
-    return if disabled?
+    # Run only if the object is enabled and was initialized
+    return unless enabled? && was_initialized?
 
     # Log
     logger.info 'flush()'
@@ -215,8 +215,8 @@ class Itly
   # Call +reset+ on all plugins.
   #
   def reset
-    # Run only if the object is not disabled
-    return if disabled?
+    # Run only if the object is enabled and was initialized
+    return unless enabled? && was_initialized?
 
     # Log
     logger.info 'reset()'
@@ -249,6 +249,10 @@ class Itly
   end
 
   private
+
+  def was_initialized?
+    @is_initialized ? true : raise(InitializationError, 'Itly is not initialized. Call #load { |options| ... }')
+  end
 
   def validate_and_send_to_plugins(action:, post_action:, event:, include_context: false)
     # Perform validation on the context and the event

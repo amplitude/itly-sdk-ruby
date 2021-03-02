@@ -97,8 +97,8 @@ class Itly
   # Shortcut methods
   private
 
-  def disabled?
-    !!options.disabled
+  def enabled?
+    !options.disabled
   end
 
   def validation_disabled?
