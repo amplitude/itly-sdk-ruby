@@ -99,7 +99,7 @@ class Itly
     # @return [Hash] the plugin-specific options
     #
     def get_plugin_options(options)
-      options.plugins.send plugin_id.to_sym
+      options.plugins.send plugin_id.sub(/^plugin_/, '').to_sym
     rescue NoMethodError
       # If the underscored class name was not found in the options, return an empty hash
       {}
@@ -113,7 +113,7 @@ class Itly
     def plugin_id
       self.class.name
         .split('::').last
-        .gsub(/([A-Z]+)/, '_\1').gsub(/^_/, '').downcase
+        .gsub(/([A-Z]+)/, '_\1').sub(/^_/, '').downcase
     end
   end
 end

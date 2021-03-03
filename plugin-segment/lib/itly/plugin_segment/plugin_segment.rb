@@ -16,11 +16,11 @@ class Itly
     # Initialize Segment::Tracker client
     #
     # Plugin specific options are set when calling Itly#load
-    # The option key for +PluginSegment+ is +plugin_segment+. For example:
+    # The option key for +PluginSegment+ is +segment+. For example:
     #
     #     itly = Itly.new
     #     itly.load do |options|
-    #       options.plugins.plugin_segment = {write_key: 'abc123'}
+    #       options.plugins.segment = {write_key: 'abc123'}
     #     end
     #
     # Accepted options are:

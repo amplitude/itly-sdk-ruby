@@ -16,11 +16,11 @@ class Itly
     # Initialize Mixpanel::Tracker client
     #
     # Plugin specific options are set when calling Itly#load
-    # The option key for +PluginMixpanel+ is +plugin_mixpanel+. For example:
+    # The option key for +PluginMixpanel+ is +mixpanel+. For example:
     #
     #     itly = Itly.new
     #     itly.load do |options|
-    #       options.plugins.plugin_mixpanel = {project_token: 'abc123'}
+    #       options.plugins.mixpanel = {project_token: 'abc123'}
     #     end
     #
     # Accepted options are:

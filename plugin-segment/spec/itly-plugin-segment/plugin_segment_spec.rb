@@ -25,7 +25,7 @@ describe Itly::PluginSegment do
 
     before do
       itly.load do |options|
-        options.plugins.plugin_segment = { write_key: 'key123' }
+        options.plugins.segment = { write_key: 'key123' }
         options.logger = fake_logger
       end
     end
@@ -45,7 +45,7 @@ describe Itly::PluginSegment do
 
     before do
       itly.load do |options|
-        options.plugins.plugin_segment = { write_key: 'key123' }
+        options.plugins.segment = { write_key: 'key123' }
         options.logger = ::Logger.new logs
       end
     end
@@ -103,7 +103,7 @@ describe Itly::PluginSegment do
 
     before do
       itly.load do |options|
-        options.plugins.plugin_segment = { write_key: 'key123' }
+        options.plugins.segment = { write_key: 'key123' }
         options.logger = ::Logger.new logs
       end
     end
@@ -162,7 +162,7 @@ describe Itly::PluginSegment do
 
     before do
       itly.load do |options|
-        options.plugins.plugin_segment = { write_key: 'key123' }
+        options.plugins.segment = { write_key: 'key123' }
         options.logger = ::Logger.new logs
       end
     end
@@ -218,7 +218,7 @@ describe Itly::PluginSegment do
 
     before do
       itly.load do |options|
-        options.plugins.plugin_segment = { write_key: 'key123' }
+        options.plugins.segment = { write_key: 'key123' }
         options.logger = ::Logger.new logs
       end
     end

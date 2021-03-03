@@ -25,7 +25,7 @@ describe Itly::PluginMixpanel do
 
     before do
       itly.load do |options|
-        options.plugins.plugin_mixpanel = { project_token: 'key123' }
+        options.plugins.mixpanel = { project_token: 'key123' }
         options.logger = fake_logger
       end
     end

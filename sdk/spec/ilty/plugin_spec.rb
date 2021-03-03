@@ -4,14 +4,14 @@ describe Itly::Plugin do
   describe '#get_plugin_options' do
     context 'root class' do
       before do
-        Object.const_set 'TestPluginOptions', Class.new(Itly::Plugin)
+        Object.const_set 'PluginTestOptions', Class.new(Itly::Plugin)
       end
 
       after do
-        Object.send :remove_const, 'TestPluginOptions'
+        Object.send :remove_const, 'PluginTestOptions'
       end
 
-      let(:plugin) { TestPluginOptions.new }
+      let(:plugin) { PluginTestOptions.new }
       let(:options) { Itly::Options.new }
 
       it 'empty' do
@@ -20,7 +20,7 @@ describe Itly::Plugin do
 
       describe 'with values' do
         before do
-          options.plugins.test_plugin_options = { option_a: true, option_b: 'ABC' }
+          options.plugins.test_options = { option_a: true, option_b: 'ABC' }
         end
 
         it do
@@ -32,15 +32,15 @@ describe Itly::Plugin do
     context 'nested class' do
       before do
         Object.const_set 'TestParentClass', Class.new
-        TestParentClass.const_set 'TestPluginOptions', Class.new(Itly::Plugin)
+        TestParentClass.const_set 'PluginTestOptions', Class.new(Itly::Plugin)
       end
 
       after do
-        TestParentClass.send :remove_const, 'TestPluginOptions'
+        TestParentClass.send :remove_const, 'PluginTestOptions'
         Object.send :remove_const, 'TestParentClass'
       end
 
-      let(:plugin) { TestParentClass::TestPluginOptions.new }
+      let(:plugin) { TestParentClass::PluginTestOptions.new }
       let(:options) { Itly::Options.new }
 
       it 'empty' do
@@ -49,7 +49,7 @@ describe Itly::Plugin do
 
       describe 'with values' do
         before do
-          options.plugins.test_plugin_options = { option_a: true, option_b: 'ABC' }
+          options.plugins.test_options = { option_a: true, option_b: 'ABC' }
         end
 
         it do

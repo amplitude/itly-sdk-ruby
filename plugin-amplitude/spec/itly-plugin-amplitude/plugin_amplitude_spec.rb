@@ -23,7 +23,7 @@ describe Itly::PluginAmplitude do
 
     before do
       itly.load do |options|
-        options.plugins.plugin_amplitude = { api_key: 'key123' }
+        options.plugins.amplitude = { api_key: 'key123' }
         options.logger = fake_logger
       end
     end

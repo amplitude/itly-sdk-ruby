@@ -16,11 +16,11 @@ class Itly
     # Initialize AmplitudeApi client
     #
     # Plugin specific options are set when calling Itly#load
-    # The option key for +PluginAmplitude+ is +plugin_amplitude+. For example:
+    # The option key for +PluginAmplitude+ is +amplitude+. For example:
     #
     #     itly = Itly.new
     #     itly.load do |options|
-    #       options.plugins.plugin_amplitude = {api_key: 'abc123'}
+    #       options.plugins.amplitude = {api_key: 'abc123'}
     #     end
     #
     # Accepted options are:
