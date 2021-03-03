@@ -41,7 +41,7 @@ class Itly
     ##
     # Identify a user
     #
-    # Raise an error if the response if not 200
+    # Raise an error if the response is not 200
     #
     # @param [String] user_id: the id of the user in your application
     # @param [Event] properties: the event containing user's traits to pass to your application
@@ -59,7 +59,7 @@ class Itly
     ##
     # Track an event
     #
-    # Raise an error if the response if not 200
+    # Raise an error if the response is not 200
     #
     # @param [String] user_id: the id of the user in your application
     # @param [Event] event: the Event object to pass to your application

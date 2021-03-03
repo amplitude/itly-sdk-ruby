@@ -7,12 +7,12 @@ class Itly
   attr_reader :options
 
   ##
-  # Options class for Itly object initialisation
+  # Options class for Itly object initialization
   #
   # Properties:
   #
   # +context+: A Hash with a set of properties to add to every event sent by the Itly SDK.
-  #   Only available if there is at least one source template associated with your your
+  #   Only available if there is at least one source template associated with your
   #   team's tracking plan.
   #
   # +disabled+: A True/False specifying whether the Itly SDK does any work.
@@ -42,7 +42,7 @@ class Itly
   # +validation+: Configures the Itly SDK's behavior when events or traits fail validation against
   #   your tracking plan. Value can be one of the following:
   #   - +Itly::Options::Validation::DISABLED+: Disables validation altogether.
-  #   - +Itly::Options::Validation::TRACK_INVALID+: Secifies whether events that failed validation
+  #   - +Itly::Options::Validation::TRACK_INVALID+: Specifies whether events that failed validation
   #     should still be tracked. Defaults to false in development, true in production.
   #   - +Itly::Options::Validation::ERROR_ON_INVALID+: Specifies whether the SDK should throw
   #      an exception when validation fails. Defaults to true in development, false in production.

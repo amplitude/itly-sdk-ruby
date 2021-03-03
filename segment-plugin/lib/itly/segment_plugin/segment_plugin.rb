@@ -65,7 +65,7 @@ class Itly
     end
 
     ##
-    # Asociate a user with their group
+    # Associate a user with their group
     #
     # Raise an error if the client fails
     #

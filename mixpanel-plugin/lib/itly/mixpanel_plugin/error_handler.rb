@@ -8,7 +8,7 @@ class Itly
     ##
     # Error handler class used by Mixpanel::Tracker
     #
-    # Raise an +Itly::RemoteError+ error in cas of error
+    # Raise an +Itly::RemoteError+ error in case of error
     #
     class ErrorHandler < Mixpanel::ErrorHandler
       def handle(error)

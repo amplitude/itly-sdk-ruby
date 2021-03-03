@@ -12,7 +12,7 @@ describe 'integration' do
         # Keep a reference to the logger, for test purpose
         @logger = options.logger
 
-        # Set requirements in the plugin specific options
+        # Set requirements in the plugin-specific options
         plugin_options = get_plugin_options options
 
         if !plugin_options.key?(:required_version) || !plugin_options[:required_version].is_a?(Integer)
@@ -73,7 +73,7 @@ describe 'integration' do
     Object.send :remove_const, 'AcceptancePlugin'
   end
 
-  describe 'receive plugin specific options on #load' do
+  describe 'receive plugin-specific options on #load' do
     [[true, 'with context'], [false, 'without context']].each do |with_context, description|
       describe description do
         it 'plugin require a specific option' do

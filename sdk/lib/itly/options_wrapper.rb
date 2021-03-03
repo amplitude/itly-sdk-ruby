@@ -21,7 +21,7 @@ class Itly
     end
 
     ##
-    # Access to the values from methods call
+    # Access to the values through methods
     #
     def method_missing(method_name, *args, &blk)
       # Case: the method name ends with the sign "="

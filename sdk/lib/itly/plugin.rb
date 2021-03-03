@@ -5,12 +5,12 @@ class Itly
   ##
   # Parent class for all plugins
   #
-  # When creating a custom plugin you need to create a child class of Itly::Plugin
+  # When creating a custom plugin, you need to create a child class of Itly::Plugin
   #
   class Plugin
     class << self
       ##
-      # Trigger for a plugin to register itslef with Itly, so that it can be instanciated
+      # Trigger for a plugin to register itself with Itly so that it can be instantiated
       #
       def inherited(subclass)
         super
@@ -21,12 +21,12 @@ class Itly
     ##
     # Called when the Itly SDK is being loaded and is ready to load your plugin.
     #
-    # A plugin must ovewrite the #load method, or a NotImplementedError exception if raised
+    # A plugin must overwrite the #load method, or a NotImplementedError exception if raised
     #
     # @param [Itly::Options] options: The same configuration object passed to +itly.load+
     #   when the SDK was being initialized.
     #
-    #   To retrieve plugin specific options you can call:
+    #   To retrieve plugin-specific options you can call:
     #
     #       get_plugin_options options
     #
@@ -45,7 +45,7 @@ class Itly
     def post_identify(user_id:, properties:, validation_results:); end
 
     ##
-    # Asociate a user with their group (for example, their department or company),
+    # Associate a user with their group (for example, their department or company),
     # or to set the group's traits.
     #
     # See +Itly#group+ for more information
@@ -89,18 +89,18 @@ class Itly
     # See +Itly#validate+ for more information
     #
     # Your plugin can return +Itly::ValidationResponse+ object to provide success status
-    # and validation message; otherwire it can return +nil+
+    # and validation message; otherwise it can return +nil+
     #
     def validate(event:); end
 
     protected
 
     ##
-    # Get plugin specific options
+    # Get plugin-specific options
     #
     # @param [Ilty::Options] options: the options to retrieve from
     #
-    # @return [Hash] the plugin specific options
+    # @return [Hash] the plugin-specific options
     #
     def get_plugin_options(options)
       options.plugins.send plugin_id.to_sym

@@ -2,7 +2,7 @@
 
 class Itly
   ##
-  # Event object used to communicate data bnetween Itly core SDK and its plugins
+  # Event object used to communicate data between Itly core SDK and its plugins
   #
   # Properties:
   # +name+: The event's name.
