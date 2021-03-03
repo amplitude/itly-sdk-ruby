@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 describe Itly::Plugin do
-  it '#load' do
-    expect { Itly::Plugin.new.load options: Itly::Options.new }.to raise_error(NotImplementedError)
-  end
-
   describe '#get_plugin_options' do
     context 'root class' do
       before do

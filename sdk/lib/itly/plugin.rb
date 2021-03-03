@@ -21,8 +21,6 @@ class Itly
     ##
     # Called when the Itly SDK is being loaded and is ready to load your plugin.
     #
-    # A plugin must overwrite the #load method, or a NotImplementedError exception if raised
-    #
     # @param [Itly::Options] options: The same configuration object passed to +itly.load+
     #   when the SDK was being initialized.
     #
@@ -30,9 +28,7 @@ class Itly
     #
     #       get_plugin_options options
     #
-    def load(options:)
-      raise NotImplementedError
-    end
+    def load(options:); end
 
     ##
     # Identify a user in your application and associate all future events with
