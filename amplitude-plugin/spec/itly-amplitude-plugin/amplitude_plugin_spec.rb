@@ -119,11 +119,11 @@ describe Itly::AmplitudePlugin do
         itly.load do |options|
           options.logger = ::Logger.new logs
 
-        expect(AmplitudeAPI).to receive(:send_event)
-          .with('custom_event', 'user_123', nil, event_properties: { app_version: '1.2.3', view: 'video' })
-          .and_return(response)
+          expect(AmplitudeAPI).to receive(:send_event)
+            .with('custom_event', 'user_123', nil, event_properties: { app_version: '1.2.3', view: 'video' })
+            .and_return(response)
 
-          options.context = {app_version: '1.2.3'}
+          options.context = { app_version: '1.2.3' }
         end
         itly.track user_id: 'user_123', event: event
       end
@@ -135,7 +135,8 @@ describe Itly::AmplitudePlugin do
           ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
           ['info', 'validate(event: #<Itly::Event: name: context, properties: {:app_version=>"1.2.3"}>)'],
           ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-          ['info', 'amplitude_plugin: track(user_id: user_123, event: custom_event, properties: {:view=>"video", :app_version=>"1.2.3"})']
+          ['info', 'amplitude_plugin: track(user_id: user_123, event: custom_event, properties: '\
+                   '{:view=>"video", :app_version=>"1.2.3"})']
         ]
       end
     end

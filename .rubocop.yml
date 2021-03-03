@@ -14,3 +14,9 @@ Metrics/BlockLength:
   Enabled: false
 Metrics/MethodLength:
   Enabled: false
+Naming/FileName:
+  Exclude:
+    - sdk/lib/itly-sdk.rb
+Style/Documentation:
+  Exclude:
+    - '*/spec/support/**/*'
