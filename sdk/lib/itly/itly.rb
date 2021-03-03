@@ -143,7 +143,8 @@ class Itly
   #
   # Example:
   #
-  #     itly.user_sign_in platform: 'web'
+  #     event = Itly::Event.new name: 'watched_video', properties: {'video_id' => 'MyVider123', watch_time: '123456'}
+  #     itly.track user_id: 'MyUser123', event: event
   #
   # @param [String] user_id: the id of the user in your application
   # @param [Event] event: the Event object to pass to your application
