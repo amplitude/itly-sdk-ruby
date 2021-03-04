@@ -95,12 +95,12 @@ describe Itly do
     end
   end
 
-  describe '#validation_disabled?' do
+  describe '#validation_enabled?' do
     context 'default' do
       create_itly_object
 
       it do
-        expect(itly.send(:validation_disabled?)).to be(false)
+        expect(itly.send(:validation_enabled?)).to be(true)
       end
     end
 
@@ -108,7 +108,7 @@ describe Itly do
       create_itly_object validation: Itly::Options::Validation::DISABLED
 
       it do
-        expect(itly.send(:validation_disabled?)).to be(true)
+        expect(itly.send(:validation_enabled?)).to be(false)
       end
     end
 
@@ -116,7 +116,7 @@ describe Itly do
       create_itly_object validation: Itly::Options::Validation::TRACK_INVALID
 
       it do
-        expect(itly.send(:validation_disabled?)).to be(false)
+        expect(itly.send(:validation_enabled?)).to be(true)
       end
     end
   end

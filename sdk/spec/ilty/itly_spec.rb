@@ -121,6 +121,21 @@ describe 'Itly' do
   end
 
   describe '#identify', fake_plugins: 2, fake_plugins_methods: %i[load] do
+    context 'Itly was not ititialized' do
+      let(:itly) { Itly.new }
+      let!(:event) { Itly::Event.new name: 'Test' }
+
+      before do
+        expect(itly).not_to receive(:validate_and_send_to_plugins)
+      end
+
+      it do
+        expect do
+          itly.identify user_id: '123', properties: { data: '1', info: 'yes' }
+        end.to raise_error(Itly::InitializationError, 'Itly is not initialized. Call #load { |options| ... }')
+      end
+    end
+
     context 'no validation error' do
       include_examples 'validate and run on plugins', method: :identify,
         method_params: { user_id: '123', properties: { data: '1', info: 'yes' } },
@@ -173,6 +188,21 @@ describe 'Itly' do
   end
 
   describe '#group', fake_plugins: 2, fake_plugins_methods: %i[load] do
+    context 'Itly was not ititialized' do
+      let(:itly) { Itly.new }
+      let!(:event) { Itly::Event.new name: 'Test' }
+
+      before do
+        expect(itly).not_to receive(:validate_and_send_to_plugins)
+      end
+
+      it do
+        expect do
+          itly.group user_id: '123', group_id: '456', properties: { data: '1', info: 'yes' }
+        end.to raise_error(Itly::InitializationError, 'Itly is not initialized. Call #load { |options| ... }')
+      end
+    end
+
     context 'no validation error' do
       include_examples 'validate and run on plugins', method: :group,
         method_params: { user_id: '123', group_id: '456', properties: { data: '1', info: 'yes' } },
@@ -225,6 +255,21 @@ describe 'Itly' do
   end
 
   describe '#track', fake_plugins: 2, fake_plugins_methods: %i[load] do
+    context 'Itly was not ititialized' do
+      let(:itly) { Itly.new }
+      let!(:event) { Itly::Event.new name: 'Test' }
+
+      before do
+        expect(itly).not_to receive(:validate_and_send_to_plugins)
+      end
+
+      it do
+        expect do
+          itly.track user_id: '123', event: event
+        end.to raise_error(Itly::InitializationError, 'Itly is not initialized. Call #load { |options| ... }')
+      end
+    end
+
     context 'without context' do
       context 'no validation error' do
         include_examples 'validate and run on plugins',
@@ -325,6 +370,21 @@ describe 'Itly' do
   end
 
   describe '#validate', fake_plugins: 2, fake_plugins_methods: %i[load] do
+    context 'Itly was not ititialized' do
+      let(:itly) { Itly.new }
+      let!(:event) { Itly::Event.new name: 'Test' }
+
+      before do
+        expect(itly).not_to receive(:run_on_plugins)
+      end
+
+      it do
+        expect do
+          itly.validate event: event
+        end.to raise_error(Itly::InitializationError, 'Itly is not initialized. Call #load { |options| ... }')
+      end
+    end
+
     context 'default' do
       create_itly_object
       let!(:event) { Itly::Event.new name: 'Test' }

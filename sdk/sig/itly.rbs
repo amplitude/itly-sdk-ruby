@@ -31,7 +31,7 @@ class Itly
   def log_validation_errors: (::Array[::Itly::ValidationResponse] validations, ::Itly::Event event) -> void
   def raise_validation_errors: (bool is_valid, ::Array[::Itly::ValidationResponse] validations, ::Itly::Event event) -> void
   def enabled?: () -> bool
-  def validation_disabled?: () -> bool
+  def validation_enabled?: () -> bool
   def logger: () -> ::Logger
   def instantiate_plugins: () -> void
   def run_on_plugins: () { (::Itly::Plugin) -> untyped } -> ::Array[untyped]

@@ -40,6 +40,24 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
     end
   end
 
+  context 'Itly was not ititialized' do
+    let(:itly) { Itly.new }
+
+    before do
+      expect(itly).not_to receive(:run_on_plugins)
+    end
+
+    it do
+      expect do
+        if method_params
+          itly.send method, method_params
+        else
+          itly.send method
+        end
+      end.to raise_error(Itly::InitializationError, 'Itly is not initialized. Call #load { |options| ... }')
+    end
+  end
+
   context 'disabled', fake_plugins: 2, fake_plugins_methods: %i[load] do
     create_itly_object disabled: true
 

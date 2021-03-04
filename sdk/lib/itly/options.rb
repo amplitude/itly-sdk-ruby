@@ -102,8 +102,8 @@ class Itly
     !options.disabled
   end
 
-  def validation_disabled?
-    options.validation == Itly::Options::Validation::DISABLED
+  def validation_enabled?
+    options.validation != Itly::Options::Validation::DISABLED
   end
 
   def logger
