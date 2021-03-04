@@ -34,7 +34,8 @@ class Itly
     # Identify a user in your application and associate all future events with
     # their identity, or to set their traits.
     #
-    # See +Itly#identify+ for more information
+    # @param [String] user_id: the id of the user in your application
+    # @param [Event] properties: the event containing user's traits to pass to your application
     #
     def identify(user_id:, properties:); end
 
@@ -44,7 +45,9 @@ class Itly
     # Associate a user with their group (for example, their department or company),
     # or to set the group's traits.
     #
-    # See +Itly#group+ for more information
+    # @param [String] user_id: the id of the user in your application
+    # @param [String] group_id: the id of the group in your application
+    # @param [Event] properties: the event containing properties to pass to your application
     #
     def group(user_id:, group_id:, properties:); end
 
@@ -84,7 +87,7 @@ class Itly
     #
     # See +Itly#validate+ for more information
     #
-    # Your plugin can return +Itly::ValidationResponse+ object to provide success status
+    # Your plugin can return a +Itly::ValidationResponse+ object to provide success status
     # and validation message; otherwise it can return +nil+
     #
     def validate(event:); end
