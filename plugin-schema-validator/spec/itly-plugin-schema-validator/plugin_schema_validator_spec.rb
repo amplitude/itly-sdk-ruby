@@ -255,7 +255,7 @@ describe Itly::PluginSchemaValidator do
 
     it 'with a detail' do
       result = [
-        {'details' => {'field' => ['message1', 'message2']}}
+        { 'details' => { 'field' => %w[message1 message2] } }
       ]
 
       response = plugin.send :return_validation_responses, event, result
@@ -268,7 +268,7 @@ describe Itly::PluginSchemaValidator do
 
     it 'with details' do
       result = [
-        {'details' => {'field' => ['message1', 'message2'], 'data' => ['more info']}}
+        { 'details' => { 'field' => %w[message1 message2], 'data' => ['more info'] } }
       ]
 
       response = plugin.send :return_validation_responses, event, result
@@ -281,7 +281,7 @@ describe Itly::PluginSchemaValidator do
 
     it 'with a data' do
       result = [
-        {'data' => 'error_type', 'data_pointer' => 'error_details'}
+        { 'data' => 'error_type', 'data_pointer' => 'error_details' }
       ]
 
       response = plugin.send :return_validation_responses, event, result
@@ -294,8 +294,8 @@ describe Itly::PluginSchemaValidator do
 
     it 'with multiple errors' do
       result = [
-        {'details' => {'field1' => ['message1', 'message2']}},
-        {'details' => {'field2' => ['message3']}}
+        { 'details' => { 'field1' => %w[message1 message2] } },
+        { 'details' => { 'field2' => ['message3'] } }
       ]
 
       response = plugin.send :return_validation_responses, event, result
