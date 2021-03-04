@@ -7,7 +7,7 @@ class Itly
     attr_reader plugins: ::Itly::OptionsWrapper
     attr_writer validation: ::Integer
 
-    def context=: (::Hash[::String | ::Symbol, ::String] properties) -> void
+    def context=: (::Hash[::String | ::Symbol, untyped] properties) -> void
     def validation: () -> ::Integer
 
     private

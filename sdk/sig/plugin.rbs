@@ -14,7 +14,7 @@ class Itly
     def flush: () -> void
     def reset: () -> void
     def validate: (event: ::Itly::Event event) -> ::Itly::ValidationResponse?
-    def get_plugin_options: (::Itly::Options options) -> ::Hash[::String | ::Symbol, ::String]
+    def get_plugin_options: (::Itly::Options options) -> ::Hash[::String | ::Symbol, untyped]
     def plugin_id: () -> ::String
   end
 end

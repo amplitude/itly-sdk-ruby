@@ -10,11 +10,11 @@ describe Itly::Options do
   end
 
   it '#context=' do
-    options.context = { a: 1, b: 'two' }
+    options.context = { a: '1', b: 'two' }
 
     expect(options.context).to be_a_kind_of(Itly::Event)
     expect(options.context.name).to eq('context')
-    expect(options.context.properties).to eq(a: 1, b: 'two')
+    expect(options.context.properties).to eq(a: '1', b: 'two')
   end
 
   describe 'validation' do

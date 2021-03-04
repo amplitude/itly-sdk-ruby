@@ -13,14 +13,14 @@ class Itly
   attr_reader options: ::Itly::Options
   attr_reader plugins_instances: ::Array[::Itly::Plugin]
 
-  def load: () { (::Itly::Options) -> void } -> void
+  def load: () ?{ (::Itly::Options) -> void } -> void
   def identify: (user_id: ::String user_id, properties: ::Hash[::String | ::Symbol, ::String] properties) -> void
   def group: (user_id: ::String user_id, group_id: ::String group_id, properties: ::Hash[::String | ::Symbol, ::String] properties) -> void
   def track: (user_id: ::String user_id, event: ::Itly::Event event) -> void
   def alias: (user_id: ::String user_id, previous_id: ::String previous_id) -> void
   def flush: () -> void
   def reset: () -> void
-  def validate: (event: ::Itly::Event event) -> ::Array[::Itly::ValidationResponse]
+  def validate: (event: ::Itly::Event event) -> ::Array[::Itly::ValidationResponse]?
 
   private
 

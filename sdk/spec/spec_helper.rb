@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+# Configure and load RBS
+ENV['RBS_TEST_TARGET'] = 'Itly::*'
+ENV['RBS_TEST_LOGLEVEL'] = 'warn'
+ENV['RBS_TEST_DOUBLE_SUITE'] = 'rspec'
+
+require 'rbs/test/setup'
+
 # Load files
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'itly-sdk'

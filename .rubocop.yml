@@ -4,12 +4,14 @@ Layout/HashAlignment:
   Enabled: false
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
-Metrics/AbcSize:
-  Enabled: false
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
+Metrics/AbcSize:
+  Enabled: false
 Metrics/ClassLength:
   Enabled: false
+Metrics/CyclomaticComplexity:
+  Max: 8
 Metrics/BlockLength:
   Enabled: false
 Metrics/MethodLength:

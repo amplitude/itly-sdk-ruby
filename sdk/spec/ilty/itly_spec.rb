@@ -41,7 +41,7 @@ describe 'Itly' do
         before do
           itly.load do |o|
             o.context = { some: 'data' }
-            o.disabled = :test_disabled
+            o.disabled = true
             o.environment = Itly::Options::Environment::PRODUCTION
             o.validation = Itly::Options::Validation::DISABLED
             o.plugins.plugin_config = 'data'
@@ -50,7 +50,7 @@ describe 'Itly' do
         end
 
         it do
-          expect(itly.options.disabled).to eq(:test_disabled)
+          expect(itly.options.disabled).to eq(true)
           expect(itly.options.environment).to eq(Itly::Options::Environment::PRODUCTION)
           expect(itly.options.validation).to eq(Itly::Options::Validation::DISABLED)
 
@@ -123,36 +123,36 @@ describe 'Itly' do
   describe '#identify', fake_plugins: 2, fake_plugins_methods: %i[load] do
     context 'no validation error' do
       include_examples 'validate and run on plugins', method: :identify,
-        method_params: { user_id: '123', properties: { data: 1, info: 'yes' } },
-        expected_event_properties: { data: 1, info: 'yes' },
-        expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})'
+        method_params: { user_id: '123', properties: { data: '1', info: 'yes' } },
+        expected_event_properties: { data: '1', info: 'yes' },
+        expected_log_info: 'identify(user_id: 123, properties: {:data=>"1", :info=>"yes"})'
     end
 
     context 'validation error' do
       context 'options.validation = DISABLED' do
         include_examples 'validate and run on plugins', method: :identify,
-          method_params: { user_id: '123', properties: { data: 1, info: 'yes' } },
+          method_params: { user_id: '123', properties: { data: '1', info: 'yes' } },
           validation_value: Itly::Options::Validation::DISABLED,
-          expected_event_properties: { data: 1, info: 'yes' },
-          expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})',
+          expected_event_properties: { data: '1', info: 'yes' },
+          expected_log_info: 'identify(user_id: 123, properties: {:data=>"1", :info=>"yes"})',
           generate_validation_error: true, expect_validation: false
       end
 
       context 'options.validation = TRACK_INVALID' do
         include_examples 'validate and run on plugins', method: :identify,
-          method_params: { user_id: '123', properties: { data: 1, info: 'yes' } },
+          method_params: { user_id: '123', properties: { data: '1', info: 'yes' } },
           validation_value: Itly::Options::Validation::TRACK_INVALID,
-          expected_event_properties: { data: 1, info: 'yes' },
-          expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})',
+          expected_event_properties: { data: '1', info: 'yes' },
+          expected_log_info: 'identify(user_id: 123, properties: {:data=>"1", :info=>"yes"})',
           generate_validation_error: true
       end
 
       context 'options.validation = ERROR_ON_INVALID' do
         include_examples 'validate and run on plugins', method: :identify,
-          method_params: { user_id: '123', properties: { data: 1, info: 'yes' } },
+          method_params: { user_id: '123', properties: { data: '1', info: 'yes' } },
           validation_value: Itly::Options::Validation::ERROR_ON_INVALID,
-          expected_event_properties: { data: 1, info: 'yes' },
-          expected_log_info: 'identify(user_id: 123, properties: {:data=>1, :info=>"yes"})',
+          expected_event_properties: { data: '1', info: 'yes' },
+          expected_log_info: 'identify(user_id: 123, properties: {:data=>"1", :info=>"yes"})',
           generate_validation_error: true, expect_to_call_action: false, expect_exception: true
       end
     end
@@ -167,7 +167,7 @@ describe 'Itly' do
       end
 
       it do
-        itly.identify user_id: '123', properties: { data: 1, info: 'yes' }
+        itly.identify user_id: '123', properties: { data: '1', info: 'yes' }
       end
     end
   end
@@ -175,36 +175,36 @@ describe 'Itly' do
   describe '#group', fake_plugins: 2, fake_plugins_methods: %i[load] do
     context 'no validation error' do
       include_examples 'validate and run on plugins', method: :group,
-        method_params: { user_id: '123', group_id: '456', properties: { data: 1, info: 'yes' } },
-        expected_event_properties: { data: 1, info: 'yes' },
-        expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})'
+        method_params: { user_id: '123', group_id: '456', properties: { data: '1', info: 'yes' } },
+        expected_event_properties: { data: '1', info: 'yes' },
+        expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>"1", :info=>"yes"})'
     end
 
     context 'validation error' do
       context 'options.validation = DISABLED' do
         include_examples 'validate and run on plugins', method: :group,
-          method_params: { user_id: '123', group_id: '456', properties: { data: 1, info: 'yes' } },
+          method_params: { user_id: '123', group_id: '456', properties: { data: '1', info: 'yes' } },
           validation_value: Itly::Options::Validation::DISABLED,
-          expected_event_properties: { data: 1, info: 'yes' },
-          expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})',
+          expected_event_properties: { data: '1', info: 'yes' },
+          expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>"1", :info=>"yes"})',
           generate_validation_error: true, expect_validation: false
       end
 
       context 'options.validation = TRACK_INVALID' do
         include_examples 'validate and run on plugins', method: :group,
-          method_params: { user_id: '123', group_id: '456', properties: { data: 1, info: 'yes' } },
+          method_params: { user_id: '123', group_id: '456', properties: { data: '1', info: 'yes' } },
           validation_value: Itly::Options::Validation::TRACK_INVALID,
-          expected_event_properties: { data: 1, info: 'yes' },
-          expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})',
+          expected_event_properties: { data: '1', info: 'yes' },
+          expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>"1", :info=>"yes"})',
           generate_validation_error: true
       end
 
       context 'options.validation = ERROR_ON_INVALID' do
         include_examples 'validate and run on plugins', method: :group,
-          method_params: { user_id: '123', group_id: '456', properties: { data: 1, info: 'yes' } },
+          method_params: { user_id: '123', group_id: '456', properties: { data: '1', info: 'yes' } },
           validation_value: Itly::Options::Validation::ERROR_ON_INVALID,
-          expected_event_properties: { data: 1, info: 'yes' },
-          expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>1, :info=>"yes"})',
+          expected_event_properties: { data: '1', info: 'yes' },
+          expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>"1", :info=>"yes"})',
           generate_validation_error: true, expect_to_call_action: false, expect_exception: true
       end
     end
@@ -219,7 +219,7 @@ describe 'Itly' do
       end
 
       it do
-        itly.group user_id: '123', group_id: '456', properties: { data: 1, info: 'yes' }
+        itly.group user_id: '123', group_id: '456', properties: { data: '1', info: 'yes' }
       end
     end
   end
@@ -327,24 +327,28 @@ describe 'Itly' do
   describe '#validate', fake_plugins: 2, fake_plugins_methods: %i[load] do
     context 'default' do
       create_itly_object
+      let!(:event) { Itly::Event.new name: 'Test' }
+      let!(:response) { Itly::ValidationResponse.new valid: true, plugin_id: 'plugin123' }
 
       let!(:plugin_a) { itly.plugins_instances[0] }
       let!(:plugin_b) { itly.plugins_instances[1] }
 
       before do
-        expect(itly.options.logger).to receive(:info).with('validate(event: an_event)')
+        expect(itly.options.logger).to receive(:info)
+          .with('validate(event: #<Itly::Event: name: Test, properties: {}>)')
 
-        expect(plugin_a).to receive(:validate).with(event: 'an_event').and_return(nil)
-        expect(plugin_b).to receive(:validate).with(event: 'an_event').and_return(:valitation_result)
+        expect(plugin_a).to receive(:validate).with(event: event).and_return(nil)
+        expect(plugin_b).to receive(:validate).with(event: event).and_return(response)
       end
 
       it do
-        expect(itly.validate(event: 'an_event')).to eq([:valitation_result])
+        expect(itly.validate(event: event)).to eq([response])
       end
     end
 
     context 'disabled' do
       create_itly_object validation: Itly::Options::Validation::DISABLED
+      let!(:event) { Itly::Event.new name: 'Test' }
 
       let!(:plugin_a) { itly.plugins_instances[0] }
       let!(:plugin_b) { itly.plugins_instances[1] }
@@ -357,7 +361,7 @@ describe 'Itly' do
       end
 
       it do
-        expect(itly.validate(event: 'an_event')).to be(nil)
+        expect(itly.validate(event: event)).to be(nil)
       end
     end
   end

@@ -16,13 +16,13 @@ describe Itly::Event do
 
     describe 'with params' do
       let(:event) do
-        Itly::Event.new name: 'the_event', properties: { a: :b },
+        Itly::Event.new name: 'the_event', properties: { a: 'b' },
                         id: '123', version: '2.1.6', metadata: { some: 'data' }
       end
 
       it do
         expect(event.name).to eq('the_event')
-        expect(event.properties).to eq(a: :b)
+        expect(event.properties).to eq(a: 'b')
         expect(event.id).to eq('123')
         expect(event.version).to eq('2.1.6')
         expect(event.metadata).to eq(some: 'data')
