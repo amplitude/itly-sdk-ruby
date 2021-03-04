@@ -288,11 +288,10 @@ class Itly
   def raise_validation_errors(is_valid, validations, event)
     return unless !is_valid && @options.validation == Itly::Options::Validation::ERROR_ON_INVALID
 
-    message = begin
-      validations.reject(&:valid).first.message
-    rescue StandardError
-      "Unknown error validating #{event.name}"
-    end
+    messages = validations.reject(&:valid).collect(&:message)
+    message = messages.select { |m| !m.nil? && m.length.positive? }.first
+    message ||= "Unknown error validating #{event.name}"
+
     raise ValidationError, message
   end
 end
