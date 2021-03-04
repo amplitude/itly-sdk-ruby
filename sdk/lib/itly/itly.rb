@@ -44,9 +44,7 @@ class Itly
 
     # Initialize plugins, passing the options to their #load methods
     instantiate_plugins
-    run_on_plugins lambda { |plugin|
-      plugin.load options: @options
-    }
+    run_on_plugins { |plugin| plugin.load options: @options }
 
     # Mark that the #load method was called on this object
     @is_initialized = true
@@ -184,12 +182,8 @@ class Itly
     logger.info "alias(user_id: #{user_id}, previous_id: #{previous_id})"
 
     # Run on all plugins
-    run_on_plugins lambda { |plugin|
-      plugin.alias user_id: user_id, previous_id: previous_id
-    }
-    run_on_plugins lambda { |plugin|
-      plugin.post_alias user_id: user_id, previous_id: previous_id
-    }
+    run_on_plugins { |plugin| plugin.alias user_id: user_id, previous_id: previous_id }
+    run_on_plugins { |plugin| plugin.post_alias user_id: user_id, previous_id: previous_id }
   end
 
   ##
@@ -205,9 +199,7 @@ class Itly
     logger.info 'flush()'
 
     # Run on all plugins
-    run_on_plugins lambda { |plugin|
-      plugin.flush
-    }
+    run_on_plugins(&:flush)
   end
 
   ##
@@ -223,9 +215,7 @@ class Itly
     logger.info 'reset()'
 
     # Run on all plugins
-    run_on_plugins lambda { |plugin|
-      plugin.reset
-    }
+    run_on_plugins(&:reset)
   end
 
   ##
@@ -244,9 +234,7 @@ class Itly
     logger.info "validate(event: #{event})"
 
     # Run on all plugins
-    run_on_plugins lambda { |plugin|
-      plugin.validate event: event
-    }
+    run_on_plugins { |plugin| plugin.validate event: event }
   end
 
   private
@@ -264,18 +252,14 @@ class Itly
     event.properties.merge! @options.context.properties if @options.context && include_context
 
     if is_valid || @options.validation == Itly::Options::Validation::TRACK_INVALID
-      run_on_plugins lambda { |plugin|
-        action.call(plugin, event)
-      }
+      run_on_plugins { |plugin| action.call(plugin, event) }
     end
 
     # Log all errors
     log_validation_errors validations, event
 
     # Call the post_action on all plugins
-    run_on_plugins lambda { |plugin|
-      post_action.call(plugin, event, validations)
-    }
+    run_on_plugins { |plugin| post_action.call(plugin, event, validations) }
 
     # Throw an exception if requested
     raise_validation_errors is_valid, validations, event

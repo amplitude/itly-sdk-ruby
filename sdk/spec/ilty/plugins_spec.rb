@@ -59,9 +59,7 @@ describe Itly::Plugins do
       end
 
       it do
-        itly.send :run_on_plugins, lambda { |plugin|
-          plugin.some_method 'param 1', 2, :param3
-        }
+        itly.send(:run_on_plugins) { |plugin| plugin.some_method 'param 1', 2, :param3 }
       end
     end
 
@@ -75,9 +73,7 @@ describe Itly::Plugins do
       end
 
       it do
-        itly.send :run_on_plugins, lambda { |plugin|
-          plugin.some_method :params
-        }
+        itly.send(:run_on_plugins) { |plugin| plugin.some_method :params }
       end
     end
 
@@ -96,9 +92,7 @@ describe Itly::Plugins do
 
       it do
         expect(
-          itly.send(:run_on_plugins, lambda { |plugin|
-            plugin.some_method :params
-          })
+          itly.send(:run_on_plugins) { |plugin| plugin.some_method :params }
         ).to eq(%i[val1 val2])
       end
     end

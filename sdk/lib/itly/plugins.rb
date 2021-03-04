@@ -27,10 +27,12 @@ class Itly
       end
     end
 
-    # Call lambda to all instanciated plugins
-    def run_on_plugins(action)
+    # Yield the block with each instanciated plugin
+    def run_on_plugins
+      raise 'Need a block' unless block_given?
+
       plugins_instances.collect do |plugin|
-        action.call(plugin)
+        yield plugin
       rescue StandardError => e
         logger.error "Itly Error in #{plugin.class.name}. #{e.class.name}: #{e.message}"
         nil
