@@ -1,0 +1,20 @@
+class Itly
+  class Plugin
+    def self.inherited: (Class subclass) -> void
+
+    def load: (options: ::Itly::Options options) -> void
+    def identify: (user_id: ::String user_id, properties: ::Itly::Event properties) -> void
+    def post_identify: (user_id: ::String user_id, properties: ::Itly::Event properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
+    def group: (user_id: ::String user_id, group_id: ::String group_id, properties: ::Itly::Event properties) -> void
+    def post_group: (user_id: ::String user_id, group_id: ::String group_id, properties: ::Itly::Event properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
+    def track: (user_id: ::String user_id, event: ::Itly::Event event) -> void
+    def post_track: (user_id: ::String user_id, event: ::Itly::Event event, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
+    def alias: (user_id: ::String user_id, previous_id: ::String previous_id) -> void
+    def post_alias: (user_id: ::String user_id, previous_id: ::String previous_id) -> void
+    def flush: () -> void
+    def reset: () -> void
+    def validate: (event: ::Itly::Event event) -> ::Itly::ValidationResponse?
+    def get_plugin_options: (::Itly::Options options) -> ::Hash[::String | ::Symbol, ::String]
+    def plugin_id: () -> ::String
+  end
+end

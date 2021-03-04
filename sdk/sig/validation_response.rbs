@@ -1,0 +1,13 @@
+class Itly
+  class ValidationResponse
+    attr_accessor valid: bool
+    attr_accessor plugin_id: ::String
+    attr_accessor message: ::String
+
+    def to_s: () -> ::String
+
+    private
+
+    def initialize: (valid: bool valid, plugin_id: ::String plugin_id, ?message: ::String message) -> void
+  end
+end

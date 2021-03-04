@@ -20,3 +20,5 @@ Naming/FileName:
 Style/Documentation:
   Exclude:
     - '*/spec/support/**/*'
+Style/Lambda:
+  Enabled: false

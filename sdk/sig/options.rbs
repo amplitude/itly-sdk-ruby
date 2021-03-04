@@ -1,0 +1,17 @@
+class Itly
+  class Options
+    attr_accessor disabled: bool
+    attr_accessor environment: ::Symbol
+    attr_accessor logger: ::Logger
+    attr_reader context: ::Itly::Event?
+    attr_reader plugins: ::Itly::OptionsWrapper
+    attr_writer validation: ::Integer
+
+    def context=: (::Hash[::String | ::Symbol, ::String] properties) -> void
+    def validation: () -> ::Integer
+
+    private
+
+    def initialize: () -> void
+  end
+end
