@@ -27,7 +27,7 @@ describe Itly::PluginSchemaValidator do
   end
 
   describe '#load' do
-    let(:fake_logger) { double 'logger', info: nil }
+    let(:fake_logger) { double 'logger', info: nil, warn: nil }
     let(:itly) { Itly.new }
 
     before do
@@ -69,13 +69,6 @@ describe Itly::PluginSchemaValidator do
       }
     end
 
-    before do
-      itly.load do |options|
-        options.logger = ::Logger.new logs
-        options.plugins.schema_validator = { schemas: { context: schema } }
-      end
-    end
-
     describe 'missing schema definition' do
       let(:event) do
         Itly::Event.new name: 'other_schema', properties: {
@@ -83,23 +76,56 @@ describe Itly::PluginSchemaValidator do
         }
       end
 
-      it do
-        itly.validate event: event
+      context 'development' do
+        before do
+          itly.load do |options|
+            options.logger = ::Logger.new logs
+            options.plugins.schema_validator = { schemas: { context: schema } }
+            options.environment = Itly::Options::Environment::DEVELOPMENT
+          end
+        end
 
-        expect_log_lines_to_equal [
-          ['info', 'load()'],
-          ['info', 'plugin_schema_validator: load()'],
-          ['info', 'validate(event: #<Itly::Event: name: other_schema, properties: '\
-                   '{:required_string=>"Required string", :optional_enum=>"Value 1"}>)'],
-          ['info', 'plugin_schema_validator: validate(event: #<Itly::Event: name: other_schema, '\
-                   'properties: {:required_string=>"Required string", :optional_enum=>"Value 1"}>)'],
-          ['error', 'Itly Error in Itly::PluginSchemaValidator. Itly::ValidationError: '\
-                    'Event \'other_schema\' not found in tracking plan.']
-        ]
+        it do
+          expect do
+            itly.validate event: event
+          end.to raise_error(Itly::ValidationError, 'Event \'other_schema\' not found in tracking plan.')
+        end
+      end
+
+      context 'production' do
+        before do
+          itly.load do |options|
+            options.logger = ::Logger.new logs
+            options.plugins.schema_validator = { schemas: { context: schema } }
+            options.environment = Itly::Options::Environment::PRODUCTION
+          end
+        end
+
+        it do
+          itly.validate event: event
+
+          expect_log_lines_to_equal [
+            ['info', 'load()'],
+            ['info', 'plugin_schema_validator: load()'],
+            ['info', 'validate(event: #<Itly::Event: name: other_schema, properties: '\
+                    '{:required_string=>"Required string", :optional_enum=>"Value 1"}>)'],
+            ['info', 'plugin_schema_validator: validate(event: #<Itly::Event: name: other_schema, '\
+                    'properties: {:required_string=>"Required string", :optional_enum=>"Value 1"}>)'],
+            ['error', 'Itly Error in Itly::PluginSchemaValidator. Itly::ValidationError: '\
+                      'Event \'other_schema\' not found in tracking plan.']
+          ]
+        end
       end
     end
 
     describe 'valid' do
+      before do
+        itly.load do |options|
+          options.logger = ::Logger.new logs
+          options.plugins.schema_validator = { schemas: { context: schema } }
+        end
+      end
+
       context 'properties with string keys' do
         let(:event) do
           Itly::Event.new name: 'context', properties: {
@@ -112,6 +138,7 @@ describe Itly::PluginSchemaValidator do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin_schema_validator: load()'],
             ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                      '{"required_string"=>"Required string", "optional_enum"=>"Value 1"}>)'],
@@ -133,6 +160,7 @@ describe Itly::PluginSchemaValidator do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin_schema_validator: load()'],
             ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                      '{:required_string=>"Required string", :optional_enum=>"Value 1"}>)'],
@@ -150,6 +178,7 @@ describe Itly::PluginSchemaValidator do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin_schema_validator: load()'],
             ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                      '{:required_string=>"Required string"}>)'],
@@ -161,6 +190,13 @@ describe Itly::PluginSchemaValidator do
     end
 
     describe 'invalid' do
+      before do
+        itly.load do |options|
+          options.logger = ::Logger.new logs
+          options.plugins.schema_validator = { schemas: { context: schema } }
+        end
+      end
+
       context 'missing required value string keys' do
         let(:event) { Itly::Event.new name: 'context', properties: { optional_enum: 'Value 1' } }
 
@@ -177,6 +213,7 @@ describe Itly::PluginSchemaValidator do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin_schema_validator: load()'],
             ['info', 'validate(event: #<Itly::Event: name: context, properties: {:optional_enum=>"Value 1"}>)'],
             ['info', 'plugin_schema_validator: validate(event: #<Itly::Event: name: context, properties: '\
@@ -205,6 +242,7 @@ describe Itly::PluginSchemaValidator do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin_schema_validator: load()'],
             ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                      '{:required_string=>"Required string", :optional_enum=>"Wrong value"}>)'],
@@ -234,6 +272,7 @@ describe Itly::PluginSchemaValidator do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin_schema_validator: load()'],
             ['info', 'validate(event: #<Itly::Event: name: context, properties: {:required_string=>17, '\
                      ':optional_enum=>"Value 1"}>)'],

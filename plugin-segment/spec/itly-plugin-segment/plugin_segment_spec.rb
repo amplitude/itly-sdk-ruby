@@ -20,7 +20,7 @@ describe Itly::PluginSegment do
   end
 
   describe '#load' do
-    let(:fake_logger) { double 'logger', info: nil }
+    let(:fake_logger) { double 'logger', info: nil, warn: nil }
     let(:itly) { Itly.new }
 
     before do
@@ -43,15 +43,13 @@ describe Itly::PluginSegment do
     let(:itly) { Itly.new }
     let(:segment_client) { itly.instance_variable_get('@plugins_instances').first.client }
 
-    before do
-      itly.load do |options|
-        options.plugins.segment = { write_key: 'key123' }
-        options.logger = ::Logger.new logs
-      end
-    end
-
     context 'success' do
       before do
+        itly.load do |options|
+          options.plugins.segment = { write_key: 'key123' }
+          options.logger = ::Logger.new logs
+        end
+
         expect(segment_client).to receive(:identify)
           .with(user_id: 'user_123', traits: { version: '4', some: 'data' })
 
@@ -61,6 +59,7 @@ describe Itly::PluginSegment do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
+          ['warn', 'Environment not specified. Automatically set to development'],
           ['info', 'plugin_segment: load()'],
           ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
@@ -71,27 +70,58 @@ describe Itly::PluginSegment do
     end
 
     context 'failure' do
-      before do
-        expect(segment_client).to receive(:identify)
-          .with(user_id: 'user_123', traits: { version: '4', some: 'data' })
-          .and_call_original
+      context 'development' do
+        before do
+          itly.load do |options|
+            options.plugins.segment = { write_key: 'key123' }
+            options.logger = ::Logger.new logs
+            options.environment = Itly::Options::Environment::DEVELOPMENT
+          end
 
-        stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+          expect(segment_client).to receive(:identify)
+            .with(user_id: 'user_123', traits: { version: '4', some: 'data' })
+            .and_call_original
 
-        itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
+          stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+        end
+
+        it do
+          expect do
+            itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
+          end.to raise_error(Itly::RemoteError, 'The client returned an error. Exception '\
+            'URI::InvalidURIError: bad URI(is not URI?): "not a url".')
+        end
       end
 
-      it do
-        expect_log_lines_to_equal [
-          ['info', 'load()'],
-          ['info', 'plugin_segment: load()'],
-          ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
-          ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-          ['info', 'plugin_segment: identify(user_id: user_123, properties: #<Itly::Event: name: identify, '\
-                   'properties: {:version=>"4", :some=>"data"}>)'],
-          ['error', 'Itly Error in Itly::PluginSegment. Itly::RemoteError: The client returned an error. Exception '\
-                    'URI::InvalidURIError: bad URI(is not URI?): "not a url".']
-        ]
+      context 'production' do
+        before do
+          itly.load do |options|
+            options.plugins.segment = { write_key: 'key123' }
+            options.logger = ::Logger.new logs
+            options.environment = Itly::Options::Environment::PRODUCTION
+          end
+
+          expect(segment_client).to receive(:identify)
+            .with(user_id: 'user_123', traits: { version: '4', some: 'data' })
+            .and_call_original
+
+          stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+
+          itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
+        end
+
+        it do
+          expect_log_lines_to_equal [
+            ['info', 'load()'],
+            ['info', 'plugin_segment: load()'],
+            ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
+            ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
+            ['info', 'plugin_segment: identify(user_id: user_123, properties: #<Itly::Event: name: identify, '\
+                    'properties: {:version=>"4", :some=>"data"}>)'],
+            ['error', 'Itly Error in Itly::PluginSegment. Itly::RemoteError: The client returned an error. Exception '\
+                      'URI::InvalidURIError: bad URI(is not URI?): "not a url".']
+          ]
+        end
       end
     end
   end
@@ -101,15 +131,13 @@ describe Itly::PluginSegment do
     let(:itly) { Itly.new }
     let(:segment_client) { itly.instance_variable_get('@plugins_instances').first.client }
 
-    before do
-      itly.load do |options|
-        options.plugins.segment = { write_key: 'key123' }
-        options.logger = ::Logger.new logs
-      end
-    end
-
     context 'success' do
       before do
+        itly.load do |options|
+          options.plugins.segment = { write_key: 'key123' }
+          options.logger = ::Logger.new logs
+        end
+
         expect(segment_client).to receive(:group)
           .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' })
 
@@ -119,6 +147,7 @@ describe Itly::PluginSegment do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
+          ['warn', 'Environment not specified. Automatically set to development'],
           ['info', 'plugin_segment: load()'],
           ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
           ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
@@ -129,27 +158,58 @@ describe Itly::PluginSegment do
     end
 
     context 'failure' do
-      before do
-        expect(segment_client).to receive(:group)
-          .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' })
-          .and_call_original
+      context 'development' do
+        before do
+          itly.load do |options|
+            options.plugins.segment = { write_key: 'key123' }
+            options.logger = ::Logger.new logs
+            options.environment = Itly::Options::Environment::DEVELOPMENT
+          end
 
-        stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+          expect(segment_client).to receive(:group)
+            .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' })
+            .and_call_original
 
-        itly.group user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' }
+          stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+        end
+
+        it do
+          expect do
+            itly.group user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' }
+          end.to raise_error(Itly::RemoteError,
+            'The client returned an error. Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".')
+        end
       end
 
-      it do
-        expect_log_lines_to_equal [
-          ['info', 'load()'],
-          ['info', 'plugin_segment: load()'],
-          ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
-          ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
-          ['info', 'plugin_segment: group(user_id: user_123, group_id: groupABC, '\
-                   'properties: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
-          ['error', 'Itly Error in Itly::PluginSegment. Itly::RemoteError: The client returned an error. Exception '\
-                    'URI::InvalidURIError: bad URI(is not URI?): "not a url".']
-        ]
+      context 'production' do
+        before do
+          itly.load do |options|
+            options.plugins.segment = { write_key: 'key123' }
+            options.logger = ::Logger.new logs
+            options.environment = Itly::Options::Environment::PRODUCTION
+          end
+
+          expect(segment_client).to receive(:group)
+            .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' })
+            .and_call_original
+
+          stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+
+          itly.group user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' }
+        end
+
+        it do
+          expect_log_lines_to_equal [
+            ['info', 'load()'],
+            ['info', 'plugin_segment: load()'],
+            ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
+            ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
+            ['info', 'plugin_segment: group(user_id: user_123, group_id: groupABC, '\
+                    'properties: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
+            ['error', 'Itly Error in Itly::PluginSegment. Itly::RemoteError: The client returned an error. Exception '\
+                      'URI::InvalidURIError: bad URI(is not URI?): "not a url".']
+          ]
+        end
       end
     end
   end
@@ -160,15 +220,13 @@ describe Itly::PluginSegment do
     let(:event) { Itly::Event.new name: 'custom_event', properties: { view: 'video' } }
     let(:segment_client) { itly.instance_variable_get('@plugins_instances').first.client }
 
-    before do
-      itly.load do |options|
-        options.plugins.segment = { write_key: 'key123' }
-        options.logger = ::Logger.new logs
-      end
-    end
-
     context 'success' do
       before do
+        itly.load do |options|
+          options.plugins.segment = { write_key: 'key123' }
+          options.logger = ::Logger.new logs
+        end
+
         expect(segment_client).to receive(:track)
           .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' })
 
@@ -178,6 +236,7 @@ describe Itly::PluginSegment do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
+          ['warn', 'Environment not specified. Automatically set to development'],
           ['info', 'plugin_segment: load()'],
           ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
           ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
@@ -187,26 +246,57 @@ describe Itly::PluginSegment do
     end
 
     context 'failure' do
-      before do
-        expect(segment_client).to receive(:track)
-          .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' })
-          .and_call_original
+      context 'development' do
+        before do
+          itly.load do |options|
+            options.plugins.segment = { write_key: 'key123' }
+            options.logger = ::Logger.new logs
+            options.environment = Itly::Options::Environment::DEVELOPMENT
+          end
 
-        stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+          expect(segment_client).to receive(:track)
+            .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' })
+            .and_call_original
 
-        itly.track user_id: 'user_123', event: event
+          stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+        end
+
+        it do
+          expect do
+            itly.track user_id: 'user_123', event: event
+          end.to raise_error(Itly::RemoteError, 'The client returned an error. Exception '\
+            'URI::InvalidURIError: bad URI(is not URI?): "not a url".')
+        end
       end
 
-      it do
-        expect_log_lines_to_equal [
-          ['info', 'load()'],
-          ['info', 'plugin_segment: load()'],
-          ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
-          ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-          ['info', 'plugin_segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
-          ['error', 'Itly Error in Itly::PluginSegment. Itly::RemoteError: The client returned an error. Exception '\
-                    'URI::InvalidURIError: bad URI(is not URI?): "not a url".']
-        ]
+      context 'production' do
+        before do
+          itly.load do |options|
+            options.plugins.segment = { write_key: 'key123' }
+            options.logger = ::Logger.new logs
+            options.environment = Itly::Options::Environment::PRODUCTION
+          end
+
+          expect(segment_client).to receive(:track)
+            .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' })
+            .and_call_original
+
+          stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+
+          itly.track user_id: 'user_123', event: event
+        end
+
+        it do
+          expect_log_lines_to_equal [
+            ['info', 'load()'],
+            ['info', 'plugin_segment: load()'],
+            ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+            ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
+            ['info', 'plugin_segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+            ['error', 'Itly Error in Itly::PluginSegment. Itly::RemoteError: The client returned an error. Exception '\
+                      'URI::InvalidURIError: bad URI(is not URI?): "not a url".']
+          ]
+        end
       end
     end
   end
@@ -216,15 +306,13 @@ describe Itly::PluginSegment do
     let(:itly) { Itly.new }
     let(:segment_client) { itly.instance_variable_get('@plugins_instances').first.client }
 
-    before do
-      itly.load do |options|
-        options.plugins.segment = { write_key: 'key123' }
-        options.logger = ::Logger.new logs
-      end
-    end
-
     context 'success' do
       before do
+        itly.load do |options|
+          options.plugins.segment = { write_key: 'key123' }
+          options.logger = ::Logger.new logs
+        end
+
         expect(segment_client).to receive(:alias)
           .with(user_id: 'user_123', previous_id: 'old_user')
 
@@ -234,6 +322,7 @@ describe Itly::PluginSegment do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
+          ['warn', 'Environment not specified. Automatically set to development'],
           ['info', 'plugin_segment: load()'],
           ['info', 'alias(user_id: user_123, previous_id: old_user)'],
           ['info', 'plugin_segment: alias(user_id: user_123, previous_id: old_user)']
@@ -242,25 +331,56 @@ describe Itly::PluginSegment do
     end
 
     context 'failure' do
-      before do
-        expect(segment_client).to receive(:alias)
-          .with(user_id: 'user_123', previous_id: 'old_user')
-          .and_call_original
+      context 'development' do
+        before do
+          itly.load do |options|
+            options.plugins.segment = { write_key: 'key123' }
+            options.logger = ::Logger.new logs
+            options.environment = Itly::Options::Environment::DEVELOPMENT
+          end
 
-        stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+          expect(segment_client).to receive(:alias)
+            .with(user_id: 'user_123', previous_id: 'old_user')
+            .and_call_original
 
-        itly.alias user_id: 'user_123', previous_id: 'old_user'
+          stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+        end
+
+        it do
+          expect do
+            itly.alias user_id: 'user_123', previous_id: 'old_user'
+          end.to raise_error(Itly::RemoteError, 'The client returned an error. Exception '\
+            'URI::InvalidURIError: bad URI(is not URI?): "not a url".')
+        end
       end
 
-      it do
-        expect_log_lines_to_equal [
-          ['info', 'load()'],
-          ['info', 'plugin_segment: load()'],
-          ['info', 'alias(user_id: user_123, previous_id: old_user)'],
-          ['info', 'plugin_segment: alias(user_id: user_123, previous_id: old_user)'],
-          ['error', 'Itly Error in Itly::PluginSegment. Itly::RemoteError: The client returned an error. Exception '\
-                    'URI::InvalidURIError: bad URI(is not URI?): "not a url".']
-        ]
+      context 'production' do
+        before do
+          itly.load do |options|
+            options.plugins.segment = { write_key: 'key123' }
+            options.logger = ::Logger.new logs
+            options.environment = Itly::Options::Environment::PRODUCTION
+          end
+
+          expect(segment_client).to receive(:alias)
+            .with(user_id: 'user_123', previous_id: 'old_user')
+            .and_call_original
+
+          stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+
+          itly.alias user_id: 'user_123', previous_id: 'old_user'
+        end
+
+        it do
+          expect_log_lines_to_equal [
+            ['info', 'load()'],
+            ['info', 'plugin_segment: load()'],
+            ['info', 'alias(user_id: user_123, previous_id: old_user)'],
+            ['info', 'plugin_segment: alias(user_id: user_123, previous_id: old_user)'],
+            ['error', 'Itly Error in Itly::PluginSegment. Itly::RemoteError: The client returned an error. Exception '\
+                      'URI::InvalidURIError: bad URI(is not URI?): "not a url".']
+          ]
+        end
       end
     end
   end
