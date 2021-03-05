@@ -18,6 +18,11 @@ Metrics/MethodLength:
   Enabled: false
 Naming/FileName:
   Exclude:
+    - plugin-amplitude/lib/itly/plugin-amplitude.rb
+    - plugin-iteratively/lib/itly/plugin-iteratively.rb
+    - plugin-mixpanel/lib/itly/plugin-mixpanel.rb
+    - plugin-schema-validator/lib/itly/plugin-schema-validator.rb
+    - plugin-segment/lib/itly/plugin-segment.rb
     - sdk/lib/itly-sdk.rb
 Style/Documentation:
   Exclude:
