@@ -29,9 +29,6 @@ RSpec.configure do |config|
   # Enable warnings
   config.warnings = true
 
-  # Print the 3 slowest examples
-  config.profile_examples = 3
-
   # Run specs in random order
   config.order = :random
 
