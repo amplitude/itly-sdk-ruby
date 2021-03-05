@@ -17,6 +17,19 @@ describe Itly::Options do
     expect(options.context.properties).to eq(a: '1', b: 'two')
   end
 
+  it '#environment=' do
+    expect(options.instance_variable_get '@default_environment').to be(true)
+    expect(options.environment).to eq(Itly::Options::Environment::DEVELOPMENT)
+
+    options.environment = Itly::Options::Environment::DEVELOPMENT
+    expect(options.instance_variable_get '@default_environment').to be(false)
+    expect(options.environment).to eq(Itly::Options::Environment::DEVELOPMENT)
+
+    options.environment = Itly::Options::Environment::PRODUCTION
+    expect(options.instance_variable_get '@default_environment').to be(false)
+    expect(options.environment).to eq(Itly::Options::Environment::PRODUCTION)
+  end
+
   describe 'validation' do
     context 'development' do
       before do
@@ -122,7 +135,7 @@ describe Itly do
   end
 
   describe '#logger' do
-    let(:fake_logger) { double 'logger', info: nil }
+    let(:fake_logger) { double 'logger', info: nil, warn: nil }
 
     context 'default' do
       create_itly_object

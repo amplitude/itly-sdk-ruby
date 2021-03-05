@@ -52,14 +52,16 @@ class Itly
   #   if the environment is set to +PRODUCTION+.
   #
   class Options
-    attr_accessor :disabled, :environment, :logger
-    attr_reader :context, :plugins
+    attr_accessor :disabled, :logger
+    attr_reader :context, :plugins, :environment, :default_environment
     attr_writer :validation
 
     ##
     # Create a new Options object with default values
     #
     def initialize
+      @default_environment = true
+
       @context = nil
       @disabled = false
       @environment = Itly::Options::Environment::DEVELOPMENT
@@ -75,6 +77,16 @@ class Itly
     #
     def context=(properties)
       @context = Itly::Event.new name: 'context', properties: properties
+    end
+
+    ##
+    # Assign properties to the +environment+ instance variable
+    #
+    # @param [TrueClass/FalseClass] value for +environment+
+    #
+    def environment=(value)
+      @default_environment = false
+      @environment = value
     end
 
     ##

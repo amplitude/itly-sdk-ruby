@@ -39,8 +39,12 @@ class Itly
     yield @options if block_given?
 
     # Log
-    logger.info 'Itly is disabled!' unless enabled?
     logger.info 'load()'
+    logger.info 'Itly is disabled!' unless enabled?
+    if options.default_environment
+      logger.warn "Environment not specified. Automatically set to #{options.environment}"
+    end
+
 
     # Initialize plugins, passing the options to their #load methods
     instantiate_plugins

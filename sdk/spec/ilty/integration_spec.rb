@@ -145,6 +145,7 @@ describe 'integration' do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['debug', '(spec) loaded']
           ]
         end
@@ -166,6 +167,7 @@ describe 'integration' do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['debug', '(spec) loaded'],
             ['info', 'alias(user_id: newID, previous_id: oldID)'],
             ['debug', '(spec) alias [newID, oldID]'],
@@ -184,8 +186,9 @@ describe 'integration' do
           itly.alias user_id: 'newID', previous_id: 'oldID'
 
           expect_log_lines_to_equal [
-            ['info', 'Itly is disabled!'],
             ['info', 'load()'],
+            ['info', 'Itly is disabled!'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['debug', '(spec) loaded']
           ]
         end
@@ -207,6 +210,7 @@ describe 'integration' do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['debug', '(spec) loaded'],
             ['info', 'identify(user_id: newID, properties: {:access_level=>"admin"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:access_level=>"admin"}>)'],
@@ -231,6 +235,7 @@ describe 'integration' do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
+              ['warn', 'Environment not specified. Automatically set to development'],
               ['debug', '(spec) loaded'],
               ['info', 'identify(user_id: newID, properties: {:access_level=>"employee"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:access_level=>"employee"}>)'],
@@ -254,6 +259,7 @@ describe 'integration' do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
+              ['warn', 'Environment not specified. Automatically set to development'],
               ['debug', '(spec) loaded'],
               ['info', 'identify(user_id: newID, properties: {:access_level=>"employee"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:access_level=>"employee"}>)'],
@@ -279,6 +285,7 @@ describe 'integration' do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
+              ['warn', 'Environment not specified. Automatically set to development'],
               ['debug', '(spec) loaded'],
               ['info', 'identify(user_id: newID, properties: {:access_level=>"employee"})'],
               ['debug',
@@ -300,8 +307,9 @@ describe 'integration' do
           itly.identify user_id: 'newID', properties: { access_level: 'admin' }
 
           expect_log_lines_to_equal [
-            ['info', 'Itly is disabled!'],
             ['info', 'load()'],
+            ['info', 'Itly is disabled!'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['debug', '(spec) loaded']
           ]
         end
@@ -324,6 +332,7 @@ describe 'integration' do
 
           expected = [
             ['info', 'load()'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['debug', '(spec) loaded'],
             ['info', 'track(user_id: userID, event: user_signed_in, properties: {:email=>"user@mail.com"})']
           ]
@@ -370,6 +379,7 @@ describe 'integration' do
 
             expected = [
               ['info', 'load()'],
+              ['warn', 'Environment not specified. Automatically set to development'],
               ['debug', '(spec) loaded'],
               ['info', 'track(user_id: userID, event: user_signed_in, properties: {:wrong_key=>"user@mail.com"})']
             ]
@@ -414,6 +424,7 @@ describe 'integration' do
 
             expected = [
               ['info', 'load()'],
+              ['warn', 'Environment not specified. Automatically set to development'],
               ['debug', '(spec) loaded'],
               ['info', 'track(user_id: userID, event: user_signed_in, properties: {:wrong_key=>"user@mail.com"})']
             ]
@@ -465,6 +476,7 @@ describe 'integration' do
 
             expected = [
               ['info', 'load()'],
+              ['warn', 'Environment not specified. Automatically set to development'],
               ['debug', '(spec) loaded'],
               ['info', 'track(user_id: userID, event: user_signed_in, properties: {:wrong_key=>"user@mail.com"})']
             ]
@@ -501,8 +513,9 @@ describe 'integration' do
             event: Itly::Event.new(name: 'user_signed_in', properties: { email: 'user@mail.com' })
 
           expect_log_lines_to_equal [
-            ['info', 'Itly is disabled!'],
             ['info', 'load()'],
+            ['info', 'Itly is disabled!'],
+            ['warn', 'Environment not specified. Automatically set to development'],
             ['debug', '(spec) loaded']
           ]
         end
