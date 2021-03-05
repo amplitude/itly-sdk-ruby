@@ -11,4 +11,6 @@ require 'rbs/test/setup'
 
 # Start RSpec
 require 'rspec/core'
+
+ENV['RSPEC_RUN_FROM_SCRIPT'] = 'true'
 RSpec::Core::Runner.invoke

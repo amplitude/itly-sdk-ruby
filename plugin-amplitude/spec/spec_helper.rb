@@ -1,5 +1,15 @@
 # frozen_string_literal: true
 
+# You can only run rspec from the root directory of the gem, with the following command:
+#
+#     bin/rspec
+#
+# If you are working with a local version of Itly sdk, you need to use the following command:
+#
+#     LOCAL_ITLY_GEM=true bin/rspec
+#
+fail 'You need to run spec with "bin/rspec"' unless ENV['RSPEC_RUN_FROM_SCRIPT']
+
 # Load files
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'itly/plugin_amplitude'
