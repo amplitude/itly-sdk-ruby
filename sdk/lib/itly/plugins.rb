@@ -35,6 +35,8 @@ class Itly
         yield plugin
       rescue StandardError => e
         logger.error "Itly Error in #{plugin.class.name}. #{e.class.name}: #{e.message}"
+        raise e if options.development?
+
         nil
       end.compact
     end

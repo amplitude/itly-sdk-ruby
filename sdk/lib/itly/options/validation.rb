@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Itly
+  ##
+  # Options class for Itly object initialization
+  #
   class Options
     ##
     # This module contains values for the field +validation+ of the +Option+ object

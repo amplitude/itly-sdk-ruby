@@ -45,12 +45,12 @@ describe Itly::Plugins do
   end
 
   describe '#run_on_plugins', fake_plugins_methods: %i[some_method load] do
-    create_itly_object
-
-    let!(:plugin_a) { itly.plugins_instances[0] }
-    let!(:plugin_b) { itly.plugins_instances[1] }
-
     describe 'call lambda with each plugin', fake_plugins: 2 do
+      create_itly_object
+
+      let!(:plugin_a) { itly.plugins_instances[0] }
+      let!(:plugin_b) { itly.plugins_instances[1] }
+
       before do
         expect(plugin_a).to receive(:some_method).with('param 1', 2, :param3)
         expect(plugin_b).to receive(:some_method).with('param 1', 2, :param3)
@@ -64,20 +64,52 @@ describe Itly::Plugins do
     end
 
     describe 'rescue exceptions', fake_plugins: 2 do
-      before do
-        expect(plugin_a).to receive(:some_method).and_raise('Testing 1 2 3')
-        expect(plugin_b).to receive(:some_method).with(:params)
+      context 'development' do
+        create_itly_object environment: Itly::Options::Environment::DEVELOPMENT
 
-        expect(itly.options.logger).to receive(:error)
-          .with('Itly Error in FakePlugin0. RuntimeError: Testing 1 2 3')
+        let!(:plugin_a) { itly.plugins_instances[0] }
+        let!(:plugin_b) { itly.plugins_instances[1] }
+
+        before do
+          expect(plugin_a).to receive(:some_method).and_raise('Testing 1 2 3')
+          expect(plugin_b).not_to receive(:some_method)
+
+          expect(itly.options.logger).to receive(:error)
+            .with('Itly Error in FakePlugin0. RuntimeError: Testing 1 2 3')
+        end
+
+        it do
+          expect do
+            itly.send(:run_on_plugins) { |plugin| plugin.some_method :params }
+          end.to raise_error(RuntimeError, 'Testing 1 2 3')
+        end
       end
 
-      it do
-        itly.send(:run_on_plugins) { |plugin| plugin.some_method :params }
+      context 'production' do
+        create_itly_object environment: Itly::Options::Environment::PRODUCTION
+
+        let!(:plugin_a) { itly.plugins_instances[0] }
+        let!(:plugin_b) { itly.plugins_instances[1] }
+
+        before do
+          expect(plugin_a).to receive(:some_method).and_raise('Testing 1 2 3')
+          expect(plugin_b).to receive(:some_method).with(:params)
+
+          expect(itly.options.logger).to receive(:error)
+            .with('Itly Error in FakePlugin0. RuntimeError: Testing 1 2 3')
+        end
+
+        it do
+          itly.send(:run_on_plugins) { |plugin| plugin.some_method :params }
+        end
       end
     end
 
     describe 'collect returning values', fake_plugins: 4 do
+      create_itly_object environment: Itly::Options::Environment::PRODUCTION
+
+      let!(:plugin_a) { itly.plugins_instances[0] }
+      let!(:plugin_b) { itly.plugins_instances[1] }
       let!(:plugin_c) { itly.plugins_instances[2] }
       let!(:plugin_d) { itly.plugins_instances[3] }
 
