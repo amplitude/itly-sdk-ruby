@@ -27,8 +27,8 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'simple_segment', '~> 1.2'
   spec.add_dependency 'rbs', '~> 1.0'
+  spec.add_dependency 'simple_segment', '~> 1.2'
   spec.add_dependency 'steep', '~> 0.41'
   spec.add_development_dependency 'rspec'
 end

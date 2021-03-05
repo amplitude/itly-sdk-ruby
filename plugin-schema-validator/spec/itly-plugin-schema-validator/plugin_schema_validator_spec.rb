@@ -33,7 +33,7 @@ describe Itly::PluginSchemaValidator do
     before do
       itly.load do |options|
         options.logger = fake_logger
-        options.plugins.schema_validator = { schemas: {fake_schema: '123'} }
+        options.plugins.schema_validator = { schemas: { fake_schema: '123' } }
       end
     end
 

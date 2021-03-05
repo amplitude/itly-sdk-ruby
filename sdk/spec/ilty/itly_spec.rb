@@ -107,7 +107,7 @@ describe 'Itly' do
           itly.load { |o| o.logger = fake_logger }
 
           expect(itly.options.environment).to eq(Itly::Options::Environment::DEVELOPMENT)
-          expect(itly.options.instance_variable_get '@default_environment').to be(true)
+          expect(itly.options.instance_variable_get('@default_environment')).to be(true)
         end
       end
 
@@ -124,7 +124,7 @@ describe 'Itly' do
             end
 
             expect(itly.options.environment).to eq(value)
-            expect(itly.options.instance_variable_get '@default_environment').to be(false)
+            expect(itly.options.instance_variable_get('@default_environment')).to be(false)
           end
         end
       end

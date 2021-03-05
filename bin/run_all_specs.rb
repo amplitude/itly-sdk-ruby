@@ -17,12 +17,10 @@ directories.each do |dir|
 
   cmd = 'LOCAL_ITLY_GEM=true bin/rspec'
   begin
-    PTY.spawn(cmd) do |stdout, stdin, pid|
-      begin
-        stdout.each { |line| print line }
-      rescue Errno::EIO
-        # nothing
-      end
+    PTY.spawn(cmd) do |stdout, _stdin, _pid|
+      stdout.each { |line| print line }
+    rescue Errno::EIO
+      # nothing
     end
   rescue PTY::ChildExited
     # nothing

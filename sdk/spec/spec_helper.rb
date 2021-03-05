@@ -4,7 +4,7 @@
 #
 #     bin/rspec
 #
-fail 'You need to run spec with "bin/rspec"' unless ENV['RSPEC_RUN_FROM_SCRIPT']
+raise 'You need to run spec with "bin/rspec"' unless ENV['RSPEC_RUN_FROM_SCRIPT']
 
 # Load files
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)

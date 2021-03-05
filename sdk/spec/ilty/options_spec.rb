@@ -18,15 +18,15 @@ describe Itly::Options do
   end
 
   it '#environment=' do
-    expect(options.instance_variable_get '@default_environment').to be(true)
+    expect(options.instance_variable_get('@default_environment')).to be(true)
     expect(options.environment).to eq(Itly::Options::Environment::DEVELOPMENT)
 
     options.environment = Itly::Options::Environment::DEVELOPMENT
-    expect(options.instance_variable_get '@default_environment').to be(false)
+    expect(options.instance_variable_get('@default_environment')).to be(false)
     expect(options.environment).to eq(Itly::Options::Environment::DEVELOPMENT)
 
     options.environment = Itly::Options::Environment::PRODUCTION
-    expect(options.instance_variable_get '@default_environment').to be(false)
+    expect(options.instance_variable_get('@default_environment')).to be(false)
     expect(options.environment).to eq(Itly::Options::Environment::PRODUCTION)
   end
 
