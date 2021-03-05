@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-# Configure and load RBS
-ENV['RBS_TEST_TARGET'] = 'Itly::*'
-ENV['RBS_TEST_LOGLEVEL'] = 'warn'
-ENV['RBS_TEST_DOUBLE_SUITE'] = 'rspec'
-
-require 'rbs/test/setup'
+# You can only run rspec from the root directory of the gem, with the following command:
+#
+#     bin/rspec
+#
+fail 'You need to run spec with "bin/rspec"' unless ENV['RSPEC_RUN_FROM_SCRIPT']
 
 # Load files
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)

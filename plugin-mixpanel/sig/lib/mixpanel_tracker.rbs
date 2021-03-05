@@ -1,0 +1,13 @@
+# Part of the gems
+class Mixpanel
+  class Tracker
+    attr_reader people: Mixpanel::Tracker::People
+
+    def track: (::String user_id, ::String event_name, ::Hash[::String | ::Symbol, ::String] properties) -> void
+    def alias: (::String user_id, ::String previoud_id) -> void
+
+    private
+
+    def initialize: (::String project_token, ::Mixpanel::ErrorHandler error_handler) -> void
+  end
+end

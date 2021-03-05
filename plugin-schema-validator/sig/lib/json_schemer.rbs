@@ -1,0 +1,3 @@
+class JSONSchemer
+  def validate: (::Hash[::String | ::Symbol, untyped]) -> untyped
+end

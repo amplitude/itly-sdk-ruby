@@ -28,5 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'json_schemer', '~> 0.2'
+  spec.add_dependency 'rbs', '~> 1.0'
+  spec.add_dependency 'steep', '~> 0.41'
   spec.add_development_dependency 'rspec'
 end

@@ -1,0 +1,8 @@
+# Part of the gems
+class Mixpanel
+  class Tracker
+    class People
+      def set: (::String user_id, ::Hash[::String | ::Symbol, ::String] properties) -> void
+    end
+  end
+end

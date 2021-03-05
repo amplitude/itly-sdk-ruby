@@ -15,7 +15,7 @@ directories.unshift 'sdk'
 directories.each do |dir|
   Dir.chdir root.join(dir)
 
-  cmd = 'LOCAL_ITLY_GEM=true bundle exec rspec'
+  cmd = 'LOCAL_ITLY_GEM=true bin/rspec'
   begin
     PTY.spawn(cmd) do |stdout, stdin, pid|
       begin
