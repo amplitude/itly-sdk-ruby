@@ -13,5 +13,5 @@ if ENV['LOCAL_ITLY_GEM']
 end
 
 gem 'rbs', '~> 1.0'
-gem 'steep', '~> 0.41'
 gem 'rspec'
+gem 'steep', '~> 0.41'

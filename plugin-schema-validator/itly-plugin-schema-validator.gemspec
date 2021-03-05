@@ -27,6 +27,6 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'json_schemer', '~> 0.2'
   spec.add_dependency 'itly-sdk', '~> 0.1'
+  spec.add_dependency 'json_schemer', '~> 0.2'
 end
