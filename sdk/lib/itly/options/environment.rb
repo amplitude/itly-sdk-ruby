@@ -9,5 +9,13 @@ class Itly
       DEVELOPMENT = :development
       PRODUCTION = :production
     end
+
+    def development?
+      @environment == Itly::Options::Environment::DEVELOPMENT
+    end
+
+    def production?
+      @environment == Itly::Options::Environment::PRODUCTION
+    end
   end
 end

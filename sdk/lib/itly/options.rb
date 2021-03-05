@@ -84,7 +84,7 @@ class Itly
     #
     def validation
       if @validation == Itly::Options::Validation::DEFAULT
-        if @environment == Itly::Options::Environment::DEVELOPMENT
+        if development?
           Itly::Options::Validation::ERROR_ON_INVALID
         else
           Itly::Options::Validation::TRACK_INVALID

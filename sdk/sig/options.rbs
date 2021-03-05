@@ -9,6 +9,8 @@ class Itly
 
     def context=: (::Hash[::String | ::Symbol, untyped] properties) -> void
     def validation: () -> ::Integer
+    def development?: () -> bool
+    def production?: () -> bool
 
     private
 
