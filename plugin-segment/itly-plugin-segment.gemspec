@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly/plugin_segment'
+require_relative 'lib/itly/plugin_segment/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'itly-plugin-segment'
@@ -27,8 +27,6 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'rbs', '~> 1.0'
   spec.add_dependency 'simple_segment', '~> 1.2'
-  spec.add_dependency 'steep', '~> 0.41'
-  spec.add_development_dependency 'rspec'
+  spec.add_dependency 'itly-sdk', '~> 0.1'
 end

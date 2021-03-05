@@ -2,15 +2,16 @@
 
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in itly-plugin-schema-validator.gemspec
+# Specify your gem's dependencies in itly-plugin-amplitude.gemspec
 gemspec
 
 gem 'rake', '~> 13.0'
 
-# TODO: before publication to RubyGems, switch to version 1
-
 if ENV['LOCAL_ITLY_GEM']
+  # TODO: before publication to RubyGems, switch to version 1
   gem 'itly-sdk', '~> 0.1', path: '../sdk'
-else
-  gem 'itly-sdk', '~> 0.1'
 end
+
+gem 'rbs', '~> 1.0'
+gem 'steep', '~> 0.41'
+gem 'rspec'

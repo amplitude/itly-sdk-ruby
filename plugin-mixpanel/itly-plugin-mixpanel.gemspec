@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly/plugin_mixpanel'
+require_relative 'lib/itly/plugin_mixpanel/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'itly-plugin-mixpanel'
@@ -28,7 +28,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'mixpanel-ruby', '~> 2.2'
-  spec.add_dependency 'rbs', '~> 1.0'
-  spec.add_dependency 'steep', '~> 0.41'
-  spec.add_development_dependency 'rspec'
+  spec.add_dependency 'itly-sdk', '~> 0.1'
 end
