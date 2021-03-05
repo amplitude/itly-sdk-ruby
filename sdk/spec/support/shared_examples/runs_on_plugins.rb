@@ -33,7 +33,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
 
     it do
       if method_params
-        itly.send method, method_params
+        itly.send method, **method_params
       else
         itly.send method
       end
@@ -50,7 +50,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
     it do
       expect do
         if method_params
-          itly.send method, method_params
+          itly.send method, **method_params
         else
           itly.send method
         end
@@ -77,7 +77,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
 
     it do
       if method_params
-        itly.send method, method_params
+        itly.send method, **method_params
       else
         itly.send method
       end

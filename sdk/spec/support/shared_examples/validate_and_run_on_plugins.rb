@@ -109,10 +109,10 @@ shared_examples 'validate and run on plugins' do |
   it do
     if expect_exception
       expect do
-        itly.send method, method_params
+        itly.send method, **method_params
       end.to raise_error(Itly::ValidationError, 'Response2 message')
     else
-      itly.send method, method_params
+      itly.send method, **method_params
     end
   end
 end
