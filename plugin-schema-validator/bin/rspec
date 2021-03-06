@@ -2,12 +2,14 @@
 # frozen_string_literal: true
 
 # Configure and load RBS
-ENV['RBS_TEST_TARGET'] = 'Itly::*'
-ENV['RBS_TEST_LOGLEVEL'] = 'warn'
-ENV['RBS_TEST_DOUBLE_SUITE'] = 'rspec'
-ENV['RBS_TEST_OPT'] = '-I sig -I ../sdk/sig'
+unless ENV['DISABLE_TYPE_CHECKING']
+  ENV['RBS_TEST_TARGET'] = 'Itly::*'
+  ENV['RBS_TEST_LOGLEVEL'] = 'warn'
+  ENV['RBS_TEST_DOUBLE_SUITE'] = 'rspec'
+  ENV['RBS_TEST_OPT'] = '-I sig -I ../sdk/sig'
 
-require 'rbs/test/setup'
+  require 'rbs/test/setup'
+end
 
 # Start RSpec
 require 'rspec/core'
