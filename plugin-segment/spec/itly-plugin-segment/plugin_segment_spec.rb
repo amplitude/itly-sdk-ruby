@@ -21,20 +21,47 @@ describe Itly::PluginSegment do
 
   describe '#load' do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
-    let(:plugin) { Itly::PluginSegment.new write_key: 'key123' }
     let(:itly) { Itly.new }
 
-    before do
-      itly.load do |options|
-        options.plugins = [plugin]
-        options.logger = fake_logger
+    context 'single plugin' do
+      let(:plugin) { Itly::PluginSegment.new write_key: 'key123' }
+
+      before do
+        itly.load do |options|
+          options.plugins = [plugin]
+          options.logger = fake_logger
+        end
+      end
+
+      it do
+        expect(plugin.client).to be_a_kind_of(::SimpleSegment::Client)
+        expect(plugin.client.config.write_key).to eq('key123')
+        expect(plugin.logger).to eq(fake_logger)
       end
     end
 
-    it do
-      expect(plugin.client).to be_a_kind_of(::SimpleSegment::Client)
-      expect(plugin.client.config.write_key).to eq('key123')
-      expect(plugin.logger).to eq(fake_logger)
+    context 'single plugin' do
+      let(:plugin1) { Itly::PluginSegment.new write_key: 'key123' }
+      let(:plugin2) { Itly::PluginSegment.new write_key: 'key456' }
+
+      before do
+        itly.load do |options|
+          options.plugins = [plugin1, plugin2]
+          options.logger = fake_logger
+        end
+      end
+
+      it do
+        expect(plugin1.client).to be_a_kind_of(::SimpleSegment::Client)
+        expect(plugin2.client).to be_a_kind_of(::SimpleSegment::Client)
+        expect(plugin1.client).not_to eq(plugin2.client)
+
+        expect(plugin1.client.config.write_key).to eq('key123')
+        expect(plugin2.client.config.write_key).to eq('key456')
+
+        expect(plugin1.logger).to eq(fake_logger)
+        expect(plugin2.logger).to eq(fake_logger)
+      end
     end
   end
 

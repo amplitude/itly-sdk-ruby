@@ -26,18 +26,38 @@ describe Itly::PluginSchemaValidator do
 
   describe '#load' do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
-    let(:plugin) { Itly::PluginSchemaValidator.new schemas: { fake_schema: '123' } }
     let(:itly) { Itly.new }
 
-    before do
-      itly.load do |options|
-        options.plugins = [plugin]
-        options.logger = fake_logger
+    context 'single plugin' do
+      let(:plugin) { Itly::PluginSchemaValidator.new schemas: { fake_schema: '123' } }
+
+      before do
+        itly.load do |options|
+          options.plugins = [plugin]
+          options.logger = fake_logger
+        end
+      end
+
+      it do
+        expect(plugin.logger).to eq(fake_logger)
       end
     end
 
-    it do
-      expect(plugin.logger).to eq(fake_logger)
+    context 'multiple plugins' do
+      let(:plugin1) { Itly::PluginSchemaValidator.new schemas: { fake_schema: '123' } }
+      let(:plugin2) { Itly::PluginSchemaValidator.new schemas: { mock_schema: '456' } }
+
+      before do
+        itly.load do |options|
+          options.plugins = [plugin1, plugin2]
+          options.logger = fake_logger
+        end
+      end
+
+      it do
+        expect(plugin1.logger).to eq(fake_logger)
+        expect(plugin2.logger).to eq(fake_logger)
+      end
     end
   end
 

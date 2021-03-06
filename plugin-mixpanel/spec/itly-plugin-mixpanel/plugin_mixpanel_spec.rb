@@ -21,20 +21,47 @@ describe Itly::PluginMixpanel do
 
   describe '#load' do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
-    let(:plugin) { Itly::PluginMixpanel.new project_token: 'key123' }
     let(:itly) { Itly.new }
 
-    before do
-      itly.load do |options|
-        options.plugins = [plugin]
-        options.logger = fake_logger
+    context 'single plugin' do
+      let(:plugin) { Itly::PluginMixpanel.new project_token: 'key123' }
+
+      before do
+        itly.load do |options|
+          options.plugins = [plugin]
+          options.logger = fake_logger
+        end
+      end
+
+      it do
+        expect(plugin.client).to be_a_kind_of(::Mixpanel::Tracker)
+        expect(plugin.client.instance_variable_get('@token')).to eq('key123')
+        expect(plugin.logger).to eq(fake_logger)
       end
     end
 
-    it do
-      expect(plugin.client).to be_a_kind_of(::Mixpanel::Tracker)
-      expect(plugin.client.instance_variable_get('@token')).to eq('key123')
-      expect(plugin.logger).to eq(fake_logger)
+    context 'multiple plugins' do
+      let(:plugin1) { Itly::PluginMixpanel.new project_token: 'key123' }
+      let(:plugin2) { Itly::PluginMixpanel.new project_token: 'key456' }
+
+      before do
+        itly.load do |options|
+          options.plugins = [plugin1, plugin2]
+          options.logger = fake_logger
+        end
+      end
+
+      it do
+        expect(plugin1.client).to be_a_kind_of(::Mixpanel::Tracker)
+        expect(plugin2.client).to be_a_kind_of(::Mixpanel::Tracker)
+        expect(plugin1.client).not_to eq(plugin2.client)
+
+        expect(plugin1.client.instance_variable_get('@token')).to eq('key123')
+        expect(plugin2.client.instance_variable_get('@token')).to eq('key456')
+
+        expect(plugin1.logger).to eq(fake_logger)
+        expect(plugin2.logger).to eq(fake_logger)
+      end
     end
   end
 
