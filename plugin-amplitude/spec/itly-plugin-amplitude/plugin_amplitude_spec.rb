@@ -3,41 +3,38 @@
 describe Itly::PluginAmplitude do
   include RspecLoggerHelpers
 
-  it 'register itself' do
-    expect(Itly.registered_plugins).to eq([Itly::PluginAmplitude])
-  end
-
   describe 'instance attributes' do
+    let(:plugin) { Itly::PluginAmplitude.new api_key: 'abc123' }
+
     it 'can read' do
-      expect(Itly::PluginAmplitude.new.respond_to?(:logger)).to be(true)
+      expect(plugin.respond_to?(:logger)).to be(true)
     end
 
     it 'cannot write' do
-      expect(Itly::PluginAmplitude.new.respond_to?(:logger=)).to be(false)
+      expect(plugin.respond_to?(:logger=)).to be(false)
     end
   end
 
   describe '#load' do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
+    let(:plugin) { Itly::PluginAmplitude.new api_key: 'key123' }
     let(:itly) { Itly.new }
 
     before do
       itly.load do |options|
-        options.plugins.amplitude = { api_key: 'key123' }
+        options.plugins = [plugin]
         options.logger = fake_logger
       end
     end
 
-    let(:plugin_amplitude) { itly.instance_variable_get('@plugins_instances').first }
-
     it do
-      expect(AmplitudeAPI.api_key).to eq('key123')
-      expect(plugin_amplitude.logger).to eq(fake_logger)
+      expect(plugin.logger).to eq(fake_logger)
     end
   end
 
   describe '#identify' do
     let(:logs) { StringIO.new }
+    let(:plugin) { Itly::PluginAmplitude.new api_key: 'key123' }
     let(:itly) { Itly.new }
 
     before do
@@ -50,7 +47,10 @@ describe Itly::PluginAmplitude do
       let(:response) { double 'response', status: 200 }
 
       before do
-        itly.load { |o| o.logger = ::Logger.new logs }
+        itly.load do |options|
+          options.plugins = [plugin]
+          options.logger = ::Logger.new logs
+        end
 
         itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
       end
@@ -74,6 +74,7 @@ describe Itly::PluginAmplitude do
       context 'development' do
         before do
           itly.load do |options|
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::DEVELOPMENT
           end
@@ -90,6 +91,7 @@ describe Itly::PluginAmplitude do
       context 'production' do
         before do
           itly.load do |options|
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::PRODUCTION
           end
@@ -115,6 +117,7 @@ describe Itly::PluginAmplitude do
 
   describe '#track' do
     let(:logs) { StringIO.new }
+    let(:plugin) { Itly::PluginAmplitude.new api_key: 'key123' }
     let(:itly) { Itly.new }
     let(:event) { Itly::Event.new name: 'custom_event', properties: { view: 'video' } }
 
@@ -122,7 +125,10 @@ describe Itly::PluginAmplitude do
       let(:response) { double 'response', status: 200 }
 
       before do
-        itly.load { |o| o.logger = ::Logger.new logs }
+        itly.load do |options|
+          options.plugins = [plugin]
+          options.logger = ::Logger.new logs
+        end
 
         expect(AmplitudeAPI).to receive(:send_event)
           .with('custom_event', 'user_123', nil, event_properties: { view: 'video' })
@@ -148,14 +154,15 @@ describe Itly::PluginAmplitude do
 
       before do
         itly.load do |options|
+          options.plugins = [plugin]
           options.logger = ::Logger.new logs
-
-          expect(AmplitudeAPI).to receive(:send_event)
-            .with('custom_event', 'user_123', nil, event_properties: { app_version: '1.2.3', view: 'video' })
-            .and_return(response)
-
           options.context = { app_version: '1.2.3' }
         end
+
+        expect(AmplitudeAPI).to receive(:send_event)
+          .with('custom_event', 'user_123', nil, event_properties: { app_version: '1.2.3', view: 'video' })
+          .and_return(response)
+
         itly.track user_id: 'user_123', event: event
       end
 
@@ -185,6 +192,7 @@ describe Itly::PluginAmplitude do
       context 'development' do
         before do
           itly.load do |options|
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::DEVELOPMENT
           end
@@ -201,6 +209,7 @@ describe Itly::PluginAmplitude do
       context 'production' do
         before do
           itly.load do |options|
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::PRODUCTION
           end
@@ -224,7 +233,7 @@ describe Itly::PluginAmplitude do
   end
 
   describe '#call_end_point' do
-    let(:plugin) { Itly::PluginAmplitude.new }
+    let(:plugin) { Itly::PluginAmplitude.new api_key: 'abc123' }
 
     it 'no block given' do
       expect { plugin.send :call_end_point }.to raise_error(RuntimeError, 'You need to give a block')

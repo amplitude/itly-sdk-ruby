@@ -12,33 +12,28 @@ class Itly
   class PluginSchemaValidator < Plugin
     attr_reader :logger, :schemas, :validators
 
-    def initialize
-      super
-
-      @schemas = {}
+    ##
+    # Instantiate a new PluginSchemaValidator
+    #
+    # @param [Hash] schemas: schemas for validation. Example:
+    #
+    #     PluginSchemaValidator.new schema: {
+    #       schema_1: {field: 'value, ...},
+    #       schema_2: {field: 'value, ...}
+    #     }
+    #
+    def initialize(schemas:)
+      super()
+      @schemas = schemas
       @validators = {}
     end
 
     ##
-    # Initialize the validator object
-    #
-    # Plugin specific options are set when calling Itly#load
-    # The option key for +PluginSchemaValidator+ is +schema_validator+. For example:
-    #
-    #     itly = Itly.new
-    #     itly.load do |options|
-    #       options.plugins.schema_validator = {schemas: {
-    #         schema_1: {field: 'value, ...},
-    #         schema_2: {field: 'value, ...}
-    #       }}
-    #     end
+    # Initialize the PluginSchemaValidator object
     #
     def load(options:)
       # Get options
       @logger = options.logger
-      plugin_options = get_plugin_options options
-
-      @schemas = plugin_options[:schemas]
 
       # Log
       logger.info "#{plugin_id}: load()"

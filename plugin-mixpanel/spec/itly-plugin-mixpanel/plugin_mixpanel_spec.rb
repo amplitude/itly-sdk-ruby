@@ -3,51 +3,54 @@
 describe Itly::PluginMixpanel do
   include RspecLoggerHelpers
 
-  it 'register itself' do
-    expect(Itly.registered_plugins).to eq([Itly::PluginMixpanel])
-  end
-
   describe 'instance attributes' do
+    let(:plugin) { Itly::PluginMixpanel.new project_token: 'abc123' }
+
     it 'can read' do
-      expect(Itly::PluginMixpanel.new.respond_to?(:logger)).to be(true)
-      expect(Itly::PluginMixpanel.new.respond_to?(:client)).to be(true)
+      expect(plugin.respond_to?(:logger)).to be(true)
+      expect(plugin.respond_to?(:client)).to be(true)
+      expect(plugin.respond_to?(:project_token)).to be(true)
     end
 
     it 'cannot write' do
-      expect(Itly::PluginMixpanel.new.respond_to?(:logger=)).to be(false)
-      expect(Itly::PluginMixpanel.new.respond_to?(:client=)).to be(false)
+      expect(plugin.respond_to?(:logger=)).to be(false)
+      expect(plugin.respond_to?(:client=)).to be(false)
+      expect(plugin.respond_to?(:project_token=)).to be(false)
     end
   end
 
   describe '#load' do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
+    let(:plugin) { Itly::PluginMixpanel.new project_token: 'key123' }
     let(:itly) { Itly.new }
 
     before do
       itly.load do |options|
-        options.plugins.mixpanel = { project_token: 'key123' }
+        options.plugins = [plugin]
         options.logger = fake_logger
       end
     end
 
-    let(:plugin_mixpanel) { itly.instance_variable_get('@plugins_instances').first }
-
     it do
-      expect(plugin_mixpanel.client.instance_variable_get('@token')).to eq('key123')
-      expect(plugin_mixpanel.logger).to eq(fake_logger)
+      expect(plugin.client).to be_a_kind_of(::Mixpanel::Tracker)
+      expect(plugin.client.instance_variable_get('@token')).to eq('key123')
+      expect(plugin.logger).to eq(fake_logger)
     end
   end
 
   describe '#identify' do
     let(:logs) { StringIO.new }
+    let(:plugin) { Itly::PluginMixpanel.new project_token: 'abc123' }
     let(:itly) { Itly.new }
-    let(:mixpanel_client) { itly.instance_variable_get('@plugins_instances').first.client }
 
     context 'success' do
       before do
-        itly.load { |o| o.logger = ::Logger.new logs }
+        itly.load do |options|
+          options.plugins = [plugin]
+          options.logger = ::Logger.new logs
+        end
 
-        expect(mixpanel_client.people).to receive(:set)
+        expect(plugin.client.people).to receive(:set)
           .with('user_123', version: '4', some: 'data')
 
         itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
@@ -70,11 +73,12 @@ describe Itly::PluginMixpanel do
       context 'development' do
         before do
           itly.load do |options|
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::DEVELOPMENT
           end
 
-          expect(mixpanel_client.people).to receive(:set)
+          expect(plugin.client.people).to receive(:set)
             .with('user_123', version: '4', some: 'data')
             .and_call_original
 
@@ -91,11 +95,12 @@ describe Itly::PluginMixpanel do
       context 'production' do
         before do
           itly.load do |options|
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::PRODUCTION
           end
 
-          expect(mixpanel_client.people).to receive(:set)
+          expect(plugin.client.people).to receive(:set)
             .with('user_123', version: '4', some: 'data')
             .and_call_original
 
@@ -121,15 +126,18 @@ describe Itly::PluginMixpanel do
 
   describe '#track' do
     let(:logs) { StringIO.new }
+    let(:plugin) { Itly::PluginMixpanel.new project_token: 'abc123' }
     let(:itly) { Itly.new }
-    let(:mixpanel_client) { itly.instance_variable_get('@plugins_instances').first.client }
     let(:event) { Itly::Event.new name: 'custom_event', properties: { view: 'video' } }
 
     context 'success' do
       before do
-        itly.load { |o| o.logger = ::Logger.new logs }
+        itly.load do |options|
+          options.plugins = [plugin]
+          options.logger = ::Logger.new logs
+        end
 
-        expect(mixpanel_client).to receive(:track)
+        expect(plugin.client).to receive(:track)
           .with('user_123', 'custom_event', view: 'video')
 
         itly.track user_id: 'user_123', event: event
@@ -151,11 +159,12 @@ describe Itly::PluginMixpanel do
       context 'development' do
         before do
           itly.load do |options|
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::DEVELOPMENT
           end
 
-          expect(mixpanel_client).to receive(:track)
+          expect(plugin.client).to receive(:track)
             .with('user_123', 'custom_event', view: 'video')
             .and_call_original
 
@@ -172,11 +181,12 @@ describe Itly::PluginMixpanel do
       context 'production' do
         before do
           itly.load do |options|
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::PRODUCTION
           end
 
-          expect(mixpanel_client).to receive(:track)
+          expect(plugin.client).to receive(:track)
             .with('user_123', 'custom_event', view: 'video')
             .and_call_original
 
@@ -201,14 +211,17 @@ describe Itly::PluginMixpanel do
 
   describe '#alias' do
     let(:logs) { StringIO.new }
+    let(:plugin) { Itly::PluginMixpanel.new project_token: 'abc123' }
     let(:itly) { Itly.new }
-    let(:mixpanel_client) { itly.instance_variable_get('@plugins_instances').first.client }
 
     context 'success' do
       before do
-        itly.load { |o| o.logger = ::Logger.new logs }
+        itly.load do |options|
+          options.plugins = [plugin]
+          options.logger = ::Logger.new logs
+        end
 
-        expect(mixpanel_client).to receive(:alias)
+        expect(plugin.client).to receive(:alias)
           .with('user_123', 'old_user')
 
         itly.alias user_id: 'user_123', previous_id: 'old_user'
@@ -229,11 +242,12 @@ describe Itly::PluginMixpanel do
       context 'development' do
         before do
           itly.load do |options|
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::DEVELOPMENT
           end
 
-          expect(mixpanel_client).to receive(:alias)
+          expect(plugin.client).to receive(:alias)
             .with('user_123', 'old_user')
             .and_call_original
 
@@ -250,11 +264,12 @@ describe Itly::PluginMixpanel do
       context 'production' do
         before do
           itly.load do |options|
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::PRODUCTION
           end
 
-          expect(mixpanel_client).to receive(:alias)
+          expect(plugin.client).to receive(:alias)
             .with('user_123', 'old_user')
             .and_call_original
 

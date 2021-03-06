@@ -7,35 +7,28 @@ class Itly
   ##
   # Amplitude plugin class for Itly SDK
   #
-  # Automatically loaded at runtime in any new +Itly+ object
-  #
   class PluginAmplitude < Plugin
     attr_reader :logger
 
     ##
+    # Instantiate a new PluginAmplitude
+    #
+    # @param [String] api_key: specify the Amplitude api key
+    #
+    def initialize(api_key:)
+      super()
+      ::AmplitudeAPI.config.api_key = api_key
+    end
+
+    ##
     # Initialize AmplitudeApi client
-    #
-    # Plugin specific options are set when calling Itly#load
-    # The option key for +PluginAmplitude+ is +amplitude+. For example:
-    #
-    #     itly = Itly.new
-    #     itly.load do |options|
-    #       options.plugins.amplitude = {api_key: 'abc123'}
-    #     end
-    #
-    # Accepted options are:
-    # - +api_key+ [Symbol] specify the Amplitude api key
     #
     def load(options:)
       # Get options
       @logger = options.logger
-      plugin_options = get_plugin_options options
 
       # Log
       logger.info "#{plugin_id}: load()"
-
-      # Configure client
-      ::AmplitudeAPI.config.api_key = plugin_options[:api_key]
     end
 
     ##

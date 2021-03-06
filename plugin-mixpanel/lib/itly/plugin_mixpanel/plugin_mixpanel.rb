@@ -10,32 +10,30 @@ class Itly
   # Automatically loaded at runtime in any new +Itly+ object
   #
   class PluginMixpanel < Plugin
-    attr_reader :logger, :client
+    attr_reader :logger, :client, :project_token
+
+    ##
+    # Instantiate a new PluginMixpanel
+    #
+    # @param [String] project_token: specify the Mixpanel project token
+    #
+    def initialize(project_token:)
+      super()
+      @project_token = project_token
+    end
 
     ##
     # Initialize Mixpanel::Tracker client
     #
-    # Plugin specific options are set when calling Itly#load
-    # The option key for +PluginMixpanel+ is +mixpanel+. For example:
-    #
-    #     itly = Itly.new
-    #     itly.load do |options|
-    #       options.plugins.mixpanel = {project_token: 'abc123'}
-    #     end
-    #
-    # Accepted options are:
-    # - +project_token+ [Symbol] specify the Mixpanel project token
-    #
     def load(options:)
       # Get options
       @logger = options.logger
-      plugin_options = get_plugin_options options
 
       # Log
       logger.info "#{plugin_id}: load()"
 
       # Configure client
-      @client = ::Mixpanel::Tracker.new plugin_options[:project_token], ErrorHandler.new
+      @client = ::Mixpanel::Tracker.new @project_token, ErrorHandler.new
     end
 
     ##

@@ -3,52 +3,45 @@
 describe Itly::PluginSchemaValidator do
   include RspecLoggerHelpers
 
-  it 'register itself' do
-    expect(Itly.registered_plugins).to eq([Itly::PluginSchemaValidator])
-  end
-
   describe 'instance attributes' do
+    let(:plugin) { Itly::PluginSchemaValidator.new schemas: {} }
+
     it 'default values' do
-      expect(Itly::PluginSchemaValidator.new.schemas).to eq({})
-      expect(Itly::PluginSchemaValidator.new.validators).to eq({})
+      expect(plugin.schemas).to eq({})
+      expect(plugin.validators).to eq({})
     end
 
     it 'can read' do
-      expect(Itly::PluginSchemaValidator.new.respond_to?(:logger)).to be(true)
-      expect(Itly::PluginSchemaValidator.new.respond_to?(:schemas)).to be(true)
-      expect(Itly::PluginSchemaValidator.new.respond_to?(:schemas)).to be(true)
+      expect(plugin.respond_to?(:logger)).to be(true)
+      expect(plugin.respond_to?(:schemas)).to be(true)
+      expect(plugin.respond_to?(:schemas)).to be(true)
     end
 
     it 'cannot write' do
-      expect(Itly::PluginSchemaValidator.new.respond_to?(:logger=)).to be(false)
-      expect(Itly::PluginSchemaValidator.new.respond_to?(:validators=)).to be(false)
-      expect(Itly::PluginSchemaValidator.new.respond_to?(:validators=)).to be(false)
+      expect(plugin.respond_to?(:logger=)).to be(false)
+      expect(plugin.respond_to?(:validators=)).to be(false)
+      expect(plugin.respond_to?(:validators=)).to be(false)
     end
   end
 
   describe '#load' do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
+    let(:plugin) { Itly::PluginSchemaValidator.new schemas: { fake_schema: '123' } }
     let(:itly) { Itly.new }
 
     before do
       itly.load do |options|
+        options.plugins = [plugin]
         options.logger = fake_logger
-        options.plugins.schema_validator = { schemas: { fake_schema: '123' } }
       end
     end
 
-    let(:plugin_validator) { itly.instance_variable_get('@plugins_instances').first }
-
     it do
-      expect(plugin_validator.logger).to eq(fake_logger)
-      expect(plugin_validator.schemas).to eq(fake_schema: '123')
+      expect(plugin.logger).to eq(fake_logger)
     end
   end
 
   describe '#validate' do
-    let(:logs) { StringIO.new }
-    let(:itly) { Itly.new }
-
     let(:schema) do
       {
         '$id' => 'https://iterative.ly/company/77b37977-cb3a-42eb-bce3-09f5f7c3adb7/context',
@@ -69,6 +62,10 @@ describe Itly::PluginSchemaValidator do
       }
     end
 
+    let(:logs) { StringIO.new }
+    let(:plugin) { Itly::PluginSchemaValidator.new schemas: { context: schema } }
+    let(:itly) { Itly.new }
+
     describe 'missing schema definition' do
       let(:event) do
         Itly::Event.new name: 'other_schema', properties: {
@@ -80,7 +77,7 @@ describe Itly::PluginSchemaValidator do
         before do
           itly.load do |options|
             options.logger = ::Logger.new logs
-            options.plugins.schema_validator = { schemas: { context: schema } }
+            options.plugins = [plugin]
             options.environment = Itly::Options::Environment::DEVELOPMENT
           end
         end
@@ -96,7 +93,7 @@ describe Itly::PluginSchemaValidator do
         before do
           itly.load do |options|
             options.logger = ::Logger.new logs
-            options.plugins.schema_validator = { schemas: { context: schema } }
+            options.plugins = [plugin]
             options.environment = Itly::Options::Environment::PRODUCTION
           end
         end
@@ -122,7 +119,7 @@ describe Itly::PluginSchemaValidator do
       before do
         itly.load do |options|
           options.logger = ::Logger.new logs
-          options.plugins.schema_validator = { schemas: { context: schema } }
+          options.plugins = [plugin]
         end
       end
 
@@ -193,7 +190,7 @@ describe Itly::PluginSchemaValidator do
       before do
         itly.load do |options|
           options.logger = ::Logger.new logs
-          options.plugins.schema_validator = { schemas: { context: schema } }
+          options.plugins = [plugin]
         end
       end
 
@@ -287,7 +284,7 @@ describe Itly::PluginSchemaValidator do
 
   describe '#return_validation_responses' do
     let(:event) { Itly::Event.new name: 'context', properties: {} }
-    let(:plugin) { Itly::PluginSchemaValidator.new }
+    let(:plugin) { Itly::PluginSchemaValidator.new schemas: {} }
 
     it 'empty' do
       expect(plugin.send(:return_validation_responses, event, [])).to be(nil)
@@ -348,7 +345,7 @@ describe Itly::PluginSchemaValidator do
   end
 
   describe '#deeply_stringify_keys' do
-    let(:plugin) { Itly::PluginSchemaValidator.new }
+    let(:plugin) { Itly::PluginSchemaValidator.new schemas: {} }
 
     it 'empty' do
       expect(plugin.send(:deeply_stringify_keys, {})).to eq({})
@@ -365,7 +362,7 @@ describe Itly::PluginSchemaValidator do
   end
 
   describe '#hash_to_message' do
-    let(:plugin) { Itly::PluginSchemaValidator.new }
+    let(:plugin) { Itly::PluginSchemaValidator.new schemas: {} }
 
     it 'empty' do
       expect(plugin.send(:hash_to_message, {})).to eq('')

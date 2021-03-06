@@ -3,54 +3,54 @@
 describe Itly::PluginSegment do
   include RspecLoggerHelpers
 
-  it 'register itself' do
-    expect(Itly.registered_plugins).to eq([Itly::PluginSegment])
-  end
-
   describe 'instance attributes' do
+    let(:plugin) { Itly::PluginSegment.new write_key: 'abc123' }
+
     it 'can read' do
-      expect(Itly::PluginSegment.new.respond_to?(:logger)).to be(true)
-      expect(Itly::PluginSegment.new.respond_to?(:client)).to be(true)
+      expect(plugin.respond_to?(:logger)).to be(true)
+      expect(plugin.respond_to?(:client)).to be(true)
+      expect(plugin.respond_to?(:write_key)).to be(true)
     end
 
     it 'cannot write' do
-      expect(Itly::PluginSegment.new.respond_to?(:logger=)).to be(false)
-      expect(Itly::PluginSegment.new.respond_to?(:client=)).to be(false)
+      expect(plugin.respond_to?(:logger=)).to be(false)
+      expect(plugin.respond_to?(:client=)).to be(false)
+      expect(plugin.respond_to?(:write_key=)).to be(false)
     end
   end
 
   describe '#load' do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
+    let(:plugin) { Itly::PluginSegment.new write_key: 'key123' }
     let(:itly) { Itly.new }
 
     before do
       itly.load do |options|
-        options.plugins.segment = { write_key: 'key123' }
+        options.plugins = [plugin]
         options.logger = fake_logger
       end
     end
 
-    let(:plugin_segment) { itly.instance_variable_get('@plugins_instances').first }
-
     it do
-      expect(plugin_segment.client.config.write_key).to eq('key123')
-      expect(plugin_segment.logger).to eq(fake_logger)
+      expect(plugin.client).to be_a_kind_of(::SimpleSegment::Client)
+      expect(plugin.client.config.write_key).to eq('key123')
+      expect(plugin.logger).to eq(fake_logger)
     end
   end
 
   describe '#identify' do
     let(:logs) { StringIO.new }
+    let(:plugin) { Itly::PluginSegment.new write_key: 'key123' }
     let(:itly) { Itly.new }
-    let(:segment_client) { itly.instance_variable_get('@plugins_instances').first.client }
 
     context 'success' do
       before do
         itly.load do |options|
-          options.plugins.segment = { write_key: 'key123' }
+          options.plugins = [plugin]
           options.logger = ::Logger.new logs
         end
 
-        expect(segment_client).to receive(:identify)
+        expect(plugin.client).to receive(:identify)
           .with(user_id: 'user_123', traits: { version: '4', some: 'data' })
 
         itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
@@ -73,12 +73,12 @@ describe Itly::PluginSegment do
       context 'development' do
         before do
           itly.load do |options|
-            options.plugins.segment = { write_key: 'key123' }
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::DEVELOPMENT
           end
 
-          expect(segment_client).to receive(:identify)
+          expect(plugin.client).to receive(:identify)
             .with(user_id: 'user_123', traits: { version: '4', some: 'data' })
             .and_call_original
 
@@ -96,12 +96,12 @@ describe Itly::PluginSegment do
       context 'production' do
         before do
           itly.load do |options|
-            options.plugins.segment = { write_key: 'key123' }
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::PRODUCTION
           end
 
-          expect(segment_client).to receive(:identify)
+          expect(plugin.client).to receive(:identify)
             .with(user_id: 'user_123', traits: { version: '4', some: 'data' })
             .and_call_original
 
@@ -128,17 +128,17 @@ describe Itly::PluginSegment do
 
   describe '#group' do
     let(:logs) { StringIO.new }
+    let(:plugin) { Itly::PluginSegment.new write_key: 'key123' }
     let(:itly) { Itly.new }
-    let(:segment_client) { itly.instance_variable_get('@plugins_instances').first.client }
 
     context 'success' do
       before do
         itly.load do |options|
-          options.plugins.segment = { write_key: 'key123' }
+          options.plugins = [plugin]
           options.logger = ::Logger.new logs
         end
 
-        expect(segment_client).to receive(:group)
+        expect(plugin.client).to receive(:group)
           .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' })
 
         itly.group user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' }
@@ -161,12 +161,12 @@ describe Itly::PluginSegment do
       context 'development' do
         before do
           itly.load do |options|
-            options.plugins.segment = { write_key: 'key123' }
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::DEVELOPMENT
           end
 
-          expect(segment_client).to receive(:group)
+          expect(plugin.client).to receive(:group)
             .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' })
             .and_call_original
 
@@ -184,12 +184,12 @@ describe Itly::PluginSegment do
       context 'production' do
         before do
           itly.load do |options|
-            options.plugins.segment = { write_key: 'key123' }
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::PRODUCTION
           end
 
-          expect(segment_client).to receive(:group)
+          expect(plugin.client).to receive(:group)
             .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' })
             .and_call_original
 
@@ -216,18 +216,18 @@ describe Itly::PluginSegment do
 
   describe '#track' do
     let(:logs) { StringIO.new }
+    let(:plugin) { Itly::PluginSegment.new write_key: 'key123' }
     let(:itly) { Itly.new }
     let(:event) { Itly::Event.new name: 'custom_event', properties: { view: 'video' } }
-    let(:segment_client) { itly.instance_variable_get('@plugins_instances').first.client }
 
     context 'success' do
       before do
         itly.load do |options|
-          options.plugins.segment = { write_key: 'key123' }
+          options.plugins = [plugin]
           options.logger = ::Logger.new logs
         end
 
-        expect(segment_client).to receive(:track)
+        expect(plugin.client).to receive(:track)
           .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' })
 
         itly.track user_id: 'user_123', event: event
@@ -249,12 +249,12 @@ describe Itly::PluginSegment do
       context 'development' do
         before do
           itly.load do |options|
-            options.plugins.segment = { write_key: 'key123' }
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::DEVELOPMENT
           end
 
-          expect(segment_client).to receive(:track)
+          expect(plugin.client).to receive(:track)
             .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' })
             .and_call_original
 
@@ -272,12 +272,12 @@ describe Itly::PluginSegment do
       context 'production' do
         before do
           itly.load do |options|
-            options.plugins.segment = { write_key: 'key123' }
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::PRODUCTION
           end
 
-          expect(segment_client).to receive(:track)
+          expect(plugin.client).to receive(:track)
             .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' })
             .and_call_original
 
@@ -303,17 +303,17 @@ describe Itly::PluginSegment do
 
   describe '#alias' do
     let(:logs) { StringIO.new }
+    let(:plugin) { Itly::PluginSegment.new write_key: 'key123' }
     let(:itly) { Itly.new }
-    let(:segment_client) { itly.instance_variable_get('@plugins_instances').first.client }
 
     context 'success' do
       before do
         itly.load do |options|
-          options.plugins.segment = { write_key: 'key123' }
+          options.plugins = [plugin]
           options.logger = ::Logger.new logs
         end
 
-        expect(segment_client).to receive(:alias)
+        expect(plugin.client).to receive(:alias)
           .with(user_id: 'user_123', previous_id: 'old_user')
 
         itly.alias user_id: 'user_123', previous_id: 'old_user'
@@ -334,12 +334,12 @@ describe Itly::PluginSegment do
       context 'development' do
         before do
           itly.load do |options|
-            options.plugins.segment = { write_key: 'key123' }
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::DEVELOPMENT
           end
 
-          expect(segment_client).to receive(:alias)
+          expect(plugin.client).to receive(:alias)
             .with(user_id: 'user_123', previous_id: 'old_user')
             .and_call_original
 
@@ -357,12 +357,12 @@ describe Itly::PluginSegment do
       context 'production' do
         before do
           itly.load do |options|
-            options.plugins.segment = { write_key: 'key123' }
+            options.plugins = [plugin]
             options.logger = ::Logger.new logs
             options.environment = Itly::Options::Environment::PRODUCTION
           end
 
-          expect(segment_client).to receive(:alias)
+          expect(plugin.client).to receive(:alias)
             .with(user_id: 'user_123', previous_id: 'old_user')
             .and_call_original
 

@@ -10,26 +10,24 @@ class Itly
   # Automatically loaded at runtime in any new +Itly+ object
   #
   class PluginSegment < Plugin
-    attr_reader :logger, :client
+    attr_reader :logger, :client, :write_key
+
+    ##
+    # Instantiate a new PluginSegment
+    #
+    # @param [String] write_key: specify the Segment write key
+    #
+    def initialize(write_key:)
+      super()
+      @write_key = write_key
+    end
 
     ##
     # Initialize Segment::Tracker client
     #
-    # Plugin specific options are set when calling Itly#load
-    # The option key for +PluginSegment+ is +segment+. For example:
-    #
-    #     itly = Itly.new
-    #     itly.load do |options|
-    #       options.plugins.segment = {write_key: 'abc123'}
-    #     end
-    #
-    # Accepted options are:
-    # - +write_key+ [Symbol] specify the Segment project token
-    #
     def load(options:)
       # Get options
       @logger = options.logger
-      plugin_options = get_plugin_options options
 
       # Log
       logger.info "#{plugin_id}: load()"
@@ -44,7 +42,7 @@ class Itly
         raise Itly::RemoteError, message
       end
 
-      @client = ::SimpleSegment::Client.new write_key: plugin_options[:write_key], logger: logger,
+      @client = ::SimpleSegment::Client.new write_key: @write_key, logger: logger,
         on_error: error_handler
     end
 
