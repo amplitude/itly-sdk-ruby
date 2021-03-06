@@ -1,4 +1,4 @@
-name: Rspec
+name: Test and lint
 
 on: [push, pull_request]
 
@@ -106,3 +106,20 @@ jobs:
         cd ../plugin-segment; LOCAL_ITLY_GEM=true bundle install
     - name: Run tests for PluginSegment
       run: cd plugin-segment; LOCAL_ITLY_GEM=true bin/rspec
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@473e4d8fe5dd94ee328fdfca9f8c9c7afc9dae5e
+      with:
+        ruby-version: '2.6'
+
+    - name: Install RuboCop
+      run: gem install rubocop
+
+    - name: Lint
+      run: rubocop
