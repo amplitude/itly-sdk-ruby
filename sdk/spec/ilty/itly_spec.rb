@@ -7,14 +7,13 @@ describe 'Itly' do
     let!(:itly) { Itly.new }
 
     it do
-      expect(itly.instance_variable_get('@plugins_instances')).to eq([])
       expect(itly.instance_variable_get('@is_initialized')).to be(false)
     end
   end
 
   describe '#load' do
     let!(:itly) { Itly.new }
-    let(:fake_logger) { double 'logger', info: nil, warn: nil }
+    let!(:fake_logger) { double 'logger', info: nil, warn: nil }
 
     describe 'cannot be called twice' do
       before do
@@ -37,14 +36,14 @@ describe 'Itly' do
         end
       end
 
-      context 'with a block' do
+      context 'with a block', fake_plugins: 1 do
         before do
           itly.load do |o|
             o.context = { some: 'data' }
             o.disabled = true
             o.environment = Itly::Options::Environment::PRODUCTION
             o.validation = Itly::Options::Validation::DISABLED
-            o.plugins.plugin_config = 'data'
+            o.plugins = [FakePlugin0.new]
             o.logger = fake_logger
           end
         end
@@ -57,8 +56,8 @@ describe 'Itly' do
           expect(itly.options.logger).to eq(fake_logger)
 
           plugins = itly.options.plugins
-          expect(plugins).to be_a_kind_of(Itly::OptionsWrapper)
-          expect(plugins.plugin_config).to eq('data')
+          expect(plugins.count).to eq(1)
+          expect(plugins[0]).to be_a_kind_of(FakePlugin0)
 
           context = itly.options.context
           expect(context).to be_a_kind_of(Itly::Event)
@@ -100,6 +99,7 @@ describe 'Itly' do
       context 'default value' do
         before do
           expect(fake_logger).to receive(:warn).once.with('Environment not specified. Automatically set to development')
+          expect(fake_logger).to receive(:warn).once.with('No plugin enabled!')
           expect(fake_logger).not_to receive(:warn)
         end
 
@@ -114,6 +114,7 @@ describe 'Itly' do
       [Itly::Options::Environment::DEVELOPMENT, Itly::Options::Environment::PRODUCTION].each do |value|
         context "set to #{value}" do
           before do
+            expect(fake_logger).to receive(:warn).once.with('No plugin enabled!')
             expect(fake_logger).not_to receive(:warn)
           end
 
@@ -130,33 +131,32 @@ describe 'Itly' do
       end
     end
 
-    describe 'plugins', fake_plugins: 2, fake_plugins_methods: %i[load] do
+    describe 'plugins', fake_plugins: 2 do
+      let!(:plugin_a) { FakePlugin0.new }
+      let!(:plugin_b) { FakePlugin1.new }
+      let!(:plugin_c) { FakePlugin1.new }
+
       before do
-        expect(itly).to receive(:instantiate_plugins).and_call_original
-        expect_any_instance_of(FakePlugin0).to receive(:load).and_wrap_original do |_, *args|
-          expect(args.count).to eq(1)
-          expect(args[0].keys).to eq([:options])
-          expect(args[0][:options].class).to eq(Itly::Options)
-        end
-        expect_any_instance_of(FakePlugin1).to receive(:load).and_wrap_original do |_, *args|
-          expect(args.count).to eq(1)
-          expect(args[0].keys).to eq([:options])
-          expect(args[0][:options].class).to eq(Itly::Options)
+        [plugin_a, plugin_b, plugin_c].each do |plugin|
+          expect(plugin).to receive(:load).and_wrap_original do |_, *args|
+            expect(args.count).to eq(1)
+            expect(args[0].keys).to eq([:options])
+            expect(args[0][:options].class).to eq(Itly::Options)
+          end
         end
       end
 
       it do
-        itly.load
-        expect(itly.plugins_instances.count).to eq(2)
-        expect(itly.plugins_instances[0]).to be_a_kind_of(FakePlugin0)
-        expect(itly.plugins_instances[1]).to be_a_kind_of(FakePlugin1)
+        itly.load do |options|
+          options.plugins = [plugin_a, plugin_b, plugin_c]
+        end
       end
     end
   end
 
-  describe '#identify', fake_plugins: 2, fake_plugins_methods: %i[load] do
+  describe '#identify', fake_plugins: 2 do
     context 'Itly was not ititialized' do
-      let(:itly) { Itly.new }
+      let!(:itly) { Itly.new }
       let!(:event) { Itly::Event.new name: 'Test' }
 
       before do
@@ -207,7 +207,16 @@ describe 'Itly' do
     end
 
     context 'disabled' do
-      create_itly_object disabled: true
+      let!(:plugin_a) { FakePlugin0.new }
+      let!(:plugin_b) { FakePlugin1.new }
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load do |options|
+          options.disabled = true
+          options.plugins = [plugin_a, plugin_b]
+        end
+      end
 
       before do
         expect(itly.options.logger).not_to receive(:info)
@@ -221,7 +230,7 @@ describe 'Itly' do
     end
   end
 
-  describe '#group', fake_plugins: 2, fake_plugins_methods: %i[load] do
+  describe '#group', fake_plugins: 2 do
     context 'Itly was not ititialized' do
       let(:itly) { Itly.new }
       let!(:event) { Itly::Event.new name: 'Test' }
@@ -274,7 +283,16 @@ describe 'Itly' do
     end
 
     context 'disabled' do
-      create_itly_object disabled: true
+      let!(:plugin_a) { FakePlugin0.new }
+      let!(:plugin_b) { FakePlugin1.new }
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load do |options|
+          options.disabled = true
+          options.plugins = [plugin_a, plugin_b]
+        end
+      end
 
       before do
         expect(itly.options.logger).not_to receive(:info)
@@ -288,7 +306,7 @@ describe 'Itly' do
     end
   end
 
-  describe '#track', fake_plugins: 2, fake_plugins_methods: %i[load] do
+  describe '#track', fake_plugins: 2 do
     context 'Itly was not ititialized' do
       let(:itly) { Itly.new }
       let!(:event) { Itly::Event.new name: 'Test' }
@@ -373,7 +391,16 @@ describe 'Itly' do
     end
 
     context 'disabled' do
-      create_itly_object disabled: true
+      let!(:plugin_a) { FakePlugin0.new }
+      let!(:plugin_b) { FakePlugin1.new }
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load do |options|
+          options.disabled = true
+          options.plugins = [plugin_a, plugin_b]
+        end
+      end
 
       before do
         expect(itly.options.logger).not_to receive(:info)
@@ -403,7 +430,7 @@ describe 'Itly' do
       expected_log_info: 'reset()'
   end
 
-  describe '#validate', fake_plugins: 2, fake_plugins_methods: %i[load] do
+  describe '#validate', fake_plugins: 2 do
     context 'Itly was not ititialized' do
       let(:itly) { Itly.new }
       let!(:event) { Itly::Event.new name: 'Test' }
@@ -420,12 +447,18 @@ describe 'Itly' do
     end
 
     context 'default' do
-      create_itly_object
+      let!(:plugin_a) { FakePlugin0.new }
+      let!(:plugin_b) { FakePlugin1.new }
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load do |options|
+          options.plugins = [plugin_a, plugin_b]
+        end
+      end
+
       let!(:event) { Itly::Event.new name: 'Test' }
       let!(:response) { Itly::ValidationResponse.new valid: true, plugin_id: 'plugin123' }
-
-      let!(:plugin_a) { itly.plugins_instances[0] }
-      let!(:plugin_b) { itly.plugins_instances[1] }
 
       before do
         expect(itly.options.logger).to receive(:info)
@@ -441,11 +474,17 @@ describe 'Itly' do
     end
 
     context 'disabled' do
-      create_itly_object validation: Itly::Options::Validation::DISABLED
-      let!(:event) { Itly::Event.new name: 'Test' }
+      let!(:plugin_a) { FakePlugin0.new }
+      let!(:plugin_b) { FakePlugin1.new }
+      let!(:itly) { Itly.new }
 
-      let!(:plugin_a) { itly.plugins_instances[0] }
-      let!(:plugin_b) { itly.plugins_instances[1] }
+      before do
+        itly.load do |options|
+          options.validation = Itly::Options::Validation::DISABLED
+          options.plugins = [plugin_a, plugin_b]
+        end
+      end
+      let!(:event) { Itly::Event.new name: 'Test' }
 
       before do
         expect(itly.options.logger).not_to receive(:info)
@@ -461,15 +500,30 @@ describe 'Itly' do
   end
 
   describe '#validate_and_send_to_plugins', fake_plugins: 2,
-fake_plugins_methods: %i[load mock_action mock_post_action] do
-    create_itly_object context: { data: 'for_context' }
+fake_plugins_methods: %i[mock_action mock_post_action] do
+    # Instanciate plugins, an event, and the Itly object
+    let!(:plugin_a) { FakePlugin0.new }
+    let!(:plugin_b) { FakePlugin1.new }
     let!(:event) { Itly::Event.new name: 'Test' }
+    let!(:itly) { Itly.new }
 
+    # Holder for examples to inject a validation option into Itly options
+    let(:validation_option) { nil }
+
+    # Load options
+    before do
+      itly.load do |options|
+        options.context = { data: 'for_context' }
+        options.plugins = [plugin_a, plugin_b]
+        options.validation = validation_option if validation_option
+      end
+    end
+
+    # Holders for ValidationResponse object that will be generated by the validation methods
+    # Add an object in thos holders, and they will be generated
+    # See the 'validate and send to plugins' shared example  for more info
     let(:generates_context_errors) { [] }
     let(:generates_event_errors) { [] }
-
-    let!(:plugin_a) { itly.plugins_instances[0] }
-    let!(:plugin_b) { itly.plugins_instances[1] }
 
     describe 'default' do
       context 'no context' do
@@ -498,9 +552,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       let(:generates_context_errors) { [response] }
 
       context 'options.validation = DISABLED' do
-        before do
-          itly.options.validation = Itly::Options::Validation::DISABLED
-        end
+        let(:validation_option) { Itly::Options::Validation::DISABLED }
 
         include_examples 'validate and send to plugins', with_context: true,
           receive_action_methods: false, is_valid: false
@@ -513,9 +565,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       end
 
       context 'options.validation = TRACK_INVALID' do
-        before do
-          itly.options.validation = Itly::Options::Validation::TRACK_INVALID
-        end
+        let(:validation_option) { Itly::Options::Validation::TRACK_INVALID }
 
         include_examples 'validate and send to plugins', with_context: true, is_valid: false
 
@@ -527,9 +577,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       end
 
       context 'options.validation = ERROR_ON_INVALID' do
-        before do
-          itly.options.validation = Itly::Options::Validation::ERROR_ON_INVALID
-        end
+        let(:validation_option) { Itly::Options::Validation::ERROR_ON_INVALID }
 
         include_examples 'validate and send to plugins', with_context: true,
           receive_action_methods: false, is_valid: false
@@ -547,9 +595,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       let(:generates_event_errors) { [response] }
 
       context 'options.validation = DISABLED' do
-        before do
-          itly.options.validation = Itly::Options::Validation::DISABLED
-        end
+        let(:validation_option) { Itly::Options::Validation::DISABLED }
 
         include_examples 'validate and send to plugins', with_context: true,
           receive_action_methods: false, is_valid: false
@@ -562,9 +608,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       end
 
       context 'options.validation = TRACK_INVALID' do
-        before do
-          itly.options.validation = Itly::Options::Validation::TRACK_INVALID
-        end
+        let(:validation_option) { Itly::Options::Validation::TRACK_INVALID }
 
         include_examples 'validate and send to plugins', with_context: true, is_valid: false
 
@@ -576,9 +620,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       end
 
       context 'options.validation = ERROR_ON_INVALID' do
-        before do
-          itly.options.validation = Itly::Options::Validation::ERROR_ON_INVALID
-        end
+        let(:validation_option) { Itly::Options::Validation::ERROR_ON_INVALID }
 
         include_examples 'validate and send to plugins', with_context: true,
           receive_action_methods: false, is_valid: false
@@ -598,9 +640,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       let(:generates_event_errors) { [response2] }
 
       context 'options.validation = DISABLED' do
-        before do
-          itly.options.validation = Itly::Options::Validation::DISABLED
-        end
+        let(:validation_option) { Itly::Options::Validation::DISABLED }
 
         include_examples 'validate and send to plugins', with_context: true,
           receive_action_methods: false, is_valid: false
@@ -613,9 +653,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       end
 
       context 'options.validation = TRACK_INVALID' do
-        before do
-          itly.options.validation = Itly::Options::Validation::TRACK_INVALID
-        end
+        let(:validation_option) { Itly::Options::Validation::TRACK_INVALID }
 
         include_examples 'validate and send to plugins', with_context: true, is_valid: false
 
@@ -627,9 +665,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
       end
 
       context 'options.validation = ERROR_ON_INVALID' do
-        before do
-          itly.options.validation = Itly::Options::Validation::ERROR_ON_INVALID
-        end
+        let(:validation_option) { Itly::Options::Validation::ERROR_ON_INVALID }
 
         include_examples 'validate and send to plugins', with_context: true,
           receive_action_methods: false, is_valid: false
@@ -643,13 +679,18 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
     end
   end
 
-  describe 'validate_context_and_event', fake_plugins: 2, fake_plugins_methods: %i[load validate] do
+  describe 'validate_context_and_event', fake_plugins: 2, fake_plugins_methods: %i[validate] do
     context 'without context' do
-      create_itly_object
+      let!(:plugin_a) { FakePlugin0.new }
+      let!(:plugin_b) { FakePlugin1.new }
       let!(:event) { Itly::Event.new name: 'Test' }
+      let!(:itly) { Itly.new }
 
-      let!(:plugin_a) { itly.plugins_instances[0] }
-      let!(:plugin_b) { itly.plugins_instances[1] }
+      before do
+        itly.load do |options|
+          options.plugins = [plugin_a, plugin_b]
+        end
+      end
 
       context 'no return from validations' do
         before do
@@ -702,11 +743,17 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
     end
 
     context 'excluding context' do
-      create_itly_object context: { data: 'for_context' }
+      let!(:plugin_a) { FakePlugin0.new }
+      let!(:plugin_b) { FakePlugin1.new }
       let!(:event) { Itly::Event.new name: 'Test' }
+      let!(:itly) { Itly.new }
 
-      let!(:plugin_a) { itly.plugins_instances[0] }
-      let!(:plugin_b) { itly.plugins_instances[1] }
+      before do
+        itly.load do |options|
+          options.context = { data: 'for_context' }
+          options.plugins = [plugin_a, plugin_b]
+        end
+      end
 
       context 'no return from validations' do
         before do
@@ -759,11 +806,17 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
     end
 
     context 'with context' do
-      create_itly_object context: { data: 'for_context' }
+      let!(:plugin_a) { FakePlugin0.new }
+      let!(:plugin_b) { FakePlugin1.new }
       let!(:event) { Itly::Event.new name: 'Test' }
+      let!(:itly) { Itly.new }
 
-      let!(:plugin_a) { itly.plugins_instances[0] }
-      let!(:plugin_b) { itly.plugins_instances[1] }
+      before do
+        itly.load do |options|
+          options.context = { data: 'for_context' }
+          options.plugins = [plugin_a, plugin_b]
+        end
+      end
 
       context 'no return from validations' do
         before do
@@ -841,8 +894,12 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
   end
 
   describe '#log_validation_errors' do
-    create_itly_object
+    let!(:itly) { Itly.new }
     let!(:event) { Itly::Event.new name: 'Test event' }
+
+    before do
+      itly.load
+    end
 
     context 'validations is empty' do
       before do
@@ -881,6 +938,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
         itly.send :log_validation_errors, [response1, response2], event
       end
     end
+
     context 'multiple errors' do
       let(:response1) { Itly::ValidationResponse.new valid: false, plugin_id: 'pg_1', message: 'One' }
       let(:response2) { Itly::ValidationResponse.new valid: false, plugin_id: 'pg_2', message: 'Two' }
@@ -900,11 +958,18 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
   end
 
   describe '#raise_validation_errors' do
-    create_itly_object
+    # Instanciate
     let!(:event) { Itly::Event.new name: 'Test event' }
+    let!(:itly) { Itly.new }
 
+    # Holder for examples to inject a validation option into Itly options
+    let(:validation_option) { Itly::Options::Validation::ERROR_ON_INVALID }
+
+    # Load options
     before do
-      itly.options.validation = Itly::Options::Validation::ERROR_ON_INVALID
+      itly.load do |options|
+        options.validation = validation_option
+      end
     end
 
     it 'is valid' do
@@ -912,9 +977,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
     end
 
     context 'validation is DISABLED' do
-      before do
-        itly.options.validation = Itly::Options::Validation::DISABLED
-      end
+      let(:validation_option) { Itly::Options::Validation::DISABLED }
 
       it do
         expect { itly.send :raise_validation_errors, false, [], event }.not_to raise_error
@@ -922,9 +985,7 @@ fake_plugins_methods: %i[load mock_action mock_post_action] do
     end
 
     context 'validation is TRACK_INVALID' do
-      before do
-        itly.options.validation = Itly::Options::Validation::TRACK_INVALID
-      end
+      let(:validation_option) { Itly::Options::Validation::TRACK_INVALID }
 
       it do
         expect { itly.send :raise_validation_errors, false, [], event }.not_to raise_error

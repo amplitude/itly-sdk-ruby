@@ -8,25 +8,11 @@ class Itly
   # When creating a custom plugin, you need to create a child class of Itly::Plugin
   #
   class Plugin
-    class << self
-      ##
-      # Trigger for a plugin to register itself with Itly so that it can be instantiated
-      #
-      def inherited(subclass)
-        super
-        Itly.registered_plugins.push subclass
-      end
-    end
-
     ##
     # Called when the Itly SDK is being loaded and is ready to load your plugin.
     #
     # @param [Itly::Options] options: The same configuration object passed to +itly.load+
     #   when the SDK was being initialized.
-    #
-    #   To retrieve plugin-specific options you can call:
-    #
-    #       get_plugin_options options
     #
     def load(options:); end
 
@@ -93,20 +79,6 @@ class Itly
     def validate(event:); end
 
     protected
-
-    ##
-    # Get plugin-specific options
-    #
-    # @param [Ilty::Options] options: the options to retrieve from
-    #
-    # @return [Hash] the plugin-specific options
-    #
-    def get_plugin_options(options)
-      options.plugins.send plugin_id.sub(/^plugin_/, '').to_sym
-    rescue NoMethodError
-      # If the underscored class name was not found in the options, return an empty hash
-      {}
-    end
 
     ##
     # Get the plugin ID, which is the underscored class name. Use only the child class in case of nested classes

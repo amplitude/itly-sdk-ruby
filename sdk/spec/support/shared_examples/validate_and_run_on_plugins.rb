@@ -16,24 +16,28 @@ shared_examples 'validate and run on plugins' do |
   expect_exception: false # Indicates if it is expected to raise an exception
 |
 
-  if context_properties
-    create_itly_object context: context_properties
-  else
-    create_itly_object
-  end
+  # Instanciate plugins and Itly object
+  let!(:plugin_a) { FakePlugin0.new }
+  let!(:plugin_b) { FakePlugin1.new }
+  let!(:itly) { Itly.new }
 
-  if validation_value
-    before do
-      itly.options.validation = validation_value
+  # Load options
+  before do
+    itly.load do |options|
+      options.plugins = [plugin_a, plugin_b]
+      options.context = context_properties if context_properties
+      options.validation = validation_value if validation_value
     end
   end
 
+  # Default values for the expected validation name
   expected_validation_name = method if expected_validation_name.nil?
 
-  let!(:plugin_a) { itly.plugins_instances[0] }
-  let!(:plugin_b) { itly.plugins_instances[1] }
-
+  # Create the event that is expected to be received for validation
   let(:expected_event) { Itly::Event.new name: expected_validation_name.to_s, properties: expected_event_properties }
+
+  # Create the event that id expected to be received for the context validation
+  # Also prepare the merged events that will be passed to the plugin's method
   if context_properties
     let(:expected_context_event) { Itly::Event.new name: 'context', properties: context_properties }
     let(:expected_merged_event) do
@@ -44,6 +48,7 @@ shared_examples 'validate and run on plugins' do |
     let(:expected_merged_event) { expected_event }
   end
 
+  # Prepare the validation responses to be expected from the validation methods
   let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: 'plugin123', message: 'Response1 message' }
   let(:response2) do
     Itly::ValidationResponse.new valid: !generate_validation_error, plugin_id: 'plugin123', message: 'Response2 message'
@@ -59,7 +64,9 @@ shared_examples 'validate and run on plugins' do |
     end
   end
 
+  # Hook all expectations
   before do
+    # Logger messages
     if expect_validation
       if context_properties
         expect(itly.options.logger).to receive(:info).once
@@ -78,6 +85,7 @@ shared_examples 'validate and run on plugins' do |
     end
     expect(itly.options.logger).not_to receive(:error)
 
+    # Validation calls and params
     if expect_validation
       if context_properties
         expect(plugin_a).to receive(:validate).once.with(event: expected_context_event).and_return(response1)
@@ -89,6 +97,7 @@ shared_examples 'validate and run on plugins' do |
     expect(plugin_b).not_to receive(:validate)
     expect(plugin_a).not_to receive(:validate)
 
+    # Plugin targetted method
     if expect_to_call_action
       expect(plugin_a).to receive(method).once.with(method_params.merge(event_keyword_name => expected_merged_event))
     end
@@ -98,6 +107,7 @@ shared_examples 'validate and run on plugins' do |
     end
     expect(plugin_b).not_to receive(method)
 
+    # Plugin targetted post method
     expect(plugin_a).to receive(:"post_#{method}").once
       .with(method_params.merge(event_keyword_name => expected_merged_event, validation_results: all_responses))
     expect(plugin_a).not_to receive(:"post_#{method}")
@@ -106,6 +116,7 @@ shared_examples 'validate and run on plugins' do |
     expect(plugin_b).not_to receive(:"post_#{method}")
   end
 
+  # Run
   it do
     if expect_exception
       expect do

@@ -14,7 +14,7 @@ module RspecIntegrationHelpers
   def itly_default_options(options, logs)
     options.logger = ::Logger.new logs
     options.validation = Itly::Options::Validation::ERROR_ON_INVALID
-    options.plugins.acceptance_plugin = { required_version: 4 }
+    options.plugins = [AcceptancePlugin.new]
   end
 
   private

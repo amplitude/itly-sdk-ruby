@@ -12,15 +12,6 @@ describe 'integration' do
         # Keep a reference to the logger, for test purpose
         @logger = options.logger
 
-        # Set requirements in the plugin-specific options
-        plugin_options = get_plugin_options options
-
-        if !plugin_options.key?(:required_version) || !plugin_options[:required_version].is_a?(Integer)
-          raise 'The required_version option key is not found or is not an Integer'
-        end
-        raise 'The minimum compatible version is 4' if plugin_options[:required_version] < 4
-
-        # Log the success
         @logger.debug '(spec) loaded'
       end
 
@@ -66,91 +57,12 @@ describe 'integration' do
         end
       end
     end
+
     Object.const_set 'AcceptancePlugin', klass
   end
 
   after do
     Object.send :remove_const, 'AcceptancePlugin'
-  end
-
-  describe 'receive plugin-specific options on #load' do
-    [[true, 'with context'], [false, 'without context']].each do |with_context, description|
-      describe description do
-        describe 'plugin require a specific option' do
-          let(:itly) { Itly.new }
-
-          it 'in production' do
-            itly.load do |options|
-              itly_default_options options, logs
-              options.plugins.acceptance_plugin = {}
-              options.environment = Itly::Options::Environment::PRODUCTION
-              options.context = { version: '1.2' } if with_context
-            end
-
-            expect_log_lines_to_equal [
-              ['info', 'load()'],
-              ['error', 'Itly Error in AcceptancePlugin. RuntimeError: The required_version option key '\
-                        'is not found or is not an Integer']
-            ]
-          end
-
-          it 'in development' do
-            expect do
-              itly.load do |options|
-                itly_default_options options, logs
-                options.plugins.acceptance_plugin = {}
-                options.environment = Itly::Options::Environment::DEVELOPMENT
-                options.context = { version: '1.2' } if with_context
-              end
-            end.to raise_error(RuntimeError, 'The required_version option key is not found or is not an Integer')
-          end
-        end
-
-        describe 'plugin can check for options values' do
-          let(:itly) { Itly.new }
-
-          it 'in production' do
-            itly.load do |options|
-              itly_default_options options, logs
-              options.plugins.acceptance_plugin = { required_version: 2 }
-              options.environment = Itly::Options::Environment::PRODUCTION
-              options.context = { version: '1.2' } if with_context
-            end
-
-            expect_log_lines_to_equal [
-              ['info', 'load()'],
-              ['error', 'Itly Error in AcceptancePlugin. RuntimeError: The minimum compatible version is 4']
-            ]
-          end
-
-          it 'in development' do
-            expect do
-              itly.load do |options|
-                itly_default_options options, logs
-                options.plugins.acceptance_plugin = { required_version: 2 }
-                options.environment = Itly::Options::Environment::DEVELOPMENT
-                options.context = { version: '1.2' } if with_context
-              end
-            end.to raise_error(RuntimeError, 'The minimum compatible version is 4')
-          end
-        end
-
-        it 'succeed when all requirements are met' do
-          itly = Itly.new
-          itly.load do |options|
-            itly_default_options options, logs
-            options.plugins.acceptance_plugin = { required_version: 4 }
-            options.context = { version: '1.2' } if with_context
-          end
-
-          expect_log_lines_to_equal [
-            ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
-            ['debug', '(spec) loaded']
-          ]
-        end
-      end
-    end
   end
 
   describe 'call methods that do not require validation' do

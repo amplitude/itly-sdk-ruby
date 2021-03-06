@@ -52,8 +52,8 @@ class Itly
   #   if the environment is set to +PRODUCTION+.
   #
   class Options
-    attr_accessor :disabled, :logger
-    attr_reader :context, :plugins, :environment, :default_environment
+    attr_accessor :disabled, :logger, :plugins
+    attr_reader :context, :environment, :default_environment
     attr_writer :validation
 
     ##
@@ -66,7 +66,7 @@ class Itly
       @disabled = false
       @environment = Itly::Options::Environment::DEVELOPMENT
       @validation = Itly::Options::Validation::DEFAULT
-      @plugins = Itly::OptionsWrapper.new
+      @plugins = []
       @logger = ::Logger.new $stdout, level: Logger::Severity::ERROR
     end
 

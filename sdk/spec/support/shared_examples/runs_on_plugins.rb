@@ -1,19 +1,29 @@
 # frozen_string_literal: true
 
 shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_method: false, expected_log_info: nil|
-  context 'default', fake_plugins: 2, fake_plugins_methods: %i[load] do
-    create_itly_object
+  context 'default', fake_plugins: 2 do
+    # Instanciate plugins and Itly object
+    let!(:plugin_a) { FakePlugin0.new }
+    let!(:plugin_b) { FakePlugin1.new }
+    let!(:itly) { Itly.new }
 
-    let!(:plugin_a) { itly.plugins_instances[0] }
-    let!(:plugin_b) { itly.plugins_instances[1] }
-
+    # Load options
     before do
+      itly.load do |options|
+        options.plugins = [plugin_a, plugin_b]
+      end
+    end
+
+    # Hook all expectations
+    before do
+      # Logger messages
       if expected_log_info
         expect(itly.options.logger).to receive(:info).with(expected_log_info)
       else
         expect(itly.options.logger).not_to receive(:info)
       end
 
+      # Plugin targetted method and post method
       if method_params
         expect(plugin_a).to receive(method).with(method_params)
         expect(plugin_b).to receive(method).with(method_params)
@@ -31,6 +41,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
       end
     end
 
+    # Run
     it do
       if method_params
         itly.send method, **method_params
@@ -58,11 +69,18 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
     end
   end
 
-  context 'disabled', fake_plugins: 2, fake_plugins_methods: %i[load] do
-    create_itly_object disabled: true
+  context 'disabled', fake_plugins: 2 do
+    let!(:plugin_a) { FakePlugin0.new }
+    let!(:plugin_b) { FakePlugin1.new }
+    let!(:itly) { Itly.new }
 
-    let!(:plugin_a) { itly.plugins_instances[0] }
-    let!(:plugin_b) { itly.plugins_instances[1] }
+    # Load options
+    before do
+      itly.load do |options|
+        options.disabled = true
+        options.plugins = [plugin_a, plugin_b]
+      end
+    end
 
     before do
       expect(itly.options.logger).not_to receive(:info)

@@ -84,7 +84,11 @@ describe Itly do
 
   describe '#enabled?' do
     context 'default' do
-      create_itly_object
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load
+      end
 
       it do
         expect(itly.send(:enabled?)).to be(true)
@@ -92,7 +96,11 @@ describe Itly do
     end
 
     context 'set to false' do
-      create_itly_object disabled: false
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load { |o| o.disabled = false }
+      end
 
       it do
         expect(itly.send(:enabled?)).to be(true)
@@ -100,7 +108,11 @@ describe Itly do
     end
 
     context 'set to true' do
-      create_itly_object disabled: true
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load { |o| o.disabled = true }
+      end
 
       it do
         expect(itly.send(:enabled?)).to be(false)
@@ -110,7 +122,11 @@ describe Itly do
 
   describe '#validation_enabled?' do
     context 'default' do
-      create_itly_object
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load
+      end
 
       it do
         expect(itly.send(:validation_enabled?)).to be(true)
@@ -118,7 +134,11 @@ describe Itly do
     end
 
     context 'set to disabled' do
-      create_itly_object validation: Itly::Options::Validation::DISABLED
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load { |o| o.validation = Itly::Options::Validation::DISABLED }
+      end
 
       it do
         expect(itly.send(:validation_enabled?)).to be(false)
@@ -126,7 +146,11 @@ describe Itly do
     end
 
     context 'set to another value' do
-      create_itly_object validation: Itly::Options::Validation::TRACK_INVALID
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load { |o| o.validation = Itly::Options::Validation::TRACK_INVALID }
+      end
 
       it do
         expect(itly.send(:validation_enabled?)).to be(true)
@@ -138,7 +162,11 @@ describe Itly do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
 
     context 'default' do
-      create_itly_object
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load
+      end
 
       it do
         expect(itly.send(:logger)).to be_a_kind_of(::Logger)

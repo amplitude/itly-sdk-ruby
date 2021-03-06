@@ -1,9 +1,0 @@
-class Itly
-  class OptionsWrapper
-    def clear!: () -> void
-
-    private
-
-    def initialize: () -> void
-  end
-end

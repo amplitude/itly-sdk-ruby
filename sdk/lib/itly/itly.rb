@@ -9,26 +9,20 @@ class Itly
   ##
   # Create a new Itly object.
   #
-  # Initialize the instance variable +plugins_instances+ as an Array
-  # so that it can contain instantiated plugins.
   # The +is_initialized+ instance variable is a True/False flag indicating
   # if the +load+ method was called on the object.
   #
   def initialize
-    @plugins_instances = []
     @is_initialized = false
   end
 
   ##
-  # Load options and initialize plugins. It can be called only once on an object.
+  # Load options ans the plugins. It must be called only once on an object.
   #
   # Accept an optional block to define the options. The variable yielded in
-  # the block is an `Itly::Options`.
+  # the block is of type `Itly::Options`.
   #
-  # All registered plugins will be instantiated, and newly created objects
-  # stored in the +plugins_instances+ instance variable.
-  # After registration, the +load+ method of the plugins is called
-  #  passing the +options+ object as an argument.
+  # Calls the +load+ method of each plugin passing the +options+ object as an argument.
   #
   def load
     # Ensure #load was not already called on this object
@@ -42,10 +36,10 @@ class Itly
     logger.info 'load()'
     logger.info 'Itly is disabled!' unless enabled?
     logger.warn "Environment not specified. Automatically set to #{options.environment}" if options.default_environment
+    logger.warn 'No plugin enabled!' if options.plugins.empty?
 
-    # Initialize plugins, passing the options to their #load methods
-    instantiate_plugins
-    run_on_plugins { |plugin| plugin.load options: @options }
+    # pass options to plugins
+    run_on_plugins { |plugin| plugin.load options: options }
 
     # Mark that the #load method was called on this object
     @is_initialized = true

@@ -3,15 +3,7 @@ class Itly
 
   VERSION: ::String
 
-  # steep bugs: cannot recognize Array as a parent class
-  # Aditionnaly concurrent-ruby has no RBS definition
-  # The corrext syntax is:
-  #   attr_reader self.registered_plugins: ::Concurrent::Array[::Class]
-  # For the meantime, using untyped
-  attr_reader self.registered_plugins: untyped
-
   attr_reader options: ::Itly::Options
-  attr_reader plugins_instances: ::Array[::Itly::Plugin]
 
   def load: () ?{ (::Itly::Options) -> void } -> void
   def identify: (user_id: ::String user_id, properties: ::Hash[::String | ::Symbol, ::String] properties) -> void
