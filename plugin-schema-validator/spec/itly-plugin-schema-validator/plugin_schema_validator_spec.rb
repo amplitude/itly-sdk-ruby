@@ -24,6 +24,15 @@ describe Itly::PluginSchemaValidator do
     end
   end
 
+  describe '#initialize' do
+    let!(:plugin) { Itly::PluginSchemaValidator.new schemas: { fake_schema: '123' } }
+
+    it do
+      expect(plugin.instance_variable_get('@schemas')).to eq(fake_schema: '123')
+      expect(plugin.instance_variable_get('@validators')).to eq({})
+    end
+  end
+
   describe '#load' do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
     let(:itly) { Itly.new }

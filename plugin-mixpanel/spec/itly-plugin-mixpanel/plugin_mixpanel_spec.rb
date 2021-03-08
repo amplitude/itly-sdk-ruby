@@ -19,6 +19,14 @@ describe Itly::PluginMixpanel do
     end
   end
 
+  describe '#initialize' do
+    let!(:plugin) { Itly::PluginMixpanel.new project_token: 'key123' }
+
+    it do
+      expect(plugin.instance_variable_get('@project_token')).to eq('key123')
+    end
+  end
+
   describe '#load' do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
     let(:itly) { Itly.new }

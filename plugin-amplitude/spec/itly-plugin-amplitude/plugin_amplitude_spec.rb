@@ -15,6 +15,14 @@ describe Itly::PluginAmplitude do
     end
   end
 
+  describe '#initialize' do
+    let!(:plugin) { Itly::PluginAmplitude.new api_key: 'key123' }
+
+    it do
+      expect(AmplitudeAPI.api_key).to eq('key123')
+    end
+  end
+
   describe '#load' do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
     let(:plugin) { Itly::PluginAmplitude.new api_key: 'key123' }

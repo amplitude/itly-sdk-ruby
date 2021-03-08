@@ -19,6 +19,14 @@ describe Itly::PluginSegment do
     end
   end
 
+  describe '#initialize' do
+    let!(:plugin) { Itly::PluginSegment.new write_key: 'key123' }
+
+    it do
+      expect(plugin.instance_variable_get('@write_key')).to eq('key123')
+    end
+  end
+
   describe '#load' do
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
     let(:itly) { Itly.new }
