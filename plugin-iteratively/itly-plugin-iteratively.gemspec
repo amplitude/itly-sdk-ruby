@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly/plugin_iteratively'
+require_relative 'lib/itly/plugin_iteratively/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'itly-plugin-iteratively'

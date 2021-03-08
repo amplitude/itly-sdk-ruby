@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require 'itly-sdk'
-
 class Itly
-  class PluginIteratively < Plugin
+  class PluginIteratively
     VERSION = '0.1.0'
   end
 end
