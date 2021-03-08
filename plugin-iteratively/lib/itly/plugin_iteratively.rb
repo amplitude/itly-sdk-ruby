@@ -6,4 +6,6 @@ if ENV['LOCAL_ITLY_GEM']
 end
 
 require_relative 'plugin_iteratively/plugin_iteratively'
+require_relative 'plugin_iteratively/track_type'
+require_relative 'plugin_iteratively/client'
 require_relative 'plugin_iteratively/version'
