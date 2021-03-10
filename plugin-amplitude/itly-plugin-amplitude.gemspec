@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly/plugin_amplitude/version'
+require_relative 'lib/itly/plugin/amplitude/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'itly-plugin-amplitude'
-  spec.version       = Itly::PluginAmplitude::VERSION
+  spec.version       = Itly::Plugin::Amplitude::VERSION
   spec.authors       = ['Benjamin Bouchet']
   spec.email         = ['randoum@gmail.com']
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Itly::PluginSegment do
+describe Itly::Plugin::Segment do
   it do
-    expect(Itly::PluginSegment::VERSION).to match(/^\d+\.\d+\.\d+$/)
+    expect(Itly::Plugin::Segment::VERSION).to match(/^\d+\.\d+\.\d+$/)
   end
 end

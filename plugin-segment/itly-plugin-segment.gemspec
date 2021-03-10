@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly/plugin_segment/version'
+require_relative 'lib/itly/plugin/segment/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'itly-plugin-segment'
-  spec.version       = Itly::PluginSegment::VERSION
+  spec.version       = Itly::Plugin::Segment::VERSION
   spec.authors       = ['Benjamin Bouchet']
   spec.email         = ['randoum@gmail.com']
 

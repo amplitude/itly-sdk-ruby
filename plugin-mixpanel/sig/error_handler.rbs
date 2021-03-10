@@ -1,5 +1,5 @@
 class Itly
-  class PluginMixpanel < Plugin
+  class Plugin::Mixpanel < Plugin
     class ErrorHandler < ::Mixpanel::ErrorHandler
       def handle: (::String error) -> void
     end

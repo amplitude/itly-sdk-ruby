@@ -1,9 +1,11 @@
 class Itly
-  class PluginIteratively
-    module TrackType
-      GROUP: ::String
-      IDENTIFY: ::String
-      TRACK: ::String
+  class Plugin
+    class Iteratively
+      module TrackType
+        GROUP: ::String
+        IDENTIFY: ::String
+        TRACK: ::String
+      end
     end
   end
 end

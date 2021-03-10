@@ -1,14 +1,16 @@
 class Itly
-  class PluginIteratively
-    class Client
-      attr_reader api_key: untyped
-      attr_reader url: untyped
+  class Plugin
+    class Iteratively
+      class Client
+        attr_reader api_key: untyped
+        attr_reader url: untyped
 
-      def track: (type: ::String `type`, properties: ::Itly::Event properties, validation: ::Itly::ValidationResponse? validation) -> void
+        def track: (type: ::String `type`, properties: ::Itly::Event properties, validation: ::Itly::ValidationResponse? validation) -> void
 
-      private
+        private
 
-      def initialize: (url: ::String url, api_key: ::String api_key) -> void
+        def initialize: (url: ::String url, api_key: ::String api_key) -> void
+      end
     end
   end
 end

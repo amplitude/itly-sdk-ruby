@@ -37,11 +37,11 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
 
-    - name: Install gems for PluginAmplitude
+    - name: Install gems for Plugin::Amplitude
       run: |
         cd sdk; bundle install
         cd ../plugin-amplitude; LOCAL_ITLY_GEM=true bundle install
-    - name: Run tests for PluginAmplitude
+    - name: Run tests for Plugin::Amplitude
       run: cd plugin-amplitude; LOCAL_ITLY_GEM=true bin/rspec
 
   rspec-plugin-mixpanel:
@@ -58,11 +58,11 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
 
-    - name: Install gems for PluginMixpanel
+    - name: Install gems for Plugin::Mixpanel
       run: |
         cd sdk; bundle install
         cd ../plugin-mixpanel; LOCAL_ITLY_GEM=true bundle install
-    - name: Run tests for PluginMixpanel
+    - name: Run tests for Plugin::Mixpanel
       run: cd plugin-mixpanel; LOCAL_ITLY_GEM=true bin/rspec
 
   rspec-plugin-schema-validator:
@@ -79,11 +79,11 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
 
-    - name: Install gems for PluginSchemaValidator
+    - name: Install gems for Plugin::SchemaValidator
       run: |
         cd sdk; bundle install
         cd ../plugin-schema-validator; LOCAL_ITLY_GEM=true bundle install
-    - name: Run tests for PluginSchemaValidator
+    - name: Run tests for Plugin::SchemaValidator
       run: cd plugin-schema-validator; LOCAL_ITLY_GEM=true bin/rspec
 
   rspec-plugin-segment:
@@ -100,11 +100,11 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
 
-    - name: Install gems for PluginSegment
+    - name: Install gems for Plugin::Segment
       run: |
         cd sdk; bundle install
         cd ../plugin-segment; LOCAL_ITLY_GEM=true bundle install
-    - name: Run tests for PluginSegment
+    - name: Run tests for Plugin::Segment
       run: cd plugin-segment; LOCAL_ITLY_GEM=true bin/rspec
 
   lint:

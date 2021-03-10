@@ -2,7 +2,7 @@
 
 shared_examples 'plugin post action' do |action:, params:|
   let(:logs) { StringIO.new }
-  let(:plugin) { Itly::PluginIteratively.new url: 'http://url', api_key: 'key123' }
+  let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
   let(:itly) { Itly.new }
 
   context 'success' do
@@ -26,10 +26,10 @@ shared_examples 'plugin post action' do |action:, params:|
       expect_log_lines_to_equal [
         ['info', 'load()'],
         ['warn', 'Environment not specified. Automatically set to development'],
-        ['info', 'plugin_iteratively: load()'],
+        ['info', 'plugin-iteratively: load()'],
         ['info', "#{action}(#{properties_to_log params})"],
         ['info', "validate(event: #<Itly::Event: name: #{action}, properties: {:with=>\"data\"}>)"],
-        ['info', "plugin_iteratively: post_#{action}(#{post_action_log}, validation_results: [])"]
+        ['info', "plugin-iteratively: post_#{action}(#{post_action_log}, validation_results: [])"]
       ]
     end
   end
@@ -60,10 +60,10 @@ shared_examples 'plugin post action' do |action:, params:|
       expect_log_lines_to_equal [
         ['info', 'load()'],
         ['warn', 'Environment not specified. Automatically set to development'],
-        ['info', 'plugin_iteratively: load()'],
+        ['info', 'plugin-iteratively: load()'],
         ['info', "#{action}(#{properties_to_log params})"],
         ['info', "validate(event: #<Itly::Event: name: #{action}, properties: {:with=>\"data\"}>)"],
-        ['info', "plugin_iteratively: post_#{action}(#{post_action_log}, validation_results: "\
+        ['info', "plugin-iteratively: post_#{action}(#{post_action_log}, validation_results: "\
                  '[#<Itly::ValidationResponse: valid: true, plugin_id: test-plg, message: >])']
       ]
     end
@@ -85,8 +85,8 @@ shared_examples 'plugin post action' do |action:, params:|
     it do
       expect_log_lines_to_equal [
         ['info', 'load()'],
-        ['info', 'plugin_iteratively: load()'],
-        ['info', 'plugin_iteratively: plugin is disabled!'],
+        ['info', 'plugin-iteratively: load()'],
+        ['info', 'plugin-iteratively: plugin is disabled!'],
         ['info', "#{action}(#{properties_to_log params})"],
         ['info', "validate(event: #<Itly::Event: name: #{action}, properties: {:with=>\"data\"}>)"]
       ]

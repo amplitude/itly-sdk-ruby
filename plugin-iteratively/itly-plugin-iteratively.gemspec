@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly/plugin_iteratively/version'
+require_relative 'lib/itly/plugin/iteratively/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'itly-plugin-iteratively'
-  spec.version       = Itly::PluginIteratively::VERSION
+  spec.version       = Itly::Plugin::Iteratively::VERSION
   spec.authors       = ['Benjamin Bouchet']
   spec.email         = ['randoum@gmail.com']
 
@@ -26,4 +26,6 @@ Gem::Specification.new do |spec|
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:test|spec|features)/}) }
   end
   spec.require_paths = ['lib']
+
+  spec.add_dependency 'faraday', '~> 1.3'
 end

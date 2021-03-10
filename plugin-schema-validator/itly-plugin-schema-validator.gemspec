@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly/plugin_schema_validator/version'
+require_relative 'lib/itly/plugin/schema_validator/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'itly-plugin-schema-validator'
-  spec.version       = Itly::PluginSchemaValidator::VERSION
+  spec.version       = Itly::Plugin::SchemaValidator::VERSION
   spec.authors       = ['Benjamin Bouchet']
   spec.email         = ['randoum@gmail.com']
 

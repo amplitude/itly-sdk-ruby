@@ -1,0 +1,18 @@
+class Itly
+  class Plugin
+    class Amplitude < Plugin
+      VERSION: ::String
+
+      attr_reader logger: ::Logger
+
+      def load: (options: ::Itly::Options options) -> void
+      def identify: (user_id: ::String user_id, properties: ::Itly::Event properties) -> void
+      def track: (user_id: ::String user_id, event: ::Itly::Event event) -> void
+
+      private
+
+      def initialize: (api_key: ::String api_key) -> void
+      def call_end_point: () ?{ () -> Faraday::Response } -> void
+    end
+  end
+end

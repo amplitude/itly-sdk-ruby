@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/itly/plugin_mixpanel/version'
+require_relative 'lib/itly/plugin/mixpanel/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'itly-plugin-mixpanel'
-  spec.version       = Itly::PluginMixpanel::VERSION
+  spec.version       = Itly::Plugin::Mixpanel::VERSION
   spec.authors       = ['Benjamin Bouchet']
   spec.email         = ['randoum@gmail.com']
 

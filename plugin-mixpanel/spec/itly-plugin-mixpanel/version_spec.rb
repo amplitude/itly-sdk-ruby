@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Itly::PluginMixpanel do
+describe Itly::Plugin::Mixpanel do
   it do
-    expect(Itly::PluginMixpanel::VERSION).to match(/^\d+\.\d+\.\d+$/)
+    expect(Itly::Plugin::Mixpanel::VERSION).to match(/^\d+\.\d+\.\d+$/)
   end
 end

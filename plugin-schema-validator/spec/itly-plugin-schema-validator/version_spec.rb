@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Itly::PluginSchemaValidator do
+describe Itly::Plugin::SchemaValidator do
   it do
-    expect(Itly::PluginSchemaValidator::VERSION).to match(/^\d+\.\d+\.\d+$/)
+    expect(Itly::Plugin::SchemaValidator::VERSION).to match(/^\d+\.\d+\.\d+$/)
   end
 end

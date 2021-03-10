@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Itly::PluginAmplitude do
+describe Itly::Plugin::Amplitude do
   it do
-    expect(Itly::PluginAmplitude::VERSION).to match(/^\d+\.\d+\.\d+$/)
+    expect(Itly::Plugin::Amplitude::VERSION).to match(/^\d+\.\d+\.\d+$/)
   end
 end

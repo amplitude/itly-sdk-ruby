@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-describe Itly::PluginMixpanel::ErrorHandler do
+describe Itly::Plugin::Mixpanel::ErrorHandler do
   describe 'error' do
-    let(:handler) { Itly::PluginMixpanel::ErrorHandler.new }
+    let(:handler) { Itly::Plugin::Mixpanel::ErrorHandler.new }
 
     it do
       expect do

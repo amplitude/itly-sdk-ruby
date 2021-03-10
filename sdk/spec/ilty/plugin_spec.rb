@@ -28,7 +28,21 @@ describe Itly::Plugin do
       end
 
       it do
-        expect(TestPluginId::NestedClass.new.send(:plugin_id)).to eq('nested_class')
+        expect(TestPluginId::NestedClass.new.send(:plugin_id)).to eq('test_plugin_id-nested_class')
+      end
+    end
+
+    context 'nested class from Itly' do
+      before do
+        Itly.const_set 'NestedClass', Class.new(Itly::Plugin)
+      end
+
+      after do
+        Itly.send :remove_const, 'NestedClass'
+      end
+
+      it do
+        expect(Itly::NestedClass.new.send(:plugin_id)).to eq('nested_class')
       end
     end
   end

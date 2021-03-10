@@ -12,7 +12,7 @@ raise 'You need to run spec with "bin/rspec"' unless ENV['RSPEC_RUN_FROM_SCRIPT'
 
 # Load files
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
-require 'itly/plugin_schema_validator'
+require 'itly/plugin-schema_validator'
 
 # Auto-requiring all files in the support directories
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }

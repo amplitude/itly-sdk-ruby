@@ -86,8 +86,9 @@ class Itly
     # @return [String] plugin id
     #
     def plugin_id
-      name = (self.class.name || 'UnknownPluginClass').split('::').last
-      (name || 'UnknownPluginClass').gsub(/([A-Z]+)/, '_\1').sub(/^_/, '').downcase
+      name = (self.class.name || 'UnknownPluginClass').gsub('::', '-')
+      name = (name || 'UnknownPluginClass').gsub(/([A-Z]+)/, '_\1').gsub(/-_/, '-').sub(/^_/, '').sub(/^itly-/i, '')
+      name.downcase
     end
   end
 end
