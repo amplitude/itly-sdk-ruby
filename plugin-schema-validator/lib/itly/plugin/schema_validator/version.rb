@@ -2,7 +2,7 @@
 
 class Itly
   class Plugin
-    class SchemaValidator
+    class SchemaValidator < Plugin
       VERSION = '0.1.0'
     end
   end

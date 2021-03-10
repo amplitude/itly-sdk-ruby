@@ -2,7 +2,7 @@
 
 class Itly
   class Plugin
-      class Segment
+      class Segment < Plugin
       VERSION = '0.1.0'
     end
   end
