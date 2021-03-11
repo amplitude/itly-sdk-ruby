@@ -98,6 +98,7 @@ class Itly
       end
 
       def shutdown
+        @client.shutdown
       end
 
       private

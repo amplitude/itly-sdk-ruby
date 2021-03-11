@@ -38,6 +38,9 @@ class Itly
           # Case: the runner is on, cannot call flush again
           return unless runner_complete?
 
+          # Exit if there is nothing to do
+          return if @buffer.empty?
+
           # Extract the current content of the buffer for processing
           processing = @buffer.shift @buffer.length
 
@@ -78,7 +81,11 @@ class Itly
         end
 
         def shutdown
-          @api_key = api_key
+          @max_retries = 0
+          flush
+          if @runner
+            @runner.wait_or_cancel @retry_delay_min
+          end
         end
 
         private

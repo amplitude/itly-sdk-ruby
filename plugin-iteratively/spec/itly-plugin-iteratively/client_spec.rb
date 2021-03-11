@@ -167,6 +167,20 @@ describe Itly::Plugin::Iteratively::Client do
       end
     end
 
+    context 'empty buffer' do
+      before do
+        expect(client).not_to receive(:post_model)
+        expect(Kernel).not_to receive(:sleep)
+      end
+
+      it do
+        client.send :flush
+
+        expect(runner).to be(nil)
+        expect_log_lines_to_equal []
+      end
+    end
+
     context 'retry' do
       before do
         buffer << model1 << model2
@@ -213,6 +227,44 @@ describe Itly::Plugin::Iteratively::Client do
         ]
 
         expect(buffer).to eq([])
+      end
+    end
+  end
+
+  describe '#shutdown' do
+    let(:logger) { ::Logger.new '/dev/null' }
+    let(:client) do
+      Itly::Plugin::Iteratively::Client.new \
+        url: 'http://url', api_key: 'key123',
+        logger: logger, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
+        retry_delay_max: 4.0
+    end
+
+    before do
+      expect(client).to receive(:flush)
+    end
+
+    context 'no runner' do
+      it do
+        client.shutdown
+
+        expect(client.instance_variable_get('@max_retries')).to eq(0)
+        expect(client.instance_variable_get('@runner')).to be(nil)
+      end
+    end
+
+    context 'with a runner' do
+      let(:runner) { double 'runner', wait_or_cancel: nil }
+
+      before do
+        client.instance_variable_set '@runner', runner
+        expect(runner).to receive(:wait_or_cancel).with(3.0)
+      end
+
+      it do
+        client.shutdown
+
+        expect(client.instance_variable_get('@max_retries')).to eq(0)
       end
     end
   end
