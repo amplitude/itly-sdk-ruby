@@ -31,3 +31,6 @@ RSpec.configure do |config|
   # Include helpers
   include RspecCustomHelpers
 end
+
+# Do not truncate output
+RSpec::Support::ObjectFormatter.default_instance.max_formatted_output_length = nil

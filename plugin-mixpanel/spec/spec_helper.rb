@@ -38,3 +38,6 @@ RSpec.configure do |config|
   # Seed global randomization in this process using the `--seed` CLI option.
   Kernel.srand config.seed
 end
+
+# Do not truncate output
+RSpec::Support::ObjectFormatter.default_instance.max_formatted_output_length = nil
