@@ -17,15 +17,30 @@ class Itly
       #
       # @param [String] url: specify the url to push events to
       # @param [String] api_key: specify the api key
+      # @param [Integer] buffer_size (optional): Number of event in the buffer before
+      #   a flush is triggered. Default: 10
+      # @param [Integer] max_retries (optional): Number of retries for pushing
+      #   events to the server. Default: 25
+      # @param [Float] retry_delay_min: Minimum delay between retries in seconds. Default: 10.0
+      # @param [Float] retry_delay_max: Maximum delay between retries in seconds. Default: 3600.0 (1 hour)
       #
-      def initialize(url:, api_key:)
+      def initialize(url:, api_key:, buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0)
         super()
         @url = url
         @api_key = api_key
+
+        @client_options = {
+          buffer_size: buffer_size,
+          max_retries: max_retries,
+          retry_delay_min: retry_delay_min,
+          retry_delay_max: retry_delay_max
+        }
       end
 
       ##
       # Initialize IterativelyApi client
+      #
+      # The plugin is automatically disabled in Production
       #
       def load(options:)
         # Get options
@@ -44,7 +59,8 @@ class Itly
         end
 
         # Client
-        @client = Itly::Plugin::Iteratively::Client.new url: @url, api_key: @api_key
+        @client_options.merge! url: @url, api_key: @api_key, logger: @logger
+        @client = Itly::Plugin::Iteratively::Client.new(**@client_options)
       end
 
       def post_identify(user_id:, properties:, validation_results:)
@@ -77,16 +93,22 @@ class Itly
         client_track Itly::Plugin::Iteratively::TrackType::TRACK, event, validation_results
       end
 
-      # Shortcut methods
+      def flush
+        @client.flush
+      end
+
+      def shutdown
+      end
+
       private
 
       def enabled?
         !@disabled
       end
 
-      def client_track(type, properties, validations)
+      def client_track(type, event, validations)
         validation = (validations || []).reject(&:valid).first
-        @client.track type: type, properties: properties, validation: validation
+        @client.track type: type, event: event, validation: validation
       end
     end
   end

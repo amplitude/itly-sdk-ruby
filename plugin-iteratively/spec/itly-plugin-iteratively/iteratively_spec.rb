@@ -24,21 +24,40 @@ describe Itly::Plugin::Iteratively do
   end
 
   describe '#initialize' do
-    let!(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+    describe 'default values' do
+      let!(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
 
-    it do
-      expect(plugin.instance_variable_get('@url')).to eq('http://url')
-      expect(plugin.instance_variable_get('@api_key')).to eq('key123')
+      it do
+        expect(plugin.instance_variable_get('@url')).to eq('http://url')
+        expect(plugin.instance_variable_get('@api_key')).to eq('key123')
+        expect(plugin.instance_variable_get('@client_options'))
+          .to eq({ buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0 })
+      end
+    end
+
+    describe 'overwrite defaults' do
+      let!(:plugin) do
+        Itly::Plugin::Iteratively.new \
+          url: 'http://url', api_key: 'key123',
+          buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0
+      end
+
+      it do
+        expect(plugin.instance_variable_get('@url')).to eq('http://url')
+        expect(plugin.instance_variable_get('@api_key')).to eq('key123')
+        expect(plugin.instance_variable_get('@client_options'))
+          .to eq({ buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0 })
+      end
     end
   end
 
   describe '#load' do
-    let(:logs) { StringIO.new }
     let(:fake_logger) { double 'logger', info: nil, warn: nil }
-    let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
     let(:itly) { Itly.new }
 
     describe 'properties' do
+      let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+
       before do
         itly.load do |options|
           options.plugins = [plugin]
@@ -48,14 +67,13 @@ describe Itly::Plugin::Iteratively do
 
       it do
         expect(plugin.client).to be_a_kind_of(::Itly::Plugin::Iteratively::Client)
-        expect(plugin.client.url).to eq('http://url')
-        expect(plugin.client.api_key).to eq('key123')
         expect(plugin.logger).to eq(fake_logger)
-        expect(plugin.disabled).to be(false)
       end
     end
 
     describe 'disabled' do
+      let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+
       include_examples 'plugin load disabled value',
         environment: Itly::Options::Environment::DEVELOPMENT, expected: false
       include_examples 'plugin load disabled value',
@@ -71,6 +89,9 @@ describe Itly::Plugin::Iteratively do
     end
 
     describe 'logs' do
+      let(:logs) { StringIO.new }
+      let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+
       context 'plugin enabled' do
         before do
           itly.load do |options|
@@ -105,6 +126,56 @@ describe Itly::Plugin::Iteratively do
             ['info', 'plugin-iteratively: load()'],
             ['info', 'plugin-iteratively: plugin is disabled!']
           ]
+        end
+      end
+    end
+
+    describe 'client' do
+      describe 'default values' do
+        let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+        let(:client) { plugin.client }
+
+        before do
+          itly.load do |options|
+            options.plugins = [plugin]
+            options.logger = fake_logger
+          end
+        end
+
+        it do
+          expect(client.api_key).to eq('key123')
+          expect(client.url).to eq('http://url')
+          expect(client.logger).to eq(fake_logger)
+          expect(client.buffer_size).to eq(10)
+          expect(client.max_retries).to eq(25)
+          expect(client.retry_delay_min).to eq(10.0)
+          expect(client.retry_delay_max).to eq(3600.0)
+        end
+      end
+
+      describe 'overwrite defaults' do
+        let!(:plugin) do
+          Itly::Plugin::Iteratively.new \
+            url: 'http://url', api_key: 'key123',
+            buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0
+        end
+        let(:client) { plugin.client }
+
+        before do
+          itly.load do |options|
+            options.plugins = [plugin]
+            options.logger = fake_logger
+          end
+        end
+
+        it do
+          expect(client.api_key).to eq('key123')
+          expect(client.url).to eq('http://url')
+          expect(client.logger).to eq(fake_logger)
+          expect(client.buffer_size).to eq(1)
+          expect(client.max_retries).to eq(2)
+          expect(client.retry_delay_min).to eq(3.0)
+          expect(client.retry_delay_max).to eq(4.0)
         end
       end
     end
@@ -435,6 +506,44 @@ describe Itly::Plugin::Iteratively do
     end
   end
 
+  describe '#flush' do
+    let(:fake_logger) { double 'logger', info: nil, warn: nil }
+    let(:itly) { Itly.new }
+    let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+
+    before do
+      itly.load do |options|
+        options.plugins = [plugin]
+        options.logger = fake_logger
+      end
+
+      expect(plugin.client).to receive(:flush)
+    end
+
+    it do
+      plugin.flush
+    end
+  end
+
+  describe '#shutdown' do
+    let(:fake_logger) { double 'logger', info: nil, warn: nil }
+    let(:itly) { Itly.new }
+    let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+
+    before do
+      itly.load do |options|
+        options.plugins = [plugin]
+        options.logger = fake_logger
+      end
+
+      expect(plugin.client).to receive(:shutdown)
+    end
+
+    it do
+      plugin.shutdown
+    end
+  end
+
   describe '#enabled?' do
     let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
 
@@ -472,7 +581,7 @@ describe Itly::Plugin::Iteratively do
 
       before do
         expect(client).to receive(:track)
-          .with(type: 'event_type', properties: event, validation: nil)
+          .with(type: 'event_type', event: event, validation: nil)
       end
 
       it do
@@ -485,7 +594,7 @@ describe Itly::Plugin::Iteratively do
 
       before do
         expect(client).to receive(:track)
-          .with(type: 'event_type', properties: event, validation: nil)
+          .with(type: 'event_type', event: event, validation: nil)
       end
 
       it do
@@ -500,7 +609,7 @@ describe Itly::Plugin::Iteratively do
 
       before do
         expect(client).to receive(:track)
-          .with(type: 'event_type', properties: event, validation: nil)
+          .with(type: 'event_type', event: event, validation: nil)
       end
 
       it do
@@ -515,7 +624,7 @@ describe Itly::Plugin::Iteratively do
 
       before do
         expect(client).to receive(:track)
-          .with(type: 'event_type', properties: event, validation: response2)
+          .with(type: 'event_type', event: event, validation: response2)
       end
 
       it do

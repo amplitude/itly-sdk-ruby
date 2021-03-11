@@ -7,5 +7,6 @@ end
 
 require_relative 'plugin/iteratively/iteratively'
 require_relative 'plugin/iteratively/track_type'
+require_relative 'plugin/iteratively/model'
 require_relative 'plugin/iteratively/client'
 require_relative 'plugin/iteratively/version'
