@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'itly-sdk'
 require 'itly/plugin-schema_validator'
 require 'itly/plugin-amplitude'
@@ -7,6 +9,7 @@ require 'itly/plugin-segment'
 logger = ::Logger.new $stdout, level: Logger::Severity::DEBUG
 
 # Custom plugin
+# rubocop:disable Lint/UnusedMethodArgument
 class CustomPlugin < Itly::Plugin
   def load(options:)
     @logger = options.logger
@@ -37,12 +40,13 @@ class CustomPlugin < Itly::Plugin
     logger.debug "#{plugin_id}: reset()"
   end
 end
+# rubocop:enable Lint/UnusedMethodArgument
 
 # Instanciate plugins and Itly object
 segment1 = Itly::Plugin::Segment.new write_key: 'account1_key'
 segment2 = Itly::Plugin::Segment.new write_key: 'account2_key'
 amplitude = Itly::Plugin::Amplitude.new api_key: 'ampl_key'
-validator = Itly::Plugin::SchemaValidator.new schemas: {validation: 'schemas'}
+validator = Itly::Plugin::SchemaValidator.new schemas: { validation: 'schemas' }
 
 itly = Itly.new
 
@@ -72,8 +76,7 @@ itly.track \
   user_id: user_id,
   event: event
 
-event = Itly::Event.new name: 'watch_video', properties: {video_id: '123'}
+event = Itly::Event.new name: 'watch_video', properties: { video_id: '123' }
 itly.track \
   user_id: user_id,
   event: event
-
