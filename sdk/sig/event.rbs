@@ -1,16 +1,16 @@
 class Itly
   class Event
     attr_accessor name: ::String
-    attr_accessor properties: ::Hash[::String | ::Symbol, ::String]
+    attr_accessor properties: ::Hash[::String | ::Symbol, untyped]
     attr_accessor id: ::String?
     attr_accessor version: ::String?
-    attr_accessor metadata: ::Hash[::String | ::Symbol, ::String]?
+    attr_accessor metadata: ::Hash[::String | ::Symbol, untyped]?
 
     def to_s: () -> ::String
     def ==: (untyped other) -> untyped
 
     private
 
-    def initialize: (name: ::String name, ?properties: ::Hash[::String | ::Symbol, ::String] properties, ?id: ::String? id, ?version: ::String? version, ?metadata: ::Hash[::String | ::Symbol, ::String]? metadata) -> void
+    def initialize: (name: ::String name, ?properties: ::Hash[::String | ::Symbol, untyped] properties, ?id: ::String? id, ?version: ::String? version, ?metadata: ::Hash[::String | ::Symbol, untyped]? metadata) -> void
   end
 end
