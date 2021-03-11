@@ -60,8 +60,9 @@ describe Itly::Plugin::Iteratively::Model do
       let!(:model) { Itly::Plugin::Iteratively::Model.new type: 'test_model', event: event }
 
       let(:expected) do
-        /^{"type":"test_model","dateSent":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z","eventId":"id123","eventChemaVersion":"12",
-         "eventName":"test_event","properties":{"data":"value"},"valid":null,"validation":null}$/x
+        /^{"type":"test_model","dateSent":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z","eventId":"id123",
+          "eventChemaVersion":"12","eventName":"test_event","properties":{"data":"value"},
+          "valid":null,"validation":null}$/x
       end
 
       it do
@@ -74,8 +75,9 @@ describe Itly::Plugin::Iteratively::Model do
       let!(:model) { Itly::Plugin::Iteratively::Model.new type: 'test_model', event: event, validation: validation }
 
       let(:expected) do
-        /^{"type":"test_model","dateSent":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z","eventId":"id123","eventChemaVersion":"12",
-         "eventName":"test_event","properties":{"data":"value"},"valid":false,"validation":"Validation\sMsg"}$/x
+        /^{"type":"test_model","dateSent":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z","eventId":"id123",
+          "eventChemaVersion":"12","eventName":"test_event","properties":{"data":"value"},
+          "valid":false,"validation":"Validation\sMsg"}$/x
       end
 
       it do

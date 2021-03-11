@@ -4,12 +4,12 @@ require 'itly-sdk'
 require 'mixpanel-ruby'
 
 class Itly
-  ##
-  # Mixpanel plugin class for Itly SDK
-  #
-  # Automatically loaded at runtime in any new +Itly+ object
-  #
   class Plugin
+    ##
+    # Mixpanel plugin class for Itly SDK
+    #
+    # Automatically loaded at runtime in any new +Itly+ object
+    #
     class Mixpanel < Plugin
       attr_reader :logger, :client, :project_token
 

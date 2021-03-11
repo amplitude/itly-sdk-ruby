@@ -223,7 +223,8 @@ describe Itly::Plugin::Iteratively::Client do
         runner.wait_or_cancel(3)
 
         expect_log_lines_to_equal [
-          ['error', 'Iteratively::Client: flush() reached maximun number of tries. 2 event won\'t be sent to the server']
+          ['error',
+           'Iteratively::Client: flush() reached maximun number of tries. 2 event won\'t be sent to the server']
         ]
 
         expect(buffer).to eq([])
@@ -471,7 +472,8 @@ describe Itly::Plugin::Iteratively::Client do
       let(:steps) { 25.times.collect { |i| client.send(:delay_before_next_try, i + 1).round } }
       let(:expected) do
         [
-          10, 18, 41, 79, 132, 201, 283, 380, 491, 615, 752, 901, 1061, 1233, 1415, 1606, 1805, 2012, 2226, 2446, 2671, 2900, 3131, 3365, 3600
+          10, 18, 41, 79, 132, 201, 283, 380, 491, 615, 752, 901, 1061, 1233, 1415, 1606,
+          1805, 2012, 2226, 2446, 2671, 2900, 3131, 3365, 3600
         ]
       end
 

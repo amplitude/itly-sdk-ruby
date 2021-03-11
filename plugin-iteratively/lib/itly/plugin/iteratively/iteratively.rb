@@ -3,12 +3,12 @@
 require 'itly-sdk'
 
 class Itly
-  ##
-  # Iteratively plugin class for Itly SDK
-  #
-  # Automatically loaded at runtime in any new +Itly+ object
-  #
   class Plugin
+    ##
+    # Iteratively plugin class for Itly SDK
+    #
+    # Automatically loaded at runtime in any new +Itly+ object
+    #
     class Iteratively < Plugin
       attr_reader :logger, :disabled, :client, :url, :api_key
 
@@ -24,6 +24,7 @@ class Itly
       # @param [Float] retry_delay_min: Minimum delay between retries in seconds. Default: 10.0
       # @param [Float] retry_delay_max: Maximum delay between retries in seconds. Default: 3600.0 (1 hour)
       #
+      # rubocop:disable Metrics/ParameterLists
       def initialize(url:, api_key:, buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0)
         super()
         @url = url
@@ -36,6 +37,7 @@ class Itly
           retry_delay_max: retry_delay_max
         }
       end
+      # rubocop:enable Metrics/ParameterLists
 
       ##
       # Initialize IterativelyApi client

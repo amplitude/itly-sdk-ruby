@@ -4,12 +4,12 @@ require 'itly-sdk'
 require 'simple_segment'
 
 class Itly
-  ##
-  # Segment plugin class for Itly SDK
-  #
-  # Automatically loaded at runtime in any new +Itly+ object
-  #
   class Plugin
+    ##
+    # Segment plugin class for Itly SDK
+    #
+    # Automatically loaded at runtime in any new +Itly+ object
+    #
     class Segment < Plugin
       attr_reader :logger, :client, :write_key
 

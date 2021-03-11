@@ -4,10 +4,10 @@ require 'itly-sdk'
 require 'amplitude-api'
 
 class Itly
-  ##
-  # Amplitude plugin class for Itly SDK
-  #
   class Plugin
+    ##
+    # Amplitude plugin class for Itly SDK
+    #
     class Amplitude < Plugin
       attr_reader :logger
 

@@ -13,6 +13,7 @@ class Itly
       class Client
         attr_reader :api_key, :url, :logger, :buffer_size, :max_retries, :retry_delay_min, :retry_delay_max
 
+        # rubocop:disable Metrics/ParameterLists
         def initialize(url:, api_key:, logger:, buffer_size:, max_retries:, retry_delay_min:, retry_delay_max:)
           @buffer = ::Concurrent::Array.new
           @runner = nil
@@ -25,6 +26,7 @@ class Itly
           @retry_delay_min = retry_delay_min
           @retry_delay_max = retry_delay_max
         end
+        # rubocop:enable Metrics/ParameterLists
 
         def track(type:, event:, validation:)
           @buffer << ::Itly::Plugin::Iteratively::Model.new(
@@ -83,9 +85,7 @@ class Itly
         def shutdown
           @max_retries = 0
           flush
-          if @runner
-            @runner.wait_or_cancel @retry_delay_min
-          end
+          @runner&.wait_or_cancel @retry_delay_min
         end
 
         private

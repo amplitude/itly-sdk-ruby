@@ -4,12 +4,12 @@ require 'itly-sdk'
 require 'json_schemer'
 
 class Itly
-  ##
-  # Schema Validator plugin class for Itly SDK
-  #
-  # Automatically loaded at runtime in any new +Itly+ object
-  #
   class Plugin
+    ##
+    # Schema Validator plugin class for Itly SDK
+    #
+    # Automatically loaded at runtime in any new +Itly+ object
+    #
     class SchemaValidator < Plugin
       attr_reader :logger, :schemas, :validators
 
