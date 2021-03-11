@@ -43,7 +43,8 @@ class Itly
           raise Itly::RemoteError, message
         end
 
-        @client = ::SimpleSegment::Client.new write_key: @write_key, logger: logger,
+        @client = ::SimpleSegment::Client.new \
+          write_key: @write_key, logger: logger,
           on_error: error_handler
       end
 

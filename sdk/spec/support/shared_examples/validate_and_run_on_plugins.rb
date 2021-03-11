@@ -41,7 +41,8 @@ shared_examples 'validate and run on plugins' do |
   if context_properties
     let(:expected_context_event) { Itly::Event.new name: 'context', properties: context_properties }
     let(:expected_merged_event) do
-      Itly::Event.new name: expected_validation_name.to_s,
+      Itly::Event.new \
+        name: expected_validation_name.to_s,
         properties: context_properties.merge(expected_event_properties)
     end
   else

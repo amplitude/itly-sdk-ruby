@@ -45,7 +45,8 @@ describe 'integration' do
           if %w[admin user].include? event.properties[:access_level]
             Itly::ValidationResponse.new valid: true, plugin_id: 'id_validation_id', message: 'All good'
           else
-            Itly::ValidationResponse.new valid: false, plugin_id: 'id_validation_id',
+            Itly::ValidationResponse.new \
+              valid: false, plugin_id: 'id_validation_id',
               message: 'Not a valid access level'
           end
         when 'user_signed_in'
@@ -239,8 +240,10 @@ describe 'integration' do
             options.context = { version: '1.2' } if with_context
           end
 
-          itly.track user_id: 'userID',
-            event: Itly::Event.new(name: 'user_signed_in', properties: { email: 'user@mail.com' })
+          itly.track \
+            user_id: 'userID',
+            event: Itly::Event.new(name: 'user_signed_in',
+                                   properties: { email: 'user@mail.com' })
 
           expected = [
             ['info', 'load()'],
@@ -285,8 +288,10 @@ describe 'integration' do
             end
 
             expect do
-              itly.track user_id: 'userID',
-                event: Itly::Event.new(name: 'user_signed_in', properties: { wrong_key: 'user@mail.com' })
+              itly.track \
+                user_id: 'userID',
+                event: Itly::Event.new(name: 'user_signed_in',
+                                       properties: { wrong_key: 'user@mail.com' })
             end.to raise_error(Itly::ValidationError, 'Missing email')
 
             expected = [
@@ -330,8 +335,10 @@ describe 'integration' do
             end
 
             expect do
-              itly.track user_id: 'userID',
-                event: Itly::Event.new(name: 'user_signed_in', properties: { wrong_key: 'user@mail.com' })
+              itly.track \
+                user_id: 'userID',
+                event: Itly::Event.new(name: 'user_signed_in',
+                                       properties: { wrong_key: 'user@mail.com' })
             end.not_to raise_error
 
             expected = [
@@ -382,8 +389,10 @@ describe 'integration' do
             end
 
             expect do
-              itly.track user_id: 'userID',
-                event: Itly::Event.new(name: 'user_signed_in', properties: { wrong_key: 'user@mail.com' })
+              itly.track \
+                user_id: 'userID',
+                event: Itly::Event.new(name: 'user_signed_in',
+                                       properties: { wrong_key: 'user@mail.com' })
             end.not_to raise_error
 
             expected = [
@@ -421,8 +430,10 @@ describe 'integration' do
             options.context = { version: '1.2' } if with_context
           end
 
-          itly.track user_id: 'userID',
-            event: Itly::Event.new(name: 'user_signed_in', properties: { email: 'user@mail.com' })
+          itly.track \
+            user_id: 'userID',
+            event: Itly::Event.new(name: 'user_signed_in',
+                                   properties: { email: 'user@mail.com' })
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
