@@ -102,10 +102,10 @@ class Itly
 
           resp = Faraday.post(@url, model.to_json, headers)
 
-          # Case: Success
+          # Case: HTTP response 2xx is a Success
           return true if resp.status / 100 == 2
 
-          # Case: Error
+          # Case: HTTP response is 3xx or 4xx or 5xx is an error
           logger.error "Iteratively::Client: post_model() unexpected response. Url: #{url} "\
             "Data: #{model.to_json} Response status: #{resp.status} Response headers: #{resp.response_headers} "\
             "Response body: #{resp.response_body}"
