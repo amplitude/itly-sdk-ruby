@@ -7,7 +7,7 @@ class Itly
       attr_reader schemas: ::Hash[::String | ::Symbol, untyped]
       attr_reader validators: ::Hash[::Symbol, ::JSONSchemer]?
 
-      def load: (options: ::Itly::Options options) -> void
+      def load: (options: ::Hash[::Symbol, ::Symbol | ::Logger] options) -> void
       def validate: (event: ::Itly::Event event) -> ::Itly::ValidationResponse?
 
       private

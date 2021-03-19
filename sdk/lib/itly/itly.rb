@@ -39,7 +39,7 @@ class Itly
     logger.warn 'No plugin enabled!' if options.plugins.empty?
 
     # pass options to plugins
-    run_on_plugins { |plugin| plugin.load options: options }
+    run_on_plugins { |plugin| plugin.load options: options.for_plugin }
 
     # Mark that the #load method was called on this object
     @is_initialized = true

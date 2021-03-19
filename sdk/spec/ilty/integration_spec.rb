@@ -10,7 +10,7 @@ describe 'integration' do
     klass = Class.new(Itly::Plugin) do
       def load(options:)
         # Keep a reference to the logger, for test purpose
-        @logger = options.logger
+        @logger = options[:logger]
 
         @logger.debug '(spec) loaded'
       end

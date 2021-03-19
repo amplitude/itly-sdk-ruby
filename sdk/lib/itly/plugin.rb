@@ -11,7 +11,7 @@ class Itly
     ##
     # Called when the Itly SDK is being loaded and is ready to load your plugin.
     #
-    # @param [Itly::Options] options: The same configuration object passed to +itly.load+
+    # @param [Hash] options: The same environment and logger keys of the object passed to +itly.load+
     #   when the SDK was being initialized.
     #
     def load(options:); end

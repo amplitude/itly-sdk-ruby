@@ -7,7 +7,7 @@ class Itly
       attr_reader client: ::SimpleSegment::Client
       attr_reader write_key: ::String
 
-      def load: (options: ::Itly::Options options) -> void
+      def load: (options: ::Hash[::Symbol, ::Symbol | ::Logger] options) -> void
       def identify: (user_id: ::String user_id, properties: ::Itly::Event properties) -> void
       def group: (user_id: ::String user_id, group_id: ::String group_id, properties: ::Itly::Event properties) -> void
       def track: (user_id: ::String user_id, event: ::Itly::Event event) -> void

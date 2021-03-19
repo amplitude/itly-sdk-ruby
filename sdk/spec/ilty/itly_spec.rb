@@ -141,7 +141,7 @@ describe 'Itly' do
           expect(plugin).to receive(:load).and_wrap_original do |_, *args|
             expect(args.count).to eq(1)
             expect(args[0].keys).to eq([:options])
-            expect(args[0][:options].class).to eq(Itly::Options)
+            expect(args[0][:options].class).to eq(Hash)
           end
         end
       end

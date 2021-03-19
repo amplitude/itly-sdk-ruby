@@ -24,9 +24,11 @@ class Itly
       ##
       # Initialize AmplitudeApi client
       #
+      # @param [Hash] options: hash of options
+      #
       def load(options:)
         # Get options
-        @logger = options.logger
+        @logger = options[:logger]
 
         # Log
         logger.info "#{plugin_id}: load()"

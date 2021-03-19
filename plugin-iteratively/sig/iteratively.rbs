@@ -9,7 +9,7 @@ class Itly
       attr_reader url: ::String
       attr_reader api_key: ::String
 
-      def load: (options: ::Itly::Options options) -> void
+      def load: (options: ::Hash[::Symbol, ::Symbol | ::Logger] options) -> void
       def post_identify: (user_id: ::String user_id, properties: ::Itly::Event properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
       def post_group: (user_id: ::String user_id, group_id: ::String group_id, properties: ::Itly::Event properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
       def post_track: (user_id: ::String user_id, event: ::Itly::Event event, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void

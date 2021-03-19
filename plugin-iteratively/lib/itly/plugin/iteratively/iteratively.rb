@@ -52,15 +52,17 @@ class Itly
       #
       # The plugin is automatically disabled in Production
       #
+      # @param [Hash] options: hash of options
+      #
       def load(options:)
         # Get options
-        @logger = options.logger
+        @logger = options[:logger]
 
         # Log
         logger.info "#{plugin_id}: load()"
 
         # Disabled
-        @disabled = options.environment == Itly::Options::Environment::PRODUCTION if @disabled.nil?
+        @disabled = options[:environment] == Itly::Options::Environment::PRODUCTION if @disabled.nil?
 
         if @disabled
           logger.info "#{plugin_id}: plugin is disabled!"

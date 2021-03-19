@@ -71,6 +71,18 @@ class Itly
     end
 
     ##
+    # Returns the options that are passed to plugin #load
+    #
+    # @return [Hash] options hash
+    # 
+    def for_plugin
+      {
+        environment: environment,
+        logger: logger
+      }
+    end
+
+    ##
     # Assign properties to the +context+ instance variable
     #
     # @param [Hash] properties to assign to the "context" Event object
