@@ -12,7 +12,7 @@ class Itly
 
       private
 
-      def initialize: (schemas: ::Hash[::String | ::Symbol, untyped] schemas) -> void
+      def initialize: (schemas: ::Hash[::String | ::Symbol, untyped] schemas, ?disabled: bool disabled) -> void
       def return_validation_responses: (::Itly::Event event, untyped result) -> ::Itly::ValidationResponse?
       def deeply_stringify_keys: (::Hash[::String | ::Symbol, untyped] hash) -> ::Hash[::String, untyped]
       def hash_to_message: (::Hash[::String | ::Symbol, untyped] hash) -> ::String

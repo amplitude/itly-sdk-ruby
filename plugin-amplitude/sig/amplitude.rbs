@@ -11,7 +11,7 @@ class Itly
 
       private
 
-      def initialize: (api_key: ::String api_key) -> void
+      def initialize: (api_key: ::String api_key, ?disabled: bool disabled) -> void
       def call_end_point: () ?{ () -> Faraday::Response } -> void
     end
   end

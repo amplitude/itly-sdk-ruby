@@ -5,7 +5,7 @@ class Itly
 
       attr_reader logger: ::Logger
       attr_reader disabled: bool
-      attr_reader client: ::Itly::Plugin::Iteratively::Client
+      attr_reader client: ::Itly::Plugin::Iteratively::Client?
       attr_reader url: ::String
       attr_reader api_key: ::String
 

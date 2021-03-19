@@ -11,7 +11,7 @@ class Itly
     # Automatically loaded at runtime in any new +Itly+ object
     #
     class SchemaValidator < Plugin
-      attr_reader :logger, :schemas, :validators
+      attr_reader :logger, :schemas, :validators, :disabled
 
       ##
       # Instantiate a new Plugin::SchemaValidator
@@ -22,10 +22,12 @@ class Itly
       #       schema_1: {field: 'value, ...},
       #       schema_2: {field: 'value, ...}
       #     }
+      # @param [TrueClass/FalseClass] disabled: set to true to disable the plugin. Default to false
       #
-      def initialize(schemas:)
+      def initialize(schemas:, disabled: false)
         super()
         @schemas = schemas
+        @disabled = disabled
         @validators = {}
       end
 
@@ -40,6 +42,8 @@ class Itly
 
         # Log
         logger.info "#{plugin_id}: load()"
+
+        logger.info "#{plugin_id}: plugin is disabled!" if @disabled
       end
 
       ##
@@ -53,6 +57,8 @@ class Itly
       # by the plugins or nil to indicate that there were no error
       #
       def validate(event:)
+        return unless enabled?
+
         # Log
         logger.info "#{plugin_id}: validate(event: #{event})"
 
@@ -72,6 +78,10 @@ class Itly
       end
 
       private
+
+      def enabled?
+        !@disabled
+      end
 
       def return_validation_responses(event, result)
         return if result.count.zero?

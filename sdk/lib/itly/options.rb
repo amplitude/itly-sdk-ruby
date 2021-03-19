@@ -74,7 +74,7 @@ class Itly
     # Returns the options that are passed to plugin #load
     #
     # @return [Hash] options hash
-    # 
+    #
     def for_plugin
       {
         environment: environment,

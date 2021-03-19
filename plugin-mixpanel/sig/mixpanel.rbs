@@ -3,7 +3,7 @@ class Itly
     VERSION: ::String
 
     attr_reader logger: ::Logger
-    attr_reader client: ::Mixpanel::Tracker
+    attr_reader client: ::Mixpanel::Tracker?
     attr_reader project_token: ::String
 
     def load: (options: ::Hash[::Symbol, ::Symbol | ::Logger] options) -> void
@@ -13,6 +13,6 @@ class Itly
 
     private
 
-    def initialize: (project_token: ::String project_token) -> void
+    def initialize: (project_token: ::String project_token, ?disabled: bool disabled) -> void
   end
 end

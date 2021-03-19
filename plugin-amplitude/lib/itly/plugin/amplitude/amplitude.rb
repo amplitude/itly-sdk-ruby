@@ -9,15 +9,18 @@ class Itly
     # Amplitude plugin class for Itly SDK
     #
     class Amplitude < Plugin
-      attr_reader :logger
+      attr_reader :logger, :disabled
 
       ##
       # Instantiate a new Plugin::Amplitude
       #
       # @param [String] api_key: specify the Amplitude api key
+      # @param [TrueClass/FalseClass] disabled: set to true to disable the plugin. Default to false
       #
-      def initialize(api_key:)
+      def initialize(api_key:, disabled: false)
         super()
+        @disabled = disabled
+
         ::AmplitudeAPI.config.api_key = api_key
       end
 
@@ -32,6 +35,8 @@ class Itly
 
         # Log
         logger.info "#{plugin_id}: load()"
+
+        logger.info "#{plugin_id}: plugin is disabled!" if @disabled
       end
 
       ##
@@ -43,6 +48,8 @@ class Itly
       # @param [Event] properties: the event containing user's traits to pass to your application
       #
       def identify(user_id:, properties:)
+        return unless enabled?
+
         # Log
         logger.info "#{plugin_id}: identify(user_id: #{user_id}, properties: #{properties})"
 
@@ -61,6 +68,8 @@ class Itly
       # @param [Event] event: the Event object to pass to your application
       #
       def track(user_id:, event:)
+        return unless enabled?
+
         # Log
         logger.info "#{plugin_id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
 
@@ -71,6 +80,10 @@ class Itly
       end
 
       private
+
+      def enabled?
+        !@disabled
+      end
 
       def call_end_point
         raise 'You need to give a block' unless block_given?
