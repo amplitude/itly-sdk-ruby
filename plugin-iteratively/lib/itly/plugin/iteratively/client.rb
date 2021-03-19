@@ -86,7 +86,12 @@ class Itly
           @runner.execute
         end
 
-        def shutdown
+        def shutdown(force: false)
+          if force
+            @runner&.cancel
+            return
+          end
+
           @max_retries = 0
           flush
           @runner&.wait_or_cancel @retry_delay_min

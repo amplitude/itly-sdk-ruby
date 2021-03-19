@@ -12,7 +12,7 @@ class Itly
 
         def track: (type: ::String `type`, event: ::Itly::Event event, validation: ::Itly::ValidationResponse? validation) -> void
         def flush: () -> void
-        def shutdown: () -> void
+        def shutdown: (?force: bool force) -> void
 
         private
 

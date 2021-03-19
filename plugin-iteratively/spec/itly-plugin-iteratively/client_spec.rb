@@ -242,31 +242,62 @@ describe Itly::Plugin::Iteratively::Client do
         retry_delay_max: 4.0, omit_values: false
     end
 
-    before do
-      expect(client).to receive(:flush)
-    end
-
-    context 'no runner' do
-      it do
-        client.shutdown
-
-        expect(client.instance_variable_get('@max_retries')).to eq(0)
-        expect(client.instance_variable_get('@runner')).to be(nil)
-      end
-    end
-
-    context 'with a runner' do
-      let(:runner) { double 'runner', wait_or_cancel: nil }
-
+    describe 'default' do
       before do
-        client.instance_variable_set '@runner', runner
-        expect(runner).to receive(:wait_or_cancel).with(3.0)
+        expect(client).to receive(:flush)
       end
 
-      it do
-        client.shutdown
+      context 'no runner' do
+        it do
+          client.shutdown
 
-        expect(client.instance_variable_get('@max_retries')).to eq(0)
+          expect(client.instance_variable_get('@max_retries')).to eq(0)
+          expect(client.instance_variable_get('@runner')).to be(nil)
+        end
+      end
+
+      context 'with a runner' do
+        let(:runner) { double 'runner', wait_or_cancel: nil }
+
+        before do
+          client.instance_variable_set '@runner', runner
+          expect(runner).to receive(:wait_or_cancel).with(3.0)
+        end
+
+        it do
+          client.shutdown
+
+          expect(client.instance_variable_get('@max_retries')).to eq(0)
+        end
+      end
+    end
+
+    describe 'force' do
+      before do
+        expect(client).not_to receive(:flush)
+      end
+
+      context 'no runner' do
+        it do
+          client.shutdown force: true
+
+          expect(client.instance_variable_get('@max_retries')).to eq(2)
+        end
+      end
+
+      context 'with a runner' do
+        let(:runner) { double 'runner', wait_or_cancel: nil }
+
+        before do
+          client.instance_variable_set '@runner', runner
+          expect(runner).to receive(:cancel)
+        end
+
+        it do
+          client.shutdown force: true
+
+          expect(client.instance_variable_get('@max_retries')).to eq(2)
+        end
       end
     end
   end

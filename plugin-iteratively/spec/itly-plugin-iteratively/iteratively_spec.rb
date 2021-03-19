@@ -534,12 +534,26 @@ describe Itly::Plugin::Iteratively do
         options.plugins = [plugin]
         options.logger = fake_logger
       end
-
-      expect(plugin.client).to receive(:shutdown)
     end
 
-    it do
-      plugin.shutdown
+    describe 'default' do
+      before do
+        expect(plugin.client).to receive(:shutdown).with(force: false)
+      end
+
+      it do
+        plugin.shutdown
+      end
+    end
+
+    describe 'force' do
+      before do
+        expect(plugin.client).to receive(:shutdown).with(force: true)
+      end
+
+      it do
+        plugin.shutdown force: true
+      end
     end
   end
 

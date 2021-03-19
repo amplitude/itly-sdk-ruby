@@ -14,7 +14,7 @@ class Itly
       def post_group: (user_id: ::String user_id, group_id: ::String group_id, properties: ::Itly::Event properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
       def post_track: (user_id: ::String user_id, event: ::Itly::Event event, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
       def flush: () -> void
-      def shutdown: () -> void
+      def shutdown: (?force: bool force) -> void
 
       private
 

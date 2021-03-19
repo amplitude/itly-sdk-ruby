@@ -108,8 +108,8 @@ class Itly
         @client.flush
       end
 
-      def shutdown
-        @client.shutdown
+      def shutdown(force: false)
+        @client.shutdown force: force
       end
 
       private
