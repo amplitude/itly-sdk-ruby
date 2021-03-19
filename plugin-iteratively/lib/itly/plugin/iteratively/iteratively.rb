@@ -17,6 +17,8 @@ class Itly
       #
       # @param [String] url: specify the url to push events to
       # @param [String] api_key: specify the api key
+      # @param [TrueClass/FalseClass] disabled: set to true to disable the Iteratively plugin.
+      #   Default to +true+ in production environment, to +false+ otherwise
       # @param [Integer] buffer_size (optional): Number of event in the buffer before
       #   a flush is triggered. Default: 10
       # @param [Integer] max_retries (optional): Number of retries for pushing
@@ -25,10 +27,13 @@ class Itly
       # @param [Float] retry_delay_max: Maximum delay between retries in seconds. Default: 3600.0 (1 hour)
       #
       # rubocop:disable Metrics/ParameterLists
-      def initialize(url:, api_key:, buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0)
+      def initialize(
+        url:, api_key:, disabled: nil, buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0
+      )
         super()
         @url = url
         @api_key = api_key
+        @disabled = disabled
 
         @client_options = {
           buffer_size: buffer_size,
@@ -52,8 +57,9 @@ class Itly
         logger.info "#{plugin_id}: load()"
 
         # Disabled
-        @disabled = options.disabled ||
-                    options.environment == Itly::Options::Environment::PRODUCTION
+        if @disabled.nil?
+          @disabled = options.environment == Itly::Options::Environment::PRODUCTION
+        end
 
         if @disabled
           logger.info "#{plugin_id}: plugin is disabled!"
