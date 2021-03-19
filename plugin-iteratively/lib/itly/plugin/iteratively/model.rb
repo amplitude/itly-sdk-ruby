@@ -14,7 +14,8 @@ class Itly
         attr_reader :type, :date_sent, :event_id, :event_chema_version, :event_name,
           :properties, :valid, :validation
 
-        def initialize(type:, event:, validation: nil)
+        def initialize(omit_values:, type:, event:, validation: nil)
+          @omit_values = omit_values
           @type = type
           @date_sent = Time.now.utc.iso8601
           @event_id = event.id
@@ -23,6 +24,10 @@ class Itly
           @properties = event.properties
           @valid = validation ? validation.valid : nil
           @validation = validation ? validation.message : nil
+
+          if @omit_values
+            @properties = @properties.each_with_object({}) { |(key, _), hash| hash[key] = '' }
+          end
         end
 
         def to_json(*_)

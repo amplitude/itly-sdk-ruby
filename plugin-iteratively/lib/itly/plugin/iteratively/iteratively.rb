@@ -25,10 +25,12 @@ class Itly
       #   events to the server. Default: 25
       # @param [Float] retry_delay_min: Minimum delay between retries in seconds. Default: 10.0
       # @param [Float] retry_delay_max: Maximum delay between retries in seconds. Default: 3600.0 (1 hour)
+      # @param [TrueClass/FalseClass] omit_values: set to true to send emty data. Default to false
       #
       # rubocop:disable Metrics/ParameterLists
       def initialize(
-        url:, api_key:, disabled: nil, buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0
+        url:, api_key:, disabled: nil, buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, 
+        retry_delay_max: 3600.0, omit_values: false
       )
         super()
         @url = url
@@ -39,7 +41,8 @@ class Itly
           buffer_size: buffer_size,
           max_retries: max_retries,
           retry_delay_min: retry_delay_min,
-          retry_delay_max: retry_delay_max
+          retry_delay_max: retry_delay_max,
+          omit_values: omit_values
         }
       end
       # rubocop:enable Metrics/ParameterLists

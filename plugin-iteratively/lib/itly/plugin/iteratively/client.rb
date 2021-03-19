@@ -11,10 +11,13 @@ class Itly
       # HTTP client for the plugin requests
       #
       class Client
-        attr_reader :api_key, :url, :logger, :buffer_size, :max_retries, :retry_delay_min, :retry_delay_max
+        attr_reader :api_key, :url, :logger, :buffer_size, :max_retries, :retry_delay_min, :retry_delay_max,
+          :omit_values
 
         # rubocop:disable Metrics/ParameterLists
-        def initialize(url:, api_key:, logger:, buffer_size:, max_retries:, retry_delay_min:, retry_delay_max:)
+        def initialize(
+            url:, api_key:, logger:, buffer_size:, max_retries:, retry_delay_min:, retry_delay_max:, omit_values:
+          )
           @buffer = ::Concurrent::Array.new
           @runner = nil
 
@@ -25,12 +28,13 @@ class Itly
           @max_retries = max_retries
           @retry_delay_min = retry_delay_min
           @retry_delay_max = retry_delay_max
+          @omit_values = omit_values
         end
         # rubocop:enable Metrics/ParameterLists
 
         def track(type:, event:, validation:)
           @buffer << ::Itly::Plugin::Iteratively::Model.new(
-            type: type, event: event, validation: validation
+            omit_values: omit_values, type: type, event: event, validation: validation
           )
 
           flush if buffer_full?
