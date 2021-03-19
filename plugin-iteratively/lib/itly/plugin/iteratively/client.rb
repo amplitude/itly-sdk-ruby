@@ -61,11 +61,10 @@ class Itly
               tries += 1
 
               # Case: successfully sent
-              if post_models processing
-                break
+              break if post_models processing
 
               # Case: could not sent and reached maximum number of allowed tries
-              elsif tries >= @max_retries
+              if tries >= @max_retries
                 # Log
                 logger.error 'Iteratively::Client: flush() reached maximun number of tries. '\
                   "#{processing.count} events won't be sent to the server"
