@@ -48,7 +48,8 @@ class Itly
           return if @buffer.empty?
 
           # Extract the current content of the buffer for processing
-          processing = @buffer.shift @buffer.length
+          processing = @buffer.to_a
+          @buffer.clear
 
           # Run in the background
           @runner = Concurrent::Future.new do
@@ -56,22 +57,18 @@ class Itly
             tries = 0
 
             loop do
-              # Case: done with all events in the processing queue
-              break if processing.empty?
-
               # Count the number of tries
               tries += 1
+
               # Case: successfully sent
-              if post_model processing[0]
-                # Remove the event from the queue, and reset the number of tries
-                processing.shift
-                tries = 0
+              if post_models processing
+                break
 
               # Case: could not sent and reached maximum number of allowed tries
               elsif tries >= @max_retries
                 # Log
                 logger.error 'Iteratively::Client: flush() reached maximun number of tries. '\
-                  "#{processing.count} event won't be sent to the server"
+                  "#{processing.count} events won't be sent to the server"
 
                 # Discard the list of event in the processing queue
                 break
@@ -103,24 +100,26 @@ class Itly
           @buffer.length >= @buffer_size
         end
 
-        def post_model(model)
+        def post_models(models)
+          data = {
+            objects: models
+          }.to_json
           headers = {
             'Content-Type' => 'application/json',
             'authorization' => "Bearer #{@api_key}"
           }
-
-          resp = Faraday.post(@url, model.to_json, headers)
+          resp = Faraday.post(@url, data, headers)
 
           # Case: HTTP response 2xx is a Success
           return true if resp.status / 100 == 2
 
-          # Case: HTTP response is 3xx or 4xx or 5xx is an error
-          logger.error "Iteratively::Client: post_model() unexpected response. Url: #{url} "\
-            "Data: #{model.to_json} Response status: #{resp.status} Response headers: #{resp.response_headers} "\
-            "Response body: #{resp.response_body}"
+          # Case: Error
+          logger.error "Iteratively::Client: post_models() unexpected response. Url: #{url} "\
+            "Data: #{data} Response status: #{resp.status} Response headers: #{resp.headers} "\
+            "Response body: #{resp.body}"
           false
         rescue StandardError => e
-          logger.error "Iteratively::Client: post_model() exception #{e.class.name}: #{e.message}"
+          logger.error "Iteratively::Client: post_models() exception #{e.class.name}: #{e.message}"
           false
         end
 
