@@ -40,8 +40,8 @@ describe Itly::Plugin::Iteratively::Model do
       let!(:validation) { Itly::ValidationResponse.new valid: false, plugin_id: 'id', message: 'Validation Msg' }
       let!(:model) do
         Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'test_model', event: event,
-          validation: validation 
-      end 
+                                             validation: validation
+      end
 
       it do
         expect(model.instance_variable_get('@type')).to eq('test_model')
@@ -90,9 +90,9 @@ describe Itly::Plugin::Iteratively::Model do
 
     context 'with validation' do
       let!(:validation) { Itly::ValidationResponse.new valid: false, plugin_id: 'id', message: 'Validation Msg' }
-      let!(:model) do 
-        Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'test_model', event: event, 
-          validation: validation 
+      let!(:model) do
+        Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'test_model', event: event,
+                                             validation: validation
       end
 
       let(:expected) do

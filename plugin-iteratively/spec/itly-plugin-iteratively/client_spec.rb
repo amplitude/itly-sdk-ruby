@@ -322,8 +322,8 @@ describe Itly::Plugin::Iteratively::Client do
   describe '#post_model' do
     let(:event) { Itly::Event.new name: 'test_event', id: 'id123', version: '12', properties: { data: 'value' } }
     let(:validation) { Itly::ValidationResponse.new valid: false, plugin_id: 'id', message: 'Validation Msg' }
-    let(:model) do 
-      Itly::Plugin::Iteratively::Model.new omit_values:false, type: 'test_model', event: event, validation: validation 
+    let(:model) do
+      Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'test_model', event: event, validation: validation
     end
 
     let(:logs) { StringIO.new }

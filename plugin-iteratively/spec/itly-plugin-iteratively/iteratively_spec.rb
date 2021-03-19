@@ -32,8 +32,8 @@ describe Itly::Plugin::Iteratively do
         expect(plugin.instance_variable_get('@api_key')).to eq('key123')
         expect(plugin.instance_variable_get('@disabled')).to be(nil)
         expect(plugin.instance_variable_get('@client_options')).to eq({
-          buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false
-        })
+                                                                        buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false
+                                                                      })
       end
     end
 
@@ -50,8 +50,8 @@ describe Itly::Plugin::Iteratively do
         expect(plugin.instance_variable_get('@api_key')).to eq('key123')
         expect(plugin.instance_variable_get('@disabled')).to be(true)
         expect(plugin.instance_variable_get('@client_options')).to eq({
-          buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true
-        })
+                                                                        buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true
+                                                                      })
       end
     end
   end

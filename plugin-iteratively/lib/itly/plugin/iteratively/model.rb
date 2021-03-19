@@ -25,9 +25,7 @@ class Itly
           @valid = validation ? validation.valid : nil
           @validation = validation ? validation.message : nil
 
-          if @omit_values
-            @properties = @properties.each_with_object({}) { |(key, _), hash| hash[key] = '' }
-          end
+          @properties = @properties.transform_values { |_| '' } if @omit_values
         end
 
         def to_json(*_)

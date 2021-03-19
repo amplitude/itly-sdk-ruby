@@ -16,8 +16,8 @@ class Itly
 
         # rubocop:disable Metrics/ParameterLists
         def initialize(
-            url:, api_key:, logger:, buffer_size:, max_retries:, retry_delay_min:, retry_delay_max:, omit_values:
-          )
+          url:, api_key:, logger:, buffer_size:, max_retries:, retry_delay_min:, retry_delay_max:, omit_values:
+        )
           @buffer = ::Concurrent::Array.new
           @runner = nil
 
@@ -123,6 +123,10 @@ class Itly
           @runner.nil? || @runner.complete?
         end
 
+        # Generates progressively increasing values to wait between client calls
+        # For max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0, generated values are:
+        # 10, 18, 41, 79, 132, 201, 283, 380, 491, 615, 752, 901, 1061, 1233, 1415, 1606,
+        # 1805, 2012, 2226, 2446, 2671, 2900, 3131, 3365, 3600
         def delay_before_next_try(nbr_tries)
           percent = (nbr_tries - 1).to_f / (@max_retries - 1)
           rad = percent * Math::PI / 2

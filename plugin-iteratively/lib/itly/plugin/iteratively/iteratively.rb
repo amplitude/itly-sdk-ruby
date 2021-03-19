@@ -29,7 +29,7 @@ class Itly
       #
       # rubocop:disable Metrics/ParameterLists
       def initialize(
-        url:, api_key:, disabled: nil, buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, 
+        url:, api_key:, disabled: nil, buffer_size: 10, max_retries: 25, retry_delay_min: 10.0,
         retry_delay_max: 3600.0, omit_values: false
       )
         super()
@@ -60,9 +60,7 @@ class Itly
         logger.info "#{plugin_id}: load()"
 
         # Disabled
-        if @disabled.nil?
-          @disabled = options.environment == Itly::Options::Environment::PRODUCTION
-        end
+        @disabled = options.environment == Itly::Options::Environment::PRODUCTION if @disabled.nil?
 
         if @disabled
           logger.info "#{plugin_id}: plugin is disabled!"
