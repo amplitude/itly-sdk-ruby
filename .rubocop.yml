@@ -15,6 +15,9 @@ Metrics/BlockLength:
   Enabled: false
 Metrics/MethodLength:
   Enabled: false
+Metrics/ParameterLists:
+  Exclude:
+    - 'sdk-examples/**/*'
 Naming/FileName:
   Exclude:
     - plugin-amplitude/lib/itly/plugin-amplitude.rb

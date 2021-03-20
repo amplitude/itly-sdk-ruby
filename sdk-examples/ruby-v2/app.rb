@@ -1,82 +1,127 @@
 # frozen_string_literal: true
 
-require 'itly-sdk'
-require 'itly/plugin-schema_validator'
-require 'itly/plugin-amplitude'
-require 'itly/plugin-segment'
+require_relative 'itly'
+require_relative 'itly_destination'
+require_relative 'itly_options'
+require_relative 'custom_plugin'
+require_relative 'custom_events'
 
-# Logger
-logger = ::Logger.new $stdout, level: Logger::Severity::DEBUG
+Itly.load(
+  context: {
+    requiredString: 'required context string',
+    optionalEnum: 'Value 1'
+  },
+  destinations: ItlyDestination.new(
+    iteratively: ItlyDestination::Iteratively.new(
+      buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0
+    )
+  ),
+  options: ItlyOptions.new(
+    environment: Itly::Options::Environment::DEVELOPMENT,
+    disabled: false,
+    plugins: [CustomPlugin.new(api_key: 'abc123')],
+    validation: Itly::Options::Validation::ERROR_ON_INVALID,
+    logger: ::Logger.new($stdout, level: Logger::Severity::DEBUG)
+  )
+)
 
-# Custom plugin
-# rubocop:disable Lint/UnusedMethodArgument
-class CustomPlugin < Itly::Plugin
-  def load(options:)
-    @logger = options.logger
-    logger.debug "#{plugin_id}: load()"
-  end
+# Run Itly
+user_id = 'a-user-id'
 
-  def identify(user_id:, properties:)
-    logger.debug "#{plugin_id}: identify()"
-  end
-
-  def group(user_id:, group_id:, properties:)
-    logger.debug "#{plugin_id}: group()"
-  end
-
-  def track(user_id:, event:)
-    logger.debug "#{plugin_id}: track()"
-  end
-
-  def alias(user_id:, previous_id:)
-    logger.debug "#{plugin_id}: alias()"
-  end
-
-  def flush
-    logger.debug "#{plugin_id}: flush()"
-  end
-
-  def reset
-    logger.debug "#{plugin_id}: reset()"
-  end
-end
-# rubocop:enable Lint/UnusedMethodArgument
-
-# Instanciate plugins and Itly object
-segment1 = Itly::Plugin::Segment.new write_key: 'account1_key'
-segment2 = Itly::Plugin::Segment.new write_key: 'account2_key'
-amplitude = Itly::Plugin::Amplitude.new api_key: 'ampl_key'
-validator = Itly::Plugin::SchemaValidator.new schemas: { validation: 'schemas' }
-
-itly = Itly.new
-
-itly.load do |options|
-  options.logger = logger
-  options.plugins = [
-    validator,
-    segment1,
-    segment2,
-    amplitude
-  ]
-  option.context = {
-    app_version: '1.2.3',
-    platform: 'Linux'
-  }
-end
-
-# Track events
-itly.identify \
-  user_id: 'user123',
-  properties: {
-    device: 'laptop'
-  }
-
-event = Itly::Event.new name: 'test_event'
-itly.track \
+Itly.track(
   user_id: user_id,
-  event: event
+  event: EventWithEnumTypes.new(
+    required_num: EventWithEnumTypes::RequiredEnum::REQUIREDENUM1
+  )
+)
 
-event = Itly::Event.new name: 'watch_video', properties: { video_id: '123' }
-itly.track \
+Itly.identify(
+  user_id: 'tmpUserId',
+  required_number: 42.0,
+  optional_array: ['I\'m optional!']
+)
+
+Itly.alias(
   user_id: user_id,
-  event: event
+  previous_id: 'tmpUserId'
+)
+
+Itly.group(
+  user_id: user_id,
+  group_id: 'groupId',
+  required_boolean: true
+)
+
+Itly.track(
+  user_id: user_id,
+  event: EventNoProperties.new
+)
+
+Itly.track(
+  user_id: user_id,
+  event: EventWithConstTypes.new
+)
+
+Itly.track(
+  user_id: user_id,
+  event: EventWithOptionalProperties.new(
+    optional_string: 'opt'
+  )
+)
+
+Itly.event_with_optional_properties(
+  user_id: user_id,
+  optional_array_number: [2, 4],
+  optional_number: 42.0,
+  optional_string: 'hi'
+)
+
+Itly.event_with_optional_properties(
+  user_id: user_id,
+  optional_string: 'hi'
+)
+
+Itly.track(
+  user_id: user_id,
+  event: EventWithOptionalArrayTypes.new(
+    optional_boolean_array: [true],
+    optional_number_array: [2, 3, 1],
+    optional_string_array: %w[this not required]
+  )
+)
+
+Itly.track(
+  user_id: user_id,
+  event: EventWithAllProperties.new(
+    required_array: %w[this is required],
+    required_boolean: false,
+    required_enum: EventWithAllProperties::RequiredEnum::ENUM1,
+    required_integer: 42,
+    required_number: 42.0,
+    required_string: 'I\'m required 2',
+    optional_string: 'I\'m optional'
+  )
+)
+
+Itly.event_no_properties user_id: user_id
+
+Itly.event_with_const_types user_id: user_id
+
+Itly.event_max_int_for_test user_id: user_id, int_max10: 20
+
+Itly.track(
+  user_id: user_id,
+  event: EventMaxIntForTest.new(int_max10: 20)
+)
+
+Itly.event_with_different_casing_types(
+  user_id: user_id,
+  enum_with_space: EventWithDifferentCasingTypes::EnumWithSpace::ENUMWITHSPACE,
+  enum_snake_case: EventWithDifferentCasingTypes::EnumSnakeCase::ENUMSNAKECASE,
+  enum_pascal_case: EventWithDifferentCasingTypes::EnumPascalCase::ENUMPASCALCASE,
+  enum_camel_case: EventWithDifferentCasingTypes::EnumCamelCase::ENUMCAMELCASE,
+  property_with_space: 'prop with space',
+  property_with_snake_case: 'snake_case_prop_value',
+  property_with_pascal_case: 'PascalCasePropValue',
+  property_with_camel_case: 'camelCasePropValue'
+)
