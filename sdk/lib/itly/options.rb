@@ -51,6 +51,9 @@ class Itly
   #   Defaults to +ERROR_ON_INVALID+ if the environment is set to +DEVELOPMENT+, or +TRACK_INVALID+
   #   if the environment is set to +PRODUCTION+.
   #
+  # + logger+: Allow to set a custom Logger. Must be a object of the Logger class or child class.
+  #   Deflault output to STDOUT and level to ERROR
+  #
   class Options
     attr_accessor :disabled, :logger, :plugins
     attr_reader :context, :environment, :default_environment
