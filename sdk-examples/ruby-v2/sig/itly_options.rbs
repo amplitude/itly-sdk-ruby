@@ -1,0 +1,11 @@
+class ItlyOptions
+  attr_accessor environment: ::Symbol
+  attr_accessor disabled: bool
+  attr_accessor plugins: ::Array[::Itly::Plugin]
+  attr_accessor validation: ::Integer
+  attr_accessor logger: ::Logger
+
+  private
+
+  def initialize: (environment: ::Symbol environment, disabled: bool disabled, plugins: ::Array[::Itly::Plugin] plugins, validation: ::Integer validation, logger: ::Logger logger) -> void
+end

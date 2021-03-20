@@ -1,0 +1,62 @@
+class EventWithEnumTypes < Itly::Event
+  module OptionalEnum
+    OPTIONALENUM1: ::String
+    OPTIONALENUM2: ::String
+  end
+
+  module RequiredEnum
+    REQUIREDENUM1: ::String
+    REQUIREDENUM2: ::String
+  end
+
+  def initialize: (required_num: ::String required_num, ?optional_enum: ::String? optional_enum) -> void
+end
+
+class EventNoProperties < Itly::Event
+  def initialize: () -> void
+end
+
+class EventWithConstTypes < Itly::Event
+  def initialize: () -> void
+end
+
+class EventWithOptionalProperties < Itly::Event
+  def initialize: (?optional_array_number: ::Array[::Integer]? optional_array_number, ?optional_array_string: ::Array[::String]? optional_array_string, ?optional_boolean: bool? optional_boolean, ?optional_number: ::Integer? optional_number, ?optional_string: ::String? optional_string) -> void
+end
+
+class EventWithOptionalArrayTypes < Itly::Event
+  def initialize: (?optional_boolean_array: ::Array[bool]? optional_boolean_array, ?optional_json_array: ::Array[::String]? optional_json_array, ?optional_number_array: ::Array[::Integer]? optional_number_array, ?optional_string_array: ::Array[::String]? optional_string_array) -> void
+end
+
+class EventWithAllProperties < Itly::Event
+  module RequiredEnum
+    ENUM1: ::String
+    ENUM2: ::String
+  end
+
+  def initialize: (required_array: ::Array[::String] required_array, required_boolean: bool required_boolean, required_enum: ::String required_enum, required_integer: ::Integer required_integer, required_number: ::Numeric required_number, required_string: ::String required_string, ?optional_string: ::String? optional_string) -> void
+end
+
+class EventMaxIntForTest < Itly::Event
+  def initialize: (int_max10: ::Integer int_max10) -> void
+end
+
+class EventWithDifferentCasingTypes < Itly::Event
+  module EnumCamelCase
+    ENUMCAMELCASE: ::String
+  end
+
+  module EnumPascalCase
+    ENUMPASCALCASE: ::String
+  end
+
+  module EnumSnakeCase
+    ENUMSNAKECASE: ::String
+  end
+
+  module EnumWithSpace
+    ENUMWITHSPACE: ::String
+  end
+
+  def initialize: (property_with_camel_case: ::String property_with_camel_case, property_with_pascal_case: ::String property_with_pascal_case, property_with_snake_case: ::String property_with_snake_case, property_with_space: ::String property_with_space, ?enum_camel_case: ::String enum_camel_case, ?enum_pascal_case: ::String enum_pascal_case, ?enum_snake_case: ::String enum_snake_case, ?enum_with_space: ::String enum_with_space) -> void
+end

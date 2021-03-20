@@ -1,0 +1,23 @@
+class Itly
+  def self.load: (context: ::Hash[:Symbol, untyped] context, destinations: ::ItlyDestination destinations, options: ::ItlyOptions options) -> void
+
+  def self.identify: (user_id: ::String user_id, required_number: ::Integer required_number, ?optional_array: ::Array[untyped] optional_array) -> void
+
+  def self.group: (user_id: ::String user_id, group_id: ::String group_id, required_boolean: bool required_boolean, ?optional_string: ::String? optional_string) -> void
+
+  def self.event_no_properties: (user_id: ::String user_id) -> void
+
+  def self.event_with_const_types: (user_id: ::String user_id) -> void
+
+  def self.event_with_optional_properties: (user_id: ::String user_id, ?optional_array_number: ::Array[::Integer]? optional_array_number, ?optional_array_string: ::Array[::String]? optional_array_string, ?optional_boolean: bool? optional_boolean, ?optional_number: ::Integer? optional_number, ?optional_string: ::String? optional_string) -> void
+
+  def self.event_max_int_for_test: (user_id: ::String user_id, int_max10: ::Integer int_max10) -> void
+
+  def self.event_with_different_casing_types: (user_id: ::String user_id, property_with_camel_case: ::String property_with_camel_case, property_with_pascal_case: ::String property_with_pascal_case, property_with_snake_case: ::String property_with_snake_case, property_with_space: ::String property_with_space, ?enum_camel_case: ::String enum_camel_case, ?enum_pascal_case: ::String enum_pascal_case, ?enum_snake_case: ::String enum_snake_case, ?enum_with_space: ::String enum_with_space) -> void
+
+  def self.track: (user_id: ::String user_id, event: ::Itly::Event event) -> void
+
+  def self.alias: (user_id: ::String user_id, previous_id: ::String previous_id) -> void
+
+  def self.validation_schemas: () -> ::Hash[::Symbol, ::String]
+end
