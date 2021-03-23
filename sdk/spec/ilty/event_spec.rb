@@ -35,7 +35,7 @@ describe Itly::Event do
       it do
         %i[name properties id version metadata].each do |attribute|
           expect(event.respond_to?(attribute)).to be(true)
-          expect(event.respond_to?(:"#{attribute}=")).to be(true)
+          expect(event.respond_to?(:"#{attribute}=")).to be(false)
         end
       end
     end

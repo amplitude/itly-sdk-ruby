@@ -12,7 +12,7 @@ class Itly
   # +metadata+: The event's metadata.
   #
   class Event
-    attr_accessor :name, :properties, :id, :version, :metadata
+    attr_reader :name, :properties, :id, :version, :metadata
 
     ##
     # Create a new Event object
