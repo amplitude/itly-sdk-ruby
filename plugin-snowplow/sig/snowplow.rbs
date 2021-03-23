@@ -1,0 +1,7 @@
+class Itly
+  class Plugin
+    class Snowplow < Plugin
+      VERSION: ::String
+    end
+  end
+end

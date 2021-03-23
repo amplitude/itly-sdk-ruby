@@ -19,7 +19,7 @@ MIN_VERSION = '1.0.0'
 
 raise 'Please specify the plugin name.' if ARGV.length != 1
 
-unless %w[amplitude iteratively mixpanel schema-validator segment sdk].include? ARGV[0]
+unless %w[amplitude iteratively mixpanel schema-validator segment snowplow sdk].include? ARGV[0]
   raise 'The specified plugin name seems incorrect.'
 end
 

@@ -45,3 +45,8 @@ jobs:
       run: ruby bin/publish_gems.rb segment
       env:
         GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
+
+    - name: Publish plugin-snowplow to RubyGems
+      run: ruby bin/publish_gems.rb snowplow
+      env:
+        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
