@@ -741,8 +741,9 @@ describe 'Itly' do
       end
 
       context 'return from validations' do
-        let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: '1', message: 'One' }
+        let(:response1) { Itly::ValidationResponse.new valid: valid, plugin_id: '1', message: 'One' }
         let(:response2) { Itly::ValidationResponse.new valid: true, plugin_id: '2', message: 'Two' }
+        let(:valid) { true }
 
         context 'all valid' do
           before do
@@ -758,9 +759,9 @@ describe 'Itly' do
         end
 
         context 'a validation returns false' do
-          before do
-            response1.valid = false
+          let(:valid) { false }
 
+          before do
             expect(plugin_a).to receive(:validate).once.and_return(response1)
             expect(plugin_b).to receive(:validate).once.and_return(response2)
           end
@@ -804,8 +805,9 @@ describe 'Itly' do
       end
 
       context 'return from validations' do
-        let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: '1', message: 'One' }
+        let(:response1) { Itly::ValidationResponse.new valid: valid, plugin_id: '1', message: 'One' }
         let(:response2) { Itly::ValidationResponse.new valid: true, plugin_id: '2', message: 'Two' }
+        let(:valid) { true }
 
         context 'all valid' do
           before do
@@ -821,9 +823,9 @@ describe 'Itly' do
         end
 
         context 'a validation returns false' do
-          before do
-            response1.valid = false
+          let(:valid) { false }
 
+          before do
             expect(plugin_a).to receive(:validate).once.and_return(response1)
             expect(plugin_b).to receive(:validate).once.and_return(response2)
           end
@@ -869,9 +871,11 @@ describe 'Itly' do
       end
 
       context 'return from validations' do
-        let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: '1', message: 'One' }
-        let(:response2) { Itly::ValidationResponse.new valid: true, plugin_id: '2', message: 'Two' }
+        let(:response1) { Itly::ValidationResponse.new valid: valid1, plugin_id: '1', message: 'One' }
+        let(:response2) { Itly::ValidationResponse.new valid: valid2, plugin_id: '2', message: 'Two' }
         let(:response3) { Itly::ValidationResponse.new valid: true, plugin_id: '3', message: 'Three' }
+        let(:valid1) { true }
+        let(:valid2) { true }
 
         context 'all valid' do
           before do
@@ -889,9 +893,9 @@ describe 'Itly' do
         end
 
         context 'a context validation returns false' do
-          before do
-            response2.valid = false
+          let(:valid2) { false }
 
+          before do
             expect(plugin_a).to receive(:validate).once.and_return(nil)
             expect(plugin_a).to receive(:validate).once.and_return(response1)
             expect(plugin_b).to receive(:validate).once.and_return(response2)
@@ -906,9 +910,9 @@ describe 'Itly' do
         end
 
         context 'a plugin validation returns false' do
-          before do
-            response1.valid = false
+          let(:valid1) { false }
 
+          before do
             expect(plugin_a).to receive(:validate).once.and_return(nil)
             expect(plugin_a).to receive(:validate).once.and_return(response1)
             expect(plugin_b).to receive(:validate).once.and_return(response2)

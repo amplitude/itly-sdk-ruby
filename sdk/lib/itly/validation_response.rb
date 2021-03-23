@@ -9,7 +9,7 @@ class Itly
   # +message+: [String] the message you want to appear in the logs in case of error
   #
   class ValidationResponse
-    attr_accessor :valid, :plugin_id, :message
+    attr_reader :valid, :plugin_id, :message
 
     ##
     # Create a new ValidationResponse object
