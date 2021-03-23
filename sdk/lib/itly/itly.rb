@@ -24,13 +24,18 @@ class Itly
   #
   # Calls the +load+ method of each plugin passing the +options+ object as an argument.
   #
-  def load
+  # @param [Hash] context: to assign to the "context" Event object. Default to nil
+  #
+  def load(context: nil)
     # Ensure #load was not already called on this object
     raise InitializationError, 'Itly is already initialized.' if @is_initialized
 
     # Create a new Options object and yield it is a block is provided
     @options = Itly::Options.new
     yield @options if block_given?
+
+    # Create the context event
+    @context = context.nil? ? nil : Itly::Event.new(name: 'context', properties: context )
 
     # Log
     logger.info 'load()'
@@ -131,7 +136,7 @@ class Itly
   # Raises a Itly::ValidationError if one of the validations failed and
   # if your set the +options.validation+ value to +ERROR_ON_INVALID+.
   #
-  # The properties of the +options.context+ passed when created the +Itly+ object
+  # The properties of the +context+ instance attribute passed when called #load
   # are merged with the +event+ parameter before validation and calling the event
   # on your application.
   #
@@ -248,7 +253,7 @@ class Itly
     validations = context_validations + event_validations
 
     # Call the action on all plugins
-    event.properties.merge! @options.context.properties if @options.context && include_context
+    event.properties.merge! @context.properties if @context && include_context
 
     if is_valid || @options.validation == Itly::Options::Validation::TRACK_INVALID
       run_on_plugins { |plugin| action.call(plugin, event) }
@@ -266,7 +271,7 @@ class Itly
 
   def validate_context_and_event(include_context, event)
     # Validate the context
-    context_validations = (validate event: @options.context if include_context && @options.context) || []
+    context_validations = (validate event: @context if include_context && @context) || []
 
     # Validate the event
     event_validations = validate(event: event) || []

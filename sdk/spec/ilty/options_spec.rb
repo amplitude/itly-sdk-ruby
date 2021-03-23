@@ -15,14 +15,6 @@ describe Itly::Options do
     expect(options.for_plugin.logger).to be_a_kind_of(Logger)
   end
 
-  it '#context=' do
-    options.context = { a: '1', b: 'two' }
-
-    expect(options.context).to be_a_kind_of(Itly::Event)
-    expect(options.context.name).to eq('context')
-    expect(options.context.properties).to eq(a: '1', b: 'two')
-  end
-
   it '#environment=' do
     expect(options.instance_variable_get('@default_environment')).to be(true)
     expect(options.environment).to eq(Itly::Options::Environment::DEVELOPMENT)

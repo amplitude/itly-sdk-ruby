@@ -11,10 +11,6 @@ class Itly
   #
   # Properties:
   #
-  # +context+: A Hash with a set of properties to add to every event sent by the Itly SDK.
-  #   Only available if there is at least one source template associated with your
-  #   team's tracking plan.
-  #
   # +disabled+: A True/False specifying whether the Itly SDK does any work.
   #   When true, all calls to the Itly SDK will be no-ops. Useful in local or development environments.
   #
@@ -56,7 +52,7 @@ class Itly
   #
   class Options
     attr_accessor :disabled, :logger, :plugins
-    attr_reader :context, :environment, :default_environment
+    attr_reader :environment, :default_environment
     attr_writer :validation
 
     ##
@@ -65,7 +61,6 @@ class Itly
     def initialize
       @default_environment = true
 
-      @context = nil
       @disabled = false
       @environment = Itly::Options::Environment::DEVELOPMENT
       @validation = Itly::Options::Validation::DEFAULT
@@ -80,15 +75,6 @@ class Itly
     #
     def for_plugin
       ::Itly::PluginOptions.new environment: environment, logger: logger
-    end
-
-    ##
-    # Assign properties to the +context+ instance variable
-    #
-    # @param [Hash] properties to assign to the "context" Event object
-    #
-    def context=(properties)
-      @context = Itly::Event.new name: 'context', properties: properties
     end
 
     ##

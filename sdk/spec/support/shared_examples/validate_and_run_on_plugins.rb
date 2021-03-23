@@ -23,9 +23,8 @@ shared_examples 'validate and run on plugins' do |
 
   # Load options
   before do
-    itly.load do |options|
+    itly.load(context: (context_properties if context_properties)) do |options|
       options.plugins = [plugin_a, plugin_b]
-      options.context = context_properties if context_properties
       options.validation = validation_value if validation_value
     end
   end

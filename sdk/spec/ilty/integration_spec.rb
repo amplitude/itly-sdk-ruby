@@ -69,11 +69,12 @@ describe 'integration' do
   describe 'call methods that do not require validation' do
     [[true, 'with context'], [false, 'without context']].each do |with_context, description|
       describe description do
+        let(:context) { { version: '1.2' } if with_context }
+
         it 'call #alias' do
           itly = Itly.new
-          itly.load do |options|
+          itly.load(context: context) do |options|
             itly_default_options options, logs
-            options.context = { version: '1.2' } if with_context
           end
 
           itly.alias user_id: 'newID', previous_id: 'oldID'
@@ -90,10 +91,9 @@ describe 'integration' do
 
         it 'when the SDK is disabled' do
           itly = Itly.new
-          itly.load do |options|
+          itly.load(context: context) do |options|
             itly_default_options options, logs
             options.disabled = true
-            options.context = { version: '1.2' } if with_context
           end
 
           itly.alias user_id: 'newID', previous_id: 'oldID'
@@ -112,11 +112,12 @@ describe 'integration' do
   describe 'call methods with validation' do
     [[true, 'with context'], [false, 'without context']].each do |with_context, description|
       describe description do
+        let(:context) { { version: '1.2' } if with_context }
+
         it 'call #identify' do
           itly = Itly.new
-          itly.load do |options|
+          itly.load(context: context) do |options|
             itly_default_options options, logs
-            options.context = { version: '1.2' } if with_context
           end
 
           itly.identify user_id: 'newID', properties: { access_level: 'admin' }
@@ -136,10 +137,9 @@ describe 'integration' do
         describe 'with a validation error' do
           it 'when validation = ERROR_ON_INVALID' do
             itly = Itly.new
-            itly.load do |options|
+            itly.load(context: context) do |options|
               itly_default_options options, logs
               options.validation = Itly::Options::Validation::ERROR_ON_INVALID
-              options.context = { version: '1.2' } if with_context
             end
 
             expect do
@@ -160,10 +160,9 @@ describe 'integration' do
 
           it 'when validation = TRACK_INVALID' do
             itly = Itly.new
-            itly.load do |options|
+            itly.load(context: context) do |options|
               itly_default_options options, logs
               options.validation = Itly::Options::Validation::TRACK_INVALID
-              options.context = { version: '1.2' } if with_context
             end
 
             expect do
@@ -186,10 +185,9 @@ describe 'integration' do
 
           it 'when validation = DISABLED' do
             itly = Itly.new
-            itly.load do |options|
+            itly.load(context: context) do |options|
               itly_default_options options, logs
               options.validation = Itly::Options::Validation::DISABLED
-              options.context = { version: '1.2' } if with_context
             end
 
             expect do
@@ -211,10 +209,9 @@ describe 'integration' do
 
         it 'when the SDK is disabled' do
           itly = Itly.new
-          itly.load do |options|
+          itly.load(context: context) do |options|
             itly_default_options options, logs
             options.disabled = true
-            options.context = { version: '1.2' } if with_context
           end
 
           itly.identify user_id: 'newID', properties: { access_level: 'admin' }
@@ -233,11 +230,12 @@ describe 'integration' do
   describe 'call methods with context' do
     [[true, 'with context'], [false, 'without context']].each do |with_context, description|
       describe description do
+        let(:context) { { version: '1.2' } if with_context }
+
         it 'call #track' do
           itly = Itly.new
-          itly.load do |options|
+          itly.load(context: context) do |options|
             itly_default_options options, logs
-            options.context = { version: '1.2' } if with_context
           end
 
           itly.track \
@@ -281,10 +279,9 @@ describe 'integration' do
         describe 'with a validation error' do
           it 'when validation = ERROR_ON_INVALID' do
             itly = Itly.new
-            itly.load do |options|
+            itly.load(context: context) do |options|
               itly_default_options options, logs
               options.validation = Itly::Options::Validation::ERROR_ON_INVALID
-              options.context = { version: '1.2' } if with_context
             end
 
             expect do
@@ -328,10 +325,9 @@ describe 'integration' do
 
           it 'when validation = TRACK_INVALID' do
             itly = Itly.new
-            itly.load do |options|
+            itly.load(context: context) do |options|
               itly_default_options options, logs
               options.validation = Itly::Options::Validation::TRACK_INVALID
-              options.context = { version: '1.2' } if with_context
             end
 
             expect do
@@ -382,10 +378,9 @@ describe 'integration' do
 
           it 'when validation = DISABLED' do
             itly = Itly.new
-            itly.load do |options|
+            itly.load(context: context) do |options|
               itly_default_options options, logs
               options.validation = Itly::Options::Validation::DISABLED
-              options.context = { version: '1.2' } if with_context
             end
 
             expect do
@@ -424,10 +419,9 @@ describe 'integration' do
 
         it 'when the SDK is disabled' do
           itly = Itly.new
-          itly.load do |options|
+          itly.load(context: context) do |options|
             itly_default_options options, logs
             options.disabled = true
-            options.context = { version: '1.2' } if with_context
           end
 
           itly.track \

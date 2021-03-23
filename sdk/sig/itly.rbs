@@ -5,7 +5,7 @@ class Itly
 
   attr_reader options: ::Itly::Options
 
-  def load: () ?{ (::Itly::Options) -> void } -> void
+  def load: (?context: ::Hash[::String | ::Symbol, untyped]? context) ?{ (::Itly::Options) -> void } -> void
   def identify: (user_id: ::String user_id, properties: ::Hash[::String | ::Symbol, untyped] properties) -> void
   def group: (user_id: ::String user_id, group_id: ::String group_id, properties: ::Hash[::String | ::Symbol, untyped] properties) -> void
   def track: (user_id: ::String user_id, event: ::Itly::Event event) -> void

@@ -228,10 +228,9 @@ describe Itly::Plugin::Amplitude do
         let(:response) { double 'response', status: 200 }
 
         before do
-          itly.load do |options|
+          itly.load(context: { app_version: '1.2.3' }) do |options|
             options.plugins = [plugin]
             options.logger = ::Logger.new logs
-            options.context = { app_version: '1.2.3' }
           end
 
           expect(AmplitudeAPI).to receive(:send_event)

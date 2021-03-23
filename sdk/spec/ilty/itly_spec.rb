@@ -38,8 +38,7 @@ describe 'Itly' do
 
       context 'with a block', fake_plugins: 1 do
         before do
-          itly.load do |o|
-            o.context = { some: 'data' }
+          itly.load(context: { some: 'data' }) do |o|
             o.disabled = true
             o.environment = Itly::Options::Environment::PRODUCTION
             o.validation = Itly::Options::Validation::DISABLED
@@ -59,11 +58,27 @@ describe 'Itly' do
           expect(plugins.count).to eq(1)
           expect(plugins[0]).to be_a_kind_of(FakePlugin0)
 
-          context = itly.options.context
+          context = itly.instance_variable_get '@context'
           expect(context).to be_a_kind_of(Itly::Event)
           expect(context.name).to eq('context')
           expect(context.properties).to eq(some: 'data')
         end
+      end
+    end
+
+    describe '@context' do
+      it 'default' do
+        itly.load
+        expect(itly.instance_variable_get('@context')).to be(nil)
+      end
+
+      it 'set a value' do
+        itly.load context: { a: '1', b: 'two' }
+
+        context = itly.instance_variable_get '@context'
+        expect(context).to be_a_kind_of(Itly::Event)
+        expect(context.name).to eq('context')
+        expect(context.properties).to eq(a: '1', b: 'two')
       end
     end
 
@@ -527,8 +542,7 @@ describe 'Itly' do
 
     # Load options
     before do
-      itly.load do |options|
-        options.context = { data: 'for_context' }
+      itly.load(context: { data: 'for_context' }) do |options|
         options.plugins = [plugin_a, plugin_b]
         options.validation = validation_option if validation_option
       end
@@ -782,8 +796,7 @@ describe 'Itly' do
       let!(:itly) { Itly.new }
 
       before do
-        itly.load do |options|
-          options.context = { data: 'for_context' }
+        itly.load(context: { data: 'for_context' }) do |options|
           options.plugins = [plugin_a, plugin_b]
         end
       end
@@ -846,8 +859,7 @@ describe 'Itly' do
       let!(:itly) { Itly.new }
 
       before do
-        itly.load do |options|
-          options.context = { data: 'for_context' }
+        itly.load(context: { data: 'for_context' }) do |options|
           options.plugins = [plugin_a, plugin_b]
         end
       end
