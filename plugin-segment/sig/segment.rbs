@@ -6,6 +6,7 @@ class Itly
       attr_reader logger: ::Logger
       attr_reader client: ::SimpleSegment::Client?
       attr_reader write_key: ::String
+      attr_reader disabled: bool
 
       def load: (options: ::Hash[::Symbol, ::Symbol | ::Logger] options) -> void
       def identify: (user_id: ::String user_id, properties: ::Itly::Event properties) -> void
