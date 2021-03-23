@@ -50,6 +50,7 @@ class Itly
       # @param [String] user_id: the id of the user in your application
       # @param [Event] properties: unused
       #
+      # rubocop:disable Lint/UnusedMethodArgument
       def identify(user_id:, properties:)
         return unless enabled?
 
@@ -59,6 +60,7 @@ class Itly
         # Send through the client
         @tracker.set_user_id user_id
       end
+      # rubocop:enable Lint/UnusedMethodArgument
 
       ##
       # Track an event
