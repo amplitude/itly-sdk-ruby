@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'itly-sdk', '~> 0.1'
+  spec.add_dependency 'snowplow-tracker', '~> 0.6'
 end
