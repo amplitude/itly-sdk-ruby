@@ -35,7 +35,7 @@ class Itly
     yield @options if block_given?
 
     # Create the context event
-    @context = context.nil? ? nil : Itly::Event.new(name: 'context', properties: context )
+    @context = context.nil? ? nil : Itly::Event.new(name: 'context', properties: context)
 
     # Log
     logger.info 'load()'
