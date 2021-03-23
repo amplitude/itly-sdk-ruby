@@ -110,7 +110,7 @@ class Itly
           resp = Faraday.post(@url, data, headers)
 
           # Case: HTTP response 2xx is a Success
-          return true if resp.status / 100 == 2
+          return true if (200...300).include? resp.status
 
           # Case: Error
           logger.error "Iteratively::Client: post_models() unexpected response. Url: #{url} "\
