@@ -9,10 +9,9 @@ class Itly
   # +properties+: The event's properties.
   # +id+: The event's unique ID in Iteratively.
   # +version+: The event's version, e.g. 2.0.1.
-  # +metadata+: The event's metadata.
   #
   class Event
-    attr_reader :name, :properties, :id, :version, :metadata
+    attr_reader :name, :properties, :id, :version
 
     ##
     # Create a new Event object
@@ -21,14 +20,12 @@ class Itly
     # @param [Hash] properties: The event's properties.
     # @param [String] id: The event's unique ID in Iteratively.
     # @param [String] version: The event's version, e.g. 2.0.1.
-    # @param [Hash] metadata: The event's metadata.
     #
-    def initialize(name:, properties: {}, id: nil, version: nil, metadata: nil)
+    def initialize(name:, properties: {}, id: nil, version: nil)
       @name = name
       @properties = properties
       @id = id
       @version = version
-      @metadata = metadata
     end
 
     ##
@@ -48,8 +45,8 @@ class Itly
     # @return [True/False] are the objects similar
     #
     def ==(other)
-      other.class == self.class && [name, properties, id, version, metadata] ==
-        [other.name, other.properties, other.id, other.version, other.metadata]
+      other.class == self.class && [name, properties, id, version] ==
+        [other.name, other.properties, other.id, other.version]
     end
   end
 end
