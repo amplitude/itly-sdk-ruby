@@ -4,14 +4,16 @@ class Itly
       VERSION: ::String
 
       attr_reader logger: ::Logger
+      attr_reader disabled: bool
 
-      def load: (options: ::Itly::Options options) -> void
+      def load: (options: ::Itly::PluginOptions options) -> void
       def identify: (user_id: ::String user_id, properties: ::Itly::Event properties) -> void
       def track: (user_id: ::String user_id, event: ::Itly::Event event) -> void
 
       private
 
-      def initialize: (api_key: ::String api_key) -> void
+      def initialize: (api_key: ::String api_key, ?disabled: bool disabled) -> void
+      def enabled?: () -> bool
       def call_end_point: () ?{ () -> Faraday::Response } -> void
     end
   end

@@ -9,17 +9,17 @@ describe Itly::Plugin::Iteratively::Client do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
         logger: logger, buffer_size: 1, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0
+        retry_delay_max: 4.0, omit_values: false
     end
 
     it 'can read' do
-      %i[api_key url logger buffer_size max_retries retry_delay_min retry_delay_max].each do |attribute|
+      %i[api_key url logger buffer_size max_retries retry_delay_min retry_delay_max omit_values].each do |attribute|
         expect(client.respond_to?(attribute)).to be(true)
       end
     end
 
     it 'cannot write' do
-      %i[api_key url logger buffer_size max_retries retry_delay_min retry_delay_max].each do |attribute|
+      %i[api_key url logger buffer_size max_retries retry_delay_min retry_delay_max omit_values].each do |attribute|
         expect(client.respond_to?(:"#{attribute}=")).to be(false)
       end
     end
@@ -31,7 +31,7 @@ describe Itly::Plugin::Iteratively::Client do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
         logger: logger, buffer_size: 1, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0
+        retry_delay_max: 4.0, omit_values: false
     end
 
     it do
@@ -45,6 +45,7 @@ describe Itly::Plugin::Iteratively::Client do
       expect(client.instance_variable_get('@max_retries')).to eq(2)
       expect(client.instance_variable_get('@retry_delay_min')).to eq(3.0)
       expect(client.instance_variable_get('@retry_delay_max')).to eq(4.0)
+      expect(client.instance_variable_get('@omit_values')).to be(false)
     end
   end
 
@@ -60,7 +61,7 @@ describe Itly::Plugin::Iteratively::Client do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
         logger: logger, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0
+        retry_delay_max: 4.0, omit_values: false
     end
 
     describe 'enqueue models' do
@@ -130,8 +131,8 @@ describe Itly::Plugin::Iteratively::Client do
   describe '#flush' do
     let(:event1) { Itly::Event.new name: 'event1', properties: { some: 'data' } }
     let(:event2) { Itly::Event.new name: 'event2', properties: { some: 'data' } }
-    let(:model1) { Itly::Plugin::Iteratively::Model.new type: 'model1', event: event1 }
-    let(:model2) { Itly::Plugin::Iteratively::Model.new type: 'model2', event: event2 }
+    let(:model1) { Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'model1', event: event1 }
+    let(:model2) { Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'model2', event: event2 }
 
     let(:logs) { StringIO.new }
     let(:logger) { ::Logger.new logs }
@@ -139,7 +140,7 @@ describe Itly::Plugin::Iteratively::Client do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
         logger: logger, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0
+        retry_delay_max: 4.0, omit_values: false
     end
 
     let(:buffer) { client.instance_variable_get '@buffer' }
@@ -149,9 +150,8 @@ describe Itly::Plugin::Iteratively::Client do
       before do
         buffer << model1 << model2
 
-        expect(client).to receive(:post_model).once.with(model1).and_return(true)
-        expect(client).to receive(:post_model).once.with(model2).and_return(true)
-        expect(client).not_to receive(:post_model)
+        expect(client).to receive(:post_models).once.with([model1, model2]).and_return(true)
+        expect(client).not_to receive(:post_models)
 
         expect(Kernel).not_to receive(:sleep)
       end
@@ -169,7 +169,7 @@ describe Itly::Plugin::Iteratively::Client do
 
     context 'empty buffer' do
       before do
-        expect(client).not_to receive(:post_model)
+        expect(client).not_to receive(:post_models)
         expect(Kernel).not_to receive(:sleep)
       end
 
@@ -185,10 +185,9 @@ describe Itly::Plugin::Iteratively::Client do
       before do
         buffer << model1 << model2
 
-        expect(client).to receive(:post_model).once.with(model1).and_return(false)
-        expect(client).to receive(:post_model).once.with(model1).and_return(true)
-        expect(client).to receive(:post_model).once.with(model2).and_return(true)
-        expect(client).not_to receive(:post_model)
+        expect(client).to receive(:post_models).once.with([model1, model2]).and_return(false)
+        expect(client).to receive(:post_models).once.with([model1, model2]).and_return(true)
+        expect(client).not_to receive(:post_models)
 
         expect(client).to receive(:sleep).once.with(3.0)
         expect(client).not_to receive(:sleep)
@@ -209,9 +208,9 @@ describe Itly::Plugin::Iteratively::Client do
       before do
         buffer << model1 << model2
 
-        expect(client).to receive(:post_model).once.with(model1).and_return(false)
-        expect(client).to receive(:post_model).once.with(model1).and_return(false)
-        expect(client).not_to receive(:post_model)
+        expect(client).to receive(:post_models).once.with([model1, model2]).and_return(false)
+        expect(client).to receive(:post_models).once.with([model1, model2]).and_return(false)
+        expect(client).not_to receive(:post_models)
 
         expect(client).to receive(:sleep).once.with(3.0)
         expect(client).not_to receive(:sleep)
@@ -224,7 +223,7 @@ describe Itly::Plugin::Iteratively::Client do
 
         expect_log_lines_to_equal [
           ['error',
-           'Iteratively::Client: flush() reached maximun number of tries. 2 event won\'t be sent to the server']
+           'Iteratively::Client: flush() reached maximun number of tries. 2 events won\'t be sent to the server']
         ]
 
         expect(buffer).to eq([])
@@ -238,34 +237,65 @@ describe Itly::Plugin::Iteratively::Client do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
         logger: logger, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0
+        retry_delay_max: 4.0, omit_values: false
     end
 
-    before do
-      expect(client).to receive(:flush)
-    end
-
-    context 'no runner' do
-      it do
-        client.shutdown
-
-        expect(client.instance_variable_get('@max_retries')).to eq(0)
-        expect(client.instance_variable_get('@runner')).to be(nil)
-      end
-    end
-
-    context 'with a runner' do
-      let(:runner) { double 'runner', wait_or_cancel: nil }
-
+    describe 'default' do
       before do
-        client.instance_variable_set '@runner', runner
-        expect(runner).to receive(:wait_or_cancel).with(3.0)
+        expect(client).to receive(:flush)
       end
 
-      it do
-        client.shutdown
+      context 'no runner' do
+        it do
+          client.shutdown
 
-        expect(client.instance_variable_get('@max_retries')).to eq(0)
+          expect(client.instance_variable_get('@max_retries')).to eq(0)
+          expect(client.instance_variable_get('@runner')).to be(nil)
+        end
+      end
+
+      context 'with a runner' do
+        let(:runner) { double 'runner', wait_or_cancel: nil }
+
+        before do
+          client.instance_variable_set '@runner', runner
+          expect(runner).to receive(:wait_or_cancel).with(3.0)
+        end
+
+        it do
+          client.shutdown
+
+          expect(client.instance_variable_get('@max_retries')).to eq(0)
+        end
+      end
+    end
+
+    describe 'force' do
+      before do
+        expect(client).not_to receive(:flush)
+      end
+
+      context 'no runner' do
+        it do
+          client.shutdown force: true
+
+          expect(client.instance_variable_get('@max_retries')).to eq(2)
+        end
+      end
+
+      context 'with a runner' do
+        let(:runner) { double 'runner', wait_or_cancel: nil }
+
+        before do
+          client.instance_variable_set '@runner', runner
+          expect(runner).to receive(:cancel)
+        end
+
+        it do
+          client.shutdown force: true
+
+          expect(client.instance_variable_get('@max_retries')).to eq(2)
+        end
       end
     end
   end
@@ -277,7 +307,7 @@ describe Itly::Plugin::Iteratively::Client do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
         logger: logger, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0
+        retry_delay_max: 4.0, omit_values: false
     end
 
     before do
@@ -318,10 +348,12 @@ describe Itly::Plugin::Iteratively::Client do
     end
   end
 
-  describe '#post_model' do
+  describe '#post_models' do
     let(:event) { Itly::Event.new name: 'test_event', id: 'id123', version: '12', properties: { data: 'value' } }
     let(:validation) { Itly::ValidationResponse.new valid: false, plugin_id: 'id', message: 'Validation Msg' }
-    let(:model) { Itly::Plugin::Iteratively::Model.new type: 'test_model', event: event, validation: validation }
+    let(:model) do
+      Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'test_model', event: event, validation: validation
+    end
 
     let(:logs) { StringIO.new }
     let(:logger) { ::Logger.new logs }
@@ -329,12 +361,12 @@ describe Itly::Plugin::Iteratively::Client do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url/path', api_key: 'api_key123',
         logger: logger, buffer_size: 1, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0
+        retry_delay_max: 4.0, omit_values: false
     end
 
     let(:expected_model_json) do
-      '{"type":"test_model","dateSent":"2021-01-01T06:00:00Z","eventId":"id123","eventChemaVersion":"12",'\
-       '"eventName":"test_event","properties":{"data":"value"},"valid":false,"validation":"Validation Msg"}'
+      '{"objects":[{"type":"test_model","dateSent":"2021-01-01T06:00:00Z","eventId":"id123","eventChemaVersion":"12",'\
+       '"eventName":"test_event","properties":{"data":"value"},"valid":false,"validation":"Validation Msg"}]}'
     end
 
     let(:expected_headers) do
@@ -357,7 +389,7 @@ describe Itly::Plugin::Iteratively::Client do
       end
 
       it do
-        expect(client.send(:post_model, model)).to be(true)
+        expect(client.send(:post_models, [model])).to be(true)
 
         expect_log_lines_to_equal []
       end
@@ -365,7 +397,7 @@ describe Itly::Plugin::Iteratively::Client do
 
     context 'failure' do
       let(:response) do
-        double 'response', status: 400, response_headers: { 'server' => 'nginx' }, response_body: 'error description'
+        double 'response', status: 400, headers: { 'server' => 'nginx' }, body: 'error description'
       end
 
       before do
@@ -374,17 +406,16 @@ describe Itly::Plugin::Iteratively::Client do
       end
 
       let(:expected_log) do
-        'Iteratively::Client: post_model() unexpected response. '\
-          'Url: http://url/path '\
-          'Data: {"type":"test_model","dateSent":"2021-01-01T06:00:00Z","eventId":"id123","eventChemaVersion":"12",'\
-            '"eventName":"test_event","properties":{"data":"value"},"valid":false,"validation":"Validation Msg"} '\
-          'Response status: 400 '\
-          'Response headers: {"server"=>"nginx"} '\
+        'Iteratively::Client: post_models() unexpected response. Url: http://url/path '\
+          'Data: {"objects":[{"type":"test_model","dateSent":"2021-01-01T06:00:00Z","eventId":"id123",'\
+            '"eventChemaVersion":"12","eventName":"test_event","properties":{"data":"value"},"valid":false,'\
+            '"validation":"Validation Msg"}]} '\
+          'Response status: 400 Response headers: {"server"=>"nginx"} '\
           'Response body: error description'
       end
 
       it do
-        expect(client.send(:post_model, model)).to be(false)
+        expect(client.send(:post_models, [model])).to be(false)
 
         expect_log_lines_to_equal [
           ['error', expected_log]
@@ -394,7 +425,7 @@ describe Itly::Plugin::Iteratively::Client do
 
     context 'exception' do
       let(:response) do
-        double 'response', status: 400, response_headers: { 'server' => 'nginx' }, response_body: 'error description'
+        double 'response', status: 400, headers: { 'server' => 'nginx' }, body: 'error description'
       end
 
       before do
@@ -403,10 +434,10 @@ describe Itly::Plugin::Iteratively::Client do
       end
 
       it do
-        expect(client.send(:post_model, model)).to be(false)
+        expect(client.send(:post_models, [model])).to be(false)
 
         expect_log_lines_to_equal [
-          ['error', 'Iteratively::Client: post_model() exception RuntimeError: Test exception']
+          ['error', 'Iteratively::Client: post_models() exception RuntimeError: Test exception']
         ]
       end
     end
@@ -418,7 +449,7 @@ describe Itly::Plugin::Iteratively::Client do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
         logger: logger, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0
+        retry_delay_max: 4.0, omit_values: false
     end
 
     before do
@@ -456,7 +487,7 @@ describe Itly::Plugin::Iteratively::Client do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
         logger: logger, buffer_size: 2, max_retries: 25, retry_delay_min: 10.0,
-        retry_delay_max: 3600.0
+        retry_delay_max: 3600.0, omit_values: false
     end
 
     it 'min' do

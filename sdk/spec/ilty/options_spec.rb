@@ -9,12 +9,10 @@ describe Itly::Options do
     expect_options_default_values options
   end
 
-  it '#context=' do
-    options.context = { a: '1', b: 'two' }
-
-    expect(options.context).to be_a_kind_of(Itly::Event)
-    expect(options.context.name).to eq('context')
-    expect(options.context.properties).to eq(a: '1', b: 'two')
+  it '#for_plugin' do
+    expect(options.for_plugin).to be_a_kind_of(Itly::PluginOptions)
+    expect(options.for_plugin.environment).to eq(Itly::Options::Environment::DEVELOPMENT)
+    expect(options.for_plugin.logger).to be_a_kind_of(Logger)
   end
 
   it '#environment=' do

@@ -11,9 +11,9 @@ describe Itly::ValidationResponse do
     end
 
     it 'can write' do
-      expect(object.respond_to?(:valid=)).to be(true)
-      expect(object.respond_to?(:plugin_id=)).to be(true)
-      expect(object.respond_to?(:message=)).to be(true)
+      expect(object.respond_to?(:valid=)).to be(false)
+      expect(object.respond_to?(:plugin_id=)).to be(false)
+      expect(object.respond_to?(:message=)).to be(false)
     end
   end
 

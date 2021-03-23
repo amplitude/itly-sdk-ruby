@@ -12,13 +12,13 @@ class Itly
 
         def track: (type: ::String `type`, event: ::Itly::Event event, validation: ::Itly::ValidationResponse? validation) -> void
         def flush: () -> void
-        def shutdown: () -> void
+        def shutdown: (?force: bool force) -> void
 
         private
 
-        def initialize: (url: ::String url, api_key: ::String api_key, logger: ::Logger logger, buffer_size: ::Integer buffer_size, max_retries: ::Integer max_retries, retry_delay_min: ::Float retry_delay_min, retry_delay_max: ::Float retry_delay_max) -> void
+        def initialize: (url: ::String url, api_key: ::String api_key, logger: ::Logger logger, buffer_size: ::Integer buffer_size, max_retries: ::Integer max_retries, retry_delay_min: ::Float retry_delay_min, retry_delay_max: ::Float retry_delay_max, omit_values: bool omit_values) -> void
         def buffer_full?: () -> bool
-        def post_model: (::Itly::Plugin::Iteratively::Model model) -> bool
+        def post_models: (::Array[::Itly::Plugin::Iteratively::Model] model) -> bool
         def runner_complete?: () -> bool
         def delay_before_next_try: (::Integer nbr_tries) -> ::Float
       end

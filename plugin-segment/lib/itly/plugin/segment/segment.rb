@@ -11,20 +11,24 @@ class Itly
     # Automatically loaded at runtime in any new +Itly+ object
     #
     class Segment < Plugin
-      attr_reader :logger, :client, :write_key
+      attr_reader :logger, :client, :write_key, :disabled
 
       ##
       # Instantiate a new Plugin::Segment
       #
       # @param [String] write_key: specify the Segment write key
+      # @param [TrueClass/FalseClass] disabled: set to true to disable the plugin. Default to false
       #
-      def initialize(write_key:)
+      def initialize(write_key:, disabled: false)
         super()
         @write_key = write_key
+        @disabled = disabled
       end
 
       ##
       # Initialize Segment::Tracker client
+      #
+      # @param [Itly::PluginOptions] options: plugin options
       #
       def load(options:)
         # Get options
@@ -32,6 +36,11 @@ class Itly
 
         # Log
         logger.info "#{plugin_id}: load()"
+
+        if @disabled
+          logger.info "#{plugin_id}: plugin is disabled!"
+          return
+        end
 
         # Configure client
         error_handler = proc do |error_code, error_body, exception, _|
@@ -57,6 +66,8 @@ class Itly
       # @param [Event] properties: the event containing user's traits to pass to your application
       #
       def identify(user_id:, properties:)
+        return unless enabled?
+
         # Log
         logger.info "#{plugin_id}: identify(user_id: #{user_id}, properties: #{properties})"
 
@@ -74,6 +85,8 @@ class Itly
       # @param [Event] properties: the event containing properties to pass to your application
       #
       def group(user_id:, group_id:, properties:)
+        return unless enabled?
+
         # Log
         logger.info "#{plugin_id}: group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties})"
 
@@ -90,6 +103,8 @@ class Itly
       # @param [Event] event: the Event object to pass to your application
       #
       def track(user_id:, event:)
+        return unless enabled?
+
         # Log
         logger.info "#{plugin_id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
 
@@ -108,11 +123,19 @@ class Itly
       # @param [String] previous_id: The ID the user has been identified by so far.
       #
       def alias(user_id:, previous_id:)
+        return unless enabled?
+
         # Log
         logger.info "#{plugin_id}: alias(user_id: #{user_id}, previous_id: #{previous_id})"
 
         # Send through the client
         @client.alias user_id: user_id, previous_id: previous_id
+      end
+
+      private
+
+      def enabled?
+        !@disabled
       end
     end
   end

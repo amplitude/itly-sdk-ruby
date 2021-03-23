@@ -1,6 +1,6 @@
 class Itly
   class Plugin
-    def load: (options: ::Itly::Options options) -> void
+    def load: (options: ::Itly::PluginOptions options) -> void
     def identify: (user_id: ::String user_id, properties: ::Itly::Event properties) -> void
     def post_identify: (user_id: ::String user_id, properties: ::Itly::Event properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
     def group: (user_id: ::String user_id, group_id: ::String group_id, properties: ::Itly::Event properties) -> void

@@ -38,8 +38,7 @@ describe 'Itly' do
 
       context 'with a block', fake_plugins: 1 do
         before do
-          itly.load do |o|
-            o.context = { some: 'data' }
+          itly.load(context: { some: 'data' }) do |o|
             o.disabled = true
             o.environment = Itly::Options::Environment::PRODUCTION
             o.validation = Itly::Options::Validation::DISABLED
@@ -59,11 +58,27 @@ describe 'Itly' do
           expect(plugins.count).to eq(1)
           expect(plugins[0]).to be_a_kind_of(FakePlugin0)
 
-          context = itly.options.context
+          context = itly.instance_variable_get '@context'
           expect(context).to be_a_kind_of(Itly::Event)
           expect(context.name).to eq('context')
           expect(context.properties).to eq(some: 'data')
         end
+      end
+    end
+
+    describe '@context' do
+      it 'default' do
+        itly.load
+        expect(itly.instance_variable_get('@context')).to be(nil)
+      end
+
+      it 'set a value' do
+        itly.load context: { a: '1', b: 'two' }
+
+        context = itly.instance_variable_get '@context'
+        expect(context).to be_a_kind_of(Itly::Event)
+        expect(context.name).to eq('context')
+        expect(context.properties).to eq(a: '1', b: 'two')
       end
     end
 
@@ -141,7 +156,7 @@ describe 'Itly' do
           expect(plugin).to receive(:load).and_wrap_original do |_, *args|
             expect(args.count).to eq(1)
             expect(args[0].keys).to eq([:options])
-            expect(args[0][:options].class).to eq(Itly::Options)
+            expect(args[0][:options].class).to eq(Itly::PluginOptions)
           end
         end
       end
@@ -527,8 +542,7 @@ describe 'Itly' do
 
     # Load options
     before do
-      itly.load do |options|
-        options.context = { data: 'for_context' }
+      itly.load(context: { data: 'for_context' }) do |options|
         options.plugins = [plugin_a, plugin_b]
         options.validation = validation_option if validation_option
       end
@@ -741,8 +755,9 @@ describe 'Itly' do
       end
 
       context 'return from validations' do
-        let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: '1', message: 'One' }
+        let(:response1) { Itly::ValidationResponse.new valid: valid, plugin_id: '1', message: 'One' }
         let(:response2) { Itly::ValidationResponse.new valid: true, plugin_id: '2', message: 'Two' }
+        let(:valid) { true }
 
         context 'all valid' do
           before do
@@ -758,9 +773,9 @@ describe 'Itly' do
         end
 
         context 'a validation returns false' do
-          before do
-            response1.valid = false
+          let(:valid) { false }
 
+          before do
             expect(plugin_a).to receive(:validate).once.and_return(response1)
             expect(plugin_b).to receive(:validate).once.and_return(response2)
           end
@@ -781,8 +796,7 @@ describe 'Itly' do
       let!(:itly) { Itly.new }
 
       before do
-        itly.load do |options|
-          options.context = { data: 'for_context' }
+        itly.load(context: { data: 'for_context' }) do |options|
           options.plugins = [plugin_a, plugin_b]
         end
       end
@@ -804,8 +818,9 @@ describe 'Itly' do
       end
 
       context 'return from validations' do
-        let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: '1', message: 'One' }
+        let(:response1) { Itly::ValidationResponse.new valid: valid, plugin_id: '1', message: 'One' }
         let(:response2) { Itly::ValidationResponse.new valid: true, plugin_id: '2', message: 'Two' }
+        let(:valid) { true }
 
         context 'all valid' do
           before do
@@ -821,9 +836,9 @@ describe 'Itly' do
         end
 
         context 'a validation returns false' do
-          before do
-            response1.valid = false
+          let(:valid) { false }
 
+          before do
             expect(plugin_a).to receive(:validate).once.and_return(response1)
             expect(plugin_b).to receive(:validate).once.and_return(response2)
           end
@@ -844,8 +859,7 @@ describe 'Itly' do
       let!(:itly) { Itly.new }
 
       before do
-        itly.load do |options|
-          options.context = { data: 'for_context' }
+        itly.load(context: { data: 'for_context' }) do |options|
           options.plugins = [plugin_a, plugin_b]
         end
       end
@@ -869,9 +883,11 @@ describe 'Itly' do
       end
 
       context 'return from validations' do
-        let(:response1) { Itly::ValidationResponse.new valid: true, plugin_id: '1', message: 'One' }
-        let(:response2) { Itly::ValidationResponse.new valid: true, plugin_id: '2', message: 'Two' }
+        let(:response1) { Itly::ValidationResponse.new valid: valid1, plugin_id: '1', message: 'One' }
+        let(:response2) { Itly::ValidationResponse.new valid: valid2, plugin_id: '2', message: 'Two' }
         let(:response3) { Itly::ValidationResponse.new valid: true, plugin_id: '3', message: 'Three' }
+        let(:valid1) { true }
+        let(:valid2) { true }
 
         context 'all valid' do
           before do
@@ -889,9 +905,9 @@ describe 'Itly' do
         end
 
         context 'a context validation returns false' do
-          before do
-            response2.valid = false
+          let(:valid2) { false }
 
+          before do
             expect(plugin_a).to receive(:validate).once.and_return(nil)
             expect(plugin_a).to receive(:validate).once.and_return(response1)
             expect(plugin_b).to receive(:validate).once.and_return(response2)
@@ -906,9 +922,9 @@ describe 'Itly' do
         end
 
         context 'a plugin validation returns false' do
-          before do
-            response1.valid = false
+          let(:valid1) { false }
 
+          before do
             expect(plugin_a).to receive(:validate).once.and_return(nil)
             expect(plugin_a).to receive(:validate).once.and_return(response1)
             expect(plugin_b).to receive(:validate).once.and_return(response2)

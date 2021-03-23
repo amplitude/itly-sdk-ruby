@@ -1,8 +1,8 @@
 class Itly
   class ValidationResponse
-    attr_accessor valid: bool
-    attr_accessor plugin_id: ::String
-    attr_accessor message: ::String
+    attr_reader valid: bool
+    attr_reader plugin_id: ::String
+    attr_reader message: ::String
 
     def to_s: () -> ::String
 

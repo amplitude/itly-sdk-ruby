@@ -1,0 +1,5 @@
+# Part of the gems
+class SnowplowTracker
+  class Tracker
+  end
+end

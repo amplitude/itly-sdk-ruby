@@ -30,23 +30,28 @@ describe Itly::Plugin::Iteratively do
       it do
         expect(plugin.instance_variable_get('@url')).to eq('http://url')
         expect(plugin.instance_variable_get('@api_key')).to eq('key123')
-        expect(plugin.instance_variable_get('@client_options'))
-          .to eq({ buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0 })
+        expect(plugin.instance_variable_get('@disabled')).to be(nil)
+        expect(plugin.instance_variable_get('@client_options')).to eq(
+          { buffer_size: 10, max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false }
+        )
       end
     end
 
     describe 'overwrite defaults' do
       let!(:plugin) do
         Itly::Plugin::Iteratively.new \
-          url: 'http://url', api_key: 'key123',
-          buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0
+          url: 'http://url', api_key: 'key123', disabled: true,
+          buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0,
+          omit_values: true
       end
 
       it do
         expect(plugin.instance_variable_get('@url')).to eq('http://url')
         expect(plugin.instance_variable_get('@api_key')).to eq('key123')
-        expect(plugin.instance_variable_get('@client_options'))
-          .to eq({ buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0 })
+        expect(plugin.instance_variable_get('@disabled')).to be(true)
+        expect(plugin.instance_variable_get('@client_options')).to eq(
+          { buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true }
+        )
       end
     end
   end
@@ -72,8 +77,6 @@ describe Itly::Plugin::Iteratively do
     end
 
     describe 'disabled' do
-      let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
-
       include_examples 'plugin load disabled value',
         environment: Itly::Options::Environment::DEVELOPMENT, expected: false
       include_examples 'plugin load disabled value',
@@ -81,7 +84,7 @@ describe Itly::Plugin::Iteratively do
       include_examples 'plugin load disabled value',
         environment: Itly::Options::Environment::DEVELOPMENT, disabled: false, expected: false
       include_examples 'plugin load disabled value',
-        environment: Itly::Options::Environment::PRODUCTION, disabled: false, expected: true
+        environment: Itly::Options::Environment::PRODUCTION, disabled: false, expected: false
       include_examples 'plugin load disabled value',
         environment: Itly::Options::Environment::DEVELOPMENT, disabled: true, expected: true
       include_examples 'plugin load disabled value',
@@ -90,17 +93,18 @@ describe Itly::Plugin::Iteratively do
 
     describe 'logs' do
       let(:logs) { StringIO.new }
-      let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+      let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123', disabled: disabled }
+      let(:disabled) { false }
+
+      before do
+        itly.load do |options|
+          options.plugins = [plugin]
+          options.logger = ::Logger.new logs
+          options.environment = Itly::Options::Environment::DEVELOPMENT
+        end
+      end
 
       context 'plugin enabled' do
-        before do
-          itly.load do |options|
-            options.plugins = [plugin]
-            options.logger = ::Logger.new logs
-            options.environment = Itly::Options::Environment::DEVELOPMENT
-          end
-        end
-
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
@@ -110,19 +114,11 @@ describe Itly::Plugin::Iteratively do
       end
 
       context 'plugin disabled' do
-        before do
-          itly.load do |options|
-            options.plugins = [plugin]
-            options.logger = ::Logger.new logs
-            options.environment = Itly::Options::Environment::DEVELOPMENT
-            options.disabled = true
-          end
-        end
+        let(:disabled) { true }
 
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'Itly is disabled!'],
             ['info', 'plugin-iteratively: load()'],
             ['info', 'plugin-iteratively: plugin is disabled!']
           ]
@@ -150,6 +146,7 @@ describe Itly::Plugin::Iteratively do
           expect(client.max_retries).to eq(25)
           expect(client.retry_delay_min).to eq(10.0)
           expect(client.retry_delay_max).to eq(3600.0)
+          expect(client.omit_values).to be(false)
         end
       end
 
@@ -157,7 +154,8 @@ describe Itly::Plugin::Iteratively do
         let!(:plugin) do
           Itly::Plugin::Iteratively.new \
             url: 'http://url', api_key: 'key123',
-            buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0
+            buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0,
+            omit_values: true
         end
         let(:client) { plugin.client }
 
@@ -176,6 +174,7 @@ describe Itly::Plugin::Iteratively do
           expect(client.max_retries).to eq(2)
           expect(client.retry_delay_min).to eq(3.0)
           expect(client.retry_delay_max).to eq(4.0)
+          expect(client.omit_values).to be(true)
         end
       end
     end
@@ -535,12 +534,26 @@ describe Itly::Plugin::Iteratively do
         options.plugins = [plugin]
         options.logger = fake_logger
       end
-
-      expect(plugin.client).to receive(:shutdown)
     end
 
-    it do
-      plugin.shutdown
+    describe 'default' do
+      before do
+        expect(plugin.client).to receive(:shutdown).with(force: false)
+      end
+
+      it do
+        plugin.shutdown
+      end
+    end
+
+    describe 'force' do
+      before do
+        expect(plugin.client).to receive(:shutdown).with(force: true)
+      end
+
+      it do
+        plugin.shutdown force: true
+      end
     end
   end
 
