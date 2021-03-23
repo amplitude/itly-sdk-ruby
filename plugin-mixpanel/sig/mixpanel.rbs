@@ -15,5 +15,6 @@ class Itly
     private
 
     def initialize: (project_token: ::String project_token, ?disabled: bool disabled) -> void
+    def enabled?: () -> bool
   end
 end

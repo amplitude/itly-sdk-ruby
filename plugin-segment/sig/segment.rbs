@@ -17,6 +17,7 @@ class Itly
       private
 
       def initialize: (write_key: ::String write_key, ?disabled: bool disabled) -> void
+      def enabled?: () -> bool
     end
   end
 end
