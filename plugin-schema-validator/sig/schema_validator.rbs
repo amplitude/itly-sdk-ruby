@@ -8,7 +8,7 @@ class Itly
       attr_reader validators: ::Hash[::Symbol, ::JSONSchemer]?
       attr_reader disabled: bool
 
-      def load: (options: ::Hash[::Symbol, ::Symbol | ::Logger] options) -> void
+      def load: (options: ::Itly::PluginOptions options) -> void
       def validate: (event: ::Itly::Event event) -> ::Itly::ValidationResponse?
 
       private

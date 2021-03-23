@@ -8,6 +8,7 @@ class Itly
     attr_reader default_environment: bool
     attr_writer validation: ::Integer
 
+    def for_plugin: () -> ::Itly::PluginOptions
     def context=: (::Hash[::String | ::Symbol, untyped] properties) -> void
     def environment=: (::Symbol value) -> void
     def validation: () -> ::Integer

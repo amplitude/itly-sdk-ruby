@@ -10,10 +10,9 @@ describe Itly::Options do
   end
 
   it '#for_plugin' do
-    expect(options.for_plugin).to be_a_kind_of(Hash)
-    expect(options.for_plugin.keys).to eq(%i[environment logger])
-    expect(options.for_plugin[:environment]).to eq(Itly::Options::Environment::DEVELOPMENT)
-    expect(options.for_plugin[:logger]).to be_a_kind_of(Logger)
+    expect(options.for_plugin).to be_a_kind_of(Itly::PluginOptions)
+    expect(options.for_plugin.environment).to eq(Itly::Options::Environment::DEVELOPMENT)
+    expect(options.for_plugin.logger).to be_a_kind_of(Logger)
   end
 
   it '#context=' do

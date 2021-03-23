@@ -51,7 +51,7 @@ class Itly
   #   Defaults to +ERROR_ON_INVALID+ if the environment is set to +DEVELOPMENT+, or +TRACK_INVALID+
   #   if the environment is set to +PRODUCTION+.
   #
-  # + logger+: Allow to set a custom Logger. Must be a object of the Logger class or child class.
+  # +logger+: Allow to set a custom Logger. Must be a object of the Logger class or child class.
   #   Deflault output to STDOUT and level to ERROR
   #
   class Options
@@ -76,13 +76,10 @@ class Itly
     ##
     # Returns the options that are passed to plugin #load
     #
-    # @return [Hash] options hash
+    # @return [Itly::PluginOptions] plugin options object
     #
     def for_plugin
-      {
-        environment: environment,
-        logger: logger
-      }
+      ::Itly::PluginOptions.new environment: environment, logger: logger
     end
 
     ##

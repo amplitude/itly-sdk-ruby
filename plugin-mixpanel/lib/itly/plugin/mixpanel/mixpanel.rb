@@ -28,11 +28,11 @@ class Itly
       ##
       # Initialize Mixpanel::Tracker client
       #
-      # @param [Hash] options: hash of options
+      # @param [Itly::PluginOptions] options: plugin options
       #
       def load(options:)
         # Get options
-        @logger = options[:logger]
+        @logger = options.logger
 
         # Log
         logger.info "#{plugin_id}: load()"
