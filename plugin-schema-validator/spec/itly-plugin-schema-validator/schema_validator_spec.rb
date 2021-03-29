@@ -7,21 +7,15 @@ describe Itly::Plugin::SchemaValidator do
     let(:plugin) { Itly::Plugin::SchemaValidator.new schemas: {} }
 
     it 'default values' do
-      expect(plugin.schemas).to eq({})
-      expect(plugin.validators).to eq({})
+      expect(plugin.instance_variable_get('@schemas')).to eq({})
+      expect(plugin.instance_variable_get('@validators')).to eq({})
     end
 
     it 'can read' do
-      expect(plugin.respond_to?(:logger)).to be(true)
-      expect(plugin.respond_to?(:schemas)).to be(true)
-      expect(plugin.respond_to?(:validators)).to be(true)
       expect(plugin.respond_to?(:disabled)).to be(true)
     end
 
     it 'cannot write' do
-      expect(plugin.respond_to?(:logger=)).to be(false)
-      expect(plugin.respond_to?(:schemas=)).to be(false)
-      expect(plugin.respond_to?(:validators=)).to be(false)
       expect(plugin.respond_to?(:disabled=)).to be(false)
     end
   end
@@ -64,7 +58,7 @@ describe Itly::Plugin::SchemaValidator do
       end
 
       it do
-        expect(plugin.logger).to eq(logger)
+        expect(plugin.instance_variable_get('@logger')).to eq(logger)
       end
     end
 
@@ -80,8 +74,8 @@ describe Itly::Plugin::SchemaValidator do
       end
 
       it do
-        expect(plugin1.logger).to eq(logger)
-        expect(plugin2.logger).to eq(logger)
+        expect(plugin1.instance_variable_get('@logger')).to eq(logger)
+        expect(plugin2.instance_variable_get('@logger')).to eq(logger)
       end
     end
 

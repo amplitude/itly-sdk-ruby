@@ -3,9 +3,6 @@ class Itly
     class SchemaValidator < Plugin
       VERSION: ::String
 
-      attr_reader logger: ::Logger?
-      attr_reader schemas: propertiesHash
-      attr_reader validators: ::Hash[::Symbol, ::JSONSchemer]?
       attr_reader disabled: bool
 
       def load: (options: ::Itly::PluginOptions options) -> void
