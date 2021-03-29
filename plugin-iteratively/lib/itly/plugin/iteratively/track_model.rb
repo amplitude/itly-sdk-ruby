@@ -14,7 +14,7 @@ class Itly
         attr_reader :type, :date_sent, :event_id, :event_chema_version, :event_name,
           :properties, :valid, :validation
 
-        def initialize(omit_values:, type:, event:, validation: nil)
+        def initialize(type:, event:, validation: nil, omit_values: false)
           @omit_values = omit_values
           @type = type
           @date_sent = Time.now.utc.iso8601
