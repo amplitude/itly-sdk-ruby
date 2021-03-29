@@ -529,6 +529,24 @@ describe 'Itly' do
     end
   end
 
+  describe '#is_loaded?' do
+    let!(:itly) { Itly.new }
+
+    it 'new object' do
+      expect(itly.is_loaded?).to be(false)
+    end
+
+    describe 'after calling #load' do
+      before do
+        itly.load
+      end
+
+      it do
+        expect(itly.is_loaded?).to be(true)
+      end
+    end
+  end
+
   describe '#validate_and_send_to_plugins', fake_plugins: 2,
                                             fake_plugins_methods: %i[mock_action mock_post_action] do
     # Instanciate plugins, an event, and the Itly object

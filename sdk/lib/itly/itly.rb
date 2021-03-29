@@ -241,6 +241,10 @@ class Itly
     run_on_plugins { |plugin| plugin.validate event: event }
   end
 
+  def is_loaded?
+    !!@is_initialized
+  end
+
   private
 
   def was_initialized?

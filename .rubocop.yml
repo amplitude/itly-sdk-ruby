@@ -15,6 +15,8 @@ Metrics/BlockLength:
   Enabled: false
 Metrics/MethodLength:
   Enabled: false
+Naming/PredicateName:
+  Enabled: false
 Naming/FileName:
   Exclude:
     - plugin-amplitude/lib/itly/plugin-amplitude.rb
