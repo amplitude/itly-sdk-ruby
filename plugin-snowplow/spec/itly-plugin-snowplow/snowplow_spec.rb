@@ -221,7 +221,8 @@ describe Itly::Plugin::Snowplow do
             ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-snowplow: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
-            ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
+            ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \
+                     'properties: {:view=>"video"}>)'],
             ['info', 'plugin-snowplow: track(user_id: user_123, event: custom_event, '\
                      'version: 1.2.3, properties: {:view=>"video"})']
           ]
@@ -266,7 +267,8 @@ describe Itly::Plugin::Snowplow do
               ['info', 'load()'],
               ['info', 'plugin-snowplow: load()'],
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
-              ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
+              ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \
+                       'properties: {:view=>"video"}>)'],
               ['info', 'plugin-snowplow: track(user_id: user_123, event: custom_event, '\
                        'version: 1.2.3, properties: {:view=>"video"})'],
               ['error', 'Itly Error in Itly::Plugin::Snowplow. RuntimeError: Test rspec']

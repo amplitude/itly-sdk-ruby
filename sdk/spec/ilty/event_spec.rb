@@ -37,4 +37,22 @@ describe Itly::Event do
       end
     end
   end
+
+  describe '#to_s' do
+    describe 'default values' do
+      let(:event) { Itly::Event.new name: 'the_event' }
+
+      it do
+        expect(event.to_s).to eq('#<Itly::Event: name: the_event, properties: {}>')
+      end
+    end
+
+    describe 'with all values' do
+      let(:event) { Itly::Event.new name: 'the_event', id: '159', version: '1.2.3' }
+
+      it do
+        expect(event.to_s).to eq('#<Itly::Event: name: the_event, id: 159, version: 1.2.3, properties: {}>')
+      end
+    end
+  end
 end

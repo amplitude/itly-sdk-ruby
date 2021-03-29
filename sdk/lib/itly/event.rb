@@ -34,7 +34,10 @@ class Itly
     # @return [String] the object description
     #
     def to_s
-      "#<#{self.class.name}: name: #{name}, properties: #{properties}>"
+      str = "#<#{self.class.name}: name: #{name}, "
+      str += "id: #{id}, " unless id.nil?
+      str += "version: #{version}, " unless version.nil?
+      str + "properties: #{properties}>"
     end
 
     ##
