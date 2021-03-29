@@ -2,9 +2,7 @@ class Itly
   class Plugin::Mixpanel < Plugin
     VERSION: ::String
 
-    attr_reader logger: ::Logger?
     attr_reader client: ::Mixpanel::Tracker?
-    attr_reader project_token: ::String
     attr_reader disabled: bool
 
     def load: (options: ::Itly::PluginOptions options) -> void

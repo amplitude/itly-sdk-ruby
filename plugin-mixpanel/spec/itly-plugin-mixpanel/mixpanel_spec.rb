@@ -7,16 +7,12 @@ describe Itly::Plugin::Mixpanel do
     let(:plugin) { Itly::Plugin::Mixpanel.new project_token: 'abc123' }
 
     it 'can read' do
-      expect(plugin.respond_to?(:logger)).to be(true)
       expect(plugin.respond_to?(:client)).to be(true)
-      expect(plugin.respond_to?(:project_token)).to be(true)
       expect(plugin.respond_to?(:disabled)).to be(true)
     end
 
     it 'cannot write' do
-      expect(plugin.respond_to?(:logger=)).to be(false)
       expect(plugin.respond_to?(:client=)).to be(false)
-      expect(plugin.respond_to?(:project_token=)).to be(false)
       expect(plugin.respond_to?(:disabled=)).to be(false)
     end
   end
@@ -59,7 +55,7 @@ describe Itly::Plugin::Mixpanel do
       it do
         expect(plugin.client).to be_a_kind_of(::Mixpanel::Tracker)
         expect(plugin.client.instance_variable_get('@token')).to eq('key123')
-        expect(plugin.logger).to eq(logger)
+        expect(plugin.instance_variable_get('@logger')).to eq(logger)
       end
     end
 
@@ -82,8 +78,8 @@ describe Itly::Plugin::Mixpanel do
         expect(plugin1.client.instance_variable_get('@token')).to eq('key123')
         expect(plugin2.client.instance_variable_get('@token')).to eq('key456')
 
-        expect(plugin1.logger).to eq(logger)
-        expect(plugin2.logger).to eq(logger)
+        expect(plugin1.instance_variable_get('@logger')).to eq(logger)
+        expect(plugin2.instance_variable_get('@logger')).to eq(logger)
       end
     end
 
@@ -99,7 +95,7 @@ describe Itly::Plugin::Mixpanel do
 
       it do
         expect(plugin.client).to be(nil)
-        expect(plugin.logger).to eq(logger)
+        expect(plugin.instance_variable_get('@logger')).to eq(logger)
       end
     end
 
