@@ -39,8 +39,9 @@ describe Itly::Plugin::Iteratively::TrackModel do
     context 'with validation' do
       let!(:validation) { Itly::ValidationResponse.new valid: false, plugin_id: 'id', message: 'Validation Msg' }
       let!(:model) do
-        Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'test_model', event: event,
-                                             validation: validation
+        Itly::Plugin::Iteratively::TrackModel.new(
+          omit_values: false, type: 'test_model', event: event, validation: validation
+        )
       end
 
       it do
@@ -92,7 +93,7 @@ describe Itly::Plugin::Iteratively::TrackModel do
       let!(:validation) { Itly::ValidationResponse.new valid: false, plugin_id: 'id', message: 'Validation Msg' }
       let!(:model) do
         Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'test_model', event: event,
-                                             validation: validation
+                                                  validation: validation
       end
 
       let(:expected) do
