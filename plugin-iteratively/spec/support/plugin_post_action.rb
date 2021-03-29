@@ -25,7 +25,6 @@ shared_examples 'plugin post action' do |action:, params:|
 
       expect_log_lines_to_equal [
         ['info', 'load()'],
-        ['warn', 'Environment not specified. Automatically set to development'],
         ['info', 'plugin-iteratively: load()'],
         ['info', "#{action}(#{properties_to_log params})"],
         ['info', "validate(event: #<Itly::Event: name: #{action}, properties: {:with=>\"data\"}>)"],
@@ -59,7 +58,6 @@ shared_examples 'plugin post action' do |action:, params:|
 
       expect_log_lines_to_equal [
         ['info', 'load()'],
-        ['warn', 'Environment not specified. Automatically set to development'],
         ['info', 'plugin-iteratively: load()'],
         ['info', "#{action}(#{properties_to_log params})"],
         ['info', "validate(event: #<Itly::Event: name: #{action}, properties: {:with=>\"data\"}>)"],

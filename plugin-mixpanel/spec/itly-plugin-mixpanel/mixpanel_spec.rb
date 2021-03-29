@@ -117,7 +117,6 @@ describe Itly::Plugin::Mixpanel do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-mixpanel: load()']
           ]
         end
@@ -129,7 +128,6 @@ describe Itly::Plugin::Mixpanel do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-mixpanel: load()'],
             ['info', 'plugin-mixpanel: plugin is disabled!']
           ]
@@ -161,7 +159,6 @@ describe Itly::Plugin::Mixpanel do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-mixpanel: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
@@ -268,7 +265,6 @@ describe Itly::Plugin::Mixpanel do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-mixpanel: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
@@ -372,7 +368,6 @@ describe Itly::Plugin::Mixpanel do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-mixpanel: load()'],
             ['info', 'alias(user_id: user_123, previous_id: old_user)'],
             ['info', 'plugin-mixpanel: alias(user_id: user_123, previous_id: old_user)']

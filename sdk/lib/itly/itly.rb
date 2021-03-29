@@ -41,7 +41,6 @@ class Itly
     # Log
     logger&.info 'load()'
     logger&.info 'Itly is disabled!' unless enabled?
-    logger&.warn "Environment not specified. Automatically set to #{options.environment}" if options.default_environment
     logger&.warn 'No plugin enabled!' if options.plugins.empty?
 
     # pass options to plugins

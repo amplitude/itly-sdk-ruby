@@ -202,7 +202,6 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['warn', 'Environment not specified. Automatically set to development'],
           ['info', 'plugin-iteratively: load()'],
           ['info', 'identify(user_id: user_123, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:some=>"data"}>)'],
@@ -234,7 +233,6 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['warn', 'Environment not specified. Automatically set to development'],
           ['info', 'plugin-iteratively: load()'],
           ['info', 'identify(user_id: user_123, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:some=>"data"}>)'],
@@ -310,7 +308,6 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['warn', 'Environment not specified. Automatically set to development'],
           ['info', 'plugin-iteratively: load()'],
           ['info', 'group(user_id: user_123, group_id: group456, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: group, properties: {:some=>"data"}>)'],
@@ -342,7 +339,6 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['warn', 'Environment not specified. Automatically set to development'],
           ['info', 'plugin-iteratively: load()'],
           ['info', 'group(user_id: user_123, group_id: group456, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: group, properties: {:some=>"data"}>)'],
@@ -419,7 +415,6 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['warn', 'Environment not specified. Automatically set to development'],
           ['info', 'plugin-iteratively: load()'],
           ['info', 'track(user_id: user_123, event: custom_event, properties: {:custom=>"info"})'],
           ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:custom=>"info"}>)'],
@@ -451,7 +446,6 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['warn', 'Environment not specified. Automatically set to development'],
           ['info', 'plugin-iteratively: load()'],
           ['info', 'track(user_id: user_123, event: custom_event, properties: {:custom=>"info"})'],
           ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:custom=>"info"}>)'],

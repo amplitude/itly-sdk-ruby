@@ -117,7 +117,6 @@ describe Itly::Plugin::Segment do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-segment: load()']
           ]
         end
@@ -129,7 +128,6 @@ describe Itly::Plugin::Segment do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-segment: load()'],
             ['info', 'plugin-segment: plugin is disabled!']
           ]
@@ -161,7 +159,6 @@ describe Itly::Plugin::Segment do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-segment: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
@@ -269,7 +266,6 @@ describe Itly::Plugin::Segment do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-segment: load()'],
             ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
             ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
@@ -378,7 +374,6 @@ describe Itly::Plugin::Segment do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-segment: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
@@ -484,7 +479,6 @@ describe Itly::Plugin::Segment do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-segment: load()'],
             ['info', 'alias(user_id: user_123, previous_id: old_user)'],
             ['info', 'plugin-segment: alias(user_id: user_123, previous_id: old_user)']

@@ -99,7 +99,6 @@ describe Itly::Plugin::SchemaValidator do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-schema_validator: load()']
           ]
         end
@@ -111,7 +110,6 @@ describe Itly::Plugin::SchemaValidator do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-schema_validator: load()'],
             ['info', 'plugin-schema_validator: plugin is disabled!']
           ]
@@ -216,7 +214,6 @@ describe Itly::Plugin::SchemaValidator do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['warn', 'Environment not specified. Automatically set to development'],
               ['info', 'plugin-schema_validator: load()'],
               ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                       '{"required_string"=>"Required string", "optional_enum"=>"Value 1"}>)'],
@@ -238,7 +235,6 @@ describe Itly::Plugin::SchemaValidator do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['warn', 'Environment not specified. Automatically set to development'],
               ['info', 'plugin-schema_validator: load()'],
               ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                       '{:required_string=>"Required string", :optional_enum=>"Value 1"}>)'],
@@ -256,7 +252,6 @@ describe Itly::Plugin::SchemaValidator do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['warn', 'Environment not specified. Automatically set to development'],
               ['info', 'plugin-schema_validator: load()'],
               ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                       '{:required_string=>"Required string"}>)'],
@@ -291,7 +286,6 @@ describe Itly::Plugin::SchemaValidator do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['warn', 'Environment not specified. Automatically set to development'],
               ['info', 'plugin-schema_validator: load()'],
               ['info', 'validate(event: #<Itly::Event: name: context, properties: {:optional_enum=>"Value 1"}>)'],
               ['info', 'plugin-schema_validator: validate(event: #<Itly::Event: name: context, properties: '\
@@ -320,7 +314,6 @@ describe Itly::Plugin::SchemaValidator do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['warn', 'Environment not specified. Automatically set to development'],
               ['info', 'plugin-schema_validator: load()'],
               ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                       '{:required_string=>"Required string", :optional_enum=>"Wrong value"}>)'],
@@ -351,7 +344,6 @@ describe Itly::Plugin::SchemaValidator do
 
         #     expect_log_lines_to_equal [
         #       ['info', 'load()'],
-        #       ['warn', 'Environment not specified. Automatically set to development'],
         #       ['info', 'plugin-schema_validator: load()'],
         #       ['info', 'validate(event: #<Itly::Event: name: context, properties: {:required_string=>17, '\
         #                ':optional_enum=>"Value 1"}>)'],

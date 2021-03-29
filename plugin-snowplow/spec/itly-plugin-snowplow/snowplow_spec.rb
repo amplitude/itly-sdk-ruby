@@ -68,7 +68,6 @@ describe Itly::Plugin::Snowplow do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-snowplow: load()']
           ]
         end
@@ -80,7 +79,6 @@ describe Itly::Plugin::Snowplow do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-snowplow: load()'],
             ['info', 'plugin-snowplow: plugin is disabled!']
           ]
@@ -113,7 +111,6 @@ describe Itly::Plugin::Snowplow do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-snowplow: load()'],
             ['info', 'identify(user_id: user_123, properties: {:ignored=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:ignored=>"data"}>)'],
@@ -218,7 +215,6 @@ describe Itly::Plugin::Snowplow do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-snowplow: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \

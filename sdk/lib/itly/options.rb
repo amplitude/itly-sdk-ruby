@@ -50,16 +50,13 @@ class Itly
   #   Deflault output to STDOUT and level to ERROR
   #
   class Options
-    attr_accessor :disabled, :logger, :plugins
-    attr_reader :environment, :default_environment
+    attr_accessor :disabled, :logger, :plugins, :environment
     attr_writer :validation
 
     ##
     # Create a new Options object with default values
     #
     def initialize
-      @default_environment = true
-
       @disabled = false
       @environment = Itly::Options::Environment::DEVELOPMENT
       @validation = Itly::Options::Validation::DEFAULT
@@ -74,16 +71,6 @@ class Itly
     #
     def for_plugin
       ::Itly::PluginOptions.new environment: environment, logger: logger
-    end
-
-    ##
-    # Assign properties to the +environment+ instance variable
-    #
-    # @param [TrueClass/FalseClass] value for +environment+
-    #
-    def environment=(value)
-      @default_environment = false
-      @environment = value
     end
 
     ##

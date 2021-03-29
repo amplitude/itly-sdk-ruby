@@ -64,7 +64,6 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-amplitude: load()']
           ]
         end
@@ -76,7 +75,6 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-amplitude: load()'],
             ['info', 'plugin-amplitude: plugin is disabled!']
           ]
@@ -113,7 +111,6 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-amplitude: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
@@ -215,7 +212,6 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-amplitude: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
@@ -243,7 +239,6 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['warn', 'Environment not specified. Automatically set to development'],
             ['info', 'plugin-amplitude: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: context, properties: {:app_version=>"1.2.3"}>)'],

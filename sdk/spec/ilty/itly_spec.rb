@@ -110,42 +110,6 @@ describe 'Itly' do
       end
     end
 
-    describe 'environment' do
-      context 'default value' do
-        before do
-          expect(fake_logger).to receive(:warn).once.with('Environment not specified. Automatically set to development')
-          expect(fake_logger).to receive(:warn).once.with('No plugin enabled!')
-          expect(fake_logger).not_to receive(:warn)
-        end
-
-        it do
-          itly.load { |o| o.logger = fake_logger }
-
-          expect(itly.options.environment).to eq(Itly::Options::Environment::DEVELOPMENT)
-          expect(itly.options.instance_variable_get('@default_environment')).to be(true)
-        end
-      end
-
-      [Itly::Options::Environment::DEVELOPMENT, Itly::Options::Environment::PRODUCTION].each do |value|
-        context "set to #{value}" do
-          before do
-            expect(fake_logger).to receive(:warn).once.with('No plugin enabled!')
-            expect(fake_logger).not_to receive(:warn)
-          end
-
-          it do
-            itly.load do |options|
-              options.logger = fake_logger
-              options.environment = value
-            end
-
-            expect(itly.options.environment).to eq(value)
-            expect(itly.options.instance_variable_get('@default_environment')).to be(false)
-          end
-        end
-      end
-    end
-
     describe 'plugins', fake_plugins: 2 do
       let!(:plugin_a) { FakePlugin0.new }
       let!(:plugin_b) { FakePlugin1.new }

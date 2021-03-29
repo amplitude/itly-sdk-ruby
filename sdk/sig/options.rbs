@@ -1,14 +1,12 @@
 class Itly
   class Options
     attr_accessor disabled: bool
+    attr_accessor environment: ::Symbol
     attr_accessor logger: ::Logger?
     attr_accessor plugins: ::Array[::Itly::Plugin]
-    attr_reader environment: ::Symbol
-    attr_reader default_environment: bool
     attr_writer validation: ::Integer
 
     def for_plugin: () -> ::Itly::PluginOptions
-    def environment=: (::Symbol value) -> void
     def validation: () -> ::Integer
     def development?: () -> bool
     def production?: () -> bool
