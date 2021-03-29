@@ -6,7 +6,7 @@ class Itly
       attr_reader logger: ::Logger?
       attr_reader vendor: ::String
       attr_reader disabled: bool
-      attr_reader tracker: ::SnowplowTracker::Tracker
+      attr_reader client: ::SnowplowTracker::Tracker
 
       def load: (options: ::Itly::PluginOptions options) -> void
       def identify: (user_id: ::String user_id, properties: ::Itly::Event properties) -> void

@@ -9,7 +9,7 @@ class Itly
     # Snowplow plugin class for Itly SDK
     #
     class Snowplow < Plugin
-      attr_reader :logger, :vendor, :disabled, :tracker
+      attr_reader :logger, :vendor, :disabled, :client
 
       ##
       # Instantiate a new Plugin::Snowplow
@@ -24,7 +24,7 @@ class Itly
         @disabled = disabled
 
         emitter = SnowplowTracker::Emitter.new endpoint
-        @tracker = SnowplowTracker::Tracker.new emitter
+        @client = SnowplowTracker::Tracker.new emitter
       end
 
       ##
@@ -58,7 +58,7 @@ class Itly
         logger&.info "#{plugin_id}: identify(user_id: #{user_id})"
 
         # Send through the client
-        @tracker.set_user_id user_id
+        client.set_user_id user_id
       end
       # rubocop:enable Lint/UnusedMethodArgument
 
@@ -81,7 +81,7 @@ class Itly
         schema_version = event.version&.gsub(/\./, '-')
         schema = "iglu:#{vendor}/#{event.name}/jsonschema/#{schema_version}"
 
-        tracker.track_self_describing_event(
+        client.track_self_describing_event(
           SnowplowTracker::SelfDescribingJson.new(
             schema, event.properties
           )

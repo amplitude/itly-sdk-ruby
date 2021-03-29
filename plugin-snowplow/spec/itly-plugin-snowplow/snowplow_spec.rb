@@ -10,14 +10,14 @@ describe Itly::Plugin::Snowplow do
       expect(plugin.respond_to?(:logger)).to be(true)
       expect(plugin.respond_to?(:vendor)).to be(true)
       expect(plugin.respond_to?(:disabled)).to be(true)
-      expect(plugin.respond_to?(:tracker)).to be(true)
+      expect(plugin.respond_to?(:client)).to be(true)
     end
 
     it 'cannot write' do
       expect(plugin.respond_to?(:logger=)).to be(false)
       expect(plugin.respond_to?(:vendor=)).to be(false)
       expect(plugin.respond_to?(:disabled=)).to be(false)
-      expect(plugin.respond_to?(:tracker=)).to be(false)
+      expect(plugin.respond_to?(:client=)).to be(false)
     end
   end
 
@@ -96,7 +96,7 @@ describe Itly::Plugin::Snowplow do
 
       context 'success' do
         before do
-          expect(plugin.tracker).to receive(:set_user_id).with('user_123')
+          expect(plugin.client).to receive(:set_user_id).with('user_123')
         end
 
         before do
@@ -121,7 +121,7 @@ describe Itly::Plugin::Snowplow do
 
       context 'failure' do
         before do
-          expect(plugin.tracker).to receive(:set_user_id).with('user_123')
+          expect(plugin.client).to receive(:set_user_id).with('user_123')
             .and_raise('Test rspec')
         end
 
@@ -175,7 +175,7 @@ describe Itly::Plugin::Snowplow do
           options.logger = ::Logger.new logs
         end
 
-        expect(plugin.tracker).not_to receive(:set_user_id)
+        expect(plugin.client).not_to receive(:set_user_id)
       end
 
       it do
@@ -200,7 +200,7 @@ describe Itly::Plugin::Snowplow do
 
       context 'success' do
         before do
-          expect(plugin.tracker).to receive(:track_self_describing_event).with('self_describing_json')
+          expect(plugin.client).to receive(:track_self_describing_event).with('self_describing_json')
         end
 
         before do
@@ -227,7 +227,7 @@ describe Itly::Plugin::Snowplow do
 
       context 'failure' do
         before do
-          expect(plugin.tracker).to receive(:track_self_describing_event).with('self_describing_json')
+          expect(plugin.client).to receive(:track_self_describing_event).with('self_describing_json')
             .and_raise('Test rspec')
         end
 
@@ -283,7 +283,7 @@ describe Itly::Plugin::Snowplow do
           options.logger = ::Logger.new logs
         end
 
-        expect(plugin.tracker).not_to receive(:track_self_describing_event)
+        expect(plugin.client).not_to receive(:track_self_describing_event)
       end
 
       it do
