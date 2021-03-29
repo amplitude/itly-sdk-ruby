@@ -26,15 +26,14 @@ class Itly
   #
   #   Defaults to +DEVELOPMENT+.
   #
-  # +plugins+: Specifies any analytics provider-specific configuration. The Itly SDK passes these
-  #   objects in when loading the underlying analytics provider libraries.
+  # +plugins+: Pass the list of Plugins object that will receive all events to be tracked.
   #
-  #   To assign options to a specific plugin, you can assign a hash to the plugin class's
-  #   underscored name, exempt from the leading "plugin".
-  #   For example, if your plugin class is PluginMyDashboardApp the option key will be
-  #   +my_dashboard_app+. You can pass specific options to it like this:
-  #
-  #       options.plugins.my_dashboard_app = {version: '1.3.7', log: 'verbose'}
+  #   Example:
+  #     my_plugin = MyPlugin.new api_key: 'abc123'
+  #     itly = Itly.new
+  #     itly.load do |options|
+  #       options.plugins = [my_plugin]
+  #     end
   #
   # +validation+: Configures the Itly SDK's behavior when events or traits fail validation against
   #   your tracking plan. Value can be one of the following:
