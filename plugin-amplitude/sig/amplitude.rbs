@@ -3,7 +3,7 @@ class Itly
     class Amplitude < Plugin
       VERSION: ::String
 
-      attr_reader logger: ::Logger
+      attr_reader logger: ::Logger?
       attr_reader disabled: bool
 
       def load: (options: ::Itly::PluginOptions options) -> void

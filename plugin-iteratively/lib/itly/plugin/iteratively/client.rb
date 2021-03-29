@@ -66,7 +66,7 @@ class Itly
               # Case: could not sent and reached maximum number of allowed tries
               if tries >= @max_retries
                 # Log
-                logger.error 'Iteratively::Client: flush() reached maximun number of tries. '\
+                logger&.error 'Iteratively::Client: flush() reached maximun number of tries. '\
                   "#{processing.count} events won't be sent to the server"
 
                 # Discard the list of event in the processing queue
@@ -113,12 +113,12 @@ class Itly
           return true if (200...300).include? resp.status
 
           # Case: Error
-          logger.error "Iteratively::Client: post_models() unexpected response. Url: #{url} "\
+          logger&.error "Iteratively::Client: post_models() unexpected response. Url: #{url} "\
             "Data: #{data} Response status: #{resp.status} Response headers: #{resp.headers} "\
             "Response body: #{resp.body}"
           false
         rescue StandardError => e
-          logger.error "Iteratively::Client: post_models() exception #{e.class.name}: #{e.message}"
+          logger&.error "Iteratively::Client: post_models() exception #{e.class.name}: #{e.message}"
           false
         end
 

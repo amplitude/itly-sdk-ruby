@@ -12,7 +12,7 @@ describe Itly::Options do
   it '#for_plugin' do
     expect(options.for_plugin).to be_a_kind_of(Itly::PluginOptions)
     expect(options.for_plugin.environment).to eq(Itly::Options::Environment::DEVELOPMENT)
-    expect(options.for_plugin.logger).to be_a_kind_of(Logger)
+    expect(options.for_plugin.logger).to be(nil)
   end
 
   it '#environment=' do
@@ -167,7 +167,7 @@ describe Itly do
       end
 
       it do
-        expect(itly.send(:logger)).to be_a_kind_of(::Logger)
+        expect(itly.send(:logger)).to be(nil)
       end
     end
 

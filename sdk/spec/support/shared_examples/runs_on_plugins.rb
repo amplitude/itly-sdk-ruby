@@ -3,6 +3,7 @@
 shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_method: false, expected_log_info: nil|
   context 'default', fake_plugins: 2 do
     # Instanciate plugins and Itly object
+    let!(:fake_logger) { double 'logger', info: nil, warn: nil }
     let!(:plugin_a) { FakePlugin0.new }
     let!(:plugin_b) { FakePlugin1.new }
     let!(:itly) { Itly.new }
@@ -11,6 +12,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
     before do
       itly.load do |options|
         options.plugins = [plugin_a, plugin_b]
+        options.logger = fake_logger
       end
     end
 
@@ -70,6 +72,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
   end
 
   context 'disabled', fake_plugins: 2 do
+    let!(:fake_logger) { double 'logger', info: nil, warn: nil }
     let!(:plugin_a) { FakePlugin0.new }
     let!(:plugin_b) { FakePlugin1.new }
     let!(:itly) { Itly.new }
@@ -79,6 +82,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
       itly.load do |options|
         options.disabled = true
         options.plugins = [plugin_a, plugin_b]
+        options.logger = fake_logger
       end
     end
 

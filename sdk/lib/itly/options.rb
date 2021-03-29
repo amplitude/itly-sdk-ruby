@@ -65,7 +65,7 @@ class Itly
       @environment = Itly::Options::Environment::DEVELOPMENT
       @validation = Itly::Options::Validation::DEFAULT
       @plugins = []
-      @logger = ::Logger.new $stdout, level: Logger::Severity::ERROR
+      @logger = nil
     end
 
     ##

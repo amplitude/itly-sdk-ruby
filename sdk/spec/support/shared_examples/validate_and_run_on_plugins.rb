@@ -17,6 +17,7 @@ shared_examples 'validate and run on plugins' do |
 |
 
   # Instanciate plugins and Itly object
+  let!(:fake_logger) { double 'logger', info: nil, warn: nil }
   let!(:plugin_a) { FakePlugin0.new }
   let!(:plugin_b) { FakePlugin1.new }
   let!(:itly) { Itly.new }
@@ -26,6 +27,7 @@ shared_examples 'validate and run on plugins' do |
     itly.load(context: context_properties) do |options|
       options.plugins = [plugin_a, plugin_b]
       options.validation = validation_value if validation_value
+      options.logger = fake_logger
     end
   end
 

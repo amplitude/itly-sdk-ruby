@@ -3,7 +3,7 @@ class Itly
     class Snowplow < Plugin
       VERSION: ::String
 
-      attr_reader logger: ::Logger
+      attr_reader logger: ::Logger?
       attr_reader vendor: ::String
       attr_reader disabled: bool
       attr_reader tracker: ::SnowplowTracker::Tracker

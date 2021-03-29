@@ -41,9 +41,9 @@ class Itly
         @logger = options.logger
 
         # Log
-        logger.info "#{plugin_id}: load()"
+        logger&.info "#{plugin_id}: load()"
 
-        logger.info "#{plugin_id}: plugin is disabled!" if @disabled
+        logger&.info "#{plugin_id}: plugin is disabled!" if @disabled
       end
 
       ##
@@ -60,7 +60,7 @@ class Itly
         return unless enabled?
 
         # Log
-        logger.info "#{plugin_id}: validate(event: #{event})"
+        logger&.info "#{plugin_id}: validate(event: #{event})"
 
         # Check that we have a schema for this event
         if @schemas[event.name.to_sym].nil?

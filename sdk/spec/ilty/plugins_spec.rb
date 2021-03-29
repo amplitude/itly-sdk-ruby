@@ -3,6 +3,7 @@
 describe Itly::Plugins do
   describe '#run_on_plugins', fake_plugins_methods: %i[some_method] do
     describe 'call lambda with each plugin', fake_plugins: 2 do
+      let!(:fake_logger) { double 'logger', info: nil, warn: nil }
       let!(:plugin_a) { FakePlugin0.new }
       let!(:plugin_b) { FakePlugin1.new }
       let!(:itly) { Itly.new }
@@ -10,6 +11,7 @@ describe Itly::Plugins do
       before do
         itly.load do |options|
           options.plugins = [plugin_a, plugin_b]
+          options.logger = fake_logger
         end
       end
 
@@ -27,6 +29,7 @@ describe Itly::Plugins do
 
     describe 'rescue exceptions', fake_plugins: 2 do
       context 'development' do
+        let!(:fake_logger) { double 'logger', info: nil, warn: nil }
         let!(:plugin_a) { FakePlugin0.new }
         let!(:plugin_b) { FakePlugin1.new }
         let!(:itly) { Itly.new }
@@ -35,6 +38,7 @@ describe Itly::Plugins do
           itly.load do |options|
             options.plugins = [plugin_a, plugin_b]
             options.environment = Itly::Options::Environment::DEVELOPMENT
+            options.logger = fake_logger
           end
         end
 
@@ -54,6 +58,7 @@ describe Itly::Plugins do
       end
 
       context 'production' do
+        let!(:fake_logger) { double 'logger', info: nil, warn: nil }
         let!(:plugin_a) { FakePlugin0.new }
         let!(:plugin_b) { FakePlugin1.new }
         let!(:itly) { Itly.new }
@@ -62,6 +67,7 @@ describe Itly::Plugins do
           itly.load do |options|
             options.plugins = [plugin_a, plugin_b]
             options.environment = Itly::Options::Environment::PRODUCTION
+            options.logger = fake_logger
           end
         end
 
@@ -80,6 +86,7 @@ describe Itly::Plugins do
     end
 
     describe 'collect returning values', fake_plugins: 4 do
+      let!(:fake_logger) { double 'logger', info: nil, warn: nil }
       let!(:plugin_a) { FakePlugin0.new }
       let!(:plugin_b) { FakePlugin1.new }
       let!(:plugin_c) { FakePlugin2.new }
@@ -90,6 +97,7 @@ describe Itly::Plugins do
         itly.load do |options|
           options.plugins = [plugin_a, plugin_b, plugin_c, plugin_d]
           options.environment = Itly::Options::Environment::PRODUCTION
+          options.logger = fake_logger
         end
       end
 

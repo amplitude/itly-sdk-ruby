@@ -26,6 +26,7 @@ class Itly
   #
   # @param [Hash] context: to assign to the "context" Event object. Default to nil
   #
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def load(context: nil)
     # Ensure #load was not already called on this object
     raise InitializationError, 'Itly is already initialized.' if @is_initialized
@@ -38,10 +39,10 @@ class Itly
     @context = context.nil? ? nil : Itly::Event.new(name: 'context', properties: context)
 
     # Log
-    logger.info 'load()'
-    logger.info 'Itly is disabled!' unless enabled?
-    logger.warn "Environment not specified. Automatically set to #{options.environment}" if options.default_environment
-    logger.warn 'No plugin enabled!' if options.plugins.empty?
+    logger&.info 'load()'
+    logger&.info 'Itly is disabled!' unless enabled?
+    logger&.warn "Environment not specified. Automatically set to #{options.environment}" if options.default_environment
+    logger&.warn 'No plugin enabled!' if options.plugins.empty?
 
     # pass options to plugins
     run_on_plugins { |plugin| plugin.load options: options.for_plugin }
@@ -49,6 +50,7 @@ class Itly
     # Mark that the #load method was called on this object
     @is_initialized = true
   end
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   ##
   # Identify a user in your application and associate all future events with
@@ -72,7 +74,7 @@ class Itly
     return unless was_initialized? && enabled?
 
     # Log
-    logger.info "identify(user_id: #{user_id}, properties: #{properties})"
+    logger&.info "identify(user_id: #{user_id}, properties: #{properties})"
 
     # Validate and run on all plugins
     event = Event.new name: 'identify', properties: properties
@@ -111,7 +113,7 @@ class Itly
     return unless was_initialized? && enabled?
 
     # Log
-    logger.info "group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties})"
+    logger&.info "group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties})"
 
     # Validate and run on all plugins
     event = Event.new name: 'group', properties: properties
@@ -155,7 +157,7 @@ class Itly
     return unless was_initialized? && enabled?
 
     # Log
-    logger.info "track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
+    logger&.info "track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
 
     # Validate and run on all plugins
     validate_and_send_to_plugins \
@@ -183,7 +185,7 @@ class Itly
     return unless was_initialized? && enabled?
 
     # Log
-    logger.info "alias(user_id: #{user_id}, previous_id: #{previous_id})"
+    logger&.info "alias(user_id: #{user_id}, previous_id: #{previous_id})"
 
     # Run on all plugins
     run_on_plugins { |plugin| plugin.alias user_id: user_id, previous_id: previous_id }
@@ -200,7 +202,7 @@ class Itly
     return unless was_initialized? && enabled?
 
     # Log
-    logger.info 'flush()'
+    logger&.info 'flush()'
 
     # Run on all plugins
     run_on_plugins(&:flush)
@@ -216,7 +218,7 @@ class Itly
     return unless was_initialized? && enabled?
 
     # Log
-    logger.info 'reset()'
+    logger&.info 'reset()'
 
     # Run on all plugins
     run_on_plugins(&:reset)
@@ -235,7 +237,7 @@ class Itly
     return unless was_initialized? && validation_enabled?
 
     # Log
-    logger.info "validate(event: #{event})"
+    logger&.info "validate(event: #{event})"
 
     # Run on all plugins
     run_on_plugins { |plugin| plugin.validate event: event }
@@ -288,7 +290,7 @@ class Itly
 
   def log_validation_errors(validations, event)
     validations.reject(&:valid).each do |response|
-      @options.logger.error %(Validation error for "#{event.name}" )\
+      @options.logger&.error %(Validation error for "#{event.name}" )\
         "in #{response.plugin_id}. Message: #{response.message}"
     end
   end

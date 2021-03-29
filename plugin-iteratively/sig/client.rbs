@@ -4,7 +4,7 @@ class Itly
       class Client
         attr_reader api_key: ::String
         attr_reader url: ::String
-        attr_reader logger: ::Logger
+        attr_reader logger: ::Logger?
         attr_reader buffer_size: ::Integer
         attr_reader max_retries: ::Integer
         attr_reader retry_delay_min: ::Float
@@ -16,7 +16,7 @@ class Itly
 
         private
 
-        def initialize: (url: ::String url, api_key: ::String api_key, logger: ::Logger logger, buffer_size: ::Integer buffer_size, max_retries: ::Integer max_retries, retry_delay_min: ::Float retry_delay_min, retry_delay_max: ::Float retry_delay_max, omit_values: bool omit_values) -> void
+        def initialize: (url: ::String url, api_key: ::String api_key, logger: ::Logger? logger, buffer_size: ::Integer buffer_size, max_retries: ::Integer max_retries, retry_delay_min: ::Float retry_delay_min, retry_delay_max: ::Float retry_delay_max, omit_values: bool omit_values) -> void
         def buffer_full?: () -> bool
         def post_models: (::Array[::Itly::Plugin::Iteratively::Model] model) -> bool
         def runner_complete?: () -> bool

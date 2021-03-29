@@ -7,6 +7,6 @@ class SimpleSegment
 
     private
 
-    def initialize: (write_key: ::String write_key, logger: ::Logger logger) -> void
+    def initialize: (write_key: ::String write_key, logger: ::Logger? logger) -> void
   end
 end

@@ -506,14 +506,12 @@ describe Itly::Plugin::Iteratively do
   end
 
   describe '#flush' do
-    let(:fake_logger) { double 'logger', info: nil, warn: nil }
     let(:itly) { Itly.new }
     let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
 
     before do
       itly.load do |options|
         options.plugins = [plugin]
-        options.logger = fake_logger
       end
 
       expect(plugin.client).to receive(:flush)
@@ -525,14 +523,12 @@ describe Itly::Plugin::Iteratively do
   end
 
   describe '#shutdown' do
-    let(:fake_logger) { double 'logger', info: nil, warn: nil }
     let(:itly) { Itly.new }
     let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
 
     before do
       itly.load do |options|
         options.plugins = [plugin]
-        options.logger = fake_logger
       end
     end
 

@@ -35,10 +35,10 @@ class Itly
         @logger = options.logger
 
         # Log
-        logger.info "#{plugin_id}: load()"
+        logger&.info "#{plugin_id}: load()"
 
         if @disabled
-          logger.info "#{plugin_id}: plugin is disabled!"
+          logger&.info "#{plugin_id}: plugin is disabled!"
           return
         end
 
@@ -69,7 +69,7 @@ class Itly
         return unless enabled?
 
         # Log
-        logger.info "#{plugin_id}: identify(user_id: #{user_id}, properties: #{properties})"
+        logger&.info "#{plugin_id}: identify(user_id: #{user_id}, properties: #{properties})"
 
         # Send through the client
         @client.identify user_id: user_id, traits: properties.properties
@@ -88,7 +88,7 @@ class Itly
         return unless enabled?
 
         # Log
-        logger.info "#{plugin_id}: group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties})"
+        logger&.info "#{plugin_id}: group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties})"
 
         # Send through the client
         @client.group user_id: user_id, group_id: group_id, traits: properties.properties
@@ -106,7 +106,7 @@ class Itly
         return unless enabled?
 
         # Log
-        logger.info "#{plugin_id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
+        logger&.info "#{plugin_id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
 
         # Send through the client
         @client.track user_id: user_id, event: event.name, properties: event.properties
@@ -126,7 +126,7 @@ class Itly
         return unless enabled?
 
         # Log
-        logger.info "#{plugin_id}: alias(user_id: #{user_id}, previous_id: #{previous_id})"
+        logger&.info "#{plugin_id}: alias(user_id: #{user_id}, previous_id: #{previous_id})"
 
         # Send through the client
         @client.alias user_id: user_id, previous_id: previous_id

@@ -4,11 +4,10 @@ describe Itly::Plugin::Iteratively::Client do
   include RspecLoggerHelpers
 
   describe 'instance attributes' do
-    let(:logger) { ::Logger.new '/dev/null' }
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: logger, buffer_size: 1, max_retries: 2, retry_delay_min: 3.0,
+        logger: nil, buffer_size: 1, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -56,11 +55,10 @@ describe Itly::Plugin::Iteratively::Client do
     let(:validation1) { Itly::ValidationResponse.new valid: true, plugin_id: 'id1', message: 'Msg1' }
     let(:validation2) { Itly::ValidationResponse.new valid: false, plugin_id: 'id2', message: 'Msg2' }
 
-    let(:logger) { ::Logger.new '/dev/null' }
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: logger, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
+        logger: nil, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -232,11 +230,10 @@ describe Itly::Plugin::Iteratively::Client do
   end
 
   describe '#shutdown' do
-    let(:logger) { ::Logger.new '/dev/null' }
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: logger, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
+        logger: nil, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -302,11 +299,10 @@ describe Itly::Plugin::Iteratively::Client do
 
   describe '#buffer_full?' do
     let(:event) { Itly::Event.new name: 'event', properties: { some: 'data' } }
-    let(:logger) { ::Logger.new '/dev/null' }
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: logger, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
+        logger: nil, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -444,11 +440,10 @@ describe Itly::Plugin::Iteratively::Client do
   end
 
   describe '#runner_complete?' do
-    let(:logger) { ::Logger.new '/dev/null' }
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: logger, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
+        logger: nil, buffer_size: 2, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -482,11 +477,10 @@ describe Itly::Plugin::Iteratively::Client do
   end
 
   describe '#delay_before_next_try' do
-    let(:logger) { ::Logger.new '/dev/null' }
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: logger, buffer_size: 2, max_retries: 25, retry_delay_min: 10.0,
+        logger: nil, buffer_size: 2, max_retries: 25, retry_delay_min: 10.0,
         retry_delay_max: 3600.0, omit_values: false
     end
 

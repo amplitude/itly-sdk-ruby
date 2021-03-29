@@ -15,7 +15,7 @@ class Itly
       options.plugins.collect do |plugin|
         yield plugin
       rescue StandardError => e
-        logger.error "Itly Error in #{plugin.class.name}. #{e.class.name}: #{e.message}"
+        logger&.error "Itly Error in #{plugin.class.name}. #{e.class.name}: #{e.message}"
         raise e if options.development?
 
         nil

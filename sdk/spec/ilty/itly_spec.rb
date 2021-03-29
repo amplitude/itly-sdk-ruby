@@ -228,6 +228,7 @@ describe 'Itly' do
     end
 
     context 'disabled' do
+      let!(:fake_logger) { double 'logger', info: nil, warn: nil }
       let!(:plugin_a) { FakePlugin0.new }
       let!(:plugin_b) { FakePlugin1.new }
       let!(:itly) { Itly.new }
@@ -236,6 +237,7 @@ describe 'Itly' do
         itly.load do |options|
           options.disabled = true
           options.plugins = [plugin_a, plugin_b]
+          options.logger = fake_logger
         end
       end
 
@@ -310,6 +312,7 @@ describe 'Itly' do
     end
 
     context 'disabled' do
+      let!(:fake_logger) { double 'logger', info: nil, warn: nil }
       let!(:plugin_a) { FakePlugin0.new }
       let!(:plugin_b) { FakePlugin1.new }
       let!(:itly) { Itly.new }
@@ -318,6 +321,7 @@ describe 'Itly' do
         itly.load do |options|
           options.disabled = true
           options.plugins = [plugin_a, plugin_b]
+          options.logger = fake_logger
         end
       end
 
@@ -418,6 +422,7 @@ describe 'Itly' do
     end
 
     context 'disabled' do
+      let!(:fake_logger) { double 'logger', info: nil, warn: nil }
       let!(:plugin_a) { FakePlugin0.new }
       let!(:plugin_b) { FakePlugin1.new }
       let!(:itly) { Itly.new }
@@ -426,6 +431,7 @@ describe 'Itly' do
         itly.load do |options|
           options.disabled = true
           options.plugins = [plugin_a, plugin_b]
+          options.logger = fake_logger
         end
       end
 
@@ -477,6 +483,7 @@ describe 'Itly' do
     end
 
     context 'default' do
+      let!(:fake_logger) { double 'logger', info: nil, warn: nil }
       let!(:plugin_a) { FakePlugin0.new }
       let!(:plugin_b) { FakePlugin1.new }
       let!(:itly) { Itly.new }
@@ -484,6 +491,7 @@ describe 'Itly' do
       before do
         itly.load do |options|
           options.plugins = [plugin_a, plugin_b]
+          options.logger = fake_logger
         end
       end
 
@@ -504,6 +512,7 @@ describe 'Itly' do
     end
 
     context 'disabled' do
+      let!(:fake_logger) { double 'logger', info: nil, warn: nil }
       let!(:plugin_a) { FakePlugin0.new }
       let!(:plugin_b) { FakePlugin1.new }
       let!(:itly) { Itly.new }
@@ -512,6 +521,7 @@ describe 'Itly' do
         itly.load do |options|
           options.validation = Itly::Options::Validation::DISABLED
           options.plugins = [plugin_a, plugin_b]
+          options.logger = fake_logger
         end
       end
       let!(:event) { Itly::Event.new name: 'Test' }
@@ -960,11 +970,14 @@ describe 'Itly' do
   end
 
   describe '#log_validation_errors' do
+    let!(:fake_logger) { double 'logger', info: nil, warn: nil }
     let!(:itly) { Itly.new }
     let!(:event) { Itly::Event.new name: 'Test event' }
 
     before do
-      itly.load
+      itly.load do |options|
+        options.logger = fake_logger
+      end
     end
 
     context 'validations is empty' do

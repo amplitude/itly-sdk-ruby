@@ -3,7 +3,7 @@ class Itly
     class Segment < Plugin
       VERSION: ::String
 
-      attr_reader logger: ::Logger
+      attr_reader logger: ::Logger?
       attr_reader client: ::SimpleSegment::Client?
       attr_reader write_key: ::String
       attr_reader disabled: bool
