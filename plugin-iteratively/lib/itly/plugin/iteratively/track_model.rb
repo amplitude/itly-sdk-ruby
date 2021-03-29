@@ -10,7 +10,7 @@ class Itly
       ##
       # Data model for HTTP client buffering
       #
-      class Model
+      class TrackModel
         attr_reader :type, :date_sent, :event_id, :event_chema_version, :event_name,
           :properties, :valid, :validation
 

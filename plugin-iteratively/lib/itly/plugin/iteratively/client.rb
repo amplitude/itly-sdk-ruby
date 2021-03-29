@@ -33,7 +33,7 @@ class Itly
         # rubocop:enable Metrics/ParameterLists
 
         def track(type:, event:, validation:)
-          @buffer << ::Itly::Plugin::Iteratively::Model.new(
+          @buffer << ::Itly::Plugin::Iteratively::TrackModel.new(
             omit_values: omit_values, type: type, event: event, validation: validation
           )
 

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-describe Itly::Plugin::Iteratively::Model do
+describe Itly::Plugin::Iteratively::TrackModel do
   describe 'instance attributes' do
     let(:event) { Itly::Event.new name: 'test_event', properties: { data: 'value' } }
-    let(:model) { Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'test_model', event: event }
+    let(:model) { Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'test_model', event: event }
 
     it 'can read' do
       %i[type date_sent event_id event_chema_version event_name properties valid validation].each do |attribute|
@@ -22,7 +22,7 @@ describe Itly::Plugin::Iteratively::Model do
     let(:event) { Itly::Event.new name: 'test_event', id: 'id123', version: '12', properties: { data: 'value' } }
 
     context 'without validation' do
-      let!(:model) { Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'test_model', event: event }
+      let!(:model) { Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'test_model', event: event }
 
       it do
         expect(model.instance_variable_get('@type')).to eq('test_model')
@@ -39,7 +39,7 @@ describe Itly::Plugin::Iteratively::Model do
     context 'with validation' do
       let!(:validation) { Itly::ValidationResponse.new valid: false, plugin_id: 'id', message: 'Validation Msg' }
       let!(:model) do
-        Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'test_model', event: event,
+        Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'test_model', event: event,
                                              validation: validation
       end
 
@@ -56,7 +56,7 @@ describe Itly::Plugin::Iteratively::Model do
     end
 
     context 'with omit_values' do
-      let!(:model) { Itly::Plugin::Iteratively::Model.new omit_values: true, type: 'test_model', event: event }
+      let!(:model) { Itly::Plugin::Iteratively::TrackModel.new omit_values: true, type: 'test_model', event: event }
 
       it do
         expect(model.instance_variable_get('@type')).to eq('test_model')
@@ -75,7 +75,7 @@ describe Itly::Plugin::Iteratively::Model do
     let(:event) { Itly::Event.new name: 'test_event', id: 'id123', version: '12', properties: { data: 'value' } }
 
     context 'without validation' do
-      let!(:model) { Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'test_model', event: event }
+      let!(:model) { Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'test_model', event: event }
 
       let(:expected) do
         /^{"type":"test_model","dateSent":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z","eventId":"id123",
@@ -91,7 +91,7 @@ describe Itly::Plugin::Iteratively::Model do
     context 'with validation' do
       let!(:validation) { Itly::ValidationResponse.new valid: false, plugin_id: 'id', message: 'Validation Msg' }
       let!(:model) do
-        Itly::Plugin::Iteratively::Model.new omit_values: false, type: 'test_model', event: event,
+        Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'test_model', event: event,
                                              validation: validation
       end
 
@@ -107,7 +107,7 @@ describe Itly::Plugin::Iteratively::Model do
     end
 
     context 'with omit_values' do
-      let!(:model) { Itly::Plugin::Iteratively::Model.new omit_values: true, type: 'test_model', event: event }
+      let!(:model) { Itly::Plugin::Iteratively::TrackModel.new omit_values: true, type: 'test_model', event: event }
 
       let(:expected) do
         /^{"type":"test_model","dateSent":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z","eventId":"id123",

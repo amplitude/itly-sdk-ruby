@@ -1,7 +1,7 @@
 class Itly
   class Plugin
     class Iteratively
-      class Model
+      class TrackModel
         attr_reader type: ::String
         attr_reader date_sent: ::String
         attr_reader event_id: ::String
