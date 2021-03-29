@@ -3,7 +3,7 @@ class Mixpanel
   class Tracker
     attr_reader people: Mixpanel::Tracker::People
 
-    def track: (::String user_id, ::String event_name, ::Hash[::String | ::Symbol, untyped] properties) -> void
+    def track: (::String user_id, ::String event_name, propertiesHash properties) -> void
     def alias: (::String user_id, ::String previoud_id) -> void
 
     private

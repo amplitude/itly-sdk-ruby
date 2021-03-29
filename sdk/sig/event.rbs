@@ -1,7 +1,7 @@
 class Itly
   class Event
     attr_accessor name: ::String
-    attr_accessor properties: ::Hash[::String | ::Symbol, untyped]
+    attr_accessor properties: propertiesHash
     attr_accessor id: ::String?
     attr_accessor version: ::String?
 
@@ -10,6 +10,6 @@ class Itly
 
     private
 
-    def initialize: (name: ::String name, ?properties: ::Hash[::String | ::Symbol, untyped] properties, ?id: ::String? id, ?version: ::String? version) -> void
+    def initialize: (name: ::String name, ?properties: propertiesHash properties, ?id: ::String? id, ?version: ::String? version) -> void
   end
 end

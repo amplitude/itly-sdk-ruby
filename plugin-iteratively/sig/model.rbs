@@ -7,7 +7,7 @@ class Itly
         attr_reader event_id: ::String
         attr_reader event_chema_version: ::String
         attr_reader event_name: ::String
-        attr_reader properties: ::Hash[::String | ::Symbol, untyped]
+        attr_reader properties: propertiesHash
         attr_reader valid: bool?
         attr_reader validation: ::Itly::ValidationResponse?
 

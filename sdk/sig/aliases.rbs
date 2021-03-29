@@ -1,0 +1,1 @@
+type propertiesHash = Hash[::String | ::Symbol, untyped]
