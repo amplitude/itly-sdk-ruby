@@ -77,6 +77,9 @@ class Itly
         logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, version: #{event.version}, "\
           "properties: #{event.properties})"
 
+        # Identify the user
+        client.set_user_id user_id
+
         # Send through the client
         schema_version = event.version&.gsub(/\./, '-')
         schema = "iglu:#{vendor}/#{event.name}/jsonschema/#{schema_version}"

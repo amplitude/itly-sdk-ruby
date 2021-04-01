@@ -193,6 +193,8 @@ describe Itly::Plugin::Snowplow do
       let(:plugin) { Itly::Plugin::Snowplow.new endpoint: 'endpoint123', vendor: 'vnd_name' }
 
       before do
+        expect(plugin.client).to receive(:set_user_id).with('user_123')
+
         expect(SnowplowTracker::SelfDescribingJson).to receive(:new)
           .with('iglu:vnd_name/custom_event/jsonschema/1-2-3', view: 'video')
           .and_return('self_describing_json')
@@ -283,6 +285,7 @@ describe Itly::Plugin::Snowplow do
           options.logger = ::Logger.new logs
         end
 
+        expect(plugin.client).not_to receive(:set_user_id)
         expect(plugin.client).not_to receive(:track_self_describing_event)
       end
 
