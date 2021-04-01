@@ -186,7 +186,6 @@ describe Itly::Plugin::Iteratively do
     let(:itly) { Itly.new }
 
     context 'success' do
-
       before do
         itly.load do |options|
           options.plugins = [plugin]
@@ -637,11 +636,11 @@ describe Itly::Plugin::Iteratively do
 
       before do
         expect(client).to receive(:track)
-          .with(type: 'event_type', event: nil, properties: {some: 'props'}, validation: nil)
+          .with(type: 'event_type', event: nil, properties: { some: 'props' }, validation: nil)
       end
 
       it do
-        plugin.send :client_track, 'event_type', {some: 'props'}, nil
+        plugin.send :client_track, 'event_type', { some: 'props' }, nil
       end
     end
   end

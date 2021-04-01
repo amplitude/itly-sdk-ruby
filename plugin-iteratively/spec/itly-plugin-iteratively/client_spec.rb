@@ -69,7 +69,7 @@ describe Itly::Plugin::Iteratively::Client do
 
         client.track type: 'test_model', event: event1, properties: nil, validation: validation1
         client.track type: 'test_model', event: event2, properties: nil, validation: nil
-        client.track type: 'test_model', event: nil, properties: {other: 'info'}, validation: validation2
+        client.track type: 'test_model', event: nil, properties: { other: 'info' }, validation: validation2
       end
 
       let(:buffer) { client.instance_variable_get '@buffer' }

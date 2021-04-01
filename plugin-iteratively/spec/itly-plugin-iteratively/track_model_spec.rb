@@ -41,8 +41,9 @@ describe Itly::Plugin::Iteratively::TrackModel do
 
     context 'with properties' do
       let!(:model) do
-        Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'test_model', event: nil,
-          properties: {prop: 'from hash'}
+        Itly::Plugin::Iteratively::TrackModel.new(
+          omit_values: false, type: 'test_model', event: nil, properties: { prop: 'from hash' }
+        )
       end
 
       it do
@@ -116,8 +117,9 @@ describe Itly::Plugin::Iteratively::TrackModel do
 
     context 'with properties' do
       let!(:model) do
-        Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'test_model', event: nil,
-          properties: {prop: 'from hash'}
+        Itly::Plugin::Iteratively::TrackModel.new(
+          omit_values: false, type: 'test_model', event: nil, properties: { prop: 'from hash' }
+        )
       end
 
       let(:expected) do
@@ -134,8 +136,9 @@ describe Itly::Plugin::Iteratively::TrackModel do
     context 'with validation' do
       let!(:validation) { Itly::ValidationResponse.new valid: false, plugin_id: 'id', message: 'Validation Msg' }
       let!(:model) do
-        Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'test_model', event: event,
-          properties: nil, validation: validation
+        Itly::Plugin::Iteratively::TrackModel.new(
+          omit_values: false, type: 'test_model', event: event, properties: nil, validation: validation
+        )
       end
 
       let(:expected) do

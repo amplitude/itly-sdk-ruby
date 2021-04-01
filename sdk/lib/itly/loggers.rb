@@ -10,7 +10,7 @@ class Itly
     end
 
     def self.std_out
-      Logger.new STDOUT
+      Logger.new $stdout
     end
 
     def self.nil_logger
