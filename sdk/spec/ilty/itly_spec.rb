@@ -992,7 +992,7 @@ describe 'Itly' do
 
       it do
         expect { itly.send :raise_validation_errors, false, [response1, response2], event }
-          .to raise_error(Itly::ValidationError, 'One')
+          .to raise_error(Itly::ValidationError, 'One. Two')
       end
     end
   end

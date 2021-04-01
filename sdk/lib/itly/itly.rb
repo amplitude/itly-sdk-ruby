@@ -300,9 +300,9 @@ class Itly
     return unless !is_valid && @options.validation == Itly::Options::Validation::ERROR_ON_INVALID
 
     messages = validations.reject(&:valid).collect(&:message)
-    message = messages.select { |m| !m.nil? && m.length.positive? }.first
-    message ||= "Unknown error validating #{event.name}"
+    messages = messages.select { |m| !m.nil? && m.length.positive? }
+    messages << "Unknown error validating #{event.name}" if messages.empty?
 
-    raise ValidationError, message
+    raise ValidationError, messages.join('. ')
   end
 end
