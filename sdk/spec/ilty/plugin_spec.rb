@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Itly::Plugin do
-  describe '#plugin_id' do
+  describe '#id' do
     context 'root class' do
       before do
         Object.const_set 'TestPluginId', Class.new(Itly::Plugin)
@@ -12,7 +12,7 @@ describe Itly::Plugin do
       end
 
       it do
-        expect(TestPluginId.new.send(:plugin_id)).to eq('test_plugin_id')
+        expect(TestPluginId.new.send(:id)).to eq('test_plugin_id')
       end
     end
 
@@ -28,7 +28,7 @@ describe Itly::Plugin do
       end
 
       it do
-        expect(TestPluginId::NestedClass.new.send(:plugin_id)).to eq('test_plugin_id-nested_class')
+        expect(TestPluginId::NestedClass.new.send(:id)).to eq('test_plugin_id-nested_class')
       end
     end
 
@@ -42,7 +42,7 @@ describe Itly::Plugin do
       end
 
       it do
-        expect(Itly::NestedClass.new.send(:plugin_id)).to eq('nested_class')
+        expect(Itly::NestedClass.new.send(:id)).to eq('nested_class')
       end
     end
   end

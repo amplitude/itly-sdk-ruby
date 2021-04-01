@@ -37,9 +37,9 @@ class Itly
         @logger = options.logger
 
         # Log
-        logger&.info "#{plugin_id}: load()"
+        logger&.info "#{id}: load()"
 
-        logger&.info "#{plugin_id}: plugin is disabled!" if @disabled
+        logger&.info "#{id}: plugin is disabled!" if @disabled
       end
 
       ##
@@ -55,7 +55,7 @@ class Itly
         return unless enabled?
 
         # Log
-        logger&.info "#{plugin_id}: identify(user_id: #{user_id})"
+        logger&.info "#{id}: identify(user_id: #{user_id})"
 
         # Send through the client
         client.set_user_id user_id
@@ -74,7 +74,7 @@ class Itly
         return unless enabled?
 
         # Log
-        logger&.info "#{plugin_id}: track(user_id: #{user_id}, event: #{event.name}, version: #{event.version}, "\
+        logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, version: #{event.version}, "\
           "properties: #{event.properties})"
 
         # Send through the client

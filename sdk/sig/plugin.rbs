@@ -13,6 +13,6 @@ class Itly
     def reset: () -> void
     def validate: (event: ::Itly::Event event) -> ::Itly::ValidationResponse?
     def get_plugin_options: (::Itly::Options options) -> propertiesHash
-    def plugin_id: () -> ::String
+    def id: () -> ::String
   end
 end

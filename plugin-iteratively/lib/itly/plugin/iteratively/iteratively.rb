@@ -59,13 +59,13 @@ class Itly
         @logger = options.logger
 
         # Log
-        logger&.info "#{plugin_id}: load()"
+        logger&.info "#{id}: load()"
 
         # Disabled
         @disabled = options.environment == Itly::Options::Environment::PRODUCTION if @disabled.nil?
 
         if @disabled
-          logger&.info "#{plugin_id}: plugin is disabled!"
+          logger&.info "#{id}: plugin is disabled!"
           return
         end
 
@@ -78,7 +78,7 @@ class Itly
         return unless enabled?
 
         # Log
-        logger&.info "#{plugin_id}: post_identify(user_id: #{user_id}, properties: #{properties}, "\
+        logger&.info "#{id}: post_identify(user_id: #{user_id}, properties: #{properties}, "\
           "validation_results: [#{validation_results.collect(&:to_s).join ', '}])"
 
         client_track Itly::Plugin::Iteratively::TrackType::IDENTIFY, properties, validation_results
@@ -88,7 +88,7 @@ class Itly
         return unless enabled?
 
         # Log
-        logger&.info "#{plugin_id}: post_group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties}, "\
+        logger&.info "#{id}: post_group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties}, "\
           "validation_results: [#{validation_results.collect(&:to_s).join ', '}])"
 
         client_track Itly::Plugin::Iteratively::TrackType::GROUP, properties, validation_results
@@ -98,7 +98,7 @@ class Itly
         return unless enabled?
 
         # Log
-        logger&.info "#{plugin_id}: post_track(user_id: #{user_id}, event: #{event}, "\
+        logger&.info "#{id}: post_track(user_id: #{user_id}, event: #{event}, "\
           "validation_results: [#{validation_results.collect(&:to_s).join ', '}])"
 
         client_track Itly::Plugin::Iteratively::TrackType::TRACK, event, validation_results
