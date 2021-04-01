@@ -10,7 +10,7 @@ class Itly
         attr_reader retry_delay_min: ::Float
         attr_reader retry_delay_max: ::Float
 
-        def track: (type: ::String `type`, event: ::Itly::Event event, validation: ::Itly::ValidationResponse? validation) -> void
+        def track: (type: ::String `type`, event: ::Itly::Event? event, properties: propertiesHash? properties, validation: ::Itly::ValidationResponse? validation) -> void
         def flush: () -> void
         def shutdown: (?force: bool force) -> void
 

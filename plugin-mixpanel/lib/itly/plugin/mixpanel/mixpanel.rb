@@ -52,7 +52,7 @@ class Itly
       # Raise an error if the client fails
       #
       # @param [String] user_id: the id of the user in your application
-      # @param [Event] properties: the event containing user's traits to pass to your application
+      # @param [Hash] properties: the properties containing user's traits to pass to your application
       #
       def identify(user_id:, properties:)
         return unless enabled?
@@ -61,7 +61,7 @@ class Itly
         @logger&.info "#{plugin_id}: identify(user_id: #{user_id}, properties: #{properties})"
 
         # Send through the client
-        @client.people.set user_id, properties.properties
+        @client.people.set user_id, properties
       end
 
       ##

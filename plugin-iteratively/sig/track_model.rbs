@@ -15,7 +15,7 @@ class Itly
 
         private
 
-        def initialize: (omit_values: bool omit_values, type: ::String `type`, event: ::Itly::Event event, ?validation: ::Itly::ValidationResponse? validation) -> void
+        def initialize: (type: ::String `type`, event: ::Itly::Event? event, properties: propertiesHash? properties, ?validation: ::Itly::ValidationResponse? validation, omit_values: bool omit_values) -> void
         def to_s: () -> ::String
       end
     end

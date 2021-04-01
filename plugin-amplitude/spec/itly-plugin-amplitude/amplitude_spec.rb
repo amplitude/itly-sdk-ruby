@@ -114,8 +114,7 @@ describe Itly::Plugin::Amplitude do
             ['info', 'plugin-amplitude: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-            ['info', 'plugin-amplitude: identify(user_id: user_123, properties: #<Itly::Event: name: identify, '\
-                    'properties: {:version=>"4", :some=>"data"}>)']
+            ['info', 'plugin-amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})']
           ]
         end
       end
@@ -157,8 +156,7 @@ describe Itly::Plugin::Amplitude do
               ['info', 'plugin-amplitude: load()'],
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-              ['info', 'plugin-amplitude: identify(user_id: user_123, properties: #<Itly::Event: name: identify, '\
-                      'properties: {:version=>"4", :some=>"data"}>)'],
+              ['info', 'plugin-amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['error', 'Itly Error in Itly::Plugin::Amplitude. Itly::RemoteError: The remote end-point returned an '\
                         'error. Response status: 500. Raw body: wrong params']
             ]

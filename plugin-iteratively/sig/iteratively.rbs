@@ -10,8 +10,8 @@ class Itly
       attr_reader api_key: ::String
 
       def load: (options: ::Itly::PluginOptions options) -> void
-      def post_identify: (user_id: ::String user_id, properties: ::Itly::Event properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
-      def post_group: (user_id: ::String user_id, group_id: ::String group_id, properties: ::Itly::Event properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
+      def post_identify: (user_id: ::String user_id, properties: propertiesHash properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
+      def post_group: (user_id: ::String user_id, group_id: ::String group_id, properties: propertiesHash properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
       def post_track: (user_id: ::String user_id, event: ::Itly::Event event, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
       def flush: () -> void
       def shutdown: (?force: bool force) -> void
@@ -20,7 +20,7 @@ class Itly
 
       def initialize: (url: ::String url, api_key: ::String api_key, ?disabled: bool disabled, ?buffer_size: ::Integer buffer_size, ?max_retries: ::Integer max_retries, ?retry_delay_min: ::Float retry_delay_min, ?retry_delay_max: ::Float retry_delay_max, ?omit_values: bool omit_values) -> void
       def enabled?: () -> bool
-      def client_track: (::String `type`, ::Itly::Event event, ::Array[::Itly::ValidationResponse]? validations) -> void
+      def client_track: (::String `type`, ::Itly::Event|propertiesHash event_or_properties, ::Array[::Itly::ValidationResponse]? validations) -> void
     end
   end
 end

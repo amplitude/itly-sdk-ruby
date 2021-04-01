@@ -20,7 +20,7 @@ class Itly
     # their identity, or to set their traits.
     #
     # @param [String] user_id: the id of the user in your application
-    # @param [Event] properties: the event containing user's traits to pass to your application
+    # @param [Hash] properties: the properties containing user's traits to pass to your application
     #
     def identify(user_id:, properties:); end
 
@@ -32,7 +32,7 @@ class Itly
     #
     # @param [String] user_id: the id of the user in your application
     # @param [String] group_id: the id of the group in your application
-    # @param [Event] properties: the event containing properties to pass to your application
+    # @param [Hash] properties: the properties to pass to your application
     #
     def group(user_id:, group_id:, properties:); end
 
@@ -43,6 +43,9 @@ class Itly
     # your tracking plan gets its own function in the Itly SDK.
     #
     # See +Itly#track+ for more information
+    #
+    # @param [String] user_id: the id of the user in your application
+    # @param [Event] event: the events to track
     #
     def track(user_id:, event:); end
 

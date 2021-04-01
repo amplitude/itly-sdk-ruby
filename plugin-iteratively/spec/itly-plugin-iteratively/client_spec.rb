@@ -51,7 +51,6 @@ describe Itly::Plugin::Iteratively::Client do
   describe '#track' do
     let(:event1) { Itly::Event.new name: 'event1', properties: { some: 'data' } }
     let(:event2) { Itly::Event.new name: 'event2', properties: { some: 'data' } }
-    let(:event3) { Itly::Event.new name: 'event3', properties: { some: 'data' } }
     let(:validation1) { Itly::ValidationResponse.new valid: true, plugin_id: 'id1', message: 'Msg1' }
     let(:validation2) { Itly::ValidationResponse.new valid: false, plugin_id: 'id2', message: 'Msg2' }
 
@@ -68,9 +67,9 @@ describe Itly::Plugin::Iteratively::Client do
 
         allow(client).to receive(:flush)
 
-        client.track type: 'test_model', event: event1, validation: validation1
-        client.track type: 'test_model', event: event2, validation: nil
-        client.track type: 'test_model', event: event3, validation: validation2
+        client.track type: 'test_model', event: event1, properties: nil, validation: validation1
+        client.track type: 'test_model', event: event2, properties: nil, validation: nil
+        client.track type: 'test_model', event: nil, properties: {other: 'info'}, validation: validation2
       end
 
       let(:buffer) { client.instance_variable_get '@buffer' }
@@ -82,7 +81,7 @@ describe Itly::Plugin::Iteratively::Client do
           '#<Itly::Plugin::Iteratively::TrackModel: type: test_model date_sent: 2021-01-01T06:00:00Z event_id:  '\
             'event_chema_version:  event_name: event2 properties: {:some=>"data"} valid:  validation: >',
           '#<Itly::Plugin::Iteratively::TrackModel: type: test_model date_sent: 2021-01-01T06:00:00Z event_id:  '\
-            'event_chema_version:  event_name: event3 properties: {:some=>"data"} valid: false validation: Msg2>'
+            'event_chema_version:  event_name:  properties: {:other=>"info"} valid: false validation: Msg2>'
         ]
       end
 
@@ -98,7 +97,7 @@ describe Itly::Plugin::Iteratively::Client do
       end
 
       it do
-        client.track type: 'test_model', event: event1, validation: nil
+        client.track type: 'test_model', event: event1, properties: nil, validation: nil
       end
     end
 
@@ -108,8 +107,8 @@ describe Itly::Plugin::Iteratively::Client do
       end
 
       it do
-        client.track type: 'test_model', event: event1, validation: nil
-        client.track type: 'test_model', event: event1, validation: nil
+        client.track type: 'test_model', event: event1, properties: nil, validation: nil
+        client.track type: 'test_model', event: event1, properties: nil, validation: nil
       end
     end
 
@@ -119,9 +118,9 @@ describe Itly::Plugin::Iteratively::Client do
       end
 
       it do
-        client.track type: 'test_model', event: event1, validation: nil
-        client.track type: 'test_model', event: event1, validation: nil
-        client.track type: 'test_model', event: event1, validation: nil
+        client.track type: 'test_model', event: event1, properties: nil, validation: nil
+        client.track type: 'test_model', event: event1, properties: nil, validation: nil
+        client.track type: 'test_model', event: event1, properties: nil, validation: nil
       end
     end
   end
@@ -129,8 +128,12 @@ describe Itly::Plugin::Iteratively::Client do
   describe '#flush' do
     let(:event1) { Itly::Event.new name: 'event1', properties: { some: 'data' } }
     let(:event2) { Itly::Event.new name: 'event2', properties: { some: 'data' } }
-    let(:model1) { Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'model1', event: event1 }
-    let(:model2) { Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'model2', event: event2 }
+    let(:model1) do
+      Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'model1', event: event1, properties: nil
+    end
+    let(:model2) do
+      Itly::Plugin::Iteratively::TrackModel.new omit_values: false, type: 'model2', event: event2, properties: nil
+    end
 
     let(:logs) { StringIO.new }
     let(:logger) { ::Logger.new logs }
@@ -312,7 +315,7 @@ describe Itly::Plugin::Iteratively::Client do
 
     context 'less than max' do
       before do
-        client.track type: 'test_model', event: event, validation: nil
+        client.track type: 'test_model', event: event, properties: nil, validation: nil
       end
 
       it do
@@ -322,8 +325,8 @@ describe Itly::Plugin::Iteratively::Client do
 
     context 'equal to max' do
       before do
-        client.track type: 'test_model', event: event, validation: nil
-        client.track type: 'test_model', event: event, validation: nil
+        client.track type: 'test_model', event: event, properties: nil, validation: nil
+        client.track type: 'test_model', event: event, properties: nil, validation: nil
       end
 
       it do
@@ -333,9 +336,9 @@ describe Itly::Plugin::Iteratively::Client do
 
     context 'more than max' do
       before do
-        client.track type: 'test_model', event: event, validation: nil
-        client.track type: 'test_model', event: event, validation: nil
-        client.track type: 'test_model', event: event, validation: nil
+        client.track type: 'test_model', event: event, properties: nil, validation: nil
+        client.track type: 'test_model', event: event, properties: nil, validation: nil
+        client.track type: 'test_model', event: event, properties: nil, validation: nil
       end
 
       it do
@@ -349,7 +352,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:validation) { Itly::ValidationResponse.new valid: false, plugin_id: 'id', message: 'Validation Msg' }
     let(:model) do
       Itly::Plugin::Iteratively::TrackModel.new(
-        omit_values: false, type: 'test_model', event: event, validation: validation
+        omit_values: false, type: 'test_model', event: event, properties: nil, validation: validation
       )
     end
 

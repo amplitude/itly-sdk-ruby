@@ -48,7 +48,7 @@ class Itly
       # Raise an error if the client fails
       #
       # @param [String] user_id: the id of the user in your application
-      # @param [Event] properties: unused
+      # @param [Hash] properties: unused
       #
       # rubocop:disable Lint/UnusedMethodArgument
       def identify(user_id:, properties:)

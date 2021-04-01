@@ -158,8 +158,7 @@ describe Itly::Plugin::Mixpanel do
             ['info', 'plugin-mixpanel: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-            ['info', 'plugin-mixpanel: identify(user_id: user_123, properties: #<Itly::Event: name: identify, '\
-                    'properties: {:version=>"4", :some=>"data"}>)']
+            ['info', 'plugin-mixpanel: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})']
           ]
         end
       end
@@ -210,8 +209,7 @@ describe Itly::Plugin::Mixpanel do
               ['info', 'plugin-mixpanel: load()'],
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-              ['info', 'plugin-mixpanel: identify(user_id: user_123, properties: #<Itly::Event: name: identify, '\
-                      'properties: {:version=>"4", :some=>"data"}>)'],
+              ['info', 'plugin-mixpanel: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['error', 'Itly Error in Itly::Plugin::Mixpanel. RuntimeError: Internal error']
             ]
           end

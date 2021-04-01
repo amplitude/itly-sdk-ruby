@@ -158,8 +158,7 @@ describe Itly::Plugin::Segment do
             ['info', 'plugin-segment: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-            ['info', 'plugin-segment: identify(user_id: user_123, properties: #<Itly::Event: name: identify, '\
-                    'properties: {:version=>"4", :some=>"data"}>)']
+            ['info', 'plugin-segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})']
           ]
         end
       end
@@ -211,8 +210,7 @@ describe Itly::Plugin::Segment do
               ['info', 'plugin-segment: load()'],
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-              ['info', 'plugin-segment: identify(user_id: user_123, properties: #<Itly::Event: name: identify, '\
-                      'properties: {:version=>"4", :some=>"data"}>)'],
+              ['info', 'plugin-segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
                         'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]
@@ -265,8 +263,7 @@ describe Itly::Plugin::Segment do
             ['info', 'plugin-segment: load()'],
             ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
             ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
-            ['info', 'plugin-segment: group(user_id: user_123, group_id: groupABC, '\
-                    'properties: #<Itly::Event: name: group, properties: {:active=>"yes"}>)']
+            ['info', 'plugin-segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})']
           ]
         end
       end
@@ -318,8 +315,7 @@ describe Itly::Plugin::Segment do
               ['info', 'plugin-segment: load()'],
               ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
-              ['info', 'plugin-segment: group(user_id: user_123, group_id: groupABC, '\
-                      'properties: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
+              ['info', 'plugin-segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
               ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
                         'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]

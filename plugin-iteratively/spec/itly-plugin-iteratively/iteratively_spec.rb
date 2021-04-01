@@ -186,7 +186,6 @@ describe Itly::Plugin::Iteratively do
     let(:itly) { Itly.new }
 
     context 'success' do
-      let(:expected_event) { Itly::Event.new name: 'identify', properties: { some: 'data' } }
 
       before do
         itly.load do |options|
@@ -194,7 +193,7 @@ describe Itly::Plugin::Iteratively do
           options.logger = ::Logger.new logs
         end
 
-        expect(plugin).to receive(:client_track).with('identify', expected_event, [])
+        expect(plugin).to receive(:client_track).with('identify', { some: 'data' }, [])
 
         itly.identify user_id: 'user_123', properties: { some: 'data' }
       end
@@ -205,8 +204,8 @@ describe Itly::Plugin::Iteratively do
           ['info', 'plugin-iteratively: load()'],
           ['info', 'identify(user_id: user_123, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:some=>"data"}>)'],
-          ['info', 'plugin-iteratively: post_identify(user_id: user_123, properties: #<Itly::Event: '\
-                    'name: identify, properties: {:some=>"data"}>, validation_results: [])']
+          ['info', 'plugin-iteratively: post_identify(user_id: user_123, properties: {:some=>"data"}, '\
+                   'validation_results: [])']
         ]
       end
     end
@@ -225,7 +224,7 @@ describe Itly::Plugin::Iteratively do
           options.logger = ::Logger.new logs
         end
 
-        expect(plugin).to receive(:client_track).with('identify', expected_event, [response])
+        expect(plugin).to receive(:client_track).with('identify', { some: 'data' }, [response])
 
         itly.identify user_id: 'user_123', properties: { some: 'data' }
       end
@@ -236,8 +235,8 @@ describe Itly::Plugin::Iteratively do
           ['info', 'plugin-iteratively: load()'],
           ['info', 'identify(user_id: user_123, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:some=>"data"}>)'],
-          ['info', 'plugin-iteratively: post_identify(user_id: user_123, properties: #<Itly::Event: '\
-                   'name: identify, properties: {:some=>"data"}>, validation_results: [#<Itly::ValidationResponse: '\
+          ['info', 'plugin-iteratively: post_identify(user_id: user_123, properties: {:some=>"data"}, '\
+                   'validation_results: [#<Itly::ValidationResponse: '\
                    'valid: true, plugin_id: test-plg, message: >])']
         ]
       end
@@ -292,15 +291,13 @@ describe Itly::Plugin::Iteratively do
     let(:itly) { Itly.new }
 
     context 'success' do
-      let(:expected_event) { Itly::Event.new name: 'group', properties: { some: 'data' } }
-
       before do
         itly.load do |options|
           options.plugins = [plugin]
           options.logger = ::Logger.new logs
         end
 
-        expect(plugin).to receive(:client_track).with('group', expected_event, [])
+        expect(plugin).to receive(:client_track).with('group', { some: 'data' }, [])
 
         itly.group user_id: 'user_123', group_id: 'group456', properties: { some: 'data' }
       end
@@ -311,8 +308,8 @@ describe Itly::Plugin::Iteratively do
           ['info', 'plugin-iteratively: load()'],
           ['info', 'group(user_id: user_123, group_id: group456, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: group, properties: {:some=>"data"}>)'],
-          ['info', 'plugin-iteratively: post_group(user_id: user_123, group_id: group456, properties: #<Itly::Event: '\
-                    'name: group, properties: {:some=>"data"}>, validation_results: [])']
+          ['info', 'plugin-iteratively: post_group(user_id: user_123, group_id: group456, '\
+                   'properties: {:some=>"data"}, validation_results: [])']
         ]
       end
     end
@@ -331,7 +328,7 @@ describe Itly::Plugin::Iteratively do
           options.logger = ::Logger.new logs
         end
 
-        expect(plugin).to receive(:client_track).with('group', expected_event, [response])
+        expect(plugin).to receive(:client_track).with('group', { some: 'data' }, [response])
 
         itly.group user_id: 'user_123', group_id: 'group456', properties: { some: 'data' }
       end
@@ -342,8 +339,8 @@ describe Itly::Plugin::Iteratively do
           ['info', 'plugin-iteratively: load()'],
           ['info', 'group(user_id: user_123, group_id: group456, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: group, properties: {:some=>"data"}>)'],
-          ['info', 'plugin-iteratively: post_group(user_id: user_123, group_id: group456, properties: #<Itly::Event: '\
-                   'name: group, properties: {:some=>"data"}>, validation_results: [#<Itly::ValidationResponse: '\
+          ['info', 'plugin-iteratively: post_group(user_id: user_123, group_id: group456, '\
+                   'properties: {:some=>"data"}, validation_results: [#<Itly::ValidationResponse: '\
                    'valid: true, plugin_id: test-plg, message: >])']
         ]
       end
@@ -584,7 +581,7 @@ describe Itly::Plugin::Iteratively do
 
       before do
         expect(client).to receive(:track)
-          .with(type: 'event_type', event: event, validation: nil)
+          .with(type: 'event_type', event: event, properties: nil, validation: nil)
       end
 
       it do
@@ -597,7 +594,7 @@ describe Itly::Plugin::Iteratively do
 
       before do
         expect(client).to receive(:track)
-          .with(type: 'event_type', event: event, validation: nil)
+          .with(type: 'event_type', event: event, properties: nil, validation: nil)
       end
 
       it do
@@ -612,7 +609,7 @@ describe Itly::Plugin::Iteratively do
 
       before do
         expect(client).to receive(:track)
-          .with(type: 'event_type', event: event, validation: nil)
+          .with(type: 'event_type', event: event, properties: nil, validation: nil)
       end
 
       it do
@@ -627,11 +624,24 @@ describe Itly::Plugin::Iteratively do
 
       before do
         expect(client).to receive(:track)
-          .with(type: 'event_type', event: event, validation: response2)
+          .with(type: 'event_type', event: event, properties: nil, validation: response2)
       end
 
       it do
         plugin.send :client_track, 'event_type', event, [response1, response2]
+      end
+    end
+
+    context 'with an hash' do
+      let(:client) { double 'client', track: nil }
+
+      before do
+        expect(client).to receive(:track)
+          .with(type: 'event_type', event: nil, properties: {some: 'props'}, validation: nil)
+      end
+
+      it do
+        plugin.send :client_track, 'event_type', {some: 'props'}, nil
       end
     end
   end

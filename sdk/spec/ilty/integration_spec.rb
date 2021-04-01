@@ -125,8 +125,8 @@ describe 'integration' do
             ['debug', '(spec) loaded'],
             ['info', 'identify(user_id: newID, properties: {:access_level=>"admin"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:access_level=>"admin"}>)'],
-            ['debug', '(spec) identify [newID, #<Itly::Event: name: identify, properties: {:access_level=>"admin"}>]'],
-            ['debug', '(spec) post_identify [newID, #<Itly::Event: name: identify, properties: {:access_level=>"admin"}>, '\
+            ['debug', '(spec) identify [newID, {:access_level=>"admin"}]'],
+            ['debug', '(spec) post_identify [newID, {:access_level=>"admin"}, '\
                       '[#<Itly::ValidationResponse: valid: true, plugin_id: id_validation_id, message: All good>]]']
           ]
         end
@@ -149,7 +149,7 @@ describe 'integration' do
               ['info', 'identify(user_id: newID, properties: {:access_level=>"employee"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:access_level=>"employee"}>)'],
               ['error', 'Validation error for "identify" in id_validation_id. Message: Not a valid access level'],
-              ['debug', '(spec) post_identify [newID, #<Itly::Event: name: identify, properties: {:access_level=>"employee"}>, '\
+              ['debug', '(spec) post_identify [newID, {:access_level=>"employee"}, '\
                         '[#<Itly::ValidationResponse: valid: false, plugin_id: id_validation_id, message: Not a valid access level>]]']
             ]
           end
@@ -170,10 +170,9 @@ describe 'integration' do
               ['debug', '(spec) loaded'],
               ['info', 'identify(user_id: newID, properties: {:access_level=>"employee"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:access_level=>"employee"}>)'],
-              ['debug',
-               '(spec) identify [newID, #<Itly::Event: name: identify, properties: {:access_level=>"employee"}>]'],
+              ['debug', '(spec) identify [newID, {:access_level=>"employee"}]'],
               ['error', 'Validation error for "identify" in id_validation_id. Message: Not a valid access level'],
-              ['debug', '(spec) post_identify [newID, #<Itly::Event: name: identify, properties: {:access_level=>"employee"}>, '\
+              ['debug', '(spec) post_identify [newID, {:access_level=>"employee"}, '\
                         '[#<Itly::ValidationResponse: valid: false, plugin_id: id_validation_id, message: Not a valid access level>]]']
             ]
           end
@@ -194,9 +193,9 @@ describe 'integration' do
               ['debug', '(spec) loaded'],
               ['info', 'identify(user_id: newID, properties: {:access_level=>"employee"})'],
               ['debug',
-               '(spec) identify [newID, #<Itly::Event: name: identify, properties: {:access_level=>"employee"}>]'],
+               '(spec) identify [newID, {:access_level=>"employee"}]'],
               ['debug',
-               '(spec) post_identify [newID, #<Itly::Event: name: identify, properties: {:access_level=>"employee"}>, []]']
+               '(spec) post_identify [newID, {:access_level=>"employee"}, []]']
             ]
           end
         end

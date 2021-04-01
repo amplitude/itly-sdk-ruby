@@ -32,9 +32,9 @@ class Itly
         end
         # rubocop:enable Metrics/ParameterLists
 
-        def track(type:, event:, validation:)
+        def track(type:, event:, properties:, validation:)
           @buffer << ::Itly::Plugin::Iteratively::TrackModel.new(
-            omit_values: omit_values, type: type, event: event, validation: validation
+            omit_values: omit_values, type: type, event: event, properties: properties, validation: validation
           )
 
           flush if buffer_full?

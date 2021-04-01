@@ -45,7 +45,7 @@ class Itly
       # Raise an error if the response is not 200
       #
       # @param [String] user_id: the id of the user in your application
-      # @param [Event] properties: the event containing user's traits to pass to your application
+      # @param [Hash] properties: the properties containing user's traits to pass to your application
       #
       def identify(user_id:, properties:)
         return unless enabled?
@@ -55,7 +55,7 @@ class Itly
 
         # Send through the client
         call_end_point do
-          ::AmplitudeAPI.send_identify user_id, nil, properties.properties
+          ::AmplitudeAPI.send_identify user_id, nil, properties
         end
       end
 

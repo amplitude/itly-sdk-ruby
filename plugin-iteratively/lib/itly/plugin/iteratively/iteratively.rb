@@ -118,9 +118,11 @@ class Itly
         !@disabled
       end
 
-      def client_track(type, event, validations)
+      def client_track(type, event_or_properties, validations)
+        event = event_or_properties.is_a?(Itly::Event) ? event_or_properties : nil
+        properties = event_or_properties.is_a?(Hash) ? event_or_properties : nil
         validation = (validations || []).reject(&:valid).first
-        @client.track type: type, event: event, validation: validation
+        @client.track type: type, event: event, properties: properties, validation: validation
       end
     end
   end
