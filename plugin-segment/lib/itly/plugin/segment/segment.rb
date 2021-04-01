@@ -72,7 +72,7 @@ class Itly
         @logger&.info "#{id}: identify(user_id: #{user_id}, properties: #{properties})"
 
         # Send through the client
-        @client.identify user_id: user_id, traits: properties
+        @client.identify user_id: user_id, traits: properties.dup
       end
 
       ##
@@ -91,7 +91,7 @@ class Itly
         @logger&.info "#{id}: group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties})"
 
         # Send through the client
-        @client.group user_id: user_id, group_id: group_id, traits: properties
+        @client.group user_id: user_id, group_id: group_id, traits: properties.dup
       end
 
       ##
@@ -109,7 +109,7 @@ class Itly
         @logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
 
         # Send through the client
-        @client.track user_id: user_id, event: event.name, properties: event.properties
+        @client.track user_id: user_id, event: event.name, properties: event.properties.dup
       end
 
       ##
