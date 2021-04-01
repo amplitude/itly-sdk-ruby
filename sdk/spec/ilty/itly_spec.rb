@@ -522,14 +522,18 @@ describe 'Itly' do
     let!(:plugin_a) { FakePlugin0.new }
     let!(:plugin_b) { FakePlugin1.new }
     let!(:event) { Itly::Event.new name: 'Test' }
+    let!(:context) { Itly::Event.new name: 'context', properties: { data: 'for_context' } }
     let!(:itly) { Itly.new }
 
     # Holder for examples to inject a validation option into Itly options
     let(:validation_option) { nil }
 
+    # By default expect no context passed to the validate_context_and_event method. Can be overwritten
+    let(:expected_context) { nil }
+
     # Load options
     before do
-      itly.load(context: { data: 'for_context' }) do |options|
+      itly.load do |options|
         options.plugins = [plugin_a, plugin_b]
         options.validation = validation_option if validation_option
       end
@@ -554,11 +558,13 @@ describe 'Itly' do
       end
 
       context 'with context' do
-        include_examples 'validate and send to plugins', with_context: true
+        let(:expected_context) { context }
+
+        include_examples 'validate and send to plugins'
 
         it do
           itly.send :validate_and_send_to_plugins,
-            include_context: true, event: event,
+            event: event, context: context,
             action: ->(p, e) { p.mock_action e, :param },
             post_action: ->(p, e, v) { p.mock_post_action e, v, :other_param }
         end
@@ -571,14 +577,13 @@ describe 'Itly' do
 
       context 'options.validation = DISABLED' do
         let(:validation_option) { Itly::Options::Validation::DISABLED }
+        let(:expected_context) { context }
 
-        include_examples 'validate and send to plugins',
-          with_context: true,
-          receive_action_methods: false, is_valid: false
+        include_examples 'validate and send to plugins', receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins,
-            include_context: true, event: event,
+            event: event, context: context,
             action: ->(p, e) { p.mock_action e, :param },
             post_action: ->(p, e, v) { p.mock_post_action e, v, :other_param }
         end
@@ -586,12 +591,13 @@ describe 'Itly' do
 
       context 'options.validation = TRACK_INVALID' do
         let(:validation_option) { Itly::Options::Validation::TRACK_INVALID }
+        let(:expected_context) { context }
 
-        include_examples 'validate and send to plugins', with_context: true, is_valid: false
+        include_examples 'validate and send to plugins', is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins,
-            include_context: true, event: event,
+            event: event, context: context,
             action: ->(p, e) { p.mock_action e, :param },
             post_action: ->(p, e, v) { p.mock_post_action e, v, :other_param }
         end
@@ -599,14 +605,13 @@ describe 'Itly' do
 
       context 'options.validation = ERROR_ON_INVALID' do
         let(:validation_option) { Itly::Options::Validation::ERROR_ON_INVALID }
+        let(:expected_context) { context }
 
-        include_examples 'validate and send to plugins',
-          with_context: true,
-          receive_action_methods: false, is_valid: false
+        include_examples 'validate and send to plugins', receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins,
-            include_context: true, event: event,
+            event: event, context: context,
             action: ->(p, e) { p.mock_action e, :param },
             post_action: ->(p, e, v) { p.mock_post_action e, v, :other_param }
         end
@@ -619,14 +624,13 @@ describe 'Itly' do
 
       context 'options.validation = DISABLED' do
         let(:validation_option) { Itly::Options::Validation::DISABLED }
+        let(:expected_context) { context }
 
-        include_examples 'validate and send to plugins',
-          with_context: true,
-          receive_action_methods: false, is_valid: false
+        include_examples 'validate and send to plugins', receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins,
-            include_context: true, event: event,
+            event: event, context: context,
             action: ->(p, e) { p.mock_action e, :param },
             post_action: ->(p, e, v) { p.mock_post_action e, v, :other_param }
         end
@@ -634,12 +638,13 @@ describe 'Itly' do
 
       context 'options.validation = TRACK_INVALID' do
         let(:validation_option) { Itly::Options::Validation::TRACK_INVALID }
+        let(:expected_context) { context }
 
-        include_examples 'validate and send to plugins', with_context: true, is_valid: false
+        include_examples 'validate and send to plugins', is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins,
-            include_context: true, event: event,
+            event: event, context: context,
             action: ->(p, e) { p.mock_action e, :param },
             post_action: ->(p, e, v) { p.mock_post_action e, v, :other_param }
         end
@@ -647,14 +652,13 @@ describe 'Itly' do
 
       context 'options.validation = ERROR_ON_INVALID' do
         let(:validation_option) { Itly::Options::Validation::ERROR_ON_INVALID }
+        let(:expected_context) { context }
 
-        include_examples 'validate and send to plugins',
-          with_context: true,
-          receive_action_methods: false, is_valid: false
+        include_examples 'validate and send to plugins', receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins,
-            include_context: true, event: event,
+            event: event, context: context,
             action: ->(p, e) { p.mock_action e, :param },
             post_action: ->(p, e, v) { p.mock_post_action e, v, :other_param }
         end
@@ -669,14 +673,13 @@ describe 'Itly' do
 
       context 'options.validation = DISABLED' do
         let(:validation_option) { Itly::Options::Validation::DISABLED }
+        let(:expected_context) { context }
 
-        include_examples 'validate and send to plugins',
-          with_context: true,
-          receive_action_methods: false, is_valid: false
+        include_examples 'validate and send to plugins', receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins,
-            include_context: true, event: event,
+            event: event, context: context,
             action: ->(p, e) { p.mock_action e, :param },
             post_action: ->(p, e, v) { p.mock_post_action e, v, :other_param }
         end
@@ -684,12 +687,13 @@ describe 'Itly' do
 
       context 'options.validation = TRACK_INVALID' do
         let(:validation_option) { Itly::Options::Validation::TRACK_INVALID }
+        let(:expected_context) { context }
 
-        include_examples 'validate and send to plugins', with_context: true, is_valid: false
+        include_examples 'validate and send to plugins', is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins,
-            include_context: true, event: event,
+            event: event, context: context,
             action: ->(p, e) { p.mock_action e, :param },
             post_action: ->(p, e, v) { p.mock_post_action e, v, :other_param }
         end
@@ -697,14 +701,13 @@ describe 'Itly' do
 
       context 'options.validation = ERROR_ON_INVALID' do
         let(:validation_option) { Itly::Options::Validation::ERROR_ON_INVALID }
+        let(:expected_context) { context }
 
-        include_examples 'validate and send to plugins',
-          with_context: true,
-          receive_action_methods: false, is_valid: false
+        include_examples 'validate and send to plugins', receive_action_methods: false, is_valid: false
 
         it do
           itly.send :validate_and_send_to_plugins,
-            include_context: true, event: event,
+            event: event, context: context,
             action: ->(p, e) { p.mock_action e, :param },
             post_action: ->(p, e, v) { p.mock_post_action e, v, :other_param }
         end
@@ -736,7 +739,7 @@ describe 'Itly' do
 
         it do
           expect(
-            itly.send(:validate_context_and_event, true, event)
+            itly.send(:validate_context_and_event, nil, event)
           ).to eq([[], [], true])
         end
       end
@@ -754,7 +757,7 @@ describe 'Itly' do
 
           it do
             expect(
-              itly.send(:validate_context_and_event, true, event)
+              itly.send(:validate_context_and_event, nil, event)
             ).to eq([[], [response1, response2], true])
           end
         end
@@ -769,70 +772,7 @@ describe 'Itly' do
 
           it do
             expect(
-              itly.send(:validate_context_and_event, true, event)
-            ).to eq([[], [response1, response2], false])
-          end
-        end
-      end
-    end
-
-    context 'excluding context' do
-      let!(:plugin_a) { FakePlugin0.new }
-      let!(:plugin_b) { FakePlugin1.new }
-      let!(:event) { Itly::Event.new name: 'Test' }
-      let!(:itly) { Itly.new }
-
-      before do
-        itly.load(context: { data: 'for_context' }) do |options|
-          options.plugins = [plugin_a, plugin_b]
-        end
-      end
-
-      context 'no return from validations' do
-        before do
-          expect_to_receive_message_with_event plugin_a, :validate, name: 'Test'
-          expect(plugin_a).not_to receive(:validate)
-
-          expect_to_receive_message_with_event plugin_b, :validate, name: 'Test'
-          expect(plugin_b).not_to receive(:validate)
-        end
-
-        it do
-          expect(
-            itly.send(:validate_context_and_event, false, event)
-          ).to eq([[], [], true])
-        end
-      end
-
-      context 'return from validations' do
-        let(:response1) { Itly::ValidationResponse.new valid: valid, plugin_id: '1', message: 'One' }
-        let(:response2) { Itly::ValidationResponse.new valid: true, plugin_id: '2', message: 'Two' }
-        let(:valid) { true }
-
-        context 'all valid' do
-          before do
-            expect(plugin_a).to receive(:validate).once.and_return(response1)
-            expect(plugin_b).to receive(:validate).once.and_return(response2)
-          end
-
-          it do
-            expect(
-              itly.send(:validate_context_and_event, false, event)
-            ).to eq([[], [response1, response2], true])
-          end
-        end
-
-        context 'a validation returns false' do
-          let(:valid) { false }
-
-          before do
-            expect(plugin_a).to receive(:validate).once.and_return(response1)
-            expect(plugin_b).to receive(:validate).once.and_return(response2)
-          end
-
-          it do
-            expect(
-              itly.send(:validate_context_and_event, false, event)
+              itly.send(:validate_context_and_event, nil, event)
             ).to eq([[], [response1, response2], false])
           end
         end
@@ -843,10 +783,11 @@ describe 'Itly' do
       let!(:plugin_a) { FakePlugin0.new }
       let!(:plugin_b) { FakePlugin1.new }
       let!(:event) { Itly::Event.new name: 'Test' }
+      let!(:context) { Itly::Event.new name: 'context', properties: { data: 'for_context' } }
       let!(:itly) { Itly.new }
 
       before do
-        itly.load(context: { data: 'for_context' }) do |options|
+        itly.load do |options|
           options.plugins = [plugin_a, plugin_b]
         end
       end
@@ -864,7 +805,7 @@ describe 'Itly' do
 
         it do
           expect(
-            itly.send(:validate_context_and_event, true, event)
+            itly.send(:validate_context_and_event, context, event)
           ).to eq([[], [], true])
         end
       end
@@ -886,7 +827,7 @@ describe 'Itly' do
 
           it do
             expect(
-              itly.send(:validate_context_and_event, true, event)
+              itly.send(:validate_context_and_event, context, event)
             ).to eq([[response2], [response1, response3], true])
           end
         end
@@ -903,7 +844,7 @@ describe 'Itly' do
 
           it do
             expect(
-              itly.send(:validate_context_and_event, true, event)
+              itly.send(:validate_context_and_event, context, event)
             ).to eq([[response2], [response1, response3], false])
           end
         end
@@ -920,7 +861,7 @@ describe 'Itly' do
 
           it do
             expect(
-              itly.send(:validate_context_and_event, true, event)
+              itly.send(:validate_context_and_event, context, event)
             ).to eq([[response2], [response1, response3], false])
           end
         end

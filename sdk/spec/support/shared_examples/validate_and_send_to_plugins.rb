@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-shared_examples 'validate and send to plugins' do |with_context: false, receive_action_methods: true, is_valid: true|
+shared_examples 'validate and send to plugins' do |receive_action_methods: true, is_valid: true|
   let(:all_errors) { generates_context_errors + generates_event_errors }
 
   before do
     # Generate ValidationResponse objects when the Itly object if performing validation
-    expect(itly).to receive(:validate_context_and_event).with(with_context, event)
+    expect(itly).to receive(:validate_context_and_event).with(expected_context, event)
       .and_return([generates_context_errors, generates_event_errors, is_valid])
 
     # Set expectation for the targetted method call

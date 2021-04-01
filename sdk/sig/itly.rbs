@@ -18,8 +18,8 @@ class Itly
 
   def initialize: () -> void
   def was_initialized?: () -> bool
-  def validate_and_send_to_plugins: (action: ^(::Itly::Plugin plugin, ::Itly::Event combined_event) -> void, post_action: ^(::Itly::Plugin plugin, ::Itly::Event combined_event, ::Array[::Itly::ValidationResponse] validation_results) -> void post_action, event: ::Itly::Event event, ?include_context: bool include_context) -> void
-  def validate_context_and_event: (bool include_context, ::Itly::Event event) -> [::Array[::Itly::ValidationResponse], ::Array[::Itly::ValidationResponse], bool]
+  def validate_and_send_to_plugins: (action: ^(::Itly::Plugin plugin, ::Itly::Event combined_event) -> void, post_action: ^(::Itly::Plugin plugin, ::Itly::Event combined_event, ::Array[::Itly::ValidationResponse] validation_results) -> void post_action, event: ::Itly::Event event, ?context: ::Itly::Event? context) -> void
+  def validate_context_and_event: (::Itly::Event? context, ::Itly::Event event) -> [::Array[::Itly::ValidationResponse], ::Array[::Itly::ValidationResponse], bool]
   def log_validation_errors: (::Array[::Itly::ValidationResponse] validations, ::Itly::Event event) -> void
   def raise_validation_errors: (bool is_valid, ::Array[::Itly::ValidationResponse] validations, ::Itly::Event event) -> void
   def enabled?: () -> bool

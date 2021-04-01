@@ -161,7 +161,8 @@ class Itly
 
     # Validate and run on all plugins
     validate_and_send_to_plugins \
-      event: event, include_context: true,
+      event: event,
+      context: @context,
       action: ->(plugin, combined_event) {
                 plugin.track user_id: user_id, event: combined_event
               },
@@ -253,13 +254,13 @@ class Itly
     @is_initialized ? true : raise(InitializationError, 'Itly is not initialized. Call #load { |options| ... }')
   end
 
-  def validate_and_send_to_plugins(action:, post_action:, event:, include_context: false)
+  def validate_and_send_to_plugins(action:, post_action:, event:, context: nil)
     # Perform validation on the context and the event
-    context_validations, event_validations, is_valid = validate_context_and_event include_context, event
+    context_validations, event_validations, is_valid = validate_context_and_event context, event
     validations = context_validations + event_validations
 
     # Call the action on all plugins
-    event.properties.merge! @context.properties if @context && include_context
+    event.properties.merge! context.properties if context
 
     if is_valid || @options.validation == Itly::Options::Validation::TRACK_INVALID
       run_on_plugins { |plugin| action.call(plugin, event) }
@@ -275,9 +276,9 @@ class Itly
     raise_validation_errors is_valid, validations, event
   end
 
-  def validate_context_and_event(include_context, event)
+  def validate_context_and_event(context, event)
     # Validate the context
-    context_validations = (validate event: @context if include_context && @context) || []
+    context_validations = (validate event: context if context) || []
 
     # Validate the event
     event_validations = validate(event: event) || []
