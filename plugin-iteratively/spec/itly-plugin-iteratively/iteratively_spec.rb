@@ -4,7 +4,8 @@ describe Itly::Plugin::Iteratively do
   include RspecLoggerHelpers
 
   describe 'instance attributes' do
-    let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+    let(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
 
     it 'can read' do
       expect(plugin.respond_to?(:logger)).to be(true)
@@ -25,7 +26,8 @@ describe Itly::Plugin::Iteratively do
 
   describe '#initialize' do
     describe 'default values' do
-      let!(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+      let!(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+      let!(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
 
       it do
         expect(plugin.instance_variable_get('@url')).to eq('http://url')
@@ -38,12 +40,13 @@ describe Itly::Plugin::Iteratively do
     end
 
     describe 'overwrite defaults' do
-      let!(:plugin) do
-        Itly::Plugin::Iteratively.new \
-          url: 'http://url', api_key: 'key123', disabled: true,
+      let!(:plugin_options) do
+        Itly::Plugin::IterativelyOptions.new \
+          url: 'http://url', disabled: true,
           buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0,
           omit_values: true
       end
+      let!(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
 
       it do
         expect(plugin.instance_variable_get('@url')).to eq('http://url')
@@ -61,7 +64,8 @@ describe Itly::Plugin::Iteratively do
     let(:itly) { Itly.new }
 
     describe 'properties' do
-      let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+      let!(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+      let!(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
 
       before do
         itly.load do |options|
@@ -93,7 +97,8 @@ describe Itly::Plugin::Iteratively do
 
     describe 'logs' do
       let(:logs) { StringIO.new }
-      let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123', disabled: disabled }
+      let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url', disabled: disabled }
+      let(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
       let(:disabled) { false }
 
       before do
@@ -128,7 +133,8 @@ describe Itly::Plugin::Iteratively do
 
     describe 'client' do
       describe 'default values' do
-        let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+        let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+        let(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
         let(:client) { plugin.client }
 
         before do
@@ -151,12 +157,13 @@ describe Itly::Plugin::Iteratively do
       end
 
       describe 'overwrite defaults' do
-        let!(:plugin) do
-          Itly::Plugin::Iteratively.new \
-            url: 'http://url', api_key: 'key123',
+        let!(:plugin_options) do
+          Itly::Plugin::IterativelyOptions.new \
+            url: 'http://url',
             buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0,
             omit_values: true
         end
+        let!(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
         let(:client) { plugin.client }
 
         before do
@@ -182,7 +189,8 @@ describe Itly::Plugin::Iteratively do
 
   describe '#post_identify' do
     let(:logs) { StringIO.new }
-    let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+    let(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
     let(:itly) { Itly.new }
 
     context 'success' do
@@ -286,7 +294,8 @@ describe Itly::Plugin::Iteratively do
 
   describe '#post_group' do
     let(:logs) { StringIO.new }
-    let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+    let(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
     let(:itly) { Itly.new }
 
     context 'success' do
@@ -390,7 +399,8 @@ describe Itly::Plugin::Iteratively do
 
   describe '#post_track' do
     let(:logs) { StringIO.new }
-    let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+    let(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
     let(:track_event) { Itly::Event.new name: 'custom_event', properties: { custom: 'info' } }
     let(:itly) { Itly.new }
 
@@ -497,7 +507,8 @@ describe Itly::Plugin::Iteratively do
 
   describe '#flush' do
     let(:itly) { Itly.new }
-    let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+    let(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
 
     before do
       itly.load do |options|
@@ -514,7 +525,8 @@ describe Itly::Plugin::Iteratively do
 
   describe '#shutdown' do
     let(:itly) { Itly.new }
-    let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+    let(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
 
     before do
       itly.load do |options|
@@ -544,7 +556,8 @@ describe Itly::Plugin::Iteratively do
   end
 
   describe '#enabled?' do
-    let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+    let(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
 
     context 'disabled' do
       before do
@@ -569,7 +582,8 @@ describe Itly::Plugin::Iteratively do
 
   describe '#client_track' do
     let(:event) { Itly::Event.new name: 'an_event', properties: { some: 'data' } }
-    let(:plugin) { Itly::Plugin::Iteratively.new url: 'http://url', api_key: 'key123' }
+    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+    let(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
 
     before do
       plugin.instance_variable_set '@client', client

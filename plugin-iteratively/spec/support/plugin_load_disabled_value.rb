@@ -3,14 +3,12 @@
 shared_examples 'plugin load disabled value' do |environment:, expected:, disabled: nil|
   context "environment=#{environment} disabled=#{disabled.nil? ? '(default)' : disabled}" do
     let(:options) do
-      o = {
-        url: 'http://url',
-        api_key: 'key123'
-      }
+      o = { url: 'http://url' }
       o[:disabled] = disabled unless disabled.nil?
       o
     end
-    let(:plugin) { Itly::Plugin::Iteratively.new(**options) }
+    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new(**options) }
+    let(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
 
     context 'load disabled is unset' do
       before do
