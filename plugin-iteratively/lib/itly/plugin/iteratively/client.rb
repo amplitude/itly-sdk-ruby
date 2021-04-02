@@ -11,12 +11,13 @@ class Itly
       # HTTP client for the plugin requests
       #
       class Client
-        attr_reader :api_key, :url, :logger, :buffer_size, :max_retries, :retry_delay_min, :retry_delay_max,
-          :omit_values
+        attr_reader :api_key, :url, :logger, :buffer_size, :batch_size, :max_retries, :retry_delay_min,
+          :retry_delay_max, :omit_values
 
         # rubocop:disable Metrics/ParameterLists
         def initialize(
-          url:, api_key:, logger:, buffer_size:, max_retries:, retry_delay_min:, retry_delay_max:, omit_values:
+          url:, api_key:, logger:, buffer_size:, batch_size:, max_retries:, retry_delay_min:, retry_delay_max:,
+          omit_values:
         )
           @buffer = ::Concurrent::Array.new
           @runner = nil
@@ -25,6 +26,7 @@ class Itly
           @url = url
           @logger = logger
           @buffer_size = buffer_size
+          @batch_size = batch_size
           @max_retries = max_retries
           @retry_delay_min = retry_delay_min
           @retry_delay_max = retry_delay_max
@@ -48,33 +50,35 @@ class Itly
           return if @buffer.empty?
 
           # Extract the current content of the buffer for processing
-          processing = @buffer.to_a
+          processing = @buffer.each_slice(@batch_size).to_a
           @buffer.clear
 
           # Run in the background
           @runner = Concurrent::Future.new do
-            # Itinialization before the loop starts
-            tries = 0
+            processing.each do |batch|
+              # Itinialization before the loop starts
+              tries = 0
 
-            loop do
-              # Count the number of tries
-              tries += 1
+              loop do
+                # Count the number of tries
+                tries += 1
 
-              # Case: successfully sent
-              break if post_models processing
+                # Case: successfully sent
+                break if post_models batch
 
-              # Case: could not sent and reached maximum number of allowed tries
-              if tries >= @max_retries
-                # Log
-                logger&.error 'Iteratively::Client: flush() reached maximun number of tries. '\
-                  "#{processing.count} events won't be sent to the server"
+                # Case: could not sent and reached maximum number of allowed tries
+                if tries >= @max_retries
+                  # Log
+                  logger&.error 'Iteratively::Client: flush() reached maximun number of tries. '\
+                    "#{batch.count} events won't be sent to the server"
 
-                # Discard the list of event in the processing queue
-                break
+                  # Discard the list of event in the batch queue
+                  break
 
-              # Case: could not sent and wait before retrying
-              else
-                sleep delay_before_next_try(tries)
+                # Case: could not sent and wait before retrying
+                else
+                  sleep delay_before_next_try(tries)
+                end
               end
             end
           end

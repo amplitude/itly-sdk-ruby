@@ -5,6 +5,7 @@ class Itly
       attr_reader url: ::String
       attr_reader disabled: bool?
       attr_reader buffer_size: ::Integer
+      attr_reader batch_size: ::Integer
       attr_reader max_retries: ::Integer
       attr_reader retry_delay_min: ::Float
       attr_reader retry_delay_max: ::Float
@@ -12,7 +13,7 @@ class Itly
 
       private
 
-      def initialize: (url: ::String url, ?disabled: bool? disabled, ?buffer_size: ::Integer buffer_size, ?max_retries: ::Integer max_retries, ?retry_delay_min: ::Float retry_delay_min, ?retry_delay_max: ::Float retry_delay_max, ?omit_values: bool omit_values) -> void
+      def initialize: (url: ::String url, ?disabled: bool? disabled, ?buffer_size: ::Integer buffer_size, ?batch_size: ::Integer batch_size, ?max_retries: ::Integer max_retries, ?retry_delay_min: ::Float retry_delay_min, ?retry_delay_max: ::Float retry_delay_max, ?omit_values: bool omit_values) -> void
     end
   end
 end

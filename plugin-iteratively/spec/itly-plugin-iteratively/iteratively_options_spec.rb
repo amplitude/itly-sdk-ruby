@@ -7,14 +7,14 @@ describe Itly::Plugin::IterativelyOptions do
     let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
 
     it 'can read' do
-      %i[url disabled buffer_size max_retries retry_delay_min retry_delay_max omit_values]
+      %i[url disabled buffer_size batch_size max_retries retry_delay_min retry_delay_max omit_values]
         .each do |attr|
         expect(plugin_options.respond_to?(attr)).to be(true)
       end
     end
 
     it 'cannot write' do
-      %i[url disabled buffer_size max_retries retry_delay_min retry_delay_max omit_values]
+      %i[url disabled buffer_size batch_size max_retries retry_delay_min retry_delay_max omit_values]
         .each do |attr|
         expect(plugin_options.respond_to?(:"#{attr}=")).to be(false)
       end
@@ -29,6 +29,7 @@ describe Itly::Plugin::IterativelyOptions do
         expect(plugin_options.instance_variable_get('@url')).to eq('http://url')
         expect(plugin_options.instance_variable_get('@disabled')).to be(nil)
         expect(plugin_options.instance_variable_get('@buffer_size')).to eq(10)
+        expect(plugin_options.instance_variable_get('@batch_size')).to eq(100)
         expect(plugin_options.instance_variable_get('@max_retries')).to eq(25)
         expect(plugin_options.instance_variable_get('@retry_delay_min')).to eq(10.0)
         expect(plugin_options.instance_variable_get('@retry_delay_max')).to eq(3600.0)
@@ -40,7 +41,7 @@ describe Itly::Plugin::IterativelyOptions do
       let!(:plugin_options) do
         Itly::Plugin::IterativelyOptions.new \
           url: 'http://url', disabled: true,
-          buffer_size: 1, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0,
+          buffer_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0,
           omit_values: true
       end
 
@@ -48,6 +49,7 @@ describe Itly::Plugin::IterativelyOptions do
         expect(plugin_options.instance_variable_get('@url')).to eq('http://url')
         expect(plugin_options.instance_variable_get('@disabled')).to be(true)
         expect(plugin_options.instance_variable_get('@buffer_size')).to eq(1)
+        expect(plugin_options.instance_variable_get('@batch_size')).to eq(5)
         expect(plugin_options.instance_variable_get('@max_retries')).to eq(2)
         expect(plugin_options.instance_variable_get('@retry_delay_min')).to eq(3.0)
         expect(plugin_options.instance_variable_get('@retry_delay_max')).to eq(4.0)

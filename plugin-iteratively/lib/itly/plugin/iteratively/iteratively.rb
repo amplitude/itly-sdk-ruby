@@ -26,6 +26,7 @@ class Itly
 
         @client_options = {
           buffer_size: options.buffer_size,
+          batch_size: options.batch_size,
           max_retries: options.max_retries,
           retry_delay_min: options.retry_delay_min,
           retry_delay_max: options.retry_delay_max,
