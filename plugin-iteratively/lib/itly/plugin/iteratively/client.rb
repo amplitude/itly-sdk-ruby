@@ -11,26 +11,30 @@ class Itly
       # HTTP client for the plugin requests
       #
       class Client
-        attr_reader :api_key, :url, :logger, :flush_queue_size, :batch_size, :max_retries, :retry_delay_min,
-          :retry_delay_max, :omit_values
+        attr_reader :api_key, :url, :logger, :flush_queue_size, :batch_size, :flush_interval_ms, :max_retries,
+          :retry_delay_min, :retry_delay_max, :omit_values
 
         # rubocop:disable Metrics/ParameterLists
         def initialize(
-          url:, api_key:, logger:, flush_queue_size:, batch_size:, max_retries:, retry_delay_min:, retry_delay_max:,
+          url:, api_key:, logger:, flush_queue_size:, batch_size:, flush_interval_ms:, max_retries:, retry_delay_min:, retry_delay_max:,
           omit_values:
         )
           @buffer = ::Concurrent::Array.new
-          @runner = nil
+          @runner = @scheduler = nil
 
           @api_key = api_key
           @url = url
           @logger = logger
           @flush_queue_size = flush_queue_size
           @batch_size = batch_size
+          @flush_interval_ms = flush_interval_ms
           @max_retries = max_retries
           @retry_delay_min = retry_delay_min
           @retry_delay_max = retry_delay_max
           @omit_values = omit_values
+
+          # Start the scheduler
+          start_scheduler
         end
         # rubocop:enable Metrics/ParameterLists
 
@@ -87,6 +91,8 @@ class Itly
         end
 
         def shutdown(force: false)
+          @scheduler&.cancel
+
           if force
             @runner&.cancel
             return
@@ -140,6 +146,14 @@ class Itly
           delta = (Math.cos(rad) - 1).abs
 
           retry_delay_min + delta * (@retry_delay_max - @retry_delay_min)
+        end
+
+        def start_scheduler
+          @scheduler = Concurrent::ScheduledTask.new(@flush_interval_ms / 1000.0) do
+            flush unless runner_complete?
+            start_scheduler
+          end
+          @scheduler.execute
         end
       end
     end

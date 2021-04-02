@@ -27,6 +27,7 @@ class Itly
         @client_options = {
           flush_queue_size: options.flush_queue_size,
           batch_size: options.batch_size,
+          flush_interval_ms: options.flush_interval_ms,
           max_retries: options.max_retries,
           retry_delay_min: options.retry_delay_min,
           retry_delay_max: options.retry_delay_max,

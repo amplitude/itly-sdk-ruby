@@ -7,20 +7,20 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
+        logger: nil, flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
     it 'can read' do
-      %i[api_key url logger flush_queue_size batch_size max_retries retry_delay_min retry_delay_max omit_values]
-        .each do |attribute|
+      %i[api_key url logger flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
+        retry_delay_max omit_values].each do |attribute|
         expect(client.respond_to?(attribute)).to be(true)
       end
     end
 
     it 'cannot write' do
-      %i[api_key url logger flush_queue_size batch_size max_retries retry_delay_min retry_delay_max omit_values]
-        .each do |attribute|
+      %i[api_key url logger flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
+        retry_delay_max omit_values].each do |attribute|
         expect(client.respond_to?(:"#{attribute}=")).to be(false)
       end
     end
@@ -31,23 +31,35 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: logger, flush_queue_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0, omit_values: false
+        logger: logger, flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
+        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
     end
 
-    it do
+    it 'instance variables' do
       expect(client.instance_variable_get('@buffer')).to be_a_kind_of(Concurrent::Array)
       expect(client.instance_variable_get('@buffer')).to eq([])
-      expect(client.instance_variable_get('@buffrunnerr')).to be(nil)
+      expect(client.instance_variable_get('@runner')).to be(nil)
+      expect(client.instance_variable_get('@scheduler')).to be(nil)
       expect(client.instance_variable_get('@url')).to eq('http://url')
       expect(client.instance_variable_get('@api_key')).to eq('key123')
       expect(client.instance_variable_get('@logger')).to eq(logger)
       expect(client.instance_variable_get('@flush_queue_size')).to eq(1)
       expect(client.instance_variable_get('@batch_size')).to eq(5)
+      expect(client.instance_variable_get('@flush_interval_ms')).to eq(6)
       expect(client.instance_variable_get('@max_retries')).to eq(2)
       expect(client.instance_variable_get('@retry_delay_min')).to eq(3.0)
       expect(client.instance_variable_get('@retry_delay_max')).to eq(4.0)
       expect(client.instance_variable_get('@omit_values')).to be(false)
+    end
+
+    describe 'start scheduler' do
+      before do
+        expect_any_instance_of(Itly::Plugin::Iteratively::Client).to receive(:start_scheduler)
+      end
+
+      it do
+        client
+      end
     end
   end
 
@@ -60,8 +72,8 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0, omit_values: false
+        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
+        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
     end
 
     describe 'enqueue models' do
@@ -148,8 +160,8 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: logger, flush_queue_size: 2, batch_size: batch_size, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0, omit_values: false
+        logger: logger, flush_queue_size: 2, batch_size: batch_size, flush_interval_ms: 6, max_retries: 2,
+        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
     end
 
     let(:buffer) { client.instance_variable_get '@buffer' }
@@ -295,8 +307,8 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0, omit_values: false
+        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
+        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
     end
 
     describe 'default' do
@@ -364,8 +376,8 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0, omit_values: false
+        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6,  max_retries: 2,
+        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
     end
 
     before do
@@ -420,8 +432,8 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url/path', api_key: 'api_key123',
-        logger: logger, flush_queue_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0, omit_values: false
+        logger: logger, flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
+        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
     end
 
     let(:expected_model_json) do
@@ -507,8 +519,8 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0, omit_values: false
+        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
+        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
     end
 
     before do
@@ -544,8 +556,8 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 2, batch_size: 5, max_retries: 25, retry_delay_min: 10.0,
-        retry_delay_max: 3600.0, omit_values: false
+        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6, max_retries: 25,
+        retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false
     end
 
     it 'min' do
@@ -569,6 +581,48 @@ describe Itly::Plugin::Iteratively::Client do
       it do
         expect(steps).to eq(expected)
       end
+    end
+  end
+
+  describe 'start_scheduler' do
+    let!(:client) do
+      Itly::Plugin::Iteratively::Client.new \
+        flush_interval_ms: 10_000,
+        url: 'http://url', api_key: 'key123', logger: nil, flush_queue_size: 2, batch_size: 5,
+        max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false
+    end
+
+    before do
+      # Start
+      expect(client).to receive(:start_scheduler).once.and_call_original
+
+      # First run
+      expect(client).to receive(:runner_complete?).once.and_return(true)
+      expect(client).to receive(:flush).once
+      expect(client).to receive(:start_scheduler).once.and_call_original
+
+      # Second run
+      expect(client).to receive(:runner_complete?).once.and_return(false)
+      expect(client).not_to receive(:flush)
+      expect(client).to receive(:start_scheduler).once # We don't call original, so we break the chain
+
+      expect(client).not_to receive(:start_scheduler)
+    end
+
+    it do
+      # Start
+      client.send :start_scheduler
+
+      # First run
+      scheduler1 = client.instance_variable_get '@scheduler'
+      scheduler1.reschedule 0.1
+      scheduler1.wait
+
+      # Second run
+      scheduler2 = client.instance_variable_get '@scheduler'
+      expect(scheduler1.object_id).not_to eq(scheduler2.object_id)
+      scheduler2.reschedule 0.1
+      scheduler2.wait
     end
   end
 end

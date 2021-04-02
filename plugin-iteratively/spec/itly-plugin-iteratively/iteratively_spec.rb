@@ -35,8 +35,8 @@ describe Itly::Plugin::Iteratively do
         expect(plugin.instance_variable_get('@disabled')).to be(nil)
         expect(plugin.instance_variable_get('@client_options')).to eq(
           {
-            flush_queue_size: 10, batch_size: 100, max_retries: 25, retry_delay_min: 10.0,
-            retry_delay_max: 3600.0, omit_values: false
+            flush_queue_size: 10, batch_size: 100, flush_interval_ms: 10_000, max_retries: 25,
+            retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false
           }
         )
       end
@@ -46,8 +46,8 @@ describe Itly::Plugin::Iteratively do
       let!(:plugin_options) do
         Itly::Plugin::IterativelyOptions.new \
           url: 'http://url', disabled: true,
-          flush_queue_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0, retry_delay_max: 4.0,
-          omit_values: true
+          flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
+          retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true
       end
       let!(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
 
@@ -57,8 +57,8 @@ describe Itly::Plugin::Iteratively do
         expect(plugin.instance_variable_get('@disabled')).to be(true)
         expect(plugin.instance_variable_get('@client_options')).to eq(
           {
-            flush_queue_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
-            retry_delay_max: 4.0, omit_values: true
+            flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
+            retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true
           }
         )
       end
@@ -156,6 +156,7 @@ describe Itly::Plugin::Iteratively do
           expect(client.logger).to eq(fake_logger)
           expect(client.flush_queue_size).to eq(10)
           expect(client.batch_size).to eq(100)
+          expect(client.flush_interval_ms).to eq(10_000)
           expect(client.max_retries).to eq(25)
           expect(client.retry_delay_min).to eq(10.0)
           expect(client.retry_delay_max).to eq(3600.0)
@@ -167,8 +168,8 @@ describe Itly::Plugin::Iteratively do
         let!(:plugin_options) do
           Itly::Plugin::IterativelyOptions.new \
             url: 'http://url',
-            flush_queue_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
-            retry_delay_max: 4.0, omit_values: true
+            flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
+            retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true
         end
         let!(:plugin) { Itly::Plugin::Iteratively.new api_key: 'key123', options: plugin_options }
         let(:client) { plugin.client }
@@ -186,6 +187,7 @@ describe Itly::Plugin::Iteratively do
           expect(client.logger).to eq(fake_logger)
           expect(client.flush_queue_size).to eq(1)
           expect(client.batch_size).to eq(5)
+          expect(client.flush_interval_ms).to eq(6)
           expect(client.max_retries).to eq(2)
           expect(client.retry_delay_min).to eq(3.0)
           expect(client.retry_delay_max).to eq(4.0)
