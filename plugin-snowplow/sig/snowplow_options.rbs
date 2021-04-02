@@ -1,0 +1,14 @@
+class Itly
+  class Plugin
+    class SnowplowOptions
+
+      attr_reader endpoint: ::String
+      attr_reader vendor: ::String
+      attr_reader disabled: bool
+
+      private
+
+      def initialize: (endpoint: ::String endpoint, vendor: ::String vendor, ?disabled: bool disabled) -> void
+    end
+  end
+end

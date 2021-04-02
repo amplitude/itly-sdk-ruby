@@ -14,16 +14,14 @@ class Itly
       ##
       # Instantiate a new Plugin::Snowplow
       #
-      # @param [String] endpoint: specify the Snowplow endpoint
-      # @param [String] vendor: specify the Snowplow vendor
-      # @param [TrueClass/FalseClass] disabled: set to true to disable the plugin. Default to false
+      # @param [SnowplowOptions] options: the options. See +SnowplowOptions+
       #
-      def initialize(endpoint:, vendor:, disabled: false)
+      def initialize(options:)
         super()
-        @vendor = vendor
-        @disabled = disabled
+        @vendor = options.vendor
+        @disabled = options.disabled
 
-        emitter = SnowplowTracker::Emitter.new endpoint
+        emitter = SnowplowTracker::Emitter.new options.endpoint
         @client = SnowplowTracker::Tracker.new emitter
       end
 

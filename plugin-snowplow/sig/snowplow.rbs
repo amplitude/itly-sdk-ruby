@@ -14,7 +14,7 @@ class Itly
 
       private
 
-      def initialize: (endpoint: ::String endpoint, vendor: ::String vendor, ?disabled: bool disabled) -> void
+      def initialize: (options: ::Itly::Plugin::SnowplowOptions options) -> void
       def enabled?: () -> bool
     end
   end
