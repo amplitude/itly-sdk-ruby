@@ -11,12 +11,12 @@ class Itly
       # HTTP client for the plugin requests
       #
       class Client
-        attr_reader :api_key, :url, :logger, :buffer_size, :batch_size, :max_retries, :retry_delay_min,
+        attr_reader :api_key, :url, :logger, :flush_queue_size, :batch_size, :max_retries, :retry_delay_min,
           :retry_delay_max, :omit_values
 
         # rubocop:disable Metrics/ParameterLists
         def initialize(
-          url:, api_key:, logger:, buffer_size:, batch_size:, max_retries:, retry_delay_min:, retry_delay_max:,
+          url:, api_key:, logger:, flush_queue_size:, batch_size:, max_retries:, retry_delay_min:, retry_delay_max:,
           omit_values:
         )
           @buffer = ::Concurrent::Array.new
@@ -25,7 +25,7 @@ class Itly
           @api_key = api_key
           @url = url
           @logger = logger
-          @buffer_size = buffer_size
+          @flush_queue_size = flush_queue_size
           @batch_size = batch_size
           @max_retries = max_retries
           @retry_delay_min = retry_delay_min
@@ -100,7 +100,7 @@ class Itly
         private
 
         def buffer_full?
-          @buffer.length >= @buffer_size
+          @buffer.length >= @flush_queue_size
         end
 
         def post_models(models)

@@ -25,7 +25,7 @@ class Itly
         @disabled = options.disabled
 
         @client_options = {
-          buffer_size: options.buffer_size,
+          flush_queue_size: options.flush_queue_size,
           batch_size: options.batch_size,
           max_retries: options.max_retries,
           retry_delay_min: options.retry_delay_min,

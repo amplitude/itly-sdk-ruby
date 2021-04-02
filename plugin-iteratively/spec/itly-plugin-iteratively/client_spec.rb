@@ -7,19 +7,19 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, buffer_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
+        logger: nil, flush_queue_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
     it 'can read' do
-      %i[api_key url logger buffer_size batch_size max_retries retry_delay_min retry_delay_max omit_values]
+      %i[api_key url logger flush_queue_size batch_size max_retries retry_delay_min retry_delay_max omit_values]
         .each do |attribute|
         expect(client.respond_to?(attribute)).to be(true)
       end
     end
 
     it 'cannot write' do
-      %i[api_key url logger buffer_size batch_size max_retries retry_delay_min retry_delay_max omit_values]
+      %i[api_key url logger flush_queue_size batch_size max_retries retry_delay_min retry_delay_max omit_values]
         .each do |attribute|
         expect(client.respond_to?(:"#{attribute}=")).to be(false)
       end
@@ -31,7 +31,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: logger, buffer_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
+        logger: logger, flush_queue_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -42,7 +42,7 @@ describe Itly::Plugin::Iteratively::Client do
       expect(client.instance_variable_get('@url')).to eq('http://url')
       expect(client.instance_variable_get('@api_key')).to eq('key123')
       expect(client.instance_variable_get('@logger')).to eq(logger)
-      expect(client.instance_variable_get('@buffer_size')).to eq(1)
+      expect(client.instance_variable_get('@flush_queue_size')).to eq(1)
       expect(client.instance_variable_get('@batch_size')).to eq(5)
       expect(client.instance_variable_get('@max_retries')).to eq(2)
       expect(client.instance_variable_get('@retry_delay_min')).to eq(3.0)
@@ -60,7 +60,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, buffer_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
+        logger: nil, flush_queue_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -148,7 +148,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: logger, buffer_size: 2, batch_size: batch_size, max_retries: 2, retry_delay_min: 3.0,
+        logger: logger, flush_queue_size: 2, batch_size: batch_size, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -295,7 +295,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, buffer_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
+        logger: nil, flush_queue_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -364,7 +364,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, buffer_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
+        logger: nil, flush_queue_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -420,7 +420,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url/path', api_key: 'api_key123',
-        logger: logger, buffer_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
+        logger: logger, flush_queue_size: 1, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -507,7 +507,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, buffer_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
+        logger: nil, flush_queue_size: 2, batch_size: 5, max_retries: 2, retry_delay_min: 3.0,
         retry_delay_max: 4.0, omit_values: false
     end
 
@@ -544,7 +544,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, buffer_size: 2, batch_size: 5, max_retries: 25, retry_delay_min: 10.0,
+        logger: nil, flush_queue_size: 2, batch_size: 5, max_retries: 25, retry_delay_min: 10.0,
         retry_delay_max: 3600.0, omit_values: false
     end
 
