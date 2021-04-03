@@ -35,8 +35,8 @@ class Itly
   #       options.plugins = [my_plugin]
   #     end
   #
-  # +validation+: Configures the Itly SDK's behavior when events or traits fail validation against
-  #   your tracking plan. Value can be one of the following:
+  # +validation+: Configures the Itly SDK's behavior when events or traits fail validation.
+  #   Value can be one of the following:
   #   - +Itly::Options::Validation::DISABLED+: Disables validation altogether.
   #   - +Itly::Options::Validation::TRACK_INVALID+: Specifies whether events that failed validation
   #     should still be tracked. Defaults to false in development, true in production.
@@ -46,8 +46,8 @@ class Itly
   #   Defaults to +ERROR_ON_INVALID+ if the environment is set to +DEVELOPMENT+, or +TRACK_INVALID+
   #   if the environment is set to +PRODUCTION+.
   #
-  # +logger+: Allow to set a custom Logger. Must be a object of the Logger class or child class.
-  #   Deflault output to STDOUT and level to ERROR
+  # +logger+: Allow to set a custom Logger. Must be a object of the Logger class or child class, and can be nil.
+  #   Deflault to nil, to disable Logging.
   #
   class Options
     attr_accessor :disabled, :logger, :plugins, :environment

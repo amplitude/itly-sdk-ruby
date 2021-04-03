@@ -39,8 +39,7 @@ class Itly
     def post_group(user_id:, group_id:, properties:, validation_results:); end
 
     ##
-    # Track an event, call the event's corresponding function. Every event in
-    # your tracking plan gets its own function in the Itly SDK.
+    # Track an event, call the event's corresponding function.
     #
     # See +Itly#track+ for more information
     #

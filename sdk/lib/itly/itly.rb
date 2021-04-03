@@ -130,8 +130,7 @@ class Itly
   end
 
   ##
-  # Track an event, call the event's corresponding function. Every event in
-  # your tracking plan gets its own function in the Itly SDK.
+  # Track an event, call the event's corresponding function on plugins.
   #
   # Validates the +properties+ of the +Event+ object passed as parameter
   # with all registered plugins first.
