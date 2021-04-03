@@ -24,21 +24,6 @@ shared_examples 'plugin load disabled value' do |environment:, expected:, disabl
       end
     end
 
-    context 'load disabled is true' do
-      before do
-        itly.load do |options|
-          options.plugins = [plugin]
-          options.logger = fake_logger
-          options.environment = environment
-          options.disabled = true
-        end
-      end
-
-      it do
-        expect(plugin.disabled).to be(expected)
-      end
-    end
-
     context 'load disabled is false' do
       before do
         itly.load do |options|

@@ -115,19 +115,36 @@ describe 'Itly' do
       let!(:plugin_b) { FakePlugin1.new }
       let!(:plugin_c) { FakePlugin1.new }
 
-      before do
-        [plugin_a, plugin_b, plugin_c].each do |plugin|
-          expect(plugin).to receive(:load).and_wrap_original do |_, *args|
-            expect(args.count).to eq(1)
-            expect(args[0].keys).to eq([:options])
-            expect(args[0][:options].class).to eq(Itly::PluginOptions)
+      describe 'default' do
+        before do
+          [plugin_a, plugin_b, plugin_c].each do |plugin|
+            expect(plugin).to receive(:load).and_wrap_original do |_, *args|
+              expect(args.count).to eq(1)
+              expect(args[0].keys).to eq([:options])
+              expect(args[0][:options].class).to eq(Itly::PluginOptions)
+            end
+          end
+        end
+
+        it do
+          itly.load do |options|
+            options.plugins = [plugin_a, plugin_b, plugin_c]
           end
         end
       end
 
-      it do
-        itly.load do |options|
-          options.plugins = [plugin_a, plugin_b, plugin_c]
+      describe 'when SDK is disabled' do
+        before do
+          [plugin_a, plugin_b, plugin_c].each do |plugin|
+            expect(plugin).not_to receive(:load)
+          end
+        end
+
+        it do
+          itly.load do |options|
+            options.plugins = [plugin_a, plugin_b, plugin_c]
+            options.disabled = true
+          end
         end
       end
     end

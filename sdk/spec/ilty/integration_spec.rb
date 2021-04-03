@@ -99,8 +99,7 @@ describe 'integration' do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'Itly is disabled!'],
-            ['debug', '(spec) loaded']
+            ['info', 'Itly is disabled!']
           ]
         end
       end
@@ -211,8 +210,7 @@ describe 'integration' do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'Itly is disabled!'],
-            ['debug', '(spec) loaded']
+            ['info', 'Itly is disabled!']
           ]
         end
       end
@@ -419,8 +417,7 @@ describe 'integration' do
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'Itly is disabled!'],
-            ['debug', '(spec) loaded']
+            ['info', 'Itly is disabled!']
           ]
         end
       end
