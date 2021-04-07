@@ -61,7 +61,7 @@ end
 #
 
 # Read the version file
-version_file_path = begin
+version_file_path =
   case plugin_name
   when 'sdk'
     "#{gem_path}/lib/itly/version.rb"
@@ -70,7 +70,6 @@ version_file_path = begin
   else
     "#{gem_path}/lib/itly/plugin/#{plugin_name}/version.rb"
   end
-end
 
 content = File.read version_file_path
 
