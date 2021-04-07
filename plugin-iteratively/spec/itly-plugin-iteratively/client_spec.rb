@@ -13,14 +13,14 @@ describe Itly::Plugin::Iteratively::Client do
 
     it 'can read' do
       %i[api_key url logger flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
-        retry_delay_max omit_values].each do |attribute|
+         retry_delay_max omit_values].each do |attribute|
         expect(client.respond_to?(attribute)).to be(true)
       end
     end
 
     it 'cannot write' do
       %i[api_key url logger flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
-        retry_delay_max omit_values].each do |attribute|
+         retry_delay_max omit_values].each do |attribute|
         expect(client.respond_to?(:"#{attribute}=")).to be(false)
       end
     end
@@ -376,7 +376,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:client) do
       Itly::Plugin::Iteratively::Client.new \
         url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6,  max_retries: 2,
+        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
         retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
     end
 

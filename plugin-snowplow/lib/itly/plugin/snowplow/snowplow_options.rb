@@ -23,6 +23,7 @@ class Itly
       #   Leave it to +nil+ to set it's default value. Default to 1 for GET method, and 10 for POST
       # @param [TrueClass/FalseClass] disabled: set to true to disable the plugin. Default to false
       #
+      # rubocop:disable Metrics/ParameterLists
       def initialize(endpoint:, vendor:, protocol: 'http', method: 'get', buffer_size: nil, disabled: false)
         super()
         @endpoint = endpoint
@@ -32,6 +33,7 @@ class Itly
         @buffer_size = buffer_size
         @disabled = disabled
       end
+      # rubocop:enable Metrics/ParameterLists
     end
   end
 end

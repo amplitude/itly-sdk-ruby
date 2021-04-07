@@ -8,14 +8,14 @@ describe Itly::Plugin::IterativelyOptions do
 
     it 'can read' do
       %i[url disabled flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
-        retry_delay_max omit_values].each do |attr|
+         retry_delay_max omit_values].each do |attr|
         expect(plugin_options.respond_to?(attr)).to be(true)
       end
     end
 
     it 'cannot write' do
       %i[url disabled flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
-        retry_delay_max omit_values].each do |attr|
+         retry_delay_max omit_values].each do |attr|
         expect(plugin_options.respond_to?(:"#{attr}=")).to be(false)
       end
     end

@@ -16,8 +16,8 @@ class Itly
 
         # rubocop:disable Metrics/ParameterLists
         def initialize(
-          url:, api_key:, logger:, flush_queue_size:, batch_size:, flush_interval_ms:, max_retries:, retry_delay_min:, retry_delay_max:,
-          omit_values:
+          url:, api_key:, logger:, flush_queue_size:, batch_size:, flush_interval_ms:, max_retries:,
+          retry_delay_min:, retry_delay_max:, omit_values:
         )
           @buffer = ::Concurrent::Array.new
           @runner = @scheduler = nil

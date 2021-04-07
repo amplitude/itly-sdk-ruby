@@ -46,7 +46,8 @@ describe Itly::Plugin::Snowplow do
 
     describe 'with values' do
       let(:plugin_options) do
-        Itly::Plugin::SnowplowOptions.new endpoint: 'endpoint123', vendor: 'vnd_name', protocol: 'https',
+        Itly::Plugin::SnowplowOptions.new \
+          endpoint: 'endpoint123', vendor: 'vnd_name', protocol: 'https',
           method: 'post', buffer_size: 50, disabled: true
       end
       let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
