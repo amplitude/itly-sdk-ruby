@@ -21,7 +21,8 @@ class Itly
         @vendor = options.vendor
         @disabled = options.disabled
 
-        emitter = SnowplowTracker::Emitter.new options.endpoint
+        emitter = SnowplowTracker::Emitter.new \
+          options.endpoint, protocol: options.protocol, method: options.method, buffer_size: options.buffer_size
         @client = SnowplowTracker::Tracker.new emitter
       end
 

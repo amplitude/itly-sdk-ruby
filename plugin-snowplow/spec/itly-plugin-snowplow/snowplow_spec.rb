@@ -23,21 +23,40 @@ describe Itly::Plugin::Snowplow do
   end
 
   describe '#initialize' do
+    let(:emitter) { double 'emitter' }
+    let(:client) { double 'client' }
+
     describe 'default values' do
       let(:plugin_options) { Itly::Plugin::SnowplowOptions.new endpoint: 'endpoint123', vendor: 'vnd_name' }
       let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
 
+      before do
+        expect(SnowplowTracker::Emitter).to receive(:new)
+          .with('endpoint123', protocol: 'http', method: 'get', buffer_size: nil)
+          .and_return(emitter)
+        expect(SnowplowTracker::Tracker).to receive(:new).with(emitter).and_return(client)
+      end
+
       it do
         expect(plugin.vendor).to eq('vnd_name')
         expect(plugin.disabled).to be(false)
+        expect(plugin.client).to eq(client)
       end
     end
 
     describe 'with values' do
       let(:plugin_options) do
-        Itly::Plugin::SnowplowOptions.new endpoint: 'endpoint123', vendor: 'vnd_name', disabled: true
+        Itly::Plugin::SnowplowOptions.new endpoint: 'endpoint123', vendor: 'vnd_name', protocol: 'https',
+          method: 'post', buffer_size: 50, disabled: true
       end
       let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+
+      before do
+        expect(SnowplowTracker::Emitter).to receive(:new)
+          .with('endpoint123', protocol: 'https', method: 'post', buffer_size: 50)
+          .and_return(emitter)
+        expect(SnowplowTracker::Tracker).to receive(:new).with(emitter).and_return(client)
+      end
 
       it do
         expect(plugin.vendor).to eq('vnd_name')

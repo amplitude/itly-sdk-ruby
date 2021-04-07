@@ -4,11 +4,14 @@ class Itly
 
       attr_reader endpoint: ::String
       attr_reader vendor: ::String
+      attr_reader protocol: ::String
+      attr_reader method: ::String
+      attr_reader buffer_size: ::Integer?
       attr_reader disabled: bool
 
       private
 
-      def initialize: (endpoint: ::String endpoint, vendor: ::String vendor, ?disabled: bool disabled) -> void
+      def initialize: (endpoint: ::String endpoint, vendor: ::String vendor, ?protocol: ::String protocol, ?method: ::String method, ?buffer_size: ::Integer buffer_size, ?disabled: bool disabled) -> void
     end
   end
 end
