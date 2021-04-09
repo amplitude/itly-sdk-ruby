@@ -8,13 +8,16 @@ class Itly
     # Options for the Iteratively plugin class
     #
     class IterativelyOptions
+      DEFAULT_URL = 'https://data-us-east1.iterative.ly/t'
+
       attr_reader :url, :disabled, :flush_queue_size, :batch_size, :flush_interval_ms, :max_retries,
         :retry_delay_min, :retry_delay_max, :omit_values, :branch, :version
 
       ##
       # Instantiate a new IterativelyOptions
       #
-      # @param [String] url: specify the url to push events to
+      # @param [String] url (optional): specify the url to push events to.
+      #   Default to https://data-us-east1.iterative.ly/t
       # @param [TrueClass/FalseClass] disabled: set to true to disable the Iteratively plugin.
       #   Default to +true+ in production environment, to +false+ otherwise
       # @param [Integer] flush_queue_size (optional): Number of event in the buffer before
@@ -32,8 +35,8 @@ class Itly
       #
       # rubocop:disable Metrics/ParameterLists
       def initialize(
-        url:, disabled: nil, flush_queue_size: 10, batch_size: 100, flush_interval_ms: 10_000, max_retries: 25,
-        retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false, branch: nil, version: nil
+        url: DEFAULT_URL, disabled: nil, flush_queue_size: 10, batch_size: 100, flush_interval_ms: 10_000,
+        max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false, branch: nil, version: nil
       )
         super()
         @url = url

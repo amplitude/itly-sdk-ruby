@@ -3,8 +3,12 @@
 describe Itly::Plugin::IterativelyOptions do
   include RspecLoggerHelpers
 
+  it 'constants' do
+    expect(Itly::Plugin::IterativelyOptions::DEFAULT_URL).to eq('https://data-us-east1.iterative.ly/t')
+  end
+
   describe 'instance attributes' do
-    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new }
 
     it 'can read' do
       %i[url disabled flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
@@ -23,10 +27,10 @@ describe Itly::Plugin::IterativelyOptions do
 
   describe '#initialize' do
     describe 'default values' do
-      let!(:plugin_options) { Itly::Plugin::IterativelyOptions.new url: 'http://url' }
+      let!(:plugin_options) { Itly::Plugin::IterativelyOptions.new }
 
       it do
-        expect(plugin_options.instance_variable_get('@url')).to eq('http://url')
+        expect(plugin_options.instance_variable_get('@url')).to eq('https://data-us-east1.iterative.ly/t')
         expect(plugin_options.instance_variable_get('@disabled')).to be(nil)
         expect(plugin_options.instance_variable_get('@flush_queue_size')).to eq(10)
         expect(plugin_options.instance_variable_get('@batch_size')).to eq(100)
