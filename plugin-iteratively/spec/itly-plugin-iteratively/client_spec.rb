@@ -3,24 +3,27 @@
 describe Itly::Plugin::Iteratively::Client do
   include RspecLoggerHelpers
 
+  let(:client_default_values) do
+    {
+      url: 'http://url/path', api_key: 'key123',
+      logger: nil, flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2, retry_delay_min: 3.0,
+      retry_delay_max: 4.0, omit_values: false, branch: 'feature/new', version: '1.2.3'
+    }
+  end
+
   describe 'instance attributes' do
-    let(:client) do
-      Itly::Plugin::Iteratively::Client.new \
-        url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2, retry_delay_min: 3.0,
-        retry_delay_max: 4.0, omit_values: false
-    end
+    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values }
 
     it 'can read' do
       %i[api_key url logger flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
-         retry_delay_max omit_values].each do |attribute|
+         retry_delay_max omit_values branch version].each do |attribute|
         expect(client.respond_to?(attribute)).to be(true)
       end
     end
 
     it 'cannot write' do
       %i[api_key url logger flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
-         retry_delay_max omit_values].each do |attribute|
+         retry_delay_max omit_values branch version].each do |attribute|
         expect(client.respond_to?(:"#{attribute}=")).to be(false)
       end
     end
@@ -28,19 +31,14 @@ describe Itly::Plugin::Iteratively::Client do
 
   describe '#initialize' do
     let(:logger) { ::Logger.new '/dev/null' }
-    let(:client) do
-      Itly::Plugin::Iteratively::Client.new \
-        url: 'http://url', api_key: 'key123',
-        logger: logger, flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
-        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
-    end
+    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values.merge(logger: logger) }
 
     it 'instance variables' do
       expect(client.instance_variable_get('@buffer')).to be_a_kind_of(Concurrent::Array)
       expect(client.instance_variable_get('@buffer')).to eq([])
       expect(client.instance_variable_get('@runner')).to be(nil)
       expect(client.instance_variable_get('@scheduler')).to be(nil)
-      expect(client.instance_variable_get('@url')).to eq('http://url')
+      expect(client.instance_variable_get('@url')).to eq('http://url/path')
       expect(client.instance_variable_get('@api_key')).to eq('key123')
       expect(client.instance_variable_get('@logger')).to eq(logger)
       expect(client.instance_variable_get('@flush_queue_size')).to eq(1)
@@ -50,6 +48,8 @@ describe Itly::Plugin::Iteratively::Client do
       expect(client.instance_variable_get('@retry_delay_min')).to eq(3.0)
       expect(client.instance_variable_get('@retry_delay_max')).to eq(4.0)
       expect(client.instance_variable_get('@omit_values')).to be(false)
+      expect(client.instance_variable_get('@branch')).to eq('feature/new')
+      expect(client.instance_variable_get('@version')).to eq('1.2.3')
     end
 
     describe 'start scheduler' do
@@ -69,12 +69,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:validation1) { Itly::ValidationResponse.new valid: true, plugin_id: 'id1', message: 'Msg1' }
     let(:validation2) { Itly::ValidationResponse.new valid: false, plugin_id: 'id2', message: 'Msg2' }
 
-    let(:client) do
-      Itly::Plugin::Iteratively::Client.new \
-        url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
-        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
-    end
+    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values.merge(flush_queue_size: 2) }
 
     describe 'enqueue models' do
       before do
@@ -158,10 +153,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:logger) { ::Logger.new logs }
     let(:batch_size) { 5 }
     let(:client) do
-      Itly::Plugin::Iteratively::Client.new \
-        url: 'http://url', api_key: 'key123',
-        logger: logger, flush_queue_size: 2, batch_size: batch_size, flush_interval_ms: 6, max_retries: 2,
-        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
+      Itly::Plugin::Iteratively::Client.new **client_default_values.merge(logger: logger, batch_size: batch_size)
     end
 
     let(:buffer) { client.instance_variable_get '@buffer' }
@@ -304,12 +296,7 @@ describe Itly::Plugin::Iteratively::Client do
   end
 
   describe '#shutdown' do
-    let(:client) do
-      Itly::Plugin::Iteratively::Client.new \
-        url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
-        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
-    end
+    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values }
 
     describe 'default' do
       before do
@@ -373,12 +360,7 @@ describe Itly::Plugin::Iteratively::Client do
 
   describe '#buffer_full?' do
     let(:event) { Itly::Event.new name: 'event', properties: { some: 'data' } }
-    let(:client) do
-      Itly::Plugin::Iteratively::Client.new \
-        url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
-        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
-    end
+    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values.merge(flush_queue_size: 2) }
 
     before do
       allow(client).to receive(:flush)
@@ -429,22 +411,31 @@ describe Itly::Plugin::Iteratively::Client do
 
     let(:logs) { StringIO.new }
     let(:logger) { ::Logger.new logs }
-    let(:client) do
-      Itly::Plugin::Iteratively::Client.new \
-        url: 'http://url/path', api_key: 'api_key123',
-        logger: logger, flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
-        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
-    end
+    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values.merge(logger: logger) }
 
     let(:expected_model_json) do
-      '{"objects":[{"type":"test_model","dateSent":"2021-01-01T06:00:00Z","eventId":"id123","eventChemaVersion":"12",'\
-       '"eventName":"test_event","properties":{"data":"value"},"valid":false,"validation":"Validation Msg"}]}'
+      {
+        'branchName' => 'feature/new',
+        'trackingPlanVersion' => '1.2.3',
+        'objects' => [
+          {
+            'type' => 'test_model',
+            'dateSent' => '2021-01-01T06:00:00Z',
+            'eventId' => 'id123',
+            'eventChemaVersion' => '12',
+            'eventName' => 'test_event',
+            'properties' => {'data' => 'value'},
+            'valid' => false,
+            'validation' => 'Validation Msg'
+          }
+        ]
+      }.to_json
     end
 
     let(:expected_headers) do
       {
         'Content-Type' => 'application/json',
-        'authorization' => 'Bearer api_key123'
+        'authorization' => 'Bearer key123'
       }
     end
 
@@ -473,15 +464,24 @@ describe Itly::Plugin::Iteratively::Client do
       end
 
       before do
-        expect(Faraday).to receive(:post).with('http://url/path', expected_model_json, expected_headers)
+        expect(Faraday).to receive(:post)
+          .with(
+            'http://url/path',
+            expected_model_json,
+            expected_headers
+          )
           .and_return(response)
       end
 
       let(:expected_log) do
         'Iteratively::Client: post_models() unexpected response. Url: http://url/path '\
-          'Data: {"objects":[{"type":"test_model","dateSent":"2021-01-01T06:00:00Z","eventId":"id123",'\
-            '"eventChemaVersion":"12","eventName":"test_event","properties":{"data":"value"},"valid":false,'\
-            '"validation":"Validation Msg"}]} '\
+          'Data: {'\
+            '"branchName":"feature/new",'\
+            '"trackingPlanVersion":"1.2.3",'\
+            '"objects":[{"type":"test_model","dateSent":"2021-01-01T06:00:00Z","eventId":"id123",'\
+              '"eventChemaVersion":"12","eventName":"test_event","properties":{"data":"value"},"valid":false,'\
+              '"validation":"Validation Msg"}]'\
+            '} '\
           'Response status: 400 Response headers: {"server"=>"nginx"} '\
           'Response body: error description'
       end
@@ -516,12 +516,7 @@ describe Itly::Plugin::Iteratively::Client do
   end
 
   describe '#runner_complete?' do
-    let(:client) do
-      Itly::Plugin::Iteratively::Client.new \
-        url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
-        retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: false
-    end
+    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values }
 
     before do
       client.instance_variable_set '@runner', runner
@@ -554,10 +549,8 @@ describe Itly::Plugin::Iteratively::Client do
 
   describe '#delay_before_next_try' do
     let(:client) do
-      Itly::Plugin::Iteratively::Client.new \
-        url: 'http://url', api_key: 'key123',
-        logger: nil, flush_queue_size: 2, batch_size: 5, flush_interval_ms: 6, max_retries: 25,
-        retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false
+      Itly::Plugin::Iteratively::Client.new **client_default_values
+        .merge(retry_delay_min: 10.0, retry_delay_max: 3600.0, max_retries: 25)
     end
 
     it 'min' do
@@ -585,12 +578,7 @@ describe Itly::Plugin::Iteratively::Client do
   end
 
   describe 'start_scheduler' do
-    let!(:client) do
-      Itly::Plugin::Iteratively::Client.new \
-        flush_interval_ms: 10_000,
-        url: 'http://url', api_key: 'key123', logger: nil, flush_queue_size: 2, batch_size: 5,
-        max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false
-    end
+    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values }
 
     before do
       # Start

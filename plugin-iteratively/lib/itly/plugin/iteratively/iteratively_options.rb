@@ -9,7 +9,7 @@ class Itly
     #
     class IterativelyOptions
       attr_reader :url, :disabled, :flush_queue_size, :batch_size, :flush_interval_ms, :max_retries,
-        :retry_delay_min, :retry_delay_max, :omit_values
+        :retry_delay_min, :retry_delay_max, :omit_values, :branch, :version
 
       ##
       # Instantiate a new IterativelyOptions
@@ -27,11 +27,13 @@ class Itly
       # @param [Float] retry_delay_min: Minimum delay between retries in seconds. Default: 10.0
       # @param [Float] retry_delay_max: Maximum delay between retries in seconds. Default: 3600.0 (1 hour)
       # @param [TrueClass/FalseClass] omit_values: set to true to send emty data. Default to false
+      # @param [String] branch: Tracking plan branch name (e.g. feature/demo)
+      # @param [String] version: Tracking plan version number (e.g. 1.0.0)
       #
       # rubocop:disable Metrics/ParameterLists
       def initialize(
         url:, disabled: nil, flush_queue_size: 10, batch_size: 100, flush_interval_ms: 10_000, max_retries: 25,
-        retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false
+        retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false, branch: nil, version: nil
       )
         super()
         @url = url
@@ -43,6 +45,8 @@ class Itly
         @retry_delay_min = retry_delay_min
         @retry_delay_max = retry_delay_max
         @omit_values = omit_values
+        @branch = branch
+        @version = version
       end
       # rubocop:enable Metrics/ParameterLists
     end

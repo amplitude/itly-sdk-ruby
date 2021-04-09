@@ -8,14 +8,14 @@ describe Itly::Plugin::IterativelyOptions do
 
     it 'can read' do
       %i[url disabled flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
-         retry_delay_max omit_values].each do |attr|
+         retry_delay_max omit_values branch version].each do |attr|
         expect(plugin_options.respond_to?(attr)).to be(true)
       end
     end
 
     it 'cannot write' do
       %i[url disabled flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
-         retry_delay_max omit_values].each do |attr|
+         retry_delay_max omit_values branch version].each do |attr|
         expect(plugin_options.respond_to?(:"#{attr}=")).to be(false)
       end
     end
@@ -35,6 +35,8 @@ describe Itly::Plugin::IterativelyOptions do
         expect(plugin_options.instance_variable_get('@retry_delay_min')).to eq(10.0)
         expect(plugin_options.instance_variable_get('@retry_delay_max')).to eq(3600.0)
         expect(plugin_options.instance_variable_get('@omit_values')).to be(false)
+        expect(plugin_options.instance_variable_get('@branch')).to be(nil)
+        expect(plugin_options.instance_variable_get('@version')).to be(nil)
       end
     end
 
@@ -43,7 +45,8 @@ describe Itly::Plugin::IterativelyOptions do
         Itly::Plugin::IterativelyOptions.new \
           url: 'http://url', disabled: true,
           flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
-          retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true
+          retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true,
+          branch: 'feature/new', version: '1.2.3'
       end
 
       it do
@@ -56,6 +59,8 @@ describe Itly::Plugin::IterativelyOptions do
         expect(plugin_options.instance_variable_get('@retry_delay_min')).to eq(3.0)
         expect(plugin_options.instance_variable_get('@retry_delay_max')).to eq(4.0)
         expect(plugin_options.instance_variable_get('@omit_values')).to be(true)
+        expect(plugin_options.instance_variable_get('@branch')).to eq('feature/new')
+        expect(plugin_options.instance_variable_get('@version')).to eq('1.2.3')
       end
     end
   end

@@ -31,7 +31,9 @@ class Itly
           max_retries: options.max_retries,
           retry_delay_min: options.retry_delay_min,
           retry_delay_max: options.retry_delay_max,
-          omit_values: options.omit_values
+          omit_values: options.omit_values,
+          branch: options.branch,
+          version: options.version
         }
       end
 

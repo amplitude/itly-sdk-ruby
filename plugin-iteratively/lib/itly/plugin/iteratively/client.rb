@@ -12,12 +12,12 @@ class Itly
       #
       class Client
         attr_reader :api_key, :url, :logger, :flush_queue_size, :batch_size, :flush_interval_ms, :max_retries,
-          :retry_delay_min, :retry_delay_max, :omit_values
+          :retry_delay_min, :retry_delay_max, :omit_values, :branch, :version
 
         # rubocop:disable Metrics/ParameterLists
         def initialize(
           url:, api_key:, logger:, flush_queue_size:, batch_size:, flush_interval_ms:, max_retries:,
-          retry_delay_min:, retry_delay_max:, omit_values:
+          retry_delay_min:, retry_delay_max:, omit_values:, branch:, version:
         )
           @buffer = ::Concurrent::Array.new
           @runner = @scheduler = nil
@@ -32,6 +32,8 @@ class Itly
           @retry_delay_min = retry_delay_min
           @retry_delay_max = retry_delay_max
           @omit_values = omit_values
+          @branch = branch
+          @version = version
 
           # Start the scheduler
           start_scheduler
@@ -111,6 +113,8 @@ class Itly
 
         def post_models(models)
           data = {
+            branchName: @branch,
+            trackingPlanVersion: @version,
             objects: models
           }.to_json
           headers = {
