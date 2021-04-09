@@ -52,6 +52,30 @@ class Itly
         @version = version
       end
       # rubocop:enable Metrics/ParameterLists
+
+      ##
+      # Returns a copy of this IterativelyOptions with any provided arguments used as overrides
+      #
+      # rubocop:disable Metrics/ParameterLists
+      def with_overrides(
+        url: nil, disabled: nil, flush_queue_size: nil, batch_size: nil, flush_interval_ms: nil,
+        max_retries: nil, retry_delay_min: nil, retry_delay_max: nil, omit_values: nil, branch: nil, version: nil
+      )
+        return IterativelyOptions.new(
+          url: url.nil? ? @url : url,
+          disabled: disabled.nil? ? @disabled : disabled,
+          flush_queue_size: flush_queue_size.nil? ? @flush_queue_size : flush_queue_size,
+          batch_size: batch_size.nil? ? @batch_size : batch_size,
+          flush_interval_ms: flush_interval_ms.nil? ? @flush_interval_ms : flush_interval_ms,
+          max_retries: max_retries.nil? ? @max_retries : max_retries,
+          retry_delay_min: retry_delay_min.nil? ? @retry_delay_min : retry_delay_min,
+          retry_delay_max: retry_delay_max.nil? ? @retry_delay_max : retry_delay_max,
+          omit_values: omit_values.nil? ? @omit_values : omit_values,
+          branch: branch.nil? ? @branch : branch,
+          version: version.nil? ? @version : version,
+        )
+      end
+      # rubocop:enable Metrics/ParameterLists
     end
   end
 end
