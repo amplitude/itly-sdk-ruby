@@ -34,7 +34,7 @@ describe Itly::Plugin::IterativelyOptions do
         expect(plugin_options.instance_variable_get('@disabled')).to be(nil)
         expect(plugin_options.instance_variable_get('@flush_queue_size')).to eq(10)
         expect(plugin_options.instance_variable_get('@batch_size')).to eq(100)
-        expect(plugin_options.instance_variable_get('@flush_interval_ms')).to eq(10_000)
+        expect(plugin_options.instance_variable_get('@flush_interval_ms')).to eq(1_000)
         expect(plugin_options.instance_variable_get('@max_retries')).to eq(25)
         expect(plugin_options.instance_variable_get('@retry_delay_min')).to eq(10.0)
         expect(plugin_options.instance_variable_get('@retry_delay_max')).to eq(3600.0)

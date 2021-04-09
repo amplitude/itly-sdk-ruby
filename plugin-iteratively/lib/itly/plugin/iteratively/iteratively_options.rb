@@ -24,7 +24,7 @@ class Itly
       #   a flush is triggered. Default: 10
       # @param [Integer] batch_size (optional): Maximum number of events to send to the server at once. Default: 100
       # @param [Integer] batflush_interval_msch_size (optional): Delay in milisecond between each automatic
-      #   flush. Default: 10_000
+      #   flush. Default: 1_000
       # @param [Integer] max_retries (optional): Number of retries for pushing
       #   events to the server. Default: 25
       # @param [Float] retry_delay_min: Minimum delay between retries in seconds. Default: 10.0
@@ -35,7 +35,7 @@ class Itly
       #
       # rubocop:disable Metrics/ParameterLists
       def initialize(
-        url: DEFAULT_URL, disabled: nil, flush_queue_size: 10, batch_size: 100, flush_interval_ms: 10_000,
+        url: DEFAULT_URL, disabled: nil, flush_queue_size: 10, batch_size: 100, flush_interval_ms: 1_000,
         max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false, branch: nil, version: nil
       )
         super()

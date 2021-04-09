@@ -35,7 +35,7 @@ describe Itly::Plugin::Iteratively do
         expect(plugin.instance_variable_get('@disabled')).to be(nil)
         expect(plugin.instance_variable_get('@client_options')).to eq(
           {
-            flush_queue_size: 10, batch_size: 100, flush_interval_ms: 10_000, max_retries: 25,
+            flush_queue_size: 10, batch_size: 100, flush_interval_ms: 1_000, max_retries: 25,
             retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false,
             branch: nil, version: nil
           }
@@ -159,7 +159,7 @@ describe Itly::Plugin::Iteratively do
           expect(client.logger).to eq(fake_logger)
           expect(client.flush_queue_size).to eq(10)
           expect(client.batch_size).to eq(100)
-          expect(client.flush_interval_ms).to eq(10_000)
+          expect(client.flush_interval_ms).to eq(1_000)
           expect(client.max_retries).to eq(25)
           expect(client.retry_delay_min).to eq(10.0)
           expect(client.retry_delay_max).to eq(3600.0)
