@@ -17,9 +17,13 @@ shared_examples 'validate and send to plugins' do |receive_action_methods: true,
       expect(plugin_b).not_to receive(:mock_action)
     end
 
+    expect(plugin_c).not_to receive(:mock_action)
+
     # Set expectation for the targetted post method call
     expect(plugin_a).to receive(:mock_post_action).with(event, all_errors, :other_param)
     expect(plugin_b).to receive(:mock_post_action).with(event, all_errors, :other_param)
+
+    expect(plugin_c).not_to receive(:mock_post_action)
 
     # Set expectation for log and exception triggered by validation responses
     expect(itly).to receive(:log_validation_errors).with(all_errors, event)

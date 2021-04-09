@@ -262,14 +262,22 @@ class Itly
     event.properties.merge! context.properties if context
 
     if is_valid || @options.validation == Itly::Options::Validation::TRACK_INVALID
-      run_on_plugins { |plugin| action.call(plugin, event) }
+      run_on_plugins do |plugin|
+        unless event.plugins[plugin.id].is_a?(FalseClass)
+          action.call(plugin, event)
+        end
+      end
     end
 
     # Log all errors
     log_validation_errors validations, event
 
     # Call the post_action on all plugins
-    run_on_plugins { |plugin| post_action.call(plugin, event, validations) }
+    run_on_plugins do |plugin|
+      unless event.plugins[plugin.id].is_a?(FalseClass)
+        post_action.call(plugin, event, validations)
+      end
+    end
 
     # Throw an exception if requested
     raise_validation_errors is_valid, validations, event

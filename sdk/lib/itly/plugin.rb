@@ -79,8 +79,6 @@ class Itly
     #
     def validate(event:); end
 
-    protected
-
     ##
     # Get the plugin ID, which is the underscored class name. Use only the child class in case of nested classes
     #

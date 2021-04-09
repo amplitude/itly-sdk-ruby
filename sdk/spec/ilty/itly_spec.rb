@@ -533,12 +533,13 @@ describe 'Itly' do
     end
   end
 
-  describe '#validate_and_send_to_plugins', fake_plugins: 2,
+  describe '#validate_and_send_to_plugins', fake_plugins: 3,
                                             fake_plugins_methods: %i[mock_action mock_post_action] do
     # Instanciate plugins, an event, and the Itly object
     let!(:plugin_a) { FakePlugin0.new }
     let!(:plugin_b) { FakePlugin1.new }
-    let!(:event) { Itly::Event.new name: 'Test' }
+    let!(:plugin_c) { FakePlugin2.new }
+    let!(:event) { Itly::Event.new name: 'Test', plugins: {fake_plugin0: true, fake_plugin2: false} }
     let!(:context) { Itly::Event.new name: 'context', properties: { data: 'for_context' } }
     let!(:itly) { Itly.new }
 
@@ -551,7 +552,7 @@ describe 'Itly' do
     # Load options
     before do
       itly.load do |options|
-        options.plugins = [plugin_a, plugin_b]
+        options.plugins = [plugin_a, plugin_b, plugin_c]
         options.validation = validation_option if validation_option
       end
     end

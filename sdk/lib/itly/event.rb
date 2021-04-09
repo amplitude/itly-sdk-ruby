@@ -9,9 +9,10 @@ class Itly
   # +properties+: The event's properties.
   # +id+: The event's unique ID in Iteratively.
   # +version+: The event's version, e.g. 2.0.1.
+  # +plugins+: Granular Event Destinations: to control to which plugin to forward this event to
   #
   class Event
-    attr_reader :name, :properties, :id, :version
+    attr_reader :name, :properties, :id, :version, :plugins
 
     ##
     # Create a new Event object
@@ -20,12 +21,14 @@ class Itly
     # @param [Hash] properties: The event's properties.
     # @param [String] id: The event's unique ID in Iteratively.
     # @param [String] version: The event's version, e.g. 2.0.1.
+    # @param [Hash] plugins: Granular Event Destinations: to control to which plugin to forward this event to
     #
-    def initialize(name:, properties: {}, id: nil, version: nil)
+    def initialize(name:, properties: {}, id: nil, version: nil, plugins: {})
       @name = name
       @properties = properties
       @id = id
       @version = version
+      @plugins = plugins.transform_keys{ |k| k.to_s }
     end
 
     ##
