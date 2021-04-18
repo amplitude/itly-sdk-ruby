@@ -11,7 +11,7 @@ raise 'Env variable GEM_HOST_API_KEY is empty! Cannot continue' unless ENV['GEM_
 #
 
 # Version under which we will not publish the gems
-MIN_VERSION = '1.0.0'
+MIN_VERSION = '0.1.0'
 
 ##
 # Get requested gems name
@@ -118,5 +118,4 @@ File.write credentials_path, "---\n:rubygems_api_key: #{ENV['GEM_HOST_API_KEY']}
 # Compile and publish
 FileUtils.cd gem_path
 puts `gem build #{gem_name}.gemspec`
-puts "DRY RUN!! WILL NOT PUBLISH: gem push #{gem_name}-#{source_version}.gem"
-# puts `gem push #{gem_name}-#{source_version}.gem`
+puts `gem push #{gem_name}-#{source_version}.gem`

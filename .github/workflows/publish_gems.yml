@@ -9,8 +9,12 @@ jobs:
     name: Build and Publish gems
     runs-on: ubuntu-latest
 
+    env:
+      GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
+
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
       with:
@@ -18,35 +22,21 @@ jobs:
 
     - name: Publish itly-sdk to RubyGems
       run: ruby bin/publish_gems.rb sdk
-      env:
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
 
     - name: Publish plugin-amplitude to RubyGems
       run: ruby bin/publish_gems.rb amplitude
-      env:
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
 
     - name: Publish plugin-iteratively to RubyGems
       run: ruby bin/publish_gems.rb iteratively
-      env:
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
 
     - name: Publish plugin-mixpanel to RubyGems
       run: ruby bin/publish_gems.rb mixpanel
-      env:
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
 
     - name: Publish plugin-schema-validator to RubyGems
       run: ruby bin/publish_gems.rb schema-validator
-      env:
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
 
     - name: Publish plugin-segment to RubyGems
       run: ruby bin/publish_gems.rb segment
-      env:
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
 
     - name: Publish plugin-snowplow to RubyGems
       run: ruby bin/publish_gems.rb snowplow
-      env:
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
