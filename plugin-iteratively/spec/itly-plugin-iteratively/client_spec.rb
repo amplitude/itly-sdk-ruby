@@ -87,11 +87,14 @@ describe Itly::Plugin::Iteratively::Client do
       let(:expected) do
         [
           '#<Itly::Plugin::Iteratively::TrackModel: type: test_model date_sent: 2021-01-01T06:00:00Z event_id:  '\
-            'event_chema_version:  event_name: event1 properties: {:some=>"data"} valid: true validation: Msg1>',
+            'event_schema_version:  event_name: event1 properties: {:some=>"data"} '\
+            'valid: true validation: {:details=>"Msg1"}>',
           '#<Itly::Plugin::Iteratively::TrackModel: type: test_model date_sent: 2021-01-01T06:00:00Z event_id:  '\
-            'event_chema_version:  event_name: event2 properties: {:some=>"data"} valid:  validation: >',
+            'event_schema_version:  event_name: event2 properties: {:some=>"data"} '\
+            'valid: true validation: {:details=>""}>',
           '#<Itly::Plugin::Iteratively::TrackModel: type: test_model date_sent: 2021-01-01T06:00:00Z event_id:  '\
-            'event_chema_version:  event_name:  properties: {:other=>"info"} valid: false validation: Msg2>'
+            'event_schema_version:  event_name:  properties: {:other=>"info"} '\
+            'valid: false validation: {:details=>"Msg2"}>'
         ]
       end
 
@@ -422,11 +425,11 @@ describe Itly::Plugin::Iteratively::Client do
             'type' => 'test_model',
             'dateSent' => '2021-01-01T06:00:00Z',
             'eventId' => 'id123',
-            'eventChemaVersion' => '12',
+            'eventSchemaVersion' => '12',
             'eventName' => 'test_event',
             'properties' => {'data' => 'value'},
             'valid' => false,
-            'validation' => 'Validation Msg'
+            'validation' => {'details' => 'Validation Msg'}
           }
         ]
       }.to_json
@@ -479,8 +482,8 @@ describe Itly::Plugin::Iteratively::Client do
             '"branchName":"feature/new",'\
             '"trackingPlanVersion":"1.2.3",'\
             '"objects":[{"type":"test_model","dateSent":"2021-01-01T06:00:00Z","eventId":"id123",'\
-              '"eventChemaVersion":"12","eventName":"test_event","properties":{"data":"value"},"valid":false,'\
-              '"validation":"Validation Msg"}]'\
+              '"eventSchemaVersion":"12","eventName":"test_event","properties":{"data":"value"},"valid":false,'\
+              '"validation":{"details":"Validation Msg"}}]'\
             '} '\
           'Response status: 400 Response headers: {"server"=>"nginx"} '\
           'Response body: error description'

@@ -7,13 +7,13 @@ describe Itly::Plugin::Iteratively::TrackModel do
     end
 
     it 'can read' do
-      %i[type date_sent event_id event_chema_version event_name properties valid validation].each do |attribute|
+      %i[type date_sent event_id event_schema_version event_name properties valid validation].each do |attribute|
         expect(model.respond_to?(attribute)).to be(true)
       end
     end
 
     it 'cannot write' do
-      %i[type date_sent event_id event_chema_version event_name properties valid validation].each do |attribute|
+      %i[type date_sent event_id event_schema_version event_name properties valid validation].each do |attribute|
         expect(model.respond_to?(:"#{attribute}=")).to be(false)
       end
     end
@@ -31,11 +31,11 @@ describe Itly::Plugin::Iteratively::TrackModel do
         expect(model.instance_variable_get('@type')).to eq('test_model')
         expect(model.instance_variable_get('@date_sent')).to match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
         expect(model.instance_variable_get('@event_id')).to eq('id123')
-        expect(model.instance_variable_get('@event_chema_version')).to eq('12')
+        expect(model.instance_variable_get('@event_schema_version')).to eq('12')
         expect(model.instance_variable_get('@event_name')).to eq('test_event')
         expect(model.instance_variable_get('@properties')).to eq(data: 'value')
-        expect(model.instance_variable_get('@valid')).to be(nil)
-        expect(model.instance_variable_get('@validation')).to be(nil)
+        expect(model.instance_variable_get('@valid')).to be(true)
+        expect(model.instance_variable_get('@validation')).to eq(details: '')
       end
     end
 
@@ -50,11 +50,11 @@ describe Itly::Plugin::Iteratively::TrackModel do
         expect(model.instance_variable_get('@type')).to eq('test_model')
         expect(model.instance_variable_get('@date_sent')).to match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
         expect(model.instance_variable_get('@event_id')).to be(nil)
-        expect(model.instance_variable_get('@event_chema_version')).to be(nil)
+        expect(model.instance_variable_get('@event_schema_version')).to be(nil)
         expect(model.instance_variable_get('@event_name')).to be(nil)
         expect(model.instance_variable_get('@properties')).to eq(prop: 'from hash')
-        expect(model.instance_variable_get('@valid')).to be(nil)
-        expect(model.instance_variable_get('@validation')).to be(nil)
+        expect(model.instance_variable_get('@valid')).to be(true)
+        expect(model.instance_variable_get('@validation')).to eq(details: '')
       end
     end
 
@@ -70,11 +70,11 @@ describe Itly::Plugin::Iteratively::TrackModel do
         expect(model.instance_variable_get('@type')).to eq('test_model')
         expect(model.instance_variable_get('@date_sent')).to match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
         expect(model.instance_variable_get('@event_id')).to eq('id123')
-        expect(model.instance_variable_get('@event_chema_version')).to eq('12')
+        expect(model.instance_variable_get('@event_schema_version')).to eq('12')
         expect(model.instance_variable_get('@event_name')).to eq('test_event')
         expect(model.instance_variable_get('@properties')).to eq(data: 'value')
         expect(model.instance_variable_get('@valid')).to be(false)
-        expect(model.instance_variable_get('@validation')).to eq('Validation Msg')
+        expect(model.instance_variable_get('@validation')).to eq(details: 'Validation Msg')
       end
     end
 
@@ -87,11 +87,11 @@ describe Itly::Plugin::Iteratively::TrackModel do
         expect(model.instance_variable_get('@type')).to eq('test_model')
         expect(model.instance_variable_get('@date_sent')).to match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
         expect(model.instance_variable_get('@event_id')).to eq('id123')
-        expect(model.instance_variable_get('@event_chema_version')).to eq('12')
+        expect(model.instance_variable_get('@event_schema_version')).to eq('12')
         expect(model.instance_variable_get('@event_name')).to eq('test_event')
         expect(model.instance_variable_get('@properties')).to eq(data: '')
-        expect(model.instance_variable_get('@valid')).to be(nil)
-        expect(model.instance_variable_get('@validation')).to be(nil)
+        expect(model.instance_variable_get('@valid')).to be(true)
+        expect(model.instance_variable_get('@validation')).to eq(details: '')
       end
     end
   end
@@ -106,8 +106,8 @@ describe Itly::Plugin::Iteratively::TrackModel do
 
       let(:expected) do
         /^{"type":"test_model","dateSent":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z","eventId":"id123",
-          "eventChemaVersion":"12","eventName":"test_event","properties":{"data":"value"},
-          "valid":null,"validation":null}$/x
+          "eventSchemaVersion":"12","eventName":"test_event","properties":{"data":"value"},
+          "valid":true,"validation":{"details":""}}$/x
       end
 
       it do
@@ -124,8 +124,8 @@ describe Itly::Plugin::Iteratively::TrackModel do
 
       let(:expected) do
         /^{"type":"test_model","dateSent":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z","eventId":null,
-          "eventChemaVersion":null,"eventName":null,"properties":{"prop":"from\shash"},
-          "valid":null,"validation":null}$/x
+          "eventSchemaVersion":null,"eventName":null,"properties":{"prop":"from\shash"},
+          "valid":true,"validation":{"details":""}}$/x
       end
 
       it do
@@ -143,8 +143,8 @@ describe Itly::Plugin::Iteratively::TrackModel do
 
       let(:expected) do
         /^{"type":"test_model","dateSent":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z","eventId":"id123",
-          "eventChemaVersion":"12","eventName":"test_event","properties":{"data":"value"},
-          "valid":false,"validation":"Validation\sMsg"}$/x
+          "eventSchemaVersion":"12","eventName":"test_event","properties":{"data":"value"},
+          "valid":false,"validation":{"details":"Validation\sMsg"}}$/x
       end
 
       it do
@@ -159,8 +159,8 @@ describe Itly::Plugin::Iteratively::TrackModel do
 
       let(:expected) do
         /^{"type":"test_model","dateSent":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z","eventId":"id123",
-          "eventChemaVersion":"12","eventName":"test_event","properties":{"data":""},
-          "valid":null,"validation":null}$/x
+          "eventSchemaVersion":"12","eventName":"test_event","properties":{"data":""},
+          "valid":true,"validation":{"details":""}}$/x
       end
 
       it do

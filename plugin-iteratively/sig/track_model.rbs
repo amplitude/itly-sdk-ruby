@@ -5,7 +5,7 @@ class Itly
         attr_reader type: ::String
         attr_reader date_sent: ::String
         attr_reader event_id: ::String
-        attr_reader event_chema_version: ::String
+        attr_reader event_schema_version: ::String
         attr_reader event_name: ::String
         attr_reader properties: propertiesHash
         attr_reader valid: bool?
