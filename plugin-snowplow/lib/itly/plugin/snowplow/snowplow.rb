@@ -14,7 +14,7 @@ class Itly
       ##
       # Instantiate a new Plugin::Snowplow
       #
-      # @param [SnowplowOptions] options: the options. See +SnowplowOptions+
+      # @param [Itly::Plugin::Snowplow::Options] options: the options. See +Itly::Plugin::Snowplow::Options+
       #
       def initialize(options:)
         super()
