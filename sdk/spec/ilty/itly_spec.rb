@@ -436,6 +436,12 @@ describe 'Itly' do
       expected_log_info: 'flush()'
   end
 
+  describe '#shutdown' do
+    include_examples 'runs on plugins',
+      method: :shutdown, no_post_method: true,
+      expected_log_info: 'shutdown()'
+  end
+
   describe '#reset' do
     include_examples 'runs on plugins',
       method: :reset, no_post_method: true,

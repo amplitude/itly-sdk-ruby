@@ -209,6 +209,22 @@ class Itly
   end
 
   ##
+  # Send +shutdown+ to your plugins.
+  #
+  # Call +shutdown+ on all plugins.
+  #
+  def shutdown
+    # Run only if the object is enabled and was initialized
+    return unless was_initialized? && enabled?
+
+    # Log
+    logger&.info 'shutdown()'
+
+    # Run on all plugins
+    run_on_plugins(&:shutdown)
+  end
+
+  ##
   # Reset the SDK's (and all plugins') state. This method is usually called when a user logs out.
   #
   # Call +reset+ on all plugins.

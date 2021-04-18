@@ -65,6 +65,11 @@ class Itly
     def flush; end
 
     ##
+    # Force flushing data
+    #
+    def shutdown; end
+
+    ##
     # Reset the SDK's (and all plugins') state. This method is usually called when a user logs out.
     #
     def reset; end

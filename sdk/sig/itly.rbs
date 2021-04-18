@@ -11,6 +11,7 @@ class Itly
   def track: (user_id: ::String user_id, event: ::Itly::Event event) -> void
   def alias: (user_id: ::String user_id, previous_id: ::String previous_id) -> void
   def flush: () -> void
+  def shutdown: () -> void
   def reset: () -> void
   def validate: (event: ::Itly::Event event) -> ::Array[::Itly::ValidationResponse]?
 
