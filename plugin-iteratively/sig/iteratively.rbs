@@ -18,7 +18,7 @@ class Itly
 
       private
 
-      def initialize: (api_key: ::String api_key, options: ::Itly::Plugin::IterativelyOptions options) -> void
+      def initialize: (api_key: ::String api_key, options: ::Itly::Plugin::Iteratively::Options options) -> void
       def enabled?: () -> bool
       def client_track: (::String `type`, ::Itly::Event|propertiesHash event_or_properties, ::Array[::Itly::ValidationResponse]? validations) -> void
     end

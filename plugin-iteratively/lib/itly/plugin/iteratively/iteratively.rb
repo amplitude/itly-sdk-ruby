@@ -16,7 +16,7 @@ class Itly
       # Instantiate a new Plugin::Iteratively
       #
       # @param [String] api_key: specify the api key
-      # @param [IterativelyOptions] options: options object. See +IterativelyOptions+
+      # @param [Itly::Plugin::Iteratively::Options] options: options object. See +Itly::Plugin::Iteratively::Options+
       #
       def initialize(api_key:, options:)
         super()

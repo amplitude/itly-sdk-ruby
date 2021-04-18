@@ -5,8 +5,8 @@ if ENV['LOCAL_ITLY_GEM']
   $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 end
 
-require_relative 'plugin/iteratively/iteratively_options'
 require_relative 'plugin/iteratively/iteratively'
+require_relative 'plugin/iteratively/options'
 require_relative 'plugin/iteratively/track_type'
 require_relative 'plugin/iteratively/track_model'
 require_relative 'plugin/iteratively/client'

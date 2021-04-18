@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-describe Itly::Plugin::IterativelyOptions do
+describe Itly::Plugin::Iteratively::Options do
   include RspecLoggerHelpers
 
   it 'constants' do
-    expect(Itly::Plugin::IterativelyOptions::DEFAULT_URL).to eq('https://data-us-east1.iterative.ly/t')
+    expect(Itly::Plugin::Iteratively::Options::DEFAULT_URL).to eq('https://data-us-east1.iterative.ly/t')
   end
 
   describe 'instance attributes' do
-    let(:plugin_options) { Itly::Plugin::IterativelyOptions.new }
+    let(:plugin_options) { Itly::Plugin::Iteratively::Options.new }
 
     it 'can read' do
       %i[url disabled flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
@@ -27,7 +27,7 @@ describe Itly::Plugin::IterativelyOptions do
 
   describe '#initialize' do
     describe 'default values' do
-      let!(:plugin_options) { Itly::Plugin::IterativelyOptions.new }
+      let!(:plugin_options) { Itly::Plugin::Iteratively::Options.new }
 
       it do
         expect(plugin_options.instance_variable_get('@url')).to eq('https://data-us-east1.iterative.ly/t')
@@ -46,7 +46,7 @@ describe Itly::Plugin::IterativelyOptions do
 
     describe 'overwrite defaults' do
       let!(:plugin_options) do
-        Itly::Plugin::IterativelyOptions.new \
+        Itly::Plugin::Iteratively::Options.new \
           url: 'http://url', disabled: true,
           flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
           retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true,
@@ -72,7 +72,7 @@ describe Itly::Plugin::IterativelyOptions do
   describe '#with_overrides' do
     describe 'default' do
       let!(:plugin_options) do
-        Itly::Plugin::IterativelyOptions.new \
+        Itly::Plugin::Iteratively::Options.new \
           url: 'http://url', disabled: true,
           flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
           retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true,
@@ -104,7 +104,7 @@ describe Itly::Plugin::IterativelyOptions do
 
     describe 'without overriding' do
       let!(:plugin_options) do
-        Itly::Plugin::IterativelyOptions.new \
+        Itly::Plugin::Iteratively::Options.new \
           url: 'http://url', disabled: true,
           flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
           retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true,
