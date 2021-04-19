@@ -171,8 +171,7 @@ describe 'Itly' do
         method: :identify, pass_data_as: :properties,
         method_params: { user_id: '123',
                          properties: { data: '1', info: 'yes' },
-                         options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                       },
+                         options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
         expected_event_properties: { data: '1', info: 'yes' },
         expected_log_info: 'identify(user_id: 123, properties: {:data=>"1", :info=>"yes"})'
     end
@@ -183,8 +182,7 @@ describe 'Itly' do
           method: :identify, pass_data_as: :properties,
           method_params: { user_id: '123',
                            properties: { data: '1', info: 'yes' },
-                           options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                         },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
           validation_value: Itly::Options::Validation::DISABLED,
           expected_event_properties: { data: '1', info: 'yes' },
           expected_log_info: 'identify(user_id: 123, properties: {:data=>"1", :info=>"yes"})',
@@ -196,8 +194,7 @@ describe 'Itly' do
           method: :identify, pass_data_as: :properties,
           method_params: { user_id: '123',
                            properties: { data: '1', info: 'yes' },
-                           options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                         },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
           validation_value: Itly::Options::Validation::TRACK_INVALID,
           expected_event_properties: { data: '1', info: 'yes' },
           expected_log_info: 'identify(user_id: 123, properties: {:data=>"1", :info=>"yes"})',
@@ -209,8 +206,7 @@ describe 'Itly' do
           method: :identify, pass_data_as: :properties,
           method_params: { user_id: '123',
                            properties: { data: '1', info: 'yes' },
-                           options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                         },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
           validation_value: Itly::Options::Validation::ERROR_ON_INVALID,
           expected_event_properties: { data: '1', info: 'yes' },
           expected_log_info: 'identify(user_id: 123, properties: {:data=>"1", :info=>"yes"})',
@@ -266,8 +262,7 @@ describe 'Itly' do
         method_params: { user_id: '123',
                          group_id: '456',
                          properties: { data: '1', info: 'yes' },
-                         options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                       },
+                         options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
         expected_event_properties: { data: '1', info: 'yes' },
         expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>"1", :info=>"yes"})'
     end
@@ -279,8 +274,7 @@ describe 'Itly' do
           method_params: { user_id: '123',
                            group_id: '456',
                            properties: { data: '1', info: 'yes' },
-                           options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                         },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
           validation_value: Itly::Options::Validation::DISABLED,
           expected_event_properties: { data: '1', info: 'yes' },
           expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>"1", :info=>"yes"})',
@@ -293,8 +287,7 @@ describe 'Itly' do
           method_params: { user_id: '123',
                            group_id: '456',
                            properties: { data: '1', info: 'yes' },
-                           options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                         },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
           validation_value: Itly::Options::Validation::TRACK_INVALID,
           expected_event_properties: { data: '1', info: 'yes' },
           expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>"1", :info=>"yes"})',
@@ -307,8 +300,7 @@ describe 'Itly' do
           method_params: { user_id: '123',
                            group_id: '456',
                            properties: { data: '1', info: 'yes' },
-                           options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                         },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
           validation_value: Itly::Options::Validation::ERROR_ON_INVALID,
           expected_event_properties: { data: '1', info: 'yes' },
           expected_log_info: 'group(user_id: 123, group_id: 456, properties: {:data=>"1", :info=>"yes"})',
@@ -364,8 +356,7 @@ describe 'Itly' do
           method: :track, pass_data_as: :event,
           method_params: { user_id: '123',
                            event: Itly::Event.new(name: 'my_action', properties: { my: 'property' }),
-                           options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                         },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
           expected_validation_name: 'my_action',
           expected_event_properties: { my: 'property' },
           expected_log_info: 'track(user_id: 123, event: my_action, properties: {:my=>"property"})'
@@ -377,8 +368,7 @@ describe 'Itly' do
             method: :track, pass_data_as: :event,
             method_params: { user_id: '123',
                              event: Itly::Event.new(name: 'my_action', properties: { my: 'property' }),
-                             options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                           },
+                             options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
             validation_value: Itly::Options::Validation::DISABLED,
             expected_validation_name: 'my_action',
             expected_event_properties: { my: 'property' },
@@ -392,8 +382,7 @@ describe 'Itly' do
             method: :track, pass_data_as: :event,
             method_params: { user_id: '123',
                              event: Itly::Event.new(name: 'my_action', properties: { my: 'property' }),
-                             options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                           },
+                             options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
             validation_value: Itly::Options::Validation::TRACK_INVALID,
             expected_validation_name: 'my_action',
             expected_event_properties: { my: 'property' },
@@ -406,8 +395,7 @@ describe 'Itly' do
             method: :track, pass_data_as: :event,
             method_params: { user_id: '123',
                              event: Itly::Event.new(name: 'my_action', properties: { my: 'property' }),
-                             options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                           },
+                             options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
             validation_value: Itly::Options::Validation::ERROR_ON_INVALID,
             expected_validation_name: 'my_action',
             expected_event_properties: { my: 'property' },
@@ -424,8 +412,7 @@ describe 'Itly' do
         method: :track, pass_data_as: :event,
         method_params: { user_id: '123',
                          event: Itly::Event.new(name: 'my_action', properties: { my: 'property' }),
-                         options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                       },
+                         options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
         context_properties: { context_data: 'ABC' },
         expected_validation_name: 'my_action',
         expected_event_properties: { my: 'property' },
@@ -463,8 +450,7 @@ describe 'Itly' do
       method: :alias,
       method_params: { user_id: '123',
                        previous_id: '456',
-                       options: {'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0')}
-                     },
+                       options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
       expected_log_info: 'alias(user_id: 123, previous_id: 456)'
   end
 
@@ -583,7 +569,7 @@ describe 'Itly' do
     let!(:plugin_a) { FakePlugin0.new }
     let!(:plugin_b) { FakePlugin1.new }
     let!(:plugin_c) { FakePlugin2.new }
-    let!(:event) { Itly::Event.new name: 'Test', plugins: {fake_plugin0: true, fake_plugin2: false} }
+    let!(:event) { Itly::Event.new name: 'Test', plugins: { fake_plugin0: true, fake_plugin2: false } }
     let!(:context) { Itly::Event.new name: 'context', properties: { data: 'for_context' } }
     let!(:itly) { Itly.new }
 

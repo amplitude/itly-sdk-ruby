@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AcceptancePlugin < Itly::Plugin
   def load(options:)
     super

@@ -54,9 +54,9 @@ shared_examples 'validate and run on plugins' do |
   let(:expected_data_to_plugin) do
     case pass_data_as
     when :event
-      method_params.reject{ |k, _| k == :options }.merge event: expected_merged_event
+      method_params.reject { |k, _| k == :options }.merge event: expected_merged_event
     when :properties
-      method_params.reject{ |k, _| k == :options }.merge properties: expected_merged_event.properties
+      method_params.reject { |k, _| k == :options }.merge properties: expected_merged_event.properties
     end
   end
 

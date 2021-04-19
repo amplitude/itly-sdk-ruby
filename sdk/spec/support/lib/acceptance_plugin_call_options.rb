@@ -4,6 +4,7 @@ class AcceptancePluginCallOptions < Itly::PluginCallOptions
   attr_accessor :specific
 
   def initialize(specific:)
+    super()
     @specific = specific
   end
 

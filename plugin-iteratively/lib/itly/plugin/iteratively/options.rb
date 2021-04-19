@@ -57,12 +57,12 @@ class Itly
         ##
         # Returns a copy of this Options with any provided arguments used as overrides
         #
-        # rubocop:disable Metrics/ParameterLists
+        # rubocop:disable Metrics/ParameterLists, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         def with_overrides(
           url: nil, disabled: nil, flush_queue_size: nil, batch_size: nil, flush_interval_ms: nil,
           max_retries: nil, retry_delay_min: nil, retry_delay_max: nil, omit_values: nil, branch: nil, version: nil
         )
-          return Itly::Plugin::Iteratively::Options.new(
+          Itly::Plugin::Iteratively::Options.new(
             url: url.nil? ? @url : url,
             disabled: disabled.nil? ? @disabled : disabled,
             flush_queue_size: flush_queue_size.nil? ? @flush_queue_size : flush_queue_size,
@@ -73,10 +73,10 @@ class Itly
             retry_delay_max: retry_delay_max.nil? ? @retry_delay_max : retry_delay_max,
             omit_values: omit_values.nil? ? @omit_values : omit_values,
             branch: branch.nil? ? @branch : branch,
-            version: version.nil? ? @version : version,
+            version: version.nil? ? @version : version
           )
         end
-        # rubocop:enable Metrics/ParameterLists
+        # rubocop:enable Metrics/ParameterLists, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       end
     end
   end

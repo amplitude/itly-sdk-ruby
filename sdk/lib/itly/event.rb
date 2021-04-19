@@ -28,7 +28,7 @@ class Itly
       @properties = properties
       @id = id
       @version = version
-      @plugins = plugins.transform_keys{ |k| k.to_s }
+      @plugins = plugins.transform_keys(&:to_s)
     end
 
     ##

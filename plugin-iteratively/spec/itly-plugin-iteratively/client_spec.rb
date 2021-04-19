@@ -12,7 +12,7 @@ describe Itly::Plugin::Iteratively::Client do
   end
 
   describe 'instance attributes' do
-    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values }
+    let(:client) { Itly::Plugin::Iteratively::Client.new(**client_default_values) }
 
     it 'can read' do
       %i[api_key url logger flush_queue_size batch_size flush_interval_ms max_retries retry_delay_min
@@ -31,7 +31,7 @@ describe Itly::Plugin::Iteratively::Client do
 
   describe '#initialize' do
     let(:logger) { ::Logger.new '/dev/null' }
-    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values.merge(logger: logger) }
+    let(:client) { Itly::Plugin::Iteratively::Client.new(**client_default_values.merge(logger: logger)) }
 
     it 'instance variables' do
       expect(client.instance_variable_get('@buffer')).to be_a_kind_of(Concurrent::Array)
@@ -69,7 +69,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:validation1) { Itly::ValidationResponse.new valid: true, plugin_id: 'id1', message: 'Msg1' }
     let(:validation2) { Itly::ValidationResponse.new valid: false, plugin_id: 'id2', message: 'Msg2' }
 
-    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values.merge(flush_queue_size: 2) }
+    let(:client) { Itly::Plugin::Iteratively::Client.new(**client_default_values.merge(flush_queue_size: 2)) }
 
     describe 'enqueue models' do
       before do
@@ -156,7 +156,7 @@ describe Itly::Plugin::Iteratively::Client do
     let(:logger) { ::Logger.new logs }
     let(:batch_size) { 5 }
     let(:client) do
-      Itly::Plugin::Iteratively::Client.new **client_default_values.merge(logger: logger, batch_size: batch_size)
+      Itly::Plugin::Iteratively::Client.new(**client_default_values.merge(logger: logger, batch_size: batch_size))
     end
 
     let(:buffer) { client.instance_variable_get '@buffer' }
@@ -299,7 +299,7 @@ describe Itly::Plugin::Iteratively::Client do
   end
 
   describe '#shutdown' do
-    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values }
+    let(:client) { Itly::Plugin::Iteratively::Client.new(**client_default_values) }
 
     describe 'default' do
       before do
@@ -363,7 +363,7 @@ describe Itly::Plugin::Iteratively::Client do
 
   describe '#buffer_full?' do
     let(:event) { Itly::Event.new name: 'event', properties: { some: 'data' } }
-    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values.merge(flush_queue_size: 2) }
+    let(:client) { Itly::Plugin::Iteratively::Client.new(**client_default_values.merge(flush_queue_size: 2)) }
 
     before do
       allow(client).to receive(:flush)
@@ -414,7 +414,7 @@ describe Itly::Plugin::Iteratively::Client do
 
     let(:logs) { StringIO.new }
     let(:logger) { ::Logger.new logs }
-    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values.merge(logger: logger) }
+    let(:client) { Itly::Plugin::Iteratively::Client.new(**client_default_values.merge(logger: logger)) }
 
     let(:expected_model_json) do
       {
@@ -427,9 +427,9 @@ describe Itly::Plugin::Iteratively::Client do
             'eventId' => 'id123',
             'eventSchemaVersion' => '12',
             'eventName' => 'test_event',
-            'properties' => {'data' => 'value'},
+            'properties' => { 'data' => 'value' },
             'valid' => false,
-            'validation' => {'details' => 'Validation Msg'}
+            'validation' => { 'details' => 'Validation Msg' }
           }
         ]
       }.to_json
@@ -519,7 +519,7 @@ describe Itly::Plugin::Iteratively::Client do
   end
 
   describe '#runner_complete?' do
-    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values }
+    let(:client) { Itly::Plugin::Iteratively::Client.new(**client_default_values) }
 
     before do
       client.instance_variable_set '@runner', runner
@@ -552,8 +552,9 @@ describe Itly::Plugin::Iteratively::Client do
 
   describe '#delay_before_next_try' do
     let(:client) do
-      Itly::Plugin::Iteratively::Client.new **client_default_values
-        .merge(retry_delay_min: 10.0, retry_delay_max: 3600.0, max_retries: 25)
+      Itly::Plugin::Iteratively::Client.new(
+        **client_default_values.merge(retry_delay_min: 10.0, retry_delay_max: 3600.0, max_retries: 25)
+      )
     end
 
     it 'min' do
@@ -581,7 +582,7 @@ describe Itly::Plugin::Iteratively::Client do
   end
 
   describe 'start_scheduler' do
-    let(:client) { Itly::Plugin::Iteratively::Client.new **client_default_values }
+    let(:client) { Itly::Plugin::Iteratively::Client.new(**client_default_values) }
 
     before do
       # Start

@@ -17,7 +17,7 @@ describe Itly::Event do
     describe 'with params' do
       let(:event) do
         Itly::Event.new \
-          name: 'the_event', properties: { a: 'b' }, id: '123', version: '2.1.6', plugins: {plugin_a: false}
+          name: 'the_event', properties: { a: 'b' }, id: '123', version: '2.1.6', plugins: { plugin_a: false }
       end
 
       it do

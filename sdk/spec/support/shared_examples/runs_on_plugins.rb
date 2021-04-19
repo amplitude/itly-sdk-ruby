@@ -27,10 +27,15 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
 
       # Plugin targetted method and post method with params
       if method_params
-        expected_data_to_plugin = method_params.reject{ |k, _| k == :options }
+        expected_data_to_plugin = method_params.reject { |k, _| k == :options }
 
-        expect(plugin_a).to receive(method).with(expected_data_to_plugin.merge(options: FakeCallOptions.new(data: 'for plugin 0')))
-        expect(plugin_b).to receive(method).with(expected_data_to_plugin.merge(options: nil))
+        expect(plugin_a).to receive(method).with(
+          expected_data_to_plugin.merge(options: FakeCallOptions.new(data: 'for plugin 0'))
+        )
+        expect(plugin_b).to receive(method).with(
+          expected_data_to_plugin.merge(options: nil)
+        )
+
         unless no_post_method
           expect(plugin_b).to receive(:"post_#{method}").with(expected_data_to_plugin)
           expect(plugin_a).to receive(:"post_#{method}").with(expected_data_to_plugin)
@@ -40,6 +45,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
       else
         expect(plugin_a).to receive(method).with(no_args)
         expect(plugin_b).to receive(method).with(no_args)
+
         unless no_post_method
           expect(plugin_a).to receive(:"post_#{method}").with(no_args)
           expect(plugin_b).to receive(:"post_#{method}").with(no_args)

@@ -188,7 +188,7 @@ class Itly
   # @param [String] previous_id: The ID the user has been identified by so far.
   # @param [Hash] options: plugin specific option. The keys must correspond
   #   to a plugin id, and the values will be passed only to the plugin identified by the key.
-  #t
+  #
   def alias(user_id:, previous_id:, options: {})
     # Run only if the object is enabled and was initialized
     return unless was_initialized? && enabled?
@@ -288,9 +288,7 @@ class Itly
 
     if is_valid || @options.validation == Itly::Options::Validation::TRACK_INVALID
       run_on_plugins do |plugin|
-        unless event.plugins[plugin.id].is_a?(FalseClass)
-          action.call(plugin, event)
-        end
+        action.call(plugin, event) unless event.plugins[plugin.id].is_a?(FalseClass)
       end
     end
 
@@ -299,9 +297,7 @@ class Itly
 
     # Call the post_action on all plugins
     run_on_plugins do |plugin|
-      unless event.plugins[plugin.id].is_a?(FalseClass)
-        post_action.call(plugin, event, validations)
-      end
+      post_action.call(plugin, event, validations) unless event.plugins[plugin.id].is_a?(FalseClass)
     end
 
     # Throw an exception if requested

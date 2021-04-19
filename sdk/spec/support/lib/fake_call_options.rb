@@ -4,6 +4,7 @@ class FakeCallOptions < Itly::PluginCallOptions
   attr_accessor :data
 
   def initialize(data:)
+    super()
     @data = data
   end
 
@@ -12,6 +13,6 @@ class FakeCallOptions < Itly::PluginCallOptions
   end
 
   def ==(other)
-    other.class == self.class && other.data == self.data
+    other.class == self.class && other.data == data
   end
 end
