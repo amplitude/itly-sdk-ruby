@@ -30,6 +30,7 @@ class Itly
       # @param [Itly::PluginOptions] options: plugins options
       #
       def load(options:)
+        super
         # Get options
         @logger = options.logger
 
@@ -46,12 +47,14 @@ class Itly
       #
       # @param [String] user_id: the id of the user in your application
       # @param [Hash] properties: the properties containing user's traits to pass to your application
+      # @param [Itly::Plugin::Amplitude::IdentifyOptions] options: the plugin specific options
       #
-      def identify(user_id:, properties:)
+      def identify(user_id:, properties:, options: nil)
+        super
         return unless enabled?
 
         # Log
-        logger&.info "#{id}: identify(user_id: #{user_id}, properties: #{properties})"
+        logger&.info "#{id}: identify(user_id: #{user_id}, properties: #{properties}, options: #{options})"
 
         # Send through the client
         call_end_point do
@@ -66,12 +69,15 @@ class Itly
       #
       # @param [String] user_id: the id of the user in your application
       # @param [Event] event: the Event object to pass to your application
+      # @param [Itly::Plugin::Amplitude::TrackOptions] options: the plugin specific options
       #
-      def track(user_id:, event:)
+      def track(user_id:, event:, options: nil)
+        super
         return unless enabled?
 
         # Log
-        logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
+        logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties}, "\
+          "options: #{options})"
 
         # Send through the client
         call_end_point do

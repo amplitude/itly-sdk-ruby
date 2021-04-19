@@ -114,7 +114,8 @@ describe Itly::Plugin::Amplitude do
             ['info', 'plugin-amplitude: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-            ['info', 'plugin-amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})']
+            ['info', 'plugin-amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+                     'options: )']
           ]
         end
       end
@@ -156,7 +157,8 @@ describe Itly::Plugin::Amplitude do
               ['info', 'plugin-amplitude: load()'],
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-              ['info', 'plugin-amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
+              ['info', 'plugin-amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+                       'options: )'],
               ['error', 'Itly Error in Itly::Plugin::Amplitude. Itly::RemoteError: The remote end-point returned an '\
                         'error. Response status: 500. Raw body: wrong params']
             ]
@@ -213,7 +215,8 @@ describe Itly::Plugin::Amplitude do
             ['info', 'plugin-amplitude: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-            ['info', 'plugin-amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})']
+            ['info', 'plugin-amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+                     'options: )']
           ]
         end
       end
@@ -242,7 +245,7 @@ describe Itly::Plugin::Amplitude do
             ['info', 'validate(event: #<Itly::Event: name: context, properties: {:app_version=>"1.2.3"}>)'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
             ['info', 'plugin-amplitude: track(user_id: user_123, event: custom_event, properties: '\
-                    '{:view=>"video", :app_version=>"1.2.3"})']
+                    '{:view=>"video", :app_version=>"1.2.3"}, options: )']
           ]
         end
       end
@@ -290,7 +293,8 @@ describe Itly::Plugin::Amplitude do
               ['info', 'plugin-amplitude: load()'],
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-              ['info', 'plugin-amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+              ['info', 'plugin-amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+                       'options: )'],
               ['error', 'Itly Error in Itly::Plugin::Amplitude. Itly::RemoteError: The remote end-point returned an '\
                         'error. Response status: 500. Raw body: wrong params']
             ]

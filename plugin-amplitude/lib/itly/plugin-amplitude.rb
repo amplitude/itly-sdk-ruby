@@ -6,4 +6,5 @@ if ENV['LOCAL_ITLY_GEM']
 end
 
 require_relative 'plugin/amplitude/amplitude'
+require_relative 'plugin/amplitude/call_options'
 require_relative 'plugin/amplitude/version'
