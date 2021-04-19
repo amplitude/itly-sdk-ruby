@@ -1,0 +1,17 @@
+class Itly
+  class Plugin
+    class Mixpanel
+      class CallOptions < PluginCallOptions
+      end
+
+      class IdentifyOptions < CallOptions
+      end
+
+      class TrackOptions < CallOptions
+      end
+
+      class AliasOptions < CallOptions
+      end
+    end
+  end
+end

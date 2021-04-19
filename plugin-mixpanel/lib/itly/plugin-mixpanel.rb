@@ -6,5 +6,6 @@ if ENV['LOCAL_ITLY_GEM']
 end
 
 require_relative 'plugin/mixpanel/mixpanel'
+require_relative 'plugin/mixpanel/call_options'
 require_relative 'plugin/mixpanel/error_handler'
 require_relative 'plugin/mixpanel/version'

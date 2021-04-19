@@ -158,7 +158,8 @@ describe Itly::Plugin::Mixpanel do
             ['info', 'plugin-mixpanel: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-            ['info', 'plugin-mixpanel: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})']
+            ['info', 'plugin-mixpanel: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+                     'options: )']
           ]
         end
       end
@@ -209,7 +210,8 @@ describe Itly::Plugin::Mixpanel do
               ['info', 'plugin-mixpanel: load()'],
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-              ['info', 'plugin-mixpanel: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
+              ['info', 'plugin-mixpanel: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+                       'options: )'],
               ['error', 'Itly Error in Itly::Plugin::Mixpanel. RuntimeError: Internal error']
             ]
           end
@@ -262,7 +264,8 @@ describe Itly::Plugin::Mixpanel do
             ['info', 'plugin-mixpanel: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-            ['info', 'plugin-mixpanel: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})']
+            ['info', 'plugin-mixpanel: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+                     'options: )']
           ]
         end
       end
@@ -313,7 +316,8 @@ describe Itly::Plugin::Mixpanel do
               ['info', 'plugin-mixpanel: load()'],
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-              ['info', 'plugin-mixpanel: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+              ['info', 'plugin-mixpanel: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+                       'options: )'],
               ['error', 'Itly Error in Itly::Plugin::Mixpanel. RuntimeError: Internal error']
             ]
           end
@@ -364,7 +368,7 @@ describe Itly::Plugin::Mixpanel do
             ['info', 'load()'],
             ['info', 'plugin-mixpanel: load()'],
             ['info', 'alias(user_id: user_123, previous_id: old_user)'],
-            ['info', 'plugin-mixpanel: alias(user_id: user_123, previous_id: old_user)']
+            ['info', 'plugin-mixpanel: alias(user_id: user_123, previous_id: old_user, options: )']
           ]
         end
       end
@@ -414,7 +418,7 @@ describe Itly::Plugin::Mixpanel do
               ['info', 'load()'],
               ['info', 'plugin-mixpanel: load()'],
               ['info', 'alias(user_id: user_123, previous_id: old_user)'],
-              ['info', 'plugin-mixpanel: alias(user_id: user_123, previous_id: old_user)'],
+              ['info', 'plugin-mixpanel: alias(user_id: user_123, previous_id: old_user, options: )'],
               ['error', 'Itly Error in Itly::Plugin::Mixpanel. RuntimeError: Internal error']
             ]
           end
