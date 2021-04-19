@@ -31,6 +31,7 @@ class Itly
       # @param [Itly::PluginOptions] options: plugin options
       #
       def load(options:)
+        super
         # Get options
         @logger = options.logger
 
@@ -64,12 +65,14 @@ class Itly
       #
       # @param [String] user_id: the id of the user in your application
       # @param [Hash] properties: the properties containing user's traits to pass to your application
+      # @param [Itly::Plugin::Segment::IdentifyOptions] options: the plugin specific options
       #
-      def identify(user_id:, properties:)
+      def identify(user_id:, properties:, options: nil)
+        super
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: identify(user_id: #{user_id}, properties: #{properties})"
+        @logger&.info "#{id}: identify(user_id: #{user_id}, properties: #{properties}, options: #{options})"
 
         # Send through the client
         @client.identify user_id: user_id, traits: properties.dup
@@ -83,12 +86,14 @@ class Itly
       # @param [String] user_id: the id of the user in your application
       # @param [String] group_id: the id of the group in your application
       # @param [Hash] properties: the properties to pass to your application
+      # @param [Itly::Plugin::Segment::GroupOptions] options: the plugin specific options
       #
-      def group(user_id:, group_id:, properties:)
+      def group(user_id:, group_id:, properties:, options: nil)
+        super
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties})"
+        @logger&.info "#{id}: group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties}, options: #{options})"
 
         # Send through the client
         @client.group user_id: user_id, group_id: group_id, traits: properties.dup
@@ -101,12 +106,14 @@ class Itly
       #
       # @param [String] user_id: the id of the user in your application
       # @param [Event] event: the Event object to pass to your application
+      # @param [Itly::Plugin::Segment::TrackOptions] options: the plugin specific options
       #
-      def track(user_id:, event:)
+      def track(user_id:, event:, options: nil)
+        super
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
+        @logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties}, options: #{options})"
 
         # Send through the client
         @client.track user_id: user_id, event: event.name, properties: event.properties.dup
@@ -121,12 +128,14 @@ class Itly
       #   typically the user's database ID (as opposed to an anonymous ID), or their updated ID
       #   (for example, if the ID is an email address which the user just updated).
       # @param [String] previous_id: The ID the user has been identified by so far.
+      # @param [Itly::Plugin::Segment::AliasOptions] options: the plugin specific options
       #
-      def alias(user_id:, previous_id:)
+      def alias(user_id:, previous_id:, options: nil)
+        super
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: alias(user_id: #{user_id}, previous_id: #{previous_id})"
+        @logger&.info "#{id}: alias(user_id: #{user_id}, previous_id: #{previous_id}, options: #{options})"
 
         # Send through the client
         @client.alias user_id: user_id, previous_id: previous_id

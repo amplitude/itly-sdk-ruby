@@ -7,10 +7,10 @@ class Itly
       attr_reader disabled: bool
 
       def load: (options: ::Itly::PluginOptions options) -> void
-      def identify: (user_id: ::String user_id, properties: propertiesHash properties) -> void
-      def group: (user_id: ::String user_id, group_id: ::String group_id, properties: propertiesHash properties) -> void
-      def track: (user_id: ::String user_id, event: ::Itly::Event event) -> void
-      def alias: (user_id: ::String user_id, previous_id: ::String previous_id) -> void
+      def identify: (user_id: ::String user_id, properties: propertiesHash properties, ?options: ::Itly::Plugin::Segment::IdentifyOptions? options) -> void
+      def group: (user_id: ::String user_id, group_id: ::String group_id, properties: propertiesHash properties, ?options: ::Itly::Plugin::Segment::GroupOptions? options) -> void
+      def track: (user_id: ::String user_id, event: ::Itly::Event event, ?options: ::Itly::Plugin::Segment::TrackOptions? options) -> void
+      def alias: (user_id: ::String user_id, previous_id: ::String previous_id, ?options: ::Itly::Plugin::Segment::AliasOptions? options) -> void
 
       private
 

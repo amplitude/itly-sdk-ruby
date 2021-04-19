@@ -1,0 +1,20 @@
+class Itly
+  class Plugin
+    class Segment
+      class CallOptions < PluginCallOptions
+      end
+
+      class IdentifyOptions < CallOptions
+      end
+
+      class GroupOptions < CallOptions
+      end
+
+      class TrackOptions < CallOptions
+      end
+
+      class AliasOptions < CallOptions
+      end
+    end
+  end
+end

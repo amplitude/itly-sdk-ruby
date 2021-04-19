@@ -6,4 +6,5 @@ if ENV['LOCAL_ITLY_GEM']
 end
 
 require_relative 'plugin/segment/segment'
+require_relative 'plugin/segment/call_options'
 require_relative 'plugin/segment/version'
