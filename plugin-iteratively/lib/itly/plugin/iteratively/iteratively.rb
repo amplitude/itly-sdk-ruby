@@ -45,6 +45,7 @@ class Itly
       # @param [Itly::PluginOptions] options: plugin options
       #
       def load(options:)
+        super
         # Get options
         @logger = options.logger
 
@@ -65,6 +66,7 @@ class Itly
       end
 
       def post_identify(user_id:, properties:, validation_results:)
+        super
         return unless enabled?
 
         # Log
@@ -75,6 +77,7 @@ class Itly
       end
 
       def post_group(user_id:, group_id:, properties:, validation_results:)
+        super
         return unless enabled?
 
         # Log
@@ -85,6 +88,7 @@ class Itly
       end
 
       def post_track(user_id:, event:, validation_results:)
+        super
         return unless enabled?
 
         # Log
