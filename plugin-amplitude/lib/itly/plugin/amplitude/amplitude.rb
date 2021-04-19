@@ -57,7 +57,7 @@ class Itly
         logger&.info "#{id}: identify(user_id: #{user_id}, properties: #{properties}, options: #{options})"
 
         # Send through the client
-        call_end_point do
+        call_end_point(options&.callback) do
           ::AmplitudeAPI.send_identify user_id, nil, properties
         end
       end
@@ -80,7 +80,7 @@ class Itly
           "options: #{options})"
 
         # Send through the client
-        call_end_point do
+        call_end_point(options&.callback) do
           ::AmplitudeAPI.send_event event.name, user_id, nil, event_properties: event.properties
         end
       end
@@ -91,12 +91,17 @@ class Itly
         !@disabled
       end
 
-      def call_end_point
+      def call_end_point(callback)
         raise 'You need to give a block' unless block_given?
 
         # Call remote endpoint (Note: the AmplitudeAPI is using Faraday)
         response = yield
-        return if response.status == 200
+
+        # yield to the callback passed in to options
+        callback&.call(response.status, response.body)
+
+        # Return in case of success
+        return if response.status >= 200 && response.status < 300
 
         # Raise in case of error
         message = "The remote end-point returned an error. Response status: #{response.status}. "\

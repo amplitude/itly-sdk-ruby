@@ -6,26 +6,30 @@ class Itly
       ##
       # Amplitude specific plugin options class
       #
-      # rubocop:disable Lint/EmptyClass
       class CallOptions < Itly::PluginCallOptions
+        attr_reader :callback
+
+        def initialize(callback: nil)
+          @callback = callback
+        end
+
+        def to_s
+          class_name = self.class.name.split('::').last
+          "#<Amplitude::#{class_name} callback: #{callback.nil? ? 'nil' : 'provided'}>"
+        end
       end
-      # rubocop:enable Lint/EmptyClass
 
       ##
       # Amplitude specific plugin options class for calls to +identify+
       #
-      # rubocop:disable Lint/EmptyClass
       class IdentifyOptions < CallOptions
       end
-      # rubocop:enable Lint/EmptyClass
 
       ##
-      # Amplitude specific plugin options class for calls to +identify+
+      # Amplitude specific plugin options class for calls to +track+
       #
-      # rubocop:disable Lint/EmptyClass
       class TrackOptions < CallOptions
       end
-      # rubocop:enable Lint/EmptyClass
     end
   end
 end

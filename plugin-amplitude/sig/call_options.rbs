@@ -2,6 +2,13 @@ class Itly
   class Plugin
     class Amplitude
       class CallOptions < PluginCallOptions
+        attr_reader callback: (^(::Integer?, ::String?) -> void)?
+
+        def to_s: () -> ::String
+
+        private
+
+        def initialize: (?callback: (^(::Integer?, ::String?) -> void)? callback) -> void
       end
 
       class IdentifyOptions < CallOptions

@@ -14,7 +14,7 @@ class Itly
 
       def initialize: (api_key: ::String api_key, ?disabled: bool disabled) -> void
       def enabled?: () -> bool
-      def call_end_point: () ?{ () -> Faraday::Response } -> void
+      def call_end_point: ((^(::Integer?, ::String?) -> void)? callback) ?{ () -> Faraday::Response } -> void
     end
   end
 end

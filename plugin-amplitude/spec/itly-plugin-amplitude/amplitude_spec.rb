@@ -120,6 +120,38 @@ describe Itly::Plugin::Amplitude do
         end
       end
 
+      context 'with callback' do
+        let(:response) { double 'response', status: 201, body: 'raw data' }
+        let(:logger) { ::Logger.new logs }
+
+        before do
+          itly.load do |options|
+            options.plugins = [plugin]
+            options.logger = logger
+          end
+
+          itly.identify(
+            user_id: 'user_123', properties: { version: '4', some: 'data' },
+            options: {'amplitude' => Itly::Plugin::Amplitude::IdentifyOptions.new(
+              callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+            )}
+          )
+        end
+
+        it do
+          expect_log_lines_to_equal [
+            ['info', 'load()'],
+            ['info', 'plugin-amplitude: load()'],
+            ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
+            ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
+            ['info', 'plugin-amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+                     'options: #<Amplitude::IdentifyOptions callback: provided>)'],
+            ['info', 'from-callback: code: 201 body: raw data']
+
+          ]
+        end
+      end
+
       context 'failure' do
         let(:response) { double 'response', status: 500, body: 'wrong params' }
 
@@ -217,6 +249,41 @@ describe Itly::Plugin::Amplitude do
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
             ['info', 'plugin-amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
                      'options: )']
+          ]
+        end
+      end
+
+      context 'with callback' do
+        let(:response) { double 'response', status: 201, body: 'raw data' }
+        let(:logger) { ::Logger.new logs }
+
+        before do
+          itly.load do |options|
+            options.plugins = [plugin]
+            options.logger = logger
+          end
+
+          expect(AmplitudeAPI).to receive(:send_event)
+            .with('custom_event', 'user_123', nil, event_properties: { view: 'video' })
+            .and_return(response)
+
+          itly.track(
+            user_id: 'user_123', event: event,
+            options: {'amplitude' => Itly::Plugin::Amplitude::TrackOptions.new(
+              callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+            )}
+          )
+        end
+
+        it do
+          expect_log_lines_to_equal [
+            ['info', 'load()'],
+            ['info', 'plugin-amplitude: load()'],
+            ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+            ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
+            ['info', 'plugin-amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+                     'options: #<Amplitude::TrackOptions callback: provided>)'],
+            ['info', 'from-callback: code: 201 body: raw data']
           ]
         end
       end
@@ -343,7 +410,7 @@ describe Itly::Plugin::Amplitude do
     let(:plugin) { Itly::Plugin::Amplitude.new api_key: 'abc123' }
 
     it 'no block given' do
-      expect { plugin.send :call_end_point }.to raise_error(RuntimeError, 'You need to give a block')
+      expect { plugin.send :call_end_point, nil }.to raise_error(RuntimeError, 'You need to give a block')
     end
 
     describe 'respond 200' do
@@ -351,7 +418,7 @@ describe Itly::Plugin::Amplitude do
 
       it do
         expect do
-          plugin.send(:call_end_point) { response }
+          plugin.send(:call_end_point, nil) { response }
         end.not_to raise_error
       end
     end
@@ -361,9 +428,27 @@ describe Itly::Plugin::Amplitude do
 
       it do
         expect do
-          plugin.send(:call_end_point) { response }
+          plugin.send(:call_end_point, nil) { response }
         end.to raise_error(Itly::RemoteError,
           'The remote end-point returned an error. Response status: 500. Raw body: remote message')
+      end
+    end
+
+    describe 'with a callback' do
+      let(:cb_tester) { double 'cb', tester: nil }
+      let(:response) { double 'response', status: 200, body: 'response from endpoint' }
+
+      before do
+        expect(cb_tester).to receive(:tester).with(200, 'response from endpoint')
+      end
+
+      it do
+        expect do
+          plugin.send(
+            :call_end_point,
+            -> (a, b) { cb_tester.tester a, b }
+          ) { response }
+        end.not_to raise_error
       end
     end
   end
