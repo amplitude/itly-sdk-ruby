@@ -1,0 +1,4 @@
+class Itly
+  class PluginCallOptions
+  end
+end

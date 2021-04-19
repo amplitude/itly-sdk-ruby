@@ -54,9 +54,9 @@ shared_examples 'validate and run on plugins' do |
   let(:expected_data_to_plugin) do
     case pass_data_as
     when :event
-      { event: expected_merged_event }
+      method_params.reject{ |k, _| k == :options }.merge event: expected_merged_event
     when :properties
-      { properties: expected_merged_event.properties }
+      method_params.reject{ |k, _| k == :options }.merge properties: expected_merged_event.properties
     end
   end
 
@@ -110,17 +110,29 @@ shared_examples 'validate and run on plugins' do |
     expect(plugin_a).not_to receive(:validate)
 
     # Plugin targetted method
-    expect(plugin_a).to receive(method).once.with(method_params.merge(expected_data_to_plugin)) if expect_to_call_action
+    if expect_to_call_action
+      expect(plugin_a).to receive(method).once.with(
+        expected_data_to_plugin.merge(options: FakeCallOptions.new(data: 'for plugin 0'))
+      )
+    end
     expect(plugin_a).not_to receive(method)
-    expect(plugin_b).to receive(method).once.with(method_params.merge(expected_data_to_plugin)) if expect_to_call_action
+
+    if expect_to_call_action
+      expect(plugin_b).to receive(method).once.with(
+        expected_data_to_plugin.merge(options: nil)
+      )
+    end
     expect(plugin_b).not_to receive(method)
 
     # Plugin targetted post method
-    expect(plugin_a).to receive(:"post_#{method}").once
-      .with(method_params.merge(expected_data_to_plugin).merge(validation_results: all_responses))
+    expect(plugin_a).to receive(:"post_#{method}").once.with(
+      expected_data_to_plugin.merge(validation_results: all_responses)
+    )
     expect(plugin_a).not_to receive(:"post_#{method}")
-    expect(plugin_b).to receive(:"post_#{method}").once
-      .with(method_params.merge(expected_data_to_plugin).merge(validation_results: all_responses))
+
+    expect(plugin_b).to receive(:"post_#{method}").once.with(
+      expected_data_to_plugin.merge(validation_results: all_responses)
+    )
     expect(plugin_b).not_to receive(:"post_#{method}")
   end
 

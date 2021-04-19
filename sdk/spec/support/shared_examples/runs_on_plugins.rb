@@ -25,20 +25,24 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
         expect(itly.options.logger).not_to receive(:info)
       end
 
-      # Plugin targetted method and post method
+      # Plugin targetted method and post method with params
       if method_params
-        expect(plugin_a).to receive(method).with(method_params)
-        expect(plugin_b).to receive(method).with(method_params)
+        expected_data_to_plugin = method_params.reject{ |k, _| k == :options }
+
+        expect(plugin_a).to receive(method).with(expected_data_to_plugin.merge(options: FakeCallOptions.new(data: 'for plugin 0')))
+        expect(plugin_b).to receive(method).with(expected_data_to_plugin.merge(options: nil))
         unless no_post_method
-          expect(plugin_a).to receive(:"post_#{method}").with(method_params)
-          expect(plugin_b).to receive(:"post_#{method}").with(method_params)
+          expect(plugin_b).to receive(:"post_#{method}").with(expected_data_to_plugin)
+          expect(plugin_a).to receive(:"post_#{method}").with(expected_data_to_plugin)
         end
+
+      # Plugin targetted method and post method without params
       else
-        expect(plugin_a).to receive(method)
-        expect(plugin_b).to receive(method)
+        expect(plugin_a).to receive(method).with(no_args)
+        expect(plugin_b).to receive(method).with(no_args)
         unless no_post_method
-          expect(plugin_a).to receive(:"post_#{method}")
-          expect(plugin_b).to receive(:"post_#{method}")
+          expect(plugin_a).to receive(:"post_#{method}").with(no_args)
+          expect(plugin_b).to receive(:"post_#{method}").with(no_args)
         end
       end
     end

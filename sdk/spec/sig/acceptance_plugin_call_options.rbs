@@ -1,0 +1,9 @@
+class AcceptancePluginCallOptions < ::Itly::PluginCallOptions
+  attr_accessor specific: ::String
+
+  def to_s: () -> ::String
+
+  private
+
+  def initialize: (specific: ::String specific) -> void
+end

@@ -67,8 +67,10 @@ class Itly
   #
   # @param [String] user_id: the id of the user in your application
   # @param [Hash] properties: the user's traits to pass to your application
+  # @param [Hash] options: plugin specific option. The keys must correspond
+  #   to a plugin id, and the values will be passed only to the plugin identified by the key.
   #
-  def identify(user_id:, properties:)
+  def identify(user_id:, properties:, options: {})
     # Run only if the object is enabled and was initialized
     return unless was_initialized? && enabled?
 
@@ -81,7 +83,7 @@ class Itly
     validate_and_send_to_plugins \
       event: event,
       action: ->(plugin, combined_event) {
-                plugin.identify user_id: user_id, properties: combined_event.properties
+                plugin.identify user_id: user_id, properties: combined_event.properties, options: options[plugin.id]
               },
       post_action: ->(plugin, combined_event, validation_results) {
                      plugin.post_identify user_id: user_id, properties: combined_event.properties,
@@ -106,8 +108,10 @@ class Itly
   # @param [String] user_id: the id of the user in your application
   # @param [String] group_id: the id of the group in your application
   # @param [Hash] properties: The list of properties to pass to your application
+  # @param [Hash] options: plugin specific option. The keys must correspond
+  #   to a plugin id, and the values will be passed only to the plugin identified by the key.
   #
-  def group(user_id:, group_id:, properties:)
+  def group(user_id:, group_id:, properties:, options: {})
     # Run only if the object is enabled and was initialized
     return unless was_initialized? && enabled?
 
@@ -120,7 +124,8 @@ class Itly
     validate_and_send_to_plugins \
       event: event,
       action: ->(plugin, combined_event) {
-                plugin.group user_id: user_id, group_id: group_id, properties: combined_event.properties
+                plugin.group user_id: user_id, group_id: group_id, properties: combined_event.properties,
+                             options: options[plugin.id]
               },
       post_action: ->(plugin, combined_event, validation_results) {
                      plugin.post_group user_id: user_id, group_id: group_id,
@@ -150,8 +155,10 @@ class Itly
   #
   # @param [String] user_id: the id of the user in your application
   # @param [Event] event: the Event object to pass to your application
+  # @param [Hash] options: plugin specific option. The keys must correspond
+  #   to a plugin id, and the values will be passed only to the plugin identified by the key.
   #
-  def track(user_id:, event:)
+  def track(user_id:, event:, options: {})
     # Run only if the object is enabled and was initialized
     return unless was_initialized? && enabled?
 
@@ -163,7 +170,7 @@ class Itly
       event: event,
       context: @context,
       action: ->(plugin, combined_event) {
-                plugin.track user_id: user_id, event: combined_event
+                plugin.track user_id: user_id, event: combined_event, options: options[plugin.id]
               },
       post_action: ->(plugin, combined_event, validation_results) {
                      plugin.post_track user_id: user_id, event: combined_event, validation_results: validation_results
@@ -179,8 +186,10 @@ class Itly
   #   typically the user's database ID (as opposed to an anonymous ID), or their updated ID
   #   (for example, if the ID is an email address which the user just updated).
   # @param [String] previous_id: The ID the user has been identified by so far.
-  #
-  def alias(user_id:, previous_id:)
+  # @param [Hash] options: plugin specific option. The keys must correspond
+  #   to a plugin id, and the values will be passed only to the plugin identified by the key.
+  #t
+  def alias(user_id:, previous_id:, options: {})
     # Run only if the object is enabled and was initialized
     return unless was_initialized? && enabled?
 
@@ -188,7 +197,7 @@ class Itly
     logger&.info "alias(user_id: #{user_id}, previous_id: #{previous_id})"
 
     # Run on all plugins
-    run_on_plugins { |plugin| plugin.alias user_id: user_id, previous_id: previous_id }
+    run_on_plugins { |plugin| plugin.alias user_id: user_id, previous_id: previous_id, options: options[plugin.id] }
     run_on_plugins { |plugin| plugin.post_alias user_id: user_id, previous_id: previous_id }
   end
 

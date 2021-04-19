@@ -1,70 +1,9 @@
 # frozen_string_literal: true
 
-# rubocop:disable Layout/LineLength
 describe 'integration' do
   include RspecIntegrationHelpers
 
   let(:logs) { StringIO.new }
-
-  before do
-    klass = Class.new(Itly::Plugin) do
-      def load(options:)
-        # Keep a reference to the logger, for test purpose
-        @logger = options.logger
-
-        @logger.debug '(spec) loaded'
-      end
-
-      def alias(user_id:, previous_id:)
-        @logger.debug "(spec) alias [#{user_id}, #{previous_id}]"
-      end
-
-      def post_alias(user_id:, previous_id:)
-        @logger.debug "(spec) post_alias [#{user_id}, #{previous_id}]"
-      end
-
-      def identify(user_id:, properties:)
-        @logger.debug "(spec) identify [#{user_id}, #{properties}]"
-      end
-
-      def post_identify(user_id:, properties:, validation_results:)
-        @logger.debug "(spec) post_identify [#{user_id}, #{properties}, [#{validation_results.collect(&:to_s).join ', '}]]"
-      end
-
-      def track(user_id:, event:)
-        @logger.debug "(spec) track [#{user_id}, #{event}]"
-      end
-
-      def post_track(user_id:, event:, validation_results:)
-        @logger.debug "(spec) post_track [#{user_id}, #{event}, [#{validation_results.collect(&:to_s).join ', '}]]"
-      end
-
-      def validate(event:)
-        case event.name
-        when 'identify'
-          if %w[admin user].include? event.properties[:access_level]
-            Itly::ValidationResponse.new valid: true, plugin_id: 'id_validation_id', message: 'All good'
-          else
-            Itly::ValidationResponse.new \
-              valid: false, plugin_id: 'id_validation_id',
-              message: 'Not a valid access level'
-          end
-        when 'user_signed_in'
-          if event.properties.key? :email
-            Itly::ValidationResponse.new valid: true, plugin_id: 'sign_validation_id'
-          else
-            Itly::ValidationResponse.new valid: false, plugin_id: 'sign_validation_id', message: 'Missing email'
-          end
-        end
-      end
-    end
-
-    Object.const_set 'AcceptancePlugin', klass
-  end
-
-  after do
-    Object.send :remove_const, 'AcceptancePlugin'
-  end
 
   describe 'call methods that do not require validation' do
     [[true, 'with context'], [false, 'without context']].each do |with_context, description|
@@ -77,13 +16,16 @@ describe 'integration' do
             itly_default_options options, logs
           end
 
-          itly.alias user_id: 'newID', previous_id: 'oldID'
+          itly.alias(
+            user_id: 'newID', previous_id: 'oldID',
+            options: {'acceptance_plugin' => AcceptancePluginCallOptions.new(specific: 'options for plugin')}
+          )
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
             ['debug', '(spec) loaded'],
             ['info', 'alias(user_id: newID, previous_id: oldID)'],
-            ['debug', '(spec) alias [newID, oldID]'],
+            ['debug', '(spec) alias [newID, oldID, #<AcceptancePluginCallOptions: options for plugin>]'],
             ['debug', '(spec) post_alias [newID, oldID]']
           ]
         end
@@ -117,14 +59,17 @@ describe 'integration' do
             itly_default_options options, logs
           end
 
-          itly.identify user_id: 'newID', properties: { access_level: 'admin' }
+          itly.identify(
+            user_id: 'newID', properties: { access_level: 'admin' },
+            options: {'acceptance_plugin' => AcceptancePluginCallOptions.new(specific: 'options for plugin')}
+          )
 
           expect_log_lines_to_equal [
             ['info', 'load()'],
             ['debug', '(spec) loaded'],
             ['info', 'identify(user_id: newID, properties: {:access_level=>"admin"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:access_level=>"admin"}>)'],
-            ['debug', '(spec) identify [newID, {:access_level=>"admin"}]'],
+            ['debug', '(spec) identify [newID, {:access_level=>"admin"}, #<AcceptancePluginCallOptions: options for plugin>]'],
             ['debug', '(spec) post_identify [newID, {:access_level=>"admin"}, '\
                       '[#<Itly::ValidationResponse: valid: true, plugin_id: id_validation_id, message: All good>]]']
           ]
@@ -169,7 +114,7 @@ describe 'integration' do
               ['debug', '(spec) loaded'],
               ['info', 'identify(user_id: newID, properties: {:access_level=>"employee"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:access_level=>"employee"}>)'],
-              ['debug', '(spec) identify [newID, {:access_level=>"employee"}]'],
+              ['debug', '(spec) identify [newID, {:access_level=>"employee"}, ]'],
               ['error', 'Validation error for "identify" in id_validation_id. Message: Not a valid access level'],
               ['debug', '(spec) post_identify [newID, {:access_level=>"employee"}, '\
                         '[#<Itly::ValidationResponse: valid: false, plugin_id: id_validation_id, message: Not a valid access level>]]']
@@ -184,7 +129,10 @@ describe 'integration' do
             end
 
             expect do
-              itly.identify user_id: 'newID', properties: { access_level: 'employee' }
+              itly.identify(
+                user_id: 'newID', properties: { access_level: 'employee' },
+                options: {'acceptance_plugin' => AcceptancePluginCallOptions.new(specific: 'options for plugin')}
+              )
             end.not_to raise_error
 
             expect_log_lines_to_equal [
@@ -192,7 +140,7 @@ describe 'integration' do
               ['debug', '(spec) loaded'],
               ['info', 'identify(user_id: newID, properties: {:access_level=>"employee"})'],
               ['debug',
-               '(spec) identify [newID, {:access_level=>"employee"}]'],
+               '(spec) identify [newID, {:access_level=>"employee"}, #<AcceptancePluginCallOptions: options for plugin>]'],
               ['debug',
                '(spec) post_identify [newID, {:access_level=>"employee"}, []]']
             ]
@@ -249,14 +197,14 @@ describe 'integration' do
           if with_context
             expected += [
               ['debug',
-               '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:email=>"user@mail.com", :version=>"1.2"}>]'],
+               '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:email=>"user@mail.com", :version=>"1.2"}>, ]'],
               ['debug', '(spec) post_track [userID, #<Itly::Event: name: user_signed_in, properties: {:email=>"user@mail.com", :version=>"1.2"}>, '\
                 '[#<Itly::ValidationResponse: valid: true, plugin_id: sign_validation_id, message: >]]']
             ]
           else
             expected += [
               ['debug',
-               '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:email=>"user@mail.com"}>]'],
+               '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:email=>"user@mail.com"}>, ]'],
               ['debug', '(spec) post_track [userID, #<Itly::Event: name: user_signed_in, properties: {:email=>"user@mail.com"}>, '\
                 '[#<Itly::ValidationResponse: valid: true, plugin_id: sign_validation_id, message: >]]']
             ]
@@ -340,10 +288,10 @@ describe 'integration' do
 
             if with_context
               expected << ['debug',
-                           '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:wrong_key=>"user@mail.com", :version=>"1.2"}>]']
+                           '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:wrong_key=>"user@mail.com", :version=>"1.2"}>, ]']
             else
               expected << ['debug',
-                           '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:wrong_key=>"user@mail.com"}>]']
+                           '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:wrong_key=>"user@mail.com"}>, ]']
             end
 
             expected << ['error', 'Validation error for "user_signed_in" in sign_validation_id. Message: Missing email']
@@ -386,14 +334,14 @@ describe 'integration' do
             if with_context
               expected += [
                 ['debug',
-                 '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:wrong_key=>"user@mail.com", :version=>"1.2"}>]'],
+                 '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:wrong_key=>"user@mail.com", :version=>"1.2"}>, ]'],
                 ['debug',
                  '(spec) post_track [userID, #<Itly::Event: name: user_signed_in, properties: {:wrong_key=>"user@mail.com", :version=>"1.2"}>, []]']
               ]
             else
               expected += [
                 ['debug',
-                 '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:wrong_key=>"user@mail.com"}>]'],
+                 '(spec) track [userID, #<Itly::Event: name: user_signed_in, properties: {:wrong_key=>"user@mail.com"}>, ]'],
                 ['debug',
                  '(spec) post_track [userID, #<Itly::Event: name: user_signed_in, properties: {:wrong_key=>"user@mail.com"}>, []]']
               ]
@@ -424,4 +372,3 @@ describe 'integration' do
     end
   end
 end
-# rubocop:enable Layout/LineLength
