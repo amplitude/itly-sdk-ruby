@@ -37,6 +37,7 @@ class Itly
       # @param [Itly::PluginOptions] options: plugin options
       #
       def load(options:)
+        super
         # Get options
         @logger = options.logger
 
@@ -57,6 +58,7 @@ class Itly
       # by the plugins or nil to indicate that there were no error
       #
       def validate(event:)
+        super
         return unless enabled?
 
         # Log
