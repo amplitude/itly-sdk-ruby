@@ -263,8 +263,8 @@ describe Itly::Plugin::Snowplow do
       end
 
       context 'with contexts' do
-        let!(:context1) { Itly::Plugin::Snowplow::Context.new schema: '123', data: {'cntx' => 1} }
-        let!(:context2) { Itly::Plugin::Snowplow::Context.new schema: '456', data: {'cntx' => 2} }
+        let!(:context1) { Itly::Plugin::Snowplow::Context.new schema: '123', data: { 'cntx' => 1 } }
+        let!(:context2) { Itly::Plugin::Snowplow::Context.new schema: '456', data: { 'cntx' => 2 } }
 
         let(:json2) { SnowplowTracker::SelfDescribingJson.new '123', 'cntx' => 1 }
         let(:json3) { SnowplowTracker::SelfDescribingJson.new '456', 'cntx' => 2 }
@@ -280,9 +280,9 @@ describe Itly::Plugin::Snowplow do
 
           itly.track(
             user_id: 'user_123', event: event,
-            options: {'snowplow' => Itly::Plugin::Snowplow::TrackOptions.new(
+            options: { 'snowplow' => Itly::Plugin::Snowplow::TrackOptions.new(
               contexts: [context1, context2]
-            )}
+            ) }
           )
         end
 

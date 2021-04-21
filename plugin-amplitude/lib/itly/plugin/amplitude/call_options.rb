@@ -10,6 +10,7 @@ class Itly
         attr_reader :callback
 
         def initialize(callback: nil)
+          super()
           @callback = callback
         end
 

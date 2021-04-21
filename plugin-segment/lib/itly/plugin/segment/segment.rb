@@ -75,11 +75,11 @@ class Itly
         @logger&.info "#{id}: identify(user_id: #{user_id}, properties: #{properties}, options: #{options})"
 
         # Send through the client
-        payload = {user_id: user_id, traits: properties.dup}
+        payload = { user_id: user_id, traits: properties.dup }
         payload[:integrations] = options.integrations unless options&.integrations.nil?
 
         call_end_point(options&.callback) do
-          @client.identify **payload
+          @client.identify(**payload)
         end
       end
 
@@ -98,14 +98,15 @@ class Itly
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties}, options: #{options})"
+        @logger&.info "#{id}: group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties}, "\
+          "options: #{options})"
 
         # Send through the client
-        payload = {user_id: user_id, group_id: group_id, traits: properties.dup}
+        payload = { user_id: user_id, group_id: group_id, traits: properties.dup }
         payload[:integrations] = options.integrations unless options&.integrations.nil?
 
         call_end_point(options&.callback) do
-          @client.group **payload
+          @client.group(**payload)
         end
       end
 
@@ -123,14 +124,15 @@ class Itly
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties}, options: #{options})"
+        @logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties}, "\
+          "options: #{options})"
 
         # Send through the client
-        payload = {user_id: user_id, event: event.name, properties: event.properties.dup}
+        payload = { user_id: user_id, event: event.name, properties: event.properties.dup }
         payload[:integrations] = options.integrations unless options&.integrations.nil?
 
         call_end_point(options&.callback) do
-          @client.track **payload
+          @client.track(**payload)
         end
       end
 
@@ -153,11 +155,11 @@ class Itly
         @logger&.info "#{id}: alias(user_id: #{user_id}, previous_id: #{previous_id}, options: #{options})"
 
         # Send through the client
-        payload = {user_id: user_id, previous_id: previous_id}
+        payload = { user_id: user_id, previous_id: previous_id }
         payload[:integrations] = options.integrations unless options&.integrations.nil?
 
         call_end_point(options&.callback) do
-          @client.alias **payload
+          @client.alias(**payload)
         end
       end
 

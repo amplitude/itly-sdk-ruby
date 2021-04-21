@@ -22,6 +22,7 @@ class Itly
         attr_reader :contexts, :callback
 
         def initialize(contexts: nil, callback: nil)
+          super()
           @contexts = contexts
           @callback = callback
         end

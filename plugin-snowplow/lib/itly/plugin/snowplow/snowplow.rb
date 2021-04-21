@@ -92,7 +92,7 @@ class Itly
 
         contexts = nil
         if options&.contexts.is_a?(Array) && options.contexts.any?
-          contexts = options.contexts.collect &:to_self_describing_json
+          contexts = options.contexts.collect(&:to_self_describing_json)
         end
 
         client.track_self_describing_event event_json, contexts

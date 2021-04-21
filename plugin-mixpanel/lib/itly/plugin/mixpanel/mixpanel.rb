@@ -81,7 +81,8 @@ class Itly
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties}, options: #{options})"
+        @logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties}, "\
+          "options: #{options})"
 
         # Send through the client
         @client.track user_id, event.name, event.properties

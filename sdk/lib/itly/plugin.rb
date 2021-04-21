@@ -106,7 +106,7 @@ class Itly
     # @return [String] plugin short id
     #
     def short_id
-      id.sub /^plugin-/, ''
+      id.sub(/^plugin-/, '')
     end
   end
 end

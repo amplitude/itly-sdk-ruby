@@ -132,9 +132,9 @@ describe Itly::Plugin::Amplitude do
 
           itly.identify(
             user_id: 'user_123', properties: { version: '4', some: 'data' },
-            options: {'amplitude' => Itly::Plugin::Amplitude::IdentifyOptions.new(
-              callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
-            )}
+            options: { 'amplitude' => Itly::Plugin::Amplitude::IdentifyOptions.new(
+              callback: ->(code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+            ) }
           )
         end
 
@@ -269,9 +269,9 @@ describe Itly::Plugin::Amplitude do
 
           itly.track(
             user_id: 'user_123', event: event,
-            options: {'amplitude' => Itly::Plugin::Amplitude::TrackOptions.new(
-              callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
-            )}
+            options: { 'amplitude' => Itly::Plugin::Amplitude::TrackOptions.new(
+              callback: ->(code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+            ) }
           )
         end
 
@@ -446,7 +446,7 @@ describe Itly::Plugin::Amplitude do
         expect do
           plugin.send(
             :call_end_point,
-            -> (a, b) { cb_tester.tester a, b }
+            ->(a, b) { cb_tester.tester a, b }
           ) { response }
         end.not_to raise_error
       end

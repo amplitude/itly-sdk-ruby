@@ -179,9 +179,9 @@ describe Itly::Plugin::Segment do
 
             itly.identify(
               user_id: 'user_123', properties: { version: '4', some: 'data' },
-              options: {'segment' => Itly::Plugin::Segment::IdentifyOptions.new(
-                callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
-              )}
+              options: { 'segment' => Itly::Plugin::Segment::IdentifyOptions.new(
+                callback: ->(code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+              ) }
             )
           end
 
@@ -201,14 +201,14 @@ describe Itly::Plugin::Segment do
         context 'with integrations' do
           before do
             expect(plugin.client).to receive(:identify)
-              .with(user_id: 'user_123', traits: { version: '4', some: 'data' }, integrations: {'content' => true})
+              .with(user_id: 'user_123', traits: { version: '4', some: 'data' }, integrations: { 'content' => true })
               .and_return(response)
 
             itly.identify(
               user_id: 'user_123', properties: { version: '4', some: 'data' },
-              options: {'segment' => Itly::Plugin::Segment::IdentifyOptions.new(
-                integrations: {'content' => true}
-              )}
+              options: { 'segment' => Itly::Plugin::Segment::IdentifyOptions.new(
+                integrations: { 'content' => true }
+              ) }
             )
           end
 
@@ -347,9 +347,9 @@ describe Itly::Plugin::Segment do
 
             itly.group(
               user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' },
-              options: {'segment' => Itly::Plugin::Segment::GroupOptions.new(
-                callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
-              )}
+              options: { 'segment' => Itly::Plugin::Segment::GroupOptions.new(
+                callback: ->(code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+              ) }
             )
           end
 
@@ -369,14 +369,15 @@ describe Itly::Plugin::Segment do
         context 'with integrations' do
           before do
             expect(plugin.client).to receive(:group)
-              .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' }, integrations: {'content' => true})
+              .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' },
+                    integrations: { 'content' => true })
               .and_return(response)
 
             itly.group(
               user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' },
-              options: {'segment' => Itly::Plugin::Segment::GroupOptions.new(
-                integrations: {'content' => true}
-              )}
+              options: { 'segment' => Itly::Plugin::Segment::GroupOptions.new(
+                integrations: { 'content' => true }
+              ) }
             )
           end
 
@@ -516,9 +517,9 @@ describe Itly::Plugin::Segment do
 
             itly.track(
               user_id: 'user_123', event: event,
-              options: {'segment' => Itly::Plugin::Segment::TrackOptions.new(
-                callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
-              )}
+              options: { 'segment' => Itly::Plugin::Segment::TrackOptions.new(
+                callback: ->(code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+              ) }
             )
           end
 
@@ -538,14 +539,15 @@ describe Itly::Plugin::Segment do
         context 'with integrations' do
           before do
             expect(plugin.client).to receive(:track)
-              .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' }, integrations: {'content' => true})
+              .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' },
+                    integrations: { 'content' => true })
               .and_return(response)
 
             itly.track(
               user_id: 'user_123', event: event,
-              options: {'segment' => Itly::Plugin::Segment::TrackOptions.new(
-                integrations: {'content' => true}
-              )}
+              options: { 'segment' => Itly::Plugin::Segment::TrackOptions.new(
+                integrations: { 'content' => true }
+              ) }
             )
           end
 
@@ -682,9 +684,9 @@ describe Itly::Plugin::Segment do
 
             itly.alias(
               user_id: 'user_123', previous_id: 'old_user',
-              options: {'segment' => Itly::Plugin::Segment::AliasOptions.new(
-                callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
-              )}
+              options: { 'segment' => Itly::Plugin::Segment::AliasOptions.new(
+                callback: ->(code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+              ) }
             )
           end
 
@@ -703,14 +705,14 @@ describe Itly::Plugin::Segment do
         context 'default' do
           before do
             expect(plugin.client).to receive(:alias)
-              .with(user_id: 'user_123', previous_id: 'old_user', integrations: {'content' => true})
+              .with(user_id: 'user_123', previous_id: 'old_user', integrations: { 'content' => true })
               .and_return(response)
 
             itly.alias(
               user_id: 'user_123', previous_id: 'old_user',
-              options: {'segment' => Itly::Plugin::Segment::AliasOptions.new(
-                integrations: {'content' => true}
-              )}
+              options: { 'segment' => Itly::Plugin::Segment::AliasOptions.new(
+                integrations: { 'content' => true }
+              ) }
             )
           end
 
