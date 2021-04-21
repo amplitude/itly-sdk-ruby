@@ -40,3 +40,6 @@ jobs:
 
     - name: Publish plugin-snowplow to RubyGems
       run: ruby bin/publish_gems.rb snowplow
+
+    - name: Publish plugin-testing to RubyGems
+      run: ruby bin/publish_gems.rb testing

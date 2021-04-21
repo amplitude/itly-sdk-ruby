@@ -1,0 +1,8 @@
+class Itly
+  class Plugin
+    class Testing < Plugin
+      VERSION: ::String
+
+    end
+  end
+end

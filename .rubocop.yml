@@ -26,6 +26,7 @@ Naming/FileName:
     - plugin-schema-validator/lib/itly/plugin-schema_validator.rb
     - plugin-segment/lib/itly/plugin-segment.rb
     - plugin-snowplow/lib/itly/plugin-snowplow.rb
+    - plugin-testing/lib/itly/plugin-testing.rb
     - sdk/lib/itly-sdk.rb
 Style/Documentation:
   Exclude:
