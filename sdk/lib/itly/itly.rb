@@ -83,11 +83,14 @@ class Itly
     validate_and_send_to_plugins \
       event: event,
       action: ->(plugin, combined_event) {
-                plugin.identify user_id: user_id, properties: combined_event.properties, options: options[plugin.id]
+                plugin.identify(
+                  user_id: user_id, properties: combined_event.properties, options: options[plugin.short_id]
+                )
               },
       post_action: ->(plugin, combined_event, validation_results) {
-                     plugin.post_identify user_id: user_id, properties: combined_event.properties,
-                                          validation_results: validation_results
+                     plugin.post_identify(
+                       user_id: user_id, properties: combined_event.properties, validation_results: validation_results
+                     )
                    }
   end
 
@@ -124,13 +127,16 @@ class Itly
     validate_and_send_to_plugins \
       event: event,
       action: ->(plugin, combined_event) {
-                plugin.group user_id: user_id, group_id: group_id, properties: combined_event.properties,
-                             options: options[plugin.id]
+                plugin.group(
+                  user_id: user_id, group_id: group_id, properties: combined_event.properties,
+                  options: options[plugin.short_id]
+                )
               },
       post_action: ->(plugin, combined_event, validation_results) {
-                     plugin.post_group user_id: user_id, group_id: group_id,
-                                       properties: combined_event.properties,
-                                       validation_results: validation_results
+                     plugin.post_group(
+                       user_id: user_id, group_id: group_id, properties: combined_event.properties,
+                       validation_results: validation_results
+                     )
                    }
   end
 
@@ -170,7 +176,7 @@ class Itly
       event: event,
       context: @context,
       action: ->(plugin, combined_event) {
-                plugin.track user_id: user_id, event: combined_event, options: options[plugin.id]
+                plugin.track user_id: user_id, event: combined_event, options: options[plugin.short_id]
               },
       post_action: ->(plugin, combined_event, validation_results) {
                      plugin.post_track user_id: user_id, event: combined_event, validation_results: validation_results
@@ -197,8 +203,12 @@ class Itly
     logger&.info "alias(user_id: #{user_id}, previous_id: #{previous_id})"
 
     # Run on all plugins
-    run_on_plugins { |plugin| plugin.alias user_id: user_id, previous_id: previous_id, options: options[plugin.id] }
-    run_on_plugins { |plugin| plugin.post_alias user_id: user_id, previous_id: previous_id }
+    run_on_plugins do |plugin|
+      plugin.alias user_id: user_id, previous_id: previous_id, options: options[plugin.short_id]
+    end
+    run_on_plugins do |plugin|
+      plugin.post_alias user_id: user_id, previous_id: previous_id
+    end
   end
 
   ##
