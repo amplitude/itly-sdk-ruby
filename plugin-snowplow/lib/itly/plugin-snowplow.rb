@@ -6,5 +6,6 @@ if ENV['LOCAL_ITLY_GEM']
 end
 
 require_relative 'plugin/snowplow/snowplow'
+require_relative 'plugin/snowplow/call_options'
 require_relative 'plugin/snowplow/options'
 require_relative 'plugin/snowplow/version'

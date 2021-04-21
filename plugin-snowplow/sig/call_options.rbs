@@ -1,0 +1,14 @@
+class Itly
+  class Plugin
+    class Snowplow
+      class CallOptions < PluginCallOptions
+      end
+
+      class IdentifyOptions < CallOptions
+      end
+
+      class TrackOptions < CallOptions
+      end
+    end
+  end
+end

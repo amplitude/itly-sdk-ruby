@@ -32,6 +32,7 @@ class Itly
       # @param [Itly::PluginOptions] options: plugin options
       #
       def load(options:)
+        super
         # Get options
         @logger = options.logger
 
@@ -48,18 +49,18 @@ class Itly
       #
       # @param [String] user_id: the id of the user in your application
       # @param [Hash] properties: unused
+      # @param [Itly::Plugin::Snowplow::IdentifyOptions] options: the plugin specific options
       #
-      # rubocop:disable Lint/UnusedMethodArgument
-      def identify(user_id:, properties:)
+      def identify(user_id:, properties:, options: nil)
+        super
         return unless enabled?
 
         # Log
-        logger&.info "#{id}: identify(user_id: #{user_id})"
+        logger&.info "#{id}: identify(user_id: #{user_id}, options: #{options})"
 
         # Send through the client
         client.set_user_id user_id
       end
-      # rubocop:enable Lint/UnusedMethodArgument
 
       ##
       # Track an event
@@ -68,13 +69,15 @@ class Itly
       #
       # @param [String] user_id: the id of the user in your application
       # @param [Event] event: the Event object to pass to your application
+      # @param [Itly::Plugin::Snowplow::IdentifyOptions] options: the plugin specific options
       #
-      def track(user_id:, event:)
+      def track(user_id:, event:, options: nil)
+        super
         return unless enabled?
 
         # Log
         logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, version: #{event.version}, "\
-          "properties: #{event.properties})"
+          "properties: #{event.properties}, options: #{options})"
 
         # Identify the user
         client.set_user_id user_id

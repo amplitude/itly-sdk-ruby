@@ -145,7 +145,7 @@ describe Itly::Plugin::Snowplow do
             ['info', 'plugin-snowplow: load()'],
             ['info', 'identify(user_id: user_123, properties: {:ignored=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:ignored=>"data"}>)'],
-            ['info', 'plugin-snowplow: identify(user_id: user_123)']
+            ['info', 'plugin-snowplow: identify(user_id: user_123, options: )']
           ]
         end
       end
@@ -189,7 +189,7 @@ describe Itly::Plugin::Snowplow do
               ['info', 'plugin-snowplow: load()'],
               ['info', 'identify(user_id: user_123, properties: {:ignored=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:ignored=>"data"}>)'],
-              ['info', 'plugin-snowplow: identify(user_id: user_123)'],
+              ['info', 'plugin-snowplow: identify(user_id: user_123, options: )'],
               ['error', 'Itly Error in Itly::Plugin::Snowplow. RuntimeError: Test rspec']
             ]
           end
@@ -257,7 +257,7 @@ describe Itly::Plugin::Snowplow do
             ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \
                      'properties: {:view=>"video"}>)'],
             ['info', 'plugin-snowplow: track(user_id: user_123, event: custom_event, '\
-                     'version: 1.2.3, properties: {:view=>"video"})']
+                     'version: 1.2.3, properties: {:view=>"video"}, options: )']
           ]
         end
       end
@@ -303,7 +303,7 @@ describe Itly::Plugin::Snowplow do
               ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \
                        'properties: {:view=>"video"}>)'],
               ['info', 'plugin-snowplow: track(user_id: user_123, event: custom_event, '\
-                       'version: 1.2.3, properties: {:view=>"video"})'],
+                       'version: 1.2.3, properties: {:view=>"video"}, options: )'],
               ['error', 'Itly Error in Itly::Plugin::Snowplow. RuntimeError: Test rspec']
             ]
           end
