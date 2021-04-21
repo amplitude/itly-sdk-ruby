@@ -2,4 +2,7 @@
 class SnowplowTracker
   class Tracker
   end
+
+  class SelfDescribingJson
+  end
 end

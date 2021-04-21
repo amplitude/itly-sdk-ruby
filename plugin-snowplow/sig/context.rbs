@@ -1,0 +1,17 @@
+class Itly
+  class Plugin
+    class Snowplow
+      class Context
+        attr_reader schema: ::String
+        attr_reader data: ::Hash[::String, untyped]
+
+        def to_self_describing_json: () -> ::SnowplowTracker::SelfDescribingJson
+        def to_s: () -> ::String
+
+        private
+
+        def initialize: (schema: ::String schema, data: ::Hash[::String, untyped] data) -> void
+      end
+    end
+  end
+end

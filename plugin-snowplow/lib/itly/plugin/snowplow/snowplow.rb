@@ -86,11 +86,16 @@ class Itly
         schema_version = event.version&.gsub(/\./, '-')
         schema = "iglu:#{vendor}/#{event.name}/jsonschema/#{schema_version}"
 
-        client.track_self_describing_event(
-          SnowplowTracker::SelfDescribingJson.new(
-            schema, event.properties
-          )
+        event_json = SnowplowTracker::SelfDescribingJson.new(
+          schema, event.properties
         )
+
+        contexts = nil
+        if options&.contexts.is_a?(Array) && options.contexts.any?
+          contexts = options.contexts.collect &:to_self_describing_json
+        end
+
+        client.track_self_describing_event event_json, contexts
       end
 
       private

@@ -227,20 +227,20 @@ describe Itly::Plugin::Snowplow do
       let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name' }
       let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
 
+      let(:json1) do
+        SnowplowTracker::SelfDescribingJson.new \
+          'iglu:vnd_name/custom_event/jsonschema/1-2-3', view: 'video'
+      end
+
       before do
         expect(plugin.client).to receive(:set_user_id).with('user_123')
-
-        expect(SnowplowTracker::SelfDescribingJson).to receive(:new)
-          .with('iglu:vnd_name/custom_event/jsonschema/1-2-3', view: 'video')
-          .and_return('self_describing_json')
       end
 
       context 'success' do
         before do
-          expect(plugin.client).to receive(:track_self_describing_event).with('self_describing_json')
-        end
+          expect(plugin.client).to receive(:track_self_describing_event)
+            .with(json1, nil)
 
-        before do
           itly.load do |options|
             options.plugins = [plugin]
             options.logger = ::Logger.new logs
@@ -262,9 +262,49 @@ describe Itly::Plugin::Snowplow do
         end
       end
 
+      context 'with contexts' do
+        let!(:context1) { Itly::Plugin::Snowplow::Context.new schema: '123', data: {'cntx' => 1} }
+        let!(:context2) { Itly::Plugin::Snowplow::Context.new schema: '456', data: {'cntx' => 2} }
+
+        let(:json2) { SnowplowTracker::SelfDescribingJson.new '123', 'cntx' => 1 }
+        let(:json3) { SnowplowTracker::SelfDescribingJson.new '456', 'cntx' => 2 }
+
+        before do
+          expect(plugin.client).to receive(:track_self_describing_event)
+            .with(json1, [json2, json3])
+
+          itly.load do |options|
+            options.plugins = [plugin]
+            options.logger = ::Logger.new logs
+          end
+
+          itly.track(
+            user_id: 'user_123', event: event,
+            options: {'snowplow' => Itly::Plugin::Snowplow::TrackOptions.new(
+              contexts: [context1, context2]
+            )}
+          )
+        end
+
+        it do
+          expect_log_lines_to_equal [
+            ['info', 'load()'],
+            ['info', 'plugin-snowplow: load()'],
+            ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+            ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \
+                     'properties: {:view=>"video"}>)'],
+            ['info', 'plugin-snowplow: track(user_id: user_123, event: custom_event, '\
+                     'version: 1.2.3, properties: {:view=>"video"}, options: #<Snowplow::TrackOptions '\
+                     'contexts: [#<Snowplow::Context schema: 123 data: {"cntx"=>1}>, #<Snowplow::Context '\
+                     'schema: 456 data: {"cntx"=>2}>] callback: nil>)']
+          ]
+        end
+      end
+
       context 'failure' do
         before do
-          expect(plugin.client).to receive(:track_self_describing_event).with('self_describing_json')
+          expect(plugin.client).to receive(:track_self_describing_event)
+            .with(json1, nil)
             .and_raise('Test rspec')
         end
 
