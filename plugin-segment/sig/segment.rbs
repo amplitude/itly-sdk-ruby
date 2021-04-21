@@ -16,6 +16,7 @@ class Itly
 
       def initialize: (write_key: ::String write_key, ?disabled: bool disabled) -> void
       def enabled?: () -> bool
+      def call_end_point: ((^(::Integer?, ::String?) -> void)? callback) ?{ () -> Net::HTTPResponse } -> void
     end
   end
 end

@@ -75,7 +75,12 @@ class Itly
         @logger&.info "#{id}: identify(user_id: #{user_id}, properties: #{properties}, options: #{options})"
 
         # Send through the client
-        @client.identify user_id: user_id, traits: properties.dup
+        payload = {user_id: user_id, traits: properties.dup}
+        payload[:integrations] = options.integrations unless options&.integrations.nil?
+
+        call_end_point(options&.callback) do
+          @client.identify **payload
+        end
       end
 
       ##
@@ -96,7 +101,12 @@ class Itly
         @logger&.info "#{id}: group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties}, options: #{options})"
 
         # Send through the client
-        @client.group user_id: user_id, group_id: group_id, traits: properties.dup
+        payload = {user_id: user_id, group_id: group_id, traits: properties.dup}
+        payload[:integrations] = options.integrations unless options&.integrations.nil?
+
+        call_end_point(options&.callback) do
+          @client.group **payload
+        end
       end
 
       ##
@@ -116,7 +126,12 @@ class Itly
         @logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties}, options: #{options})"
 
         # Send through the client
-        @client.track user_id: user_id, event: event.name, properties: event.properties.dup
+        payload = {user_id: user_id, event: event.name, properties: event.properties.dup}
+        payload[:integrations] = options.integrations unless options&.integrations.nil?
+
+        call_end_point(options&.callback) do
+          @client.track **payload
+        end
       end
 
       ##
@@ -138,13 +153,28 @@ class Itly
         @logger&.info "#{id}: alias(user_id: #{user_id}, previous_id: #{previous_id}, options: #{options})"
 
         # Send through the client
-        @client.alias user_id: user_id, previous_id: previous_id
+        payload = {user_id: user_id, previous_id: previous_id}
+        payload[:integrations] = options.integrations unless options&.integrations.nil?
+
+        call_end_point(options&.callback) do
+          @client.alias **payload
+        end
       end
 
       private
 
       def enabled?
         !@disabled
+      end
+
+      def call_end_point(callback)
+        raise 'You need to give a block' unless block_given?
+
+        # Call remote endpoint (Note: the Segment client returns a Net::HTTPResponse)
+        response = yield
+
+        # yield to the callback passed in to options
+        callback&.call(response.code.to_i, response.body)
       end
     end
   end

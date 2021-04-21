@@ -2,6 +2,14 @@ class Itly
   class Plugin
     class Segment
       class CallOptions < PluginCallOptions
+        attr_reader integrations: ::Hash[::String, bool]?
+        attr_reader callback: (^(::Integer?, ::String?) -> void)?
+
+        def to_s: () -> ::String
+
+        private
+
+        def initialize: (?integrations: ::Hash[::String, bool]? integrations, ?callback: (^(::Integer?, ::String?) -> void)? callback) -> void
       end
 
       class IdentifyOptions < CallOptions

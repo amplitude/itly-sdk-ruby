@@ -138,29 +138,90 @@ describe Itly::Plugin::Segment do
 
     describe 'enabled' do
       let(:plugin) { Itly::Plugin::Segment.new write_key: 'key123' }
+      let(:logger) { ::Logger.new logs }
 
       context 'success' do
+        let(:response) { double 'response', code: '201', body: 'raw data' }
+
         before do
           itly.load do |options|
             options.plugins = [plugin]
-            options.logger = ::Logger.new logs
+            options.logger = logger
           end
-
-          expect(plugin.client).to receive(:identify)
-            .with(user_id: 'user_123', traits: { version: '4', some: 'data' })
-
-          itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
         end
 
-        it do
-          expect_log_lines_to_equal [
-            ['info', 'load()'],
-            ['info', 'plugin-segment: load()'],
-            ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
-            ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-            ['info', 'plugin-segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
-                     'options: )']
-          ]
+        context 'default' do
+          before do
+            expect(plugin.client).to receive(:identify)
+              .with(user_id: 'user_123', traits: { version: '4', some: 'data' })
+              .and_return(response)
+
+            itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
+              ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
+              ['info', 'plugin-segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+                       'options: )']
+            ]
+          end
+        end
+
+        context 'with callback' do
+          before do
+            expect(plugin.client).to receive(:identify)
+              .with(user_id: 'user_123', traits: { version: '4', some: 'data' })
+              .and_return(response)
+
+            itly.identify(
+              user_id: 'user_123', properties: { version: '4', some: 'data' },
+              options: {'segment' => Itly::Plugin::Segment::IdentifyOptions.new(
+                callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+              )}
+            )
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
+              ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
+              ['info', 'plugin-segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+                       'options: #<Segment::IdentifyOptions integrations:  callback: provided>)'],
+              ['info', 'from-callback: code: 201 body: raw data']
+            ]
+          end
+        end
+
+        context 'with integrations' do
+          before do
+            expect(plugin.client).to receive(:identify)
+              .with(user_id: 'user_123', traits: { version: '4', some: 'data' }, integrations: {'content' => true})
+              .and_return(response)
+
+            itly.identify(
+              user_id: 'user_123', properties: { version: '4', some: 'data' },
+              options: {'segment' => Itly::Plugin::Segment::IdentifyOptions.new(
+                integrations: {'content' => true}
+              )}
+            )
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
+              ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
+              ['info', 'plugin-segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+                       'options: #<Segment::IdentifyOptions integrations: {"content"=>true} callback: nil>)']
+            ]
+          end
         end
       end
 
@@ -169,7 +230,7 @@ describe Itly::Plugin::Segment do
           before do
             itly.load do |options|
               options.plugins = [plugin]
-              options.logger = ::Logger.new logs
+              options.logger = logger
               options.environment = Itly::Options::Environment::DEVELOPMENT
             end
 
@@ -192,7 +253,7 @@ describe Itly::Plugin::Segment do
           before do
             itly.load do |options|
               options.plugins = [plugin]
-              options.logger = ::Logger.new logs
+              options.logger = logger
               options.environment = Itly::Options::Environment::PRODUCTION
             end
 
@@ -245,29 +306,90 @@ describe Itly::Plugin::Segment do
 
     describe 'enabled' do
       let(:plugin) { Itly::Plugin::Segment.new write_key: 'key123' }
+      let(:logger) { ::Logger.new logs }
 
       context 'success' do
+        let(:response) { double 'response', code: '201', body: 'raw data' }
+
         before do
           itly.load do |options|
             options.plugins = [plugin]
-            options.logger = ::Logger.new logs
+            options.logger = logger
           end
-
-          expect(plugin.client).to receive(:group)
-            .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' })
-
-          itly.group user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' }
         end
 
-        it do
-          expect_log_lines_to_equal [
-            ['info', 'load()'],
-            ['info', 'plugin-segment: load()'],
-            ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
-            ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
-            ['info', 'plugin-segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
-                     'options: )']
-          ]
+        context 'default' do
+          before do
+            expect(plugin.client).to receive(:group)
+              .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' })
+              .and_return(response)
+
+            itly.group user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' }
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
+              ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
+              ['info', 'plugin-segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
+                      'options: )']
+            ]
+          end
+        end
+
+        context 'with callback' do
+          before do
+            expect(plugin.client).to receive(:group)
+              .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' })
+              .and_return(response)
+
+            itly.group(
+              user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' },
+              options: {'segment' => Itly::Plugin::Segment::GroupOptions.new(
+                callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+              )}
+            )
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
+              ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
+              ['info', 'plugin-segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
+                       'options: #<Segment::GroupOptions integrations:  callback: provided>)'],
+              ['info', 'from-callback: code: 201 body: raw data']
+            ]
+          end
+        end
+
+        context 'with integrations' do
+          before do
+            expect(plugin.client).to receive(:group)
+              .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' }, integrations: {'content' => true})
+              .and_return(response)
+
+            itly.group(
+              user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' },
+              options: {'segment' => Itly::Plugin::Segment::GroupOptions.new(
+                integrations: {'content' => true}
+              )}
+            )
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
+              ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
+              ['info', 'plugin-segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
+                      'options: #<Segment::GroupOptions integrations: {"content"=>true} callback: nil>)']
+            ]
+          end
         end
       end
 
@@ -276,7 +398,7 @@ describe Itly::Plugin::Segment do
           before do
             itly.load do |options|
               options.plugins = [plugin]
-              options.logger = ::Logger.new logs
+              options.logger = logger
               options.environment = Itly::Options::Environment::DEVELOPMENT
             end
 
@@ -299,7 +421,7 @@ describe Itly::Plugin::Segment do
           before do
             itly.load do |options|
               options.plugins = [plugin]
-              options.logger = ::Logger.new logs
+              options.logger = logger
               options.environment = Itly::Options::Environment::PRODUCTION
             end
 
@@ -353,29 +475,90 @@ describe Itly::Plugin::Segment do
 
     describe 'enabled' do
       let(:plugin) { Itly::Plugin::Segment.new write_key: 'key123' }
+      let(:logger) { ::Logger.new logs }
 
       context 'success' do
+        let(:response) { double 'response', code: '201', body: 'raw data' }
+
         before do
           itly.load do |options|
             options.plugins = [plugin]
-            options.logger = ::Logger.new logs
+            options.logger = logger
           end
-
-          expect(plugin.client).to receive(:track)
-            .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' })
-
-          itly.track user_id: 'user_123', event: event
         end
 
-        it do
-          expect_log_lines_to_equal [
-            ['info', 'load()'],
-            ['info', 'plugin-segment: load()'],
-            ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
-            ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-            ['info', 'plugin-segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
-                     'options: )']
-          ]
+        context 'default' do
+          before do
+            expect(plugin.client).to receive(:track)
+              .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' })
+              .and_return(response)
+
+            itly.track user_id: 'user_123', event: event
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+              ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
+              ['info', 'plugin-segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+                       'options: )']
+            ]
+          end
+        end
+
+        context 'with callback' do
+          before do
+            expect(plugin.client).to receive(:track)
+              .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' })
+              .and_return(response)
+
+            itly.track(
+              user_id: 'user_123', event: event,
+              options: {'segment' => Itly::Plugin::Segment::TrackOptions.new(
+                callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+              )}
+            )
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+              ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
+              ['info', 'plugin-segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+                       'options: #<Segment::TrackOptions integrations:  callback: provided>)'],
+              ['info', 'from-callback: code: 201 body: raw data']
+            ]
+          end
+        end
+
+        context 'with integrations' do
+          before do
+            expect(plugin.client).to receive(:track)
+              .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' }, integrations: {'content' => true})
+              .and_return(response)
+
+            itly.track(
+              user_id: 'user_123', event: event,
+              options: {'segment' => Itly::Plugin::Segment::TrackOptions.new(
+                integrations: {'content' => true}
+              )}
+            )
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+              ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
+              ['info', 'plugin-segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+                       'options: #<Segment::TrackOptions integrations: {"content"=>true} callback: nil>)']
+            ]
+          end
         end
       end
 
@@ -384,7 +567,7 @@ describe Itly::Plugin::Segment do
           before do
             itly.load do |options|
               options.plugins = [plugin]
-              options.logger = ::Logger.new logs
+              options.logger = logger
               options.environment = Itly::Options::Environment::DEVELOPMENT
             end
 
@@ -407,7 +590,7 @@ describe Itly::Plugin::Segment do
           before do
             itly.load do |options|
               options.plugins = [plugin]
-              options.logger = ::Logger.new logs
+              options.logger = logger
               options.environment = Itly::Options::Environment::PRODUCTION
             end
 
@@ -460,27 +643,86 @@ describe Itly::Plugin::Segment do
 
     describe 'enabled' do
       let(:plugin) { Itly::Plugin::Segment.new write_key: 'key123' }
+      let(:logger) { ::Logger.new logs }
 
       context 'success' do
+        let(:response) { double 'response', code: '201', body: 'raw data' }
+
         before do
           itly.load do |options|
             options.plugins = [plugin]
-            options.logger = ::Logger.new logs
+            options.logger = logger
           end
-
-          expect(plugin.client).to receive(:alias)
-            .with(user_id: 'user_123', previous_id: 'old_user')
-
-          itly.alias user_id: 'user_123', previous_id: 'old_user'
         end
 
-        it do
-          expect_log_lines_to_equal [
-            ['info', 'load()'],
-            ['info', 'plugin-segment: load()'],
-            ['info', 'alias(user_id: user_123, previous_id: old_user)'],
-            ['info', 'plugin-segment: alias(user_id: user_123, previous_id: old_user, options: )']
-          ]
+        context 'default' do
+          before do
+            expect(plugin.client).to receive(:alias)
+              .with(user_id: 'user_123', previous_id: 'old_user')
+              .and_return(response)
+
+            itly.alias user_id: 'user_123', previous_id: 'old_user'
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'alias(user_id: user_123, previous_id: old_user)'],
+              ['info', 'plugin-segment: alias(user_id: user_123, previous_id: old_user, options: )']
+            ]
+          end
+        end
+
+        context 'default' do
+          before do
+            expect(plugin.client).to receive(:alias)
+              .with(user_id: 'user_123', previous_id: 'old_user')
+              .and_return(response)
+
+            itly.alias(
+              user_id: 'user_123', previous_id: 'old_user',
+              options: {'segment' => Itly::Plugin::Segment::AliasOptions.new(
+                callback: -> (code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+              )}
+            )
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'alias(user_id: user_123, previous_id: old_user)'],
+              ['info', 'plugin-segment: alias(user_id: user_123, previous_id: old_user, '\
+                       'options: #<Segment::AliasOptions integrations:  callback: provided>)'],
+              ['info', 'from-callback: code: 201 body: raw data']
+            ]
+          end
+        end
+
+        context 'default' do
+          before do
+            expect(plugin.client).to receive(:alias)
+              .with(user_id: 'user_123', previous_id: 'old_user', integrations: {'content' => true})
+              .and_return(response)
+
+            itly.alias(
+              user_id: 'user_123', previous_id: 'old_user',
+              options: {'segment' => Itly::Plugin::Segment::AliasOptions.new(
+                integrations: {'content' => true}
+              )}
+            )
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'plugin-segment: load()'],
+              ['info', 'alias(user_id: user_123, previous_id: old_user)'],
+              ['info', 'plugin-segment: alias(user_id: user_123, previous_id: old_user, '\
+                       'options: #<Segment::AliasOptions integrations: {"content"=>true} callback: nil>)']
+            ]
+          end
         end
       end
 
@@ -489,7 +731,7 @@ describe Itly::Plugin::Segment do
           before do
             itly.load do |options|
               options.plugins = [plugin]
-              options.logger = ::Logger.new logs
+              options.logger = logger
               options.environment = Itly::Options::Environment::DEVELOPMENT
             end
 
@@ -512,7 +754,7 @@ describe Itly::Plugin::Segment do
           before do
             itly.load do |options|
               options.plugins = [plugin]
-              options.logger = ::Logger.new logs
+              options.logger = logger
               options.environment = Itly::Options::Environment::PRODUCTION
             end
 

@@ -7,6 +7,17 @@ class Itly
       # Segment specific plugin options class
       #
       class CallOptions < Itly::PluginCallOptions
+        attr_reader :integrations, :callback
+
+        def initialize(integrations: nil, callback: nil)
+          @integrations = integrations
+          @callback = callback
+        end
+
+        def to_s
+          class_name = self.class.name.split('::').last
+          "#<Segment::#{class_name} integrations: #{integrations} callback: #{callback.nil? ? 'nil' : 'provided'}>"
+        end
       end
 
       ##
