@@ -101,7 +101,7 @@ class Itly
       end
 
       def track_calls(method_name, args)
-        @calls[method_name] ||= Array.new
+        @calls[method_name] ||= []
         @calls[method_name] << args
       end
     end

@@ -108,36 +108,36 @@ describe Itly::Plugin::Testing do
       end
 
       it 'filtering by user_id' do
-        expect(plugin.all user_id: 'user_123').to eq([event1, event2, event3])
-        expect(plugin.all user_id: 'other_user').to eq([event4])
+        expect(plugin.all(user_id: 'user_123')).to eq([event1, event2, event3])
+        expect(plugin.all(user_id: 'other_user')).to eq([event4])
       end
     end
 
     describe '#of_type' do
       it 'without user_id filtering' do
-        expect(plugin.of_type class_name: TestEvent1).to eq([event1, event2, event4])
-        expect(plugin.of_type class_name: TestEvent2).to eq([event3])
+        expect(plugin.of_type(class_name: TestEvent1)).to eq([event1, event2, event4])
+        expect(plugin.of_type(class_name: TestEvent2)).to eq([event3])
       end
 
       it 'filtering by user_id' do
-        expect(plugin.of_type class_name: TestEvent1, user_id: 'user_123').to eq([event1, event2])
-        expect(plugin.of_type class_name: TestEvent2, user_id: 'user_123').to eq([event3])
-        expect(plugin.of_type class_name: TestEvent1, user_id: 'other_user').to eq([event4])
-        expect(plugin.of_type class_name: TestEvent2, user_id: 'other_user').to eq([])
+        expect(plugin.of_type(class_name: TestEvent1, user_id: 'user_123')).to eq([event1, event2])
+        expect(plugin.of_type(class_name: TestEvent2, user_id: 'user_123')).to eq([event3])
+        expect(plugin.of_type(class_name: TestEvent1, user_id: 'other_user')).to eq([event4])
+        expect(plugin.of_type(class_name: TestEvent2, user_id: 'other_user')).to eq([])
       end
     end
 
     describe '#first_of_type' do
       it 'without user_id filtering' do
-        expect(plugin.first_of_type class_name: TestEvent1).to eq(event1)
-        expect(plugin.first_of_type class_name: TestEvent2).to eq(event3)
+        expect(plugin.first_of_type(class_name: TestEvent1)).to eq(event1)
+        expect(plugin.first_of_type(class_name: TestEvent2)).to eq(event3)
       end
 
       it 'filtering by user_id' do
-        expect(plugin.first_of_type class_name: TestEvent1, user_id: 'user_123').to eq(event1)
-        expect(plugin.first_of_type class_name: TestEvent2, user_id: 'user_123').to eq(event3)
-        expect(plugin.first_of_type class_name: TestEvent1, user_id: 'other_user').to eq(event4)
-        expect(plugin.first_of_type class_name: TestEvent2, user_id: 'other_user').to be(nil)
+        expect(plugin.first_of_type(class_name: TestEvent1, user_id: 'user_123')).to eq(event1)
+        expect(plugin.first_of_type(class_name: TestEvent2, user_id: 'user_123')).to eq(event3)
+        expect(plugin.first_of_type(class_name: TestEvent1, user_id: 'other_user')).to eq(event4)
+        expect(plugin.first_of_type(class_name: TestEvent2, user_id: 'other_user')).to be(nil)
       end
     end
   end
@@ -149,7 +149,7 @@ describe Itly::Plugin::Testing do
 
     before do
       itly.load { |o| o.plugins = [plugin] }
-      itly.alias user_id: 'user_123', previous_id: 'old_456', options: {'testing' => options}
+      itly.alias user_id: 'user_123', previous_id: 'old_456', options: { 'testing' => options }
     end
 
     let(:calls) { plugin.instance_variable_get '@calls' }
@@ -158,7 +158,7 @@ describe Itly::Plugin::Testing do
       expect(calls.keys).to eq(%w[alias])
       expect(calls['alias']).to eq(
         [
-          {user_id: 'user_123', previous_id: 'old_456', options: options}
+          { user_id: 'user_123', previous_id: 'old_456', options: options }
         ]
       )
     end
@@ -171,7 +171,7 @@ describe Itly::Plugin::Testing do
 
     before do
       itly.load { |o| o.plugins = [plugin] }
-      itly.identify user_id: 'user_123', properties: {data: 'from props'}, options: {'testing' => options}
+      itly.identify user_id: 'user_123', properties: { data: 'from props' }, options: { 'testing' => options }
     end
 
     let(:calls) { plugin.instance_variable_get '@calls' }
@@ -180,7 +180,7 @@ describe Itly::Plugin::Testing do
       expect(calls.keys).to eq(%w[identify])
       expect(calls['identify']).to eq(
         [
-          {user_id: 'user_123', properties: {data: 'from props'}, options: options}
+          { user_id: 'user_123', properties: { data: 'from props' }, options: options }
         ]
       )
     end
@@ -194,7 +194,7 @@ describe Itly::Plugin::Testing do
     before do
       itly.load { |o| o.plugins = [plugin] }
       itly.group(
-        user_id: 'user_123', group_id: 'grp_id', properties: {data: 'from props'}, options: {'testing' => options}
+        user_id: 'user_123', group_id: 'grp_id', properties: { data: 'from props' }, options: { 'testing' => options }
       )
     end
 
@@ -204,7 +204,7 @@ describe Itly::Plugin::Testing do
       expect(calls.keys).to eq(%w[group])
       expect(calls['group']).to eq(
         [
-          {user_id: 'user_123', group_id: 'grp_id', properties: {data: 'from props'}, options: options}
+          { user_id: 'user_123', group_id: 'grp_id', properties: { data: 'from props' }, options: options }
         ]
       )
     end
@@ -218,7 +218,7 @@ describe Itly::Plugin::Testing do
 
     before do
       itly.load { |o| o.plugins = [plugin] }
-      itly.track user_id: 'user_123', event: event, options: {'testing' => options}
+      itly.track user_id: 'user_123', event: event, options: { 'testing' => options }
     end
 
     let(:calls) { plugin.instance_variable_get '@calls' }
@@ -227,7 +227,7 @@ describe Itly::Plugin::Testing do
       expect(calls.keys).to eq(%w[track])
       expect(calls['track']).to eq(
         [
-          {user_id: 'user_123', event: event, options: options}
+          { user_id: 'user_123', event: event, options: options }
         ]
       )
     end

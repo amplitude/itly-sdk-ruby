@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TestEvent1 < Itly::Event
 end
 
