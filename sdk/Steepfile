@@ -5,5 +5,5 @@ target :lib do
 
   check 'lib'
 
-  library 'logger', 'set'
+  library 'logger', 'set', 'itly-sdk'
 end

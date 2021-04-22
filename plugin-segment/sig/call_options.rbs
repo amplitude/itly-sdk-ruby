@@ -1,7 +1,7 @@
 class Itly
   class Plugin
     class Segment
-      class CallOptions < PluginCallOptions
+      class CallOptions < ::Itly::PluginCallOptions
         attr_reader integrations: ::Hash[::String, bool]?
         attr_reader callback: (^(::Integer?, ::String?) -> void)?
 
