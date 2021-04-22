@@ -6,4 +6,5 @@ if ENV['LOCAL_ITLY_GEM']
 end
 
 require_relative 'plugin/testing/testing'
+require_relative 'plugin/testing/call_options'
 require_relative 'plugin/testing/version'
