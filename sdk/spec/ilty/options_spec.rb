@@ -5,7 +5,8 @@ describe Itly::Options do
 
   let!(:options) { Itly::Options.new }
 
-  it 'default values' do
+  it 'should have default values'\
+' (environment: DEVELOPMENT, validation: ERROR_ON_INVALID, plugins: [], logger: nil, disabled: false)' do
     expect_options_default_values options
   end
 
@@ -16,17 +17,17 @@ describe Itly::Options do
   end
 
   describe 'validation' do
-    context 'development' do
+    context 'environment = DEVELOPMENT' do
       before do
         options.environment = Itly::Options::Environment::DEVELOPMENT
       end
 
-      it 'default value' do
+      it 'default value should be ERROR_ON_INVALID' do
         expect(options.instance_variable_get('@validation')).to eq(Itly::Options::Validation::DEFAULT)
         expect(options.validation).to eq(Itly::Options::Validation::ERROR_ON_INVALID)
       end
 
-      it 'overwite value' do
+      it 'setting validation should overwrite default value' do
         options.validation = Itly::Options::Validation::DISABLED
 
         expect(options.instance_variable_get('@validation')).to eq(Itly::Options::Validation::DISABLED)
@@ -34,17 +35,17 @@ describe Itly::Options do
       end
     end
 
-    context 'production' do
+    context 'environment = PRODUCTION' do
       before do
         options.environment = Itly::Options::Environment::PRODUCTION
       end
 
-      it 'default value' do
+      it 'default value should be TRACK_INVALID' do
         expect(options.instance_variable_get('@validation')).to eq(Itly::Options::Validation::DEFAULT)
         expect(options.validation).to eq(Itly::Options::Validation::TRACK_INVALID)
       end
 
-      it 'overwite value' do
+      it 'setting validation should overwrite default value' do
         options.validation = Itly::Options::Validation::DISABLED
 
         expect(options.instance_variable_get('@validation')).to eq(Itly::Options::Validation::DISABLED)
@@ -58,11 +59,11 @@ describe Itly do
   include RspecOptionsDefaultValues
 
   describe 'instance attributes' do
-    it 'can read' do
+    it 'should be readable' do
       expect(Itly.new.respond_to?(:options)).to be(true)
     end
 
-    it 'cannot write' do
+    it 'should not be writable' do
       expect(Itly.new.respond_to?(:options=)).to be(false)
     end
   end
@@ -80,7 +81,7 @@ describe Itly do
       end
     end
 
-    context 'set to false' do
+    context 'when options.disabled = false' do
       let!(:itly) { Itly.new }
 
       before do
@@ -92,7 +93,7 @@ describe Itly do
       end
     end
 
-    context 'set to true' do
+    context 'when options.disabled = true' do
       let!(:itly) { Itly.new }
 
       before do
@@ -118,7 +119,7 @@ describe Itly do
       end
     end
 
-    context 'set to disabled' do
+    context 'when options.disabled = true' do
       let!(:itly) { Itly.new }
 
       before do
@@ -130,7 +131,7 @@ describe Itly do
       end
     end
 
-    context 'set to another value' do
+    context 'when options.validation = TRACK_INVALID' do
       let!(:itly) { Itly.new }
 
       before do
@@ -158,14 +159,14 @@ describe Itly do
       end
     end
 
-    context 'set a value' do
+    context 'when a Logger is set' do
       let(:itly) { Itly.new }
 
       before do
         itly.load { |o| o.logger = fake_logger }
       end
 
-      it do
+      it 'is expected to be the set Logger' do
         expect(itly.send(:logger)).to eq(fake_logger)
       end
     end

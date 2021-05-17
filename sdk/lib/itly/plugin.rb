@@ -21,7 +21,7 @@ class Itly
     #
     # @param [String] user_id: the id of the user in your application
     # @param [Hash] properties: the properties containing user's traits to pass to your application
-    # @param [Itly::PluginCallOptions] options: plugin specific option.
+    # @param [Itly::PluginCallOptions] options: plugin specific options.
     #
     def identify(user_id:, properties:, options: nil); end
 
@@ -70,7 +70,7 @@ class Itly
     def flush; end
 
     ##
-    # Force flushing data
+    # Stop all processes and free resources.
     #
     def shutdown; end
 
@@ -85,7 +85,7 @@ class Itly
     # See +Itly#validate+ for more information
     #
     # Your plugin can return a +Itly::ValidationResponse+ object to provide success status
-    # and validation message; otherwise it can return +nil+
+    # and validation message; otherwise it can return +nil+ which will be interpreted as valid=true
     #
     def validate(event:); end
 
