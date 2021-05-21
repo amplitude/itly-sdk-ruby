@@ -180,8 +180,10 @@ describe 'integration' do
 
           itly.track \
             user_id: 'userID',
-            event: Itly::Event.new(name: 'user_signed_in',
-                                   properties: { email: 'user@mail.com' })
+            event: Itly::Event.new(
+              name: 'user_signed_in',
+              properties: { email: 'user@mail.com' }
+            )
 
           expected = [
             ['info', 'load()'],
@@ -228,8 +230,10 @@ describe 'integration' do
             expect do
               itly.track \
                 user_id: 'userID',
-                event: Itly::Event.new(name: 'user_signed_in',
-                                       properties: { wrong_key: 'user@mail.com' })
+                event: Itly::Event.new(
+                  name: 'user_signed_in',
+                  properties: { wrong_key: 'user@mail.com' }
+                )
             end.to raise_error(Itly::ValidationError, 'Missing email')
 
             expected = [
@@ -276,8 +280,10 @@ describe 'integration' do
             expect do
               itly.track \
                 user_id: 'userID',
-                event: Itly::Event.new(name: 'user_signed_in',
-                                       properties: { wrong_key: 'user@mail.com' })
+                event: Itly::Event.new(
+                  name: 'user_signed_in',
+                  properties: { wrong_key: 'user@mail.com' }
+                )
             end.not_to raise_error
 
             expected = [
@@ -332,8 +338,10 @@ describe 'integration' do
             expect do
               itly.track \
                 user_id: 'userID',
-                event: Itly::Event.new(name: 'user_signed_in',
-                                       properties: { wrong_key: 'user@mail.com' })
+                event: Itly::Event.new(
+                  name: 'user_signed_in',
+                  properties: { wrong_key: 'user@mail.com' }
+                )
             end.not_to raise_error
 
             expected = [
@@ -371,8 +379,10 @@ describe 'integration' do
 
           itly.track \
             user_id: 'userID',
-            event: Itly::Event.new(name: 'user_signed_in',
-                                   properties: { email: 'user@mail.com' })
+            event: Itly::Event.new(
+              name: 'user_signed_in',
+              properties: { email: 'user@mail.com' }
+            )
 
           expect_log_lines_to_equal [
             ['info', 'load()'],

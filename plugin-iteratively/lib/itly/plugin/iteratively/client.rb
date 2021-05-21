@@ -62,7 +62,7 @@ class Itly
           # Run in the background
           @runner = Concurrent::Future.new do
             processing.each do |batch|
-              # Itinialization before the loop starts
+              # Initialization before the loop starts
               tries = 0
 
               loop do
@@ -75,7 +75,7 @@ class Itly
                 # Case: could not sent and reached maximum number of allowed tries
                 if tries >= @max_retries
                   # Log
-                  logger&.error 'Iteratively::Client: flush() reached maximun number of tries. '\
+                  logger&.error 'Iteratively::Client: flush() reached maximum number of tries. '\
                     "#{batch.count} events won't be sent to the server"
 
                   # Discard the list of event in the batch queue

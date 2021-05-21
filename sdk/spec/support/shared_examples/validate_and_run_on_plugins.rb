@@ -16,7 +16,7 @@ shared_examples 'validate and run on plugins' do |
   expect_exception: false # Indicates if it is expected to raise an exception
 |
 
-  # Instanciate plugins and Itly object
+  # Instantiate plugins and Itly object
   let!(:fake_logger) { double 'logger', info: nil, warn: nil }
   let!(:plugin_a) { FakePlugin0.new }
   let!(:plugin_b) { FakePlugin1.new }
@@ -109,7 +109,7 @@ shared_examples 'validate and run on plugins' do |
     expect(plugin_b).not_to receive(:validate)
     expect(plugin_a).not_to receive(:validate)
 
-    # Plugin targetted method
+    # Plugin targeted method
     if expect_to_call_action
       expect(plugin_a).to receive(method).once.with(
         expected_data_to_plugin.merge(options: FakeCallOptions.new(data: 'for plugin 0'))
@@ -124,7 +124,7 @@ shared_examples 'validate and run on plugins' do |
     end
     expect(plugin_b).not_to receive(method)
 
-    # Plugin targetted post method
+    # Plugin targeted post method
     expect(plugin_a).to receive(:"post_#{method}").once.with(
       expected_data_to_plugin.merge(validation_results: all_responses)
     )

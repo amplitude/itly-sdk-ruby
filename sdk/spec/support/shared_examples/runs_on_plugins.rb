@@ -2,7 +2,7 @@
 
 shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_method: false, expected_log_info: nil|
   context 'default', fake_plugins: 2 do
-    # Instanciate plugins and Itly object
+    # Instantiate plugins and Itly object
     let!(:fake_logger) { double 'logger', info: nil, warn: nil }
     let!(:plugin_a) { FakePlugin0.new }
     let!(:plugin_b) { FakePlugin1.new }
@@ -25,7 +25,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
         expect(itly.options.logger).not_to receive(:info)
       end
 
-      # Plugin targetted method and post method with params
+      # Plugin targeted method and post method with params
       if method_params
         expected_data_to_plugin = method_params.reject { |k, _| k == :options }
 
@@ -41,7 +41,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
           expect(plugin_a).to receive(:"post_#{method}").with(expected_data_to_plugin)
         end
 
-      # Plugin targetted method and post method without params
+      # Plugin targeted method and post method without params
       else
         expect(plugin_a).to receive(method).with(no_args)
         expect(plugin_b).to receive(method).with(no_args)
@@ -63,7 +63,7 @@ shared_examples 'runs on plugins' do |method:, method_params: nil, no_post_metho
     end
   end
 
-  context 'Itly was not ititialized' do
+  context 'Itly was not initialized' do
     let(:itly) { Itly.new }
 
     before do

@@ -24,13 +24,13 @@ class Itly
         # @param [Integer] flush_queue_size (optional): Number of event in the buffer before
         #   a flush is triggered. Default: 10
         # @param [Integer] batch_size (optional): Maximum number of events to send to the server at once. Default: 100
-        # @param [Integer] batflush_interval_msch_size (optional): Delay in milisecond between each automatic
+        # @param [Integer] flush_interval_ms (optional): Delay in milliseconds between each automatic
         #   flush. Default: 1_000
         # @param [Integer] max_retries (optional): Number of retries for pushing
         #   events to the server. Default: 25
         # @param [Float] retry_delay_min: Minimum delay between retries in seconds. Default: 10.0
         # @param [Float] retry_delay_max: Maximum delay between retries in seconds. Default: 3600.0 (1 hour)
-        # @param [TrueClass/FalseClass] omit_values: set to true to send emty data. Default to false
+        # @param [TrueClass/FalseClass] omit_values: set to true to send empty data. Default to false
         # @param [String] branch: Tracking plan branch name (e.g. feature/demo)
         # @param [String] version: Tracking plan version number (e.g. 1.0.0)
         #
