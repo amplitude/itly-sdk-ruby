@@ -1,2 +1,2 @@
-type propertiesHash = Hash[::String | ::Symbol, untyped]
-type callOptions = Hash[::String, ::Itly::PluginCallOptions]
+type propertiesHash = Hash[String | Symbol, untyped]
+type callOptions = Hash[String, Itly::PluginCallOptions]

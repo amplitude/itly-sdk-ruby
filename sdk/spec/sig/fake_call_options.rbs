@@ -1,10 +1,10 @@
-class FakeCallOptions < ::Itly::PluginCallOptions
-  attr_accessor data: ::String
+class FakeCallOptions < Itly::PluginCallOptions
+  attr_accessor data: String
 
-  def to_s: () -> ::String
+  def to_s: () -> String
   def ==: (untyped other) -> untyped
 
   private
 
-  def initialize: (data: ::String data) -> void
+  def initialize: (data: String data) -> void
 end

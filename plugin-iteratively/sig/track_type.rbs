@@ -2,9 +2,9 @@ class Itly
   class Plugin
     class Iteratively
       module TrackType
-        GROUP: ::String
-        IDENTIFY: ::String
-        TRACK: ::String
+        GROUP: String
+        IDENTIFY: String
+        TRACK: String
       end
     end
   end

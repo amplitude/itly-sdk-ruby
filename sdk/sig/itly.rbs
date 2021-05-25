@@ -1,31 +1,31 @@
 class Itly
-  include ::Itly::Plugins
+  include Itly::Plugins
 
-  VERSION: ::String
+  VERSION: String
 
-  attr_reader options: ::Itly::Options
+  attr_reader options: Itly::Options
 
-  def load: (?context: propertiesHash? context) ?{ (::Itly::Options) -> void } -> void
-  def identify: (user_id: ::String user_id, properties: propertiesHash properties, ?options: callOptions options) -> void
-  def group: (user_id: ::String user_id, group_id: ::String group_id, properties: propertiesHash properties, ?options: callOptions options) -> void
-  def track: (user_id: ::String user_id, event: ::Itly::Event event, ?options: callOptions options) -> void
-  def alias: (user_id: ::String user_id, previous_id: ::String previous_id, ?options: callOptions options) -> void
+  def load: (?context: propertiesHash? context) ?{ (Itly::Options) -> void } -> void
+  def identify: (user_id: String user_id, properties: propertiesHash properties, ?options: callOptions options) -> void
+  def group: (user_id: String user_id, group_id: String group_id, properties: propertiesHash properties, ?options: callOptions options) -> void
+  def track: (user_id: String user_id, event: Itly::Event event, ?options: callOptions options) -> void
+  def alias: (user_id: String user_id, previous_id: String previous_id, ?options: callOptions options) -> void
   def flush: () -> void
   def shutdown: () -> void
   def reset: () -> void
-  def validate: (event: ::Itly::Event event) -> ::Array[::Itly::ValidationResponse]?
+  def validate: (event: Itly::Event event) -> Array[Itly::ValidationResponse]?
 
   private
 
   def initialize: () -> void
   def was_initialized?: () -> bool
-  def validate_and_send_to_plugins: (action: ^(::Itly::Plugin plugin, ::Itly::Event combined_event) -> void, post_action: ^(::Itly::Plugin plugin, ::Itly::Event combined_event, ::Array[::Itly::ValidationResponse] validation_results) -> void post_action, event: ::Itly::Event event, ?context: ::Itly::Event? context) -> void
-  def validate_context_and_event: (::Itly::Event? context, ::Itly::Event event) -> [::Array[::Itly::ValidationResponse], ::Array[::Itly::ValidationResponse], bool]
-  def log_validation_errors: (::Array[::Itly::ValidationResponse] validations, ::Itly::Event event) -> void
-  def raise_validation_errors: (bool is_valid, ::Array[::Itly::ValidationResponse] validations, ::Itly::Event event) -> void
+  def validate_and_send_to_plugins: (action: ^(Itly::Plugin plugin, Itly::Event combined_event) -> void, post_action: ^(Itly::Plugin plugin, Itly::Event combined_event, Array[Itly::ValidationResponse] validation_results) -> void post_action, event: Itly::Event event, ?context: Itly::Event? context) -> void
+  def validate_context_and_event: (Itly::Event? context, Itly::Event event) -> [Array[Itly::ValidationResponse], Array[Itly::ValidationResponse], bool]
+  def log_validation_errors: (Array[Itly::ValidationResponse] validations, Itly::Event event) -> void
+  def raise_validation_errors: (bool is_valid, Array[Itly::ValidationResponse] validations, Itly::Event event) -> void
   def enabled?: () -> bool
   def validation_enabled?: () -> bool
-  def logger: () -> ::Logger?
+  def logger: () -> Logger?
   def instantiate_plugins: () -> void
-  def run_on_plugins: () { (::Itly::Plugin) -> untyped } -> ::Array[untyped]
+  def run_on_plugins: () { (Itly::Plugin) -> untyped } -> Array[untyped]
 end
