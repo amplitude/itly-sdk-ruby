@@ -80,18 +80,19 @@ class Itly
     # Validate and run on all plugins
     event = Event.new name: 'identify', properties: properties
 
-    validate_and_send_to_plugins \
-      event: event,
-      action: ->(plugin, combined_event) {
-                plugin.identify(
-                  user_id: user_id, properties: combined_event.properties, options: options[plugin.short_id]
-                )
-              },
-      post_action: ->(plugin, combined_event, validation_results) {
-                     plugin.post_identify(
-                       user_id: user_id, properties: combined_event.properties, validation_results: validation_results
-                     )
-                   }
+    action = ->(plugin, combined_event) {
+      plugin.identify(
+        user_id: user_id, properties: combined_event.properties, options: options[plugin.short_id]
+      )
+    }
+
+    post_action = ->(plugin, combined_event, validation_results) {
+      plugin.post_identify(
+        user_id: user_id, properties: combined_event.properties, validation_results: validation_results
+      )
+    }
+
+    validate_and_send_to_plugins event: event, action: action, post_action: post_action
   end
 
   ##
