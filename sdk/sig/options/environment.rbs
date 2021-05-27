@@ -1,8 +1,8 @@
 class Itly
   class Options
     module Environment
-      DEVELOPMENT: ::Symbol
-      PRODUCTION: ::Symbol
+      DEVELOPMENT: Symbol
+      PRODUCTION: Symbol
     end
   end
 end

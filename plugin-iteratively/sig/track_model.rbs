@@ -2,21 +2,21 @@ class Itly
   class Plugin
     class Iteratively
       class TrackModel
-        attr_reader type: ::String
-        attr_reader date_sent: ::String
-        attr_reader event_id: ::String
-        attr_reader event_schema_version: ::String
-        attr_reader event_name: ::String
+        attr_reader type: String
+        attr_reader date_sent: String
+        attr_reader event_id: String
+        attr_reader event_schema_version: String
+        attr_reader event_name: String
         attr_reader properties: propertiesHash
         attr_reader valid: bool?
-        attr_reader validation: ::Itly::ValidationResponse?
+        attr_reader validation: Itly::ValidationResponse?
 
-        def to_json: (*untyped _) -> ::String
+        def to_json: (*untyped _) -> String
 
         private
 
-        def initialize: (type: ::String `type`, event: ::Itly::Event? event, properties: propertiesHash? properties, ?validation: ::Itly::ValidationResponse? validation, omit_values: bool omit_values) -> void
-        def to_s: () -> ::String
+        def initialize: (type: String `type`, event: Itly::Event? event, properties: propertiesHash? properties, ?validation: Itly::ValidationResponse? validation, omit_values: bool omit_values) -> void
+        def to_s: () -> String
       end
     end
   end

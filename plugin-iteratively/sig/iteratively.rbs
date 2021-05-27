@@ -1,26 +1,26 @@
 class Itly
   class Plugin
     class Iteratively < Plugin
-      VERSION: ::String
+      VERSION: String
 
-      attr_reader logger: ::Logger?
+      attr_reader logger: Logger?
       attr_reader disabled: bool?
-      attr_reader client: ::Itly::Plugin::Iteratively::Client?
-      attr_reader url: ::String
-      attr_reader api_key: ::String
+      attr_reader client: Itly::Plugin::Iteratively::Client?
+      attr_reader url: String
+      attr_reader api_key: String
 
-      def load: (options: ::Itly::PluginOptions options) -> void
-      def post_identify: (user_id: ::String user_id, properties: propertiesHash properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
-      def post_group: (user_id: ::String user_id, group_id: ::String group_id, properties: propertiesHash properties, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
-      def post_track: (user_id: ::String user_id, event: ::Itly::Event event, validation_results: ::Array[::Itly::ValidationResponse] validation_results) -> void
+      def load: (options: Itly::PluginOptions options) -> void
+      def post_identify: (user_id: String user_id, properties: propertiesHash properties, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
+      def post_group: (user_id: String user_id, group_id: String group_id, properties: propertiesHash properties, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
+      def post_track: (user_id: String user_id, event: Itly::Event event, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
       def flush: () -> void
       def shutdown: (?force: bool force) -> void
 
       private
 
-      def initialize: (api_key: ::String api_key, options: ::Itly::Plugin::Iteratively::Options options) -> void
+      def initialize: (api_key: String api_key, options: Itly::Plugin::Iteratively::Options options) -> void
       def enabled?: () -> bool
-      def client_track: (::String `type`, ::Itly::Event|propertiesHash event_or_properties, ::Array[::Itly::ValidationResponse]? validations) -> void
+      def client_track: (String `type`, Itly::Event|propertiesHash event_or_properties, Array[Itly::ValidationResponse]? validations) -> void
     end
   end
 end

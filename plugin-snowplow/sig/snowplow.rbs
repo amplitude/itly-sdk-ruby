@@ -1,20 +1,20 @@
 class Itly
   class Plugin
     class Snowplow < Plugin
-      VERSION: ::String
+      VERSION: String
 
-      attr_reader logger: ::Logger?
-      attr_reader vendor: ::String
+      attr_reader logger: Logger?
+      attr_reader vendor: String
       attr_reader disabled: bool
-      attr_reader client: ::SnowplowTracker::Tracker
+      attr_reader client: SnowplowTracker::Tracker
 
-      def load: (options: ::Itly::PluginOptions options) -> void
-      def identify: (user_id: ::String user_id, properties: propertiesHash properties, ?options: ::Itly::Plugin::Snowplow::IdentifyOptions? options) -> void
-      def track: (user_id: ::String user_id, event: ::Itly::Event event, ?options: ::Itly::Plugin::Snowplow::TrackOptions? options) -> void
+      def load: (options: Itly::PluginOptions options) -> void
+      def identify: (user_id: String user_id, properties: propertiesHash properties, ?options: Itly::Plugin::Snowplow::IdentifyOptions? options) -> void
+      def track: (user_id: String user_id, event: Itly::Event event, ?options: Itly::Plugin::Snowplow::TrackOptions? options) -> void
 
       private
 
-      def initialize: (vendor: ::String vendor, options: ::Itly::Plugin::Snowplow::Options options) -> void
+      def initialize: (vendor: String vendor, options: Itly::Plugin::Snowplow::Options options) -> void
       def enabled?: () -> bool
     end
   end

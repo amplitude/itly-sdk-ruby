@@ -1,20 +1,20 @@
 class Itly
   class Plugin
     class SchemaValidator < Plugin
-      VERSION: ::String
+      VERSION: String
 
       attr_reader disabled: bool
 
-      def load: (options: ::Itly::PluginOptions options) -> void
-      def validate: (event: ::Itly::Event event) -> ::Itly::ValidationResponse?
+      def load: (options: Itly::PluginOptions options) -> void
+      def validate: (event: Itly::Event event) -> Itly::ValidationResponse?
 
       private
 
       def initialize: (schemas: propertiesHash schemas, ?disabled: bool disabled) -> void
       def enabled?: () -> bool
-      def return_validation_responses: (::Itly::Event event, untyped result) -> ::Itly::ValidationResponse?
-      def deeply_stringify_keys: (propertiesHash hash) -> ::Hash[::String, untyped]
-      def hash_to_message: (propertiesHash hash) -> ::String
+      def return_validation_responses: (Itly::Event event, untyped result) -> Itly::ValidationResponse?
+      def deeply_stringify_keys: (propertiesHash hash) -> Hash[String, untyped]
+      def hash_to_message: (propertiesHash hash) -> String
     end
   end
 end
