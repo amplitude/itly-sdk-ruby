@@ -79,7 +79,7 @@ describe Itly::Plugins do
             .with('Itly Error in FakePlugin0. RuntimeError: Testing 1 2 3')
         end
 
-        it do
+        it 'is expected to log error and continue running' do
           itly.send(:run_on_plugins) { |plugin| plugin.some_method :params }
         end
       end

@@ -5,7 +5,7 @@ describe Itly::Event do
     describe 'default values' do
       let(:event) { Itly::Event.new name: 'the_event' }
 
-      it do
+      it 'should match expected' do
         expect(event.name).to eq('the_event')
         expect(event.properties).to eq({})
         expect(event.id).to be(nil)
@@ -14,13 +14,13 @@ describe Itly::Event do
       end
     end
 
-    describe 'with params' do
+    describe 'constructor params' do
       let(:event) do
         Itly::Event.new \
           name: 'the_event', properties: { a: 'b' }, id: '123', version: '2.1.6', plugins: { plugin_a: false }
       end
 
-      it do
+      it 'should set attribute values' do
         expect(event.name).to eq('the_event')
         expect(event.properties).to eq(a: 'b')
         expect(event.id).to eq('123')
@@ -29,10 +29,10 @@ describe Itly::Event do
       end
     end
 
-    describe 'attr_accessor' do
+    describe 'property access' do
       let(:event) { Itly::Event.new name: 'the_event' }
 
-      it do
+      it 'should be read only' do
         %i[name properties id version plugins].each do |attribute|
           expect(event.respond_to?(attribute)).to be(true)
           expect(event.respond_to?(:"#{attribute}=")).to be(false)
