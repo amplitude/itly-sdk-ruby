@@ -4,8 +4,8 @@ describe Itly::Plugin::Snowplow do
   include RspecLoggerHelpers
 
   describe 'instance attributes' do
-    let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name' }
-    let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+    let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123' }
+    let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
     it 'can read' do
       expect(plugin.respond_to?(:logger)).to be(true)
@@ -27,8 +27,8 @@ describe Itly::Plugin::Snowplow do
     let(:client) { double 'client' }
 
     describe 'default values' do
-      let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name' }
-      let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+      let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123' }
+      let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
       before do
         expect(SnowplowTracker::Emitter).to receive(:new)
@@ -47,10 +47,10 @@ describe Itly::Plugin::Snowplow do
     describe 'with values' do
       let(:plugin_options) do
         Itly::Plugin::Snowplow::Options.new \
-          endpoint: 'endpoint123', vendor: 'vnd_name', protocol: 'https',
+          endpoint: 'endpoint123', protocol: 'https',
           method: 'post', buffer_size: 50, disabled: true
       end
-      let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+      let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
       before do
         expect(SnowplowTracker::Emitter).to receive(:new)
@@ -79,8 +79,8 @@ describe Itly::Plugin::Snowplow do
     end
 
     describe 'pass values from the itly object' do
-      let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name' }
-      let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+      let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123' }
+      let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
       it do
         expect(plugin.logger).to eq(logger)
@@ -89,8 +89,8 @@ describe Itly::Plugin::Snowplow do
 
     describe 'logging' do
       context 'enabled' do
-        let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name' }
-        let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+        let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123' }
+        let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
         it do
           expect_log_lines_to_equal [
@@ -102,9 +102,9 @@ describe Itly::Plugin::Snowplow do
 
       context 'disabled' do
         let(:plugin_options) do
-          Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name', disabled: true
+          Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', disabled: true
         end
-        let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+        let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
         it do
           expect_log_lines_to_equal [
@@ -122,8 +122,8 @@ describe Itly::Plugin::Snowplow do
     let(:itly) { Itly.new }
 
     describe 'enabled' do
-      let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name' }
-      let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+      let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123' }
+      let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
       context 'success' do
         before do
@@ -199,9 +199,9 @@ describe Itly::Plugin::Snowplow do
 
     context 'disabled' do
       let(:plugin_options) do
-        Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name', disabled: true
+        Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', disabled: true
       end
-      let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+      let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
       before do
         itly.load do |options|
@@ -224,8 +224,8 @@ describe Itly::Plugin::Snowplow do
     let(:event) { Itly::Event.new name: 'custom_event', version: '1.2.3', properties: { view: 'video' } }
 
     describe 'enabled' do
-      let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name' }
-      let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+      let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123' }
+      let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
       let(:json1) do
         SnowplowTracker::SelfDescribingJson.new \
@@ -353,9 +353,9 @@ describe Itly::Plugin::Snowplow do
 
     context 'disabled' do
       let(:plugin_options) do
-        Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name', disabled: true
+        Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', disabled: true
       end
-      let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+      let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
       before do
         itly.load do |options|
@@ -375,8 +375,8 @@ describe Itly::Plugin::Snowplow do
 
   describe '#enabled?' do
     describe 'enabled' do
-      let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name' }
-      let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+      let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123' }
+      let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
       it do
         expect(plugin.send(:enabled?)).to be(true)
@@ -385,9 +385,9 @@ describe Itly::Plugin::Snowplow do
 
     describe 'disabled' do
       let(:plugin_options) do
-        Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', vendor: 'vnd_name', disabled: true
+        Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', disabled: true
       end
-      let(:plugin) { Itly::Plugin::Snowplow.new options: plugin_options }
+      let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
 
       it do
         expect(plugin.send(:enabled?)).to be(false)

@@ -23,7 +23,7 @@ describe Itly::Options do
       end
 
       it 'default value should be ERROR_ON_INVALID' do
-        expect(options.instance_variable_get('@validation')).to eq(Itly::Options::Validation::DEFAULT)
+        expect(options.instance_variable_get('@validation')).to be(nil)
         expect(options.validation).to eq(Itly::Options::Validation::ERROR_ON_INVALID)
       end
 
@@ -41,7 +41,7 @@ describe Itly::Options do
       end
 
       it 'default value should be TRACK_INVALID' do
-        expect(options.instance_variable_get('@validation')).to eq(Itly::Options::Validation::DEFAULT)
+        expect(options.instance_variable_get('@validation')).to be(nil)
         expect(options.validation).to eq(Itly::Options::Validation::TRACK_INVALID)
       end
 

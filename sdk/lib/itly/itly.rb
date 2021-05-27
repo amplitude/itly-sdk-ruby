@@ -24,7 +24,7 @@ class Itly
   #
   # Calls the +load+ method of each plugin passing the +options+ object as an argument.
   #
-  # @param [Hash] context: to assign to the "context" Event object. Default to nil
+  # @param [Hash, nil] context: to assign to the "context" Event object. Default to nil
   #
   # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def load(context: nil)
@@ -70,7 +70,7 @@ class Itly
   # @param [Hash] options: plugin specific option. The keys must correspond
   #   to a plugin id, and the values will be passed only to the plugin identified by the key.
   #
-  def identify(user_id:, properties:, options: {})
+  def identify(user_id:, properties: {}, options: {})
     # Run only if the object is enabled and was initialized
     return unless was_initialized? && enabled?
 
@@ -115,7 +115,7 @@ class Itly
   # @param [Hash] options: plugin specific option. The keys must correspond
   #   to a plugin id, and the values will be passed only to the plugin identified by the key.
   #
-  def group(user_id:, group_id:, properties:, options: {})
+  def group(user_id:, group_id:, properties: {}, options: {})
     # Run only if the object is enabled and was initialized
     return unless was_initialized? && enabled?
 

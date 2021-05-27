@@ -1,0 +1,8 @@
+class Itly
+  class Plugin
+    class Segment
+      class Options
+      end
+    end
+  end
+end

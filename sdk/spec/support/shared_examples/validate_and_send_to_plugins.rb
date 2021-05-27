@@ -8,7 +8,7 @@ shared_examples 'validate and send to plugins' do |receive_action_methods: true,
     expect(itly).to receive(:validate_context_and_event).with(expected_context, event)
       .and_return([generates_context_errors, generates_event_errors, is_valid])
 
-    # Set expectation for the targetted method call
+    # Set expectation for the targeted method call
     if receive_action_methods
       expect(plugin_a).to receive(:mock_action).with(event, :param)
       expect(plugin_b).to receive(:mock_action).with(event, :param)
@@ -19,7 +19,7 @@ shared_examples 'validate and send to plugins' do |receive_action_methods: true,
 
     expect(plugin_c).not_to receive(:mock_action)
 
-    # Set expectation for the targetted post method call
+    # Set expectation for the targeted post method call
     expect(plugin_a).to receive(:mock_post_action).with(event, all_errors, :other_param)
     expect(plugin_b).to receive(:mock_post_action).with(event, all_errors, :other_param)
 

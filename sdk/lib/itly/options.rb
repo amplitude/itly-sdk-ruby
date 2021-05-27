@@ -59,7 +59,7 @@ class Itly
     def initialize
       @disabled = false
       @environment = Itly::Options::Environment::DEVELOPMENT
-      @validation = Itly::Options::Validation::DEFAULT
+      @validation = nil
       @plugins = []
       @logger = nil
     end
@@ -79,7 +79,7 @@ class Itly
     # @return [Itly::Options::Validation] validation behavior
     #
     def validation
-      if @validation == Itly::Options::Validation::DEFAULT
+      if @validation.nil?
         if development?
           Itly::Options::Validation::ERROR_ON_INVALID
         else
