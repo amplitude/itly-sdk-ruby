@@ -1,5 +1,5 @@
-class TestEvent1 < ::Itly::Event
+class TestEvent1 < Itly::Event
 end
 
-class TestEvent2 < ::Itly::Event
+class TestEvent2 < Itly::Event
 end

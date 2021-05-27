@@ -2,7 +2,7 @@
 class Mixpanel
   class Tracker
     class People
-      def set: (::String user_id, propertiesHash properties) -> void
+      def set: (String user_id, propertiesHash properties) -> void
     end
   end
 end

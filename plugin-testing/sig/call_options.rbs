@@ -1,7 +1,7 @@
 class Itly
   class Plugin
     class Testing
-      class CallOptions < ::Itly::PluginCallOptions
+      class CallOptions < Itly::PluginCallOptions
       end
 
       class IdentifyOptions < CallOptions

@@ -1,7 +1,7 @@
 # Part of the gems
 class Faraday
   class Response
-    attr_reader status: ::Integer?
-    attr_reader body: ::String
+    attr_reader status: Integer?
+    attr_reader body: String
   end
 end

@@ -1,21 +1,21 @@
 class Itly
   class Plugin
     class Snowplow
-      class CallOptions < ::Itly::PluginCallOptions
+      class CallOptions < Itly::PluginCallOptions
       end
 
       class IdentifyOptions < CallOptions
       end
 
       class TrackOptions < CallOptions
-        attr_reader contexts: ::Array[::Itly::Plugin::Snowplow::Context]?
-        attr_reader callback: (^(::Integer?, ::String?) -> void)?
+        attr_reader contexts: Array[Itly::Plugin::Snowplow::Context]?
+        attr_reader callback: (^(Integer?, String?) -> void)?
 
-        def to_s: () -> ::String
+        def to_s: () -> String
 
         private
 
-        def initialize: (?contexts: ::Array[::Itly::Plugin::Snowplow::Context]? contexts, ?callback: (^(::Integer?, ::String?) -> void)? callback) -> void
+        def initialize: (?contexts: Array[Itly::Plugin::Snowplow::Context]? contexts, ?callback: (^(Integer?, String?) -> void)? callback) -> void
       end
     end
   end
