@@ -14,11 +14,12 @@ class Itly
       ##
       # Instantiate a new Plugin::Snowplow
       #
+      # @param [String] vendor: the Snowplow vendor
       # @param [Itly::Plugin::Snowplow::Options] options: the options. See +Itly::Plugin::Snowplow::Options+
       #
-      def initialize(options:)
+      def initialize(vendor:, options:)
         super()
-        @vendor = options.vendor
+        @vendor = vendor
         @disabled = options.disabled
 
         emitter = SnowplowTracker::Emitter.new \

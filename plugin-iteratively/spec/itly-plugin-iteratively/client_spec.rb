@@ -290,7 +290,7 @@ describe Itly::Plugin::Iteratively::Client do
 
         expect_log_lines_to_equal [
           ['error',
-           'Iteratively::Client: flush() reached maximun number of tries. 3 events won\'t be sent to the server']
+           'Iteratively::Client: flush() reached maximum number of tries. 3 events won\'t be sent to the server']
         ]
 
         expect(buffer).to eq([])

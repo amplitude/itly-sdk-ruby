@@ -6,7 +6,7 @@
 # Ex: this generates 2 classes, FakePlugin0 and FakePlugin1
 #   - describe 'my test', fake_plugins: 2 do ...
 #
-# Aditionnaly you can list methods you want the fake plugins to answer to
+# Additionally you can list methods you want the fake plugins to answer to
 #   by passing an array of symbols to the `:fake_plugins_methods` metadata
 # Ex: this makes the fake plugins to answer to #some_method:
 #   - describe 'my test', fake_plugins: 2, fake_plugins_methods: [:some_method] do ...

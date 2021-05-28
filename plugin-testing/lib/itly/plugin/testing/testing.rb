@@ -50,7 +50,7 @@ class Itly
       #
       # @param [String] user_id: (optional) filter the events returned by the method by the user_id.
       #   Leave it +nil+ to get all events
-      # @return [Array] array of EvItly::Eventent objects that was sent to the +track+ method
+      # @return [Array] array of EvItly::Event objects that was sent to the +track+ method
       #
       def all(user_id: nil)
         calls = @calls['track'].dup
