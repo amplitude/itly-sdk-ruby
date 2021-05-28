@@ -5,8 +5,8 @@ require_relative 'lib/itly/plugin/snowplow/version'
 Gem::Specification.new do |spec|
   spec.name          = 'itly-plugin-snowplow'
   spec.version       = Itly::Plugin::Snowplow::VERSION
-  spec.authors       = ['Benjamin Bouchet']
-  spec.email         = ['randoum@gmail.com']
+  spec.authors       = ['Iteratively', 'Benjamin Bouchet', 'Justin Fiedler', 'Andrey Sokolov']
+  spec.email         = ['support@iterative.ly']
 
   spec.summary       = 'Snowplow plugin for Iteratively SDK for Ruby'
   spec.description   = 'Track and validate analytics with a unified, extensible interface ' \

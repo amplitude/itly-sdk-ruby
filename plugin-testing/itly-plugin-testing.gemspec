@@ -5,8 +5,8 @@ require_relative 'lib/itly/plugin/testing/version'
 Gem::Specification.new do |spec|
   spec.name          = 'itly-plugin-testing'
   spec.version       = Itly::Plugin::Testing::VERSION
-  spec.authors       = ['Benjamin Bouchet']
-  spec.email         = ['randoum@gmail.com']
+  spec.authors       = ['Iteratively', 'Benjamin Bouchet', 'Justin Fiedler', 'Andrey Sokolov']
+  spec.email         = ['support@iterative.ly']
 
   spec.summary       = 'Testing plugin for Iteratively SDK for Ruby'
   spec.description   = 'Track and validate analytics with a unified, extensible interface ' \

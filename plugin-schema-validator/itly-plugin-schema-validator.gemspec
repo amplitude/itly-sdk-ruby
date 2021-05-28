@@ -5,8 +5,8 @@ require_relative 'lib/itly/plugin/schema_validator/version'
 Gem::Specification.new do |spec|
   spec.name          = 'itly-plugin-schema-validator'
   spec.version       = Itly::Plugin::SchemaValidator::VERSION
-  spec.authors       = ['Benjamin Bouchet']
-  spec.email         = ['randoum@gmail.com']
+  spec.authors       = ['Iteratively', 'Benjamin Bouchet', 'Justin Fiedler', 'Andrey Sokolov']
+  spec.email         = ['support@iterative.ly']
 
   spec.summary       = 'SchemaValidator plugin for Iteratively SDK for Ruby'
   spec.description   = 'Track and validate analytics with a unified, extensible interface ' \

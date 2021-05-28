@@ -5,8 +5,8 @@ require_relative 'lib/itly/version'
 Gem::Specification.new do |spec|
   spec.name          = 'itly-sdk'
   spec.version       = Itly::VERSION
-  spec.authors       = ['Benjamin Bouchet']
-  spec.email         = ['randoum@gmail.com']
+  spec.authors       = ['Iteratively', 'Benjamin Bouchet', 'Justin Fiedler', 'Andrey Sokolov']
+  spec.email         = ['support@iterative.ly']
 
   spec.summary       = 'Iteratively SDK for Ruby'
   spec.description   = 'Track and validate analytics with a unified, extensible interface ' \
