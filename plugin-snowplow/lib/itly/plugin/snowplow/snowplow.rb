@@ -99,6 +99,15 @@ class Itly
         client.track_self_describing_event event_json, contexts
       end
 
+      ##
+      # Get the plugin ID
+      #
+      # @return [String] plugin id
+      #
+      def id
+        'snowplow'
+      end
+
       private
 
       def enabled?

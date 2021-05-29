@@ -99,14 +99,5 @@ class Itly
       name = (name || 'UnknownPluginClass').gsub(/([A-Z]+)/, '_\1').gsub(/-_/, '-').sub(/^_/, '').sub(/^itly-/i, '')
       name.downcase
     end
-
-    ##
-    # Get the plugin ID without "plugin" prefix
-    #
-    # @return [String] plugin short id
-    #
-    def short_id
-      id.sub(/^plugin-/, '')
-    end
   end
 end

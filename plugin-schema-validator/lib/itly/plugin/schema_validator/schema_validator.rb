@@ -79,6 +79,15 @@ class Itly
         return_validation_responses event, result
       end
 
+      ##
+      # Get the plugin ID
+      #
+      # @return [String] plugin id
+      #
+      def id
+        'schema_validator'
+      end
+
       private
 
       def enabled?

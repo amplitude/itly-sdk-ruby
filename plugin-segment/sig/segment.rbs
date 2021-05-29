@@ -11,6 +11,7 @@ class Itly
       def group: (user_id: String user_id, group_id: String group_id, properties: propertiesHash properties, ?options: Itly::Plugin::Segment::GroupOptions? options) -> void
       def track: (user_id: String user_id, event: Itly::Event event, ?options: Itly::Plugin::Segment::TrackOptions? options) -> void
       def alias: (user_id: String user_id, previous_id: String previous_id, ?options: Itly::Plugin::Segment::AliasOptions? options) -> void
+      def id: () -> String
 
       private
 

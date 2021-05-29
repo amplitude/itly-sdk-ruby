@@ -82,7 +82,7 @@ class Itly
 
     action = ->(plugin, combined_event) {
       plugin.identify(
-        user_id: user_id, properties: combined_event.properties, options: options[plugin.short_id]
+        user_id: user_id, properties: combined_event.properties, options: options[plugin.id]
       )
     }
 
@@ -130,7 +130,7 @@ class Itly
       action: ->(plugin, combined_event) {
                 plugin.group(
                   user_id: user_id, group_id: group_id, properties: combined_event.properties,
-                  options: options[plugin.short_id]
+                  options: options[plugin.id]
                 )
               },
       post_action: ->(plugin, combined_event, validation_results) {
@@ -177,7 +177,7 @@ class Itly
       event: event,
       context: @context,
       action: ->(plugin, combined_event) {
-                plugin.track user_id: user_id, event: combined_event, options: options[plugin.short_id]
+                plugin.track user_id: user_id, event: combined_event, options: options[plugin.id]
               },
       post_action: ->(plugin, combined_event, validation_results) {
                      plugin.post_track user_id: user_id, event: combined_event, validation_results: validation_results
@@ -205,7 +205,7 @@ class Itly
 
     # Run on all plugins
     run_on_plugins do |plugin|
-      plugin.alias user_id: user_id, previous_id: previous_id, options: options[plugin.short_id]
+      plugin.alias user_id: user_id, previous_id: previous_id, options: options[plugin.id]
     end
     run_on_plugins do |plugin|
       plugin.post_alias user_id: user_id, previous_id: previous_id

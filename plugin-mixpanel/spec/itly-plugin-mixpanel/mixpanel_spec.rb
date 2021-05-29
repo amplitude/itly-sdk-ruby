@@ -113,7 +113,7 @@ describe Itly::Plugin::Mixpanel do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-mixpanel: load()']
+            ['info', 'mixpanel: load()']
           ]
         end
       end
@@ -124,8 +124,8 @@ describe Itly::Plugin::Mixpanel do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-mixpanel: load()'],
-            ['info', 'plugin-mixpanel: plugin is disabled!']
+            ['info', 'mixpanel: load()'],
+            ['info', 'mixpanel: plugin is disabled!']
           ]
         end
       end
@@ -155,10 +155,10 @@ describe Itly::Plugin::Mixpanel do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-mixpanel: load()'],
+            ['info', 'mixpanel: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-            ['info', 'plugin-mixpanel: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+            ['info', 'mixpanel: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
                      'options: )']
           ]
         end
@@ -207,10 +207,10 @@ describe Itly::Plugin::Mixpanel do
           it do
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-mixpanel: load()'],
+              ['info', 'mixpanel: load()'],
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-              ['info', 'plugin-mixpanel: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+              ['info', 'mixpanel: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
                        'options: )'],
               ['error', 'Itly Error in Itly::Plugin::Mixpanel. RuntimeError: Internal error']
             ]
@@ -261,10 +261,10 @@ describe Itly::Plugin::Mixpanel do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-mixpanel: load()'],
+            ['info', 'mixpanel: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-            ['info', 'plugin-mixpanel: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+            ['info', 'mixpanel: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
                      'options: )']
           ]
         end
@@ -313,10 +313,10 @@ describe Itly::Plugin::Mixpanel do
           it do
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-mixpanel: load()'],
+              ['info', 'mixpanel: load()'],
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-              ['info', 'plugin-mixpanel: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+              ['info', 'mixpanel: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
                        'options: )'],
               ['error', 'Itly Error in Itly::Plugin::Mixpanel. RuntimeError: Internal error']
             ]
@@ -366,9 +366,9 @@ describe Itly::Plugin::Mixpanel do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-mixpanel: load()'],
+            ['info', 'mixpanel: load()'],
             ['info', 'alias(user_id: user_123, previous_id: old_user)'],
-            ['info', 'plugin-mixpanel: alias(user_id: user_123, previous_id: old_user, options: )']
+            ['info', 'mixpanel: alias(user_id: user_123, previous_id: old_user, options: )']
           ]
         end
       end
@@ -416,9 +416,9 @@ describe Itly::Plugin::Mixpanel do
           it do
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-mixpanel: load()'],
+              ['info', 'mixpanel: load()'],
               ['info', 'alias(user_id: user_123, previous_id: old_user)'],
-              ['info', 'plugin-mixpanel: alias(user_id: user_123, previous_id: old_user, options: )'],
+              ['info', 'mixpanel: alias(user_id: user_123, previous_id: old_user, options: )'],
               ['error', 'Itly Error in Itly::Plugin::Mixpanel. RuntimeError: Internal error']
             ]
           end

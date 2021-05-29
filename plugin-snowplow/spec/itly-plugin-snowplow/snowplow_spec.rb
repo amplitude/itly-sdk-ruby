@@ -95,7 +95,7 @@ describe Itly::Plugin::Snowplow do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-snowplow: load()']
+            ['info', 'snowplow: load()']
           ]
         end
       end
@@ -109,8 +109,8 @@ describe Itly::Plugin::Snowplow do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-snowplow: load()'],
-            ['info', 'plugin-snowplow: plugin is disabled!']
+            ['info', 'snowplow: load()'],
+            ['info', 'snowplow: plugin is disabled!']
           ]
         end
       end
@@ -142,10 +142,10 @@ describe Itly::Plugin::Snowplow do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-snowplow: load()'],
+            ['info', 'snowplow: load()'],
             ['info', 'identify(user_id: user_123, properties: {:ignored=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:ignored=>"data"}>)'],
-            ['info', 'plugin-snowplow: identify(user_id: user_123, options: )']
+            ['info', 'snowplow: identify(user_id: user_123, options: )']
           ]
         end
       end
@@ -186,10 +186,10 @@ describe Itly::Plugin::Snowplow do
           it do
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-snowplow: load()'],
+              ['info', 'snowplow: load()'],
               ['info', 'identify(user_id: user_123, properties: {:ignored=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:ignored=>"data"}>)'],
-              ['info', 'plugin-snowplow: identify(user_id: user_123, options: )'],
+              ['info', 'snowplow: identify(user_id: user_123, options: )'],
               ['error', 'Itly Error in Itly::Plugin::Snowplow. RuntimeError: Test rspec']
             ]
           end
@@ -252,11 +252,11 @@ describe Itly::Plugin::Snowplow do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-snowplow: load()'],
+            ['info', 'snowplow: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \
                      'properties: {:view=>"video"}>)'],
-            ['info', 'plugin-snowplow: track(user_id: user_123, event: custom_event, '\
+            ['info', 'snowplow: track(user_id: user_123, event: custom_event, '\
                      'version: 1.2.3, properties: {:view=>"video"}, options: )']
           ]
         end
@@ -289,11 +289,11 @@ describe Itly::Plugin::Snowplow do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-snowplow: load()'],
+            ['info', 'snowplow: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \
                      'properties: {:view=>"video"}>)'],
-            ['info', 'plugin-snowplow: track(user_id: user_123, event: custom_event, '\
+            ['info', 'snowplow: track(user_id: user_123, event: custom_event, '\
                      'version: 1.2.3, properties: {:view=>"video"}, options: #<Snowplow::TrackOptions '\
                      'contexts: [#<Snowplow::Context schema: 123 data: {"cntx"=>1}>, #<Snowplow::Context '\
                      'schema: 456 data: {"cntx"=>2}>] callback: nil>)']
@@ -338,11 +338,11 @@ describe Itly::Plugin::Snowplow do
           it do
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-snowplow: load()'],
+              ['info', 'snowplow: load()'],
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \
                        'properties: {:view=>"video"}>)'],
-              ['info', 'plugin-snowplow: track(user_id: user_123, event: custom_event, '\
+              ['info', 'snowplow: track(user_id: user_123, event: custom_event, '\
                        'version: 1.2.3, properties: {:view=>"video"}, options: )'],
               ['error', 'Itly Error in Itly::Plugin::Snowplow. RuntimeError: Test rspec']
             ]

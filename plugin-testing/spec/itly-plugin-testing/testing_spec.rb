@@ -64,7 +64,7 @@ describe Itly::Plugin::Testing do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-testing: load()']
+            ['info', 'testing: load()']
           ]
         end
       end
@@ -75,8 +75,8 @@ describe Itly::Plugin::Testing do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-testing: load()'],
-            ['info', 'plugin-testing: plugin is disabled!']
+            ['info', 'testing: load()'],
+            ['info', 'testing: plugin is disabled!']
           ]
         end
       end

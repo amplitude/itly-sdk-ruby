@@ -118,7 +118,7 @@ describe Itly::Plugin::Iteratively do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-iteratively: load()']
+            ['info', 'iteratively: load()']
           ]
         end
       end
@@ -129,8 +129,8 @@ describe Itly::Plugin::Iteratively do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-iteratively: load()'],
-            ['info', 'plugin-iteratively: plugin is disabled!']
+            ['info', 'iteratively: load()'],
+            ['info', 'iteratively: plugin is disabled!']
           ]
         end
       end
@@ -217,10 +217,10 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['info', 'plugin-iteratively: load()'],
+          ['info', 'iteratively: load()'],
           ['info', 'identify(user_id: user_123, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:some=>"data"}>)'],
-          ['info', 'plugin-iteratively: post_identify(user_id: user_123, properties: {:some=>"data"}, '\
+          ['info', 'iteratively: post_identify(user_id: user_123, properties: {:some=>"data"}, '\
                    'validation_results: [])']
         ]
       end
@@ -248,10 +248,10 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['info', 'plugin-iteratively: load()'],
+          ['info', 'iteratively: load()'],
           ['info', 'identify(user_id: user_123, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:some=>"data"}>)'],
-          ['info', 'plugin-iteratively: post_identify(user_id: user_123, properties: {:some=>"data"}, '\
+          ['info', 'iteratively: post_identify(user_id: user_123, properties: {:some=>"data"}, '\
                    'validation_results: [#<Itly::ValidationResponse: '\
                    'valid: true, plugin_id: test-plg, message: >])']
         ]
@@ -274,8 +274,8 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['info', 'plugin-iteratively: load()'],
-          ['info', 'plugin-iteratively: plugin is disabled!'],
+          ['info', 'iteratively: load()'],
+          ['info', 'iteratively: plugin is disabled!'],
           ['info', 'identify(user_id: user_123, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:some=>"data"}>)']
         ]
@@ -322,10 +322,10 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['info', 'plugin-iteratively: load()'],
+          ['info', 'iteratively: load()'],
           ['info', 'group(user_id: user_123, group_id: group456, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: group, properties: {:some=>"data"}>)'],
-          ['info', 'plugin-iteratively: post_group(user_id: user_123, group_id: group456, '\
+          ['info', 'iteratively: post_group(user_id: user_123, group_id: group456, '\
                    'properties: {:some=>"data"}, validation_results: [])']
         ]
       end
@@ -353,10 +353,10 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['info', 'plugin-iteratively: load()'],
+          ['info', 'iteratively: load()'],
           ['info', 'group(user_id: user_123, group_id: group456, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: group, properties: {:some=>"data"}>)'],
-          ['info', 'plugin-iteratively: post_group(user_id: user_123, group_id: group456, '\
+          ['info', 'iteratively: post_group(user_id: user_123, group_id: group456, '\
                    'properties: {:some=>"data"}, validation_results: [#<Itly::ValidationResponse: '\
                    'valid: true, plugin_id: test-plg, message: >])']
         ]
@@ -379,8 +379,8 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['info', 'plugin-iteratively: load()'],
-          ['info', 'plugin-iteratively: plugin is disabled!'],
+          ['info', 'iteratively: load()'],
+          ['info', 'iteratively: plugin is disabled!'],
           ['info', 'group(user_id: user_123, group_id: group456, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: group, properties: {:some=>"data"}>)']
         ]
@@ -430,10 +430,10 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['info', 'plugin-iteratively: load()'],
+          ['info', 'iteratively: load()'],
           ['info', 'track(user_id: user_123, event: custom_event, properties: {:custom=>"info"})'],
           ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:custom=>"info"}>)'],
-          ['info', 'plugin-iteratively: post_track(user_id: user_123, event: #<Itly::Event: '\
+          ['info', 'iteratively: post_track(user_id: user_123, event: #<Itly::Event: '\
                     'name: custom_event, properties: {:custom=>"info"}>, validation_results: [])']
         ]
       end
@@ -461,10 +461,10 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['info', 'plugin-iteratively: load()'],
+          ['info', 'iteratively: load()'],
           ['info', 'track(user_id: user_123, event: custom_event, properties: {:custom=>"info"})'],
           ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:custom=>"info"}>)'],
-          ['info', 'plugin-iteratively: post_track(user_id: user_123, event: #<Itly::Event: '\
+          ['info', 'iteratively: post_track(user_id: user_123, event: #<Itly::Event: '\
                    'name: custom_event, properties: {:custom=>"info"}>, validation_results: '\
                    '[#<Itly::ValidationResponse: valid: true, plugin_id: test-plg, message: >])']
         ]
@@ -487,8 +487,8 @@ describe Itly::Plugin::Iteratively do
       it do
         expect_log_lines_to_equal [
           ['info', 'load()'],
-          ['info', 'plugin-iteratively: load()'],
-          ['info', 'plugin-iteratively: plugin is disabled!'],
+          ['info', 'iteratively: load()'],
+          ['info', 'iteratively: plugin is disabled!'],
           ['info', 'track(user_id: user_123, event: custom_event, properties: {:custom=>"info"})'],
           ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:custom=>"info"}>)']
         ]

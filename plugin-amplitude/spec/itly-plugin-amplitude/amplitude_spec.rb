@@ -64,7 +64,7 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-amplitude: load()']
+            ['info', 'amplitude: load()']
           ]
         end
       end
@@ -75,8 +75,8 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-amplitude: load()'],
-            ['info', 'plugin-amplitude: plugin is disabled!']
+            ['info', 'amplitude: load()'],
+            ['info', 'amplitude: plugin is disabled!']
           ]
         end
       end
@@ -111,10 +111,10 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-amplitude: load()'],
+            ['info', 'amplitude: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-            ['info', 'plugin-amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+            ['info', 'amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
                      'options: )']
           ]
         end
@@ -141,10 +141,10 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-amplitude: load()'],
+            ['info', 'amplitude: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-            ['info', 'plugin-amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+            ['info', 'amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
                      'options: #<Amplitude::IdentifyOptions callback: provided>)'],
             ['info', 'from-callback: code: 201 body: raw data']
 
@@ -186,10 +186,10 @@ describe Itly::Plugin::Amplitude do
           it do
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-amplitude: load()'],
+              ['info', 'amplitude: load()'],
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-              ['info', 'plugin-amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+              ['info', 'amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
                        'options: )'],
               ['error', 'Itly Error in Itly::Plugin::Amplitude. Itly::RemoteError: The remote end-point returned an '\
                         'error. Response status: 500. Raw body: wrong params']
@@ -244,10 +244,10 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-amplitude: load()'],
+            ['info', 'amplitude: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-            ['info', 'plugin-amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+            ['info', 'amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
                      'options: )']
           ]
         end
@@ -278,10 +278,10 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-amplitude: load()'],
+            ['info', 'amplitude: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-            ['info', 'plugin-amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+            ['info', 'amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
                      'options: #<Amplitude::TrackOptions callback: provided>)'],
             ['info', 'from-callback: code: 201 body: raw data']
           ]
@@ -307,11 +307,11 @@ describe Itly::Plugin::Amplitude do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-amplitude: load()'],
+            ['info', 'amplitude: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: context, properties: {:app_version=>"1.2.3"}>)'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-            ['info', 'plugin-amplitude: track(user_id: user_123, event: custom_event, properties: '\
+            ['info', 'amplitude: track(user_id: user_123, event: custom_event, properties: '\
                     '{:view=>"video", :app_version=>"1.2.3"}, options: )']
           ]
         end
@@ -357,10 +357,10 @@ describe Itly::Plugin::Amplitude do
           it do
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-amplitude: load()'],
+              ['info', 'amplitude: load()'],
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-              ['info', 'plugin-amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+              ['info', 'amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
                        'options: )'],
               ['error', 'Itly Error in Itly::Plugin::Amplitude. Itly::RemoteError: The remote end-point returned an '\
                         'error. Response status: 500. Raw body: wrong params']

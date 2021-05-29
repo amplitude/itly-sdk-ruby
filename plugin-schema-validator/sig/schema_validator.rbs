@@ -7,6 +7,7 @@ class Itly
 
       def load: (options: Itly::PluginOptions options) -> void
       def validate: (event: Itly::Event event) -> Itly::ValidationResponse?
+      def id: () -> String
 
       private
 

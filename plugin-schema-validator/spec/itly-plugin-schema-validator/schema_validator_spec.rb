@@ -93,7 +93,7 @@ describe Itly::Plugin::SchemaValidator do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-schema_validator: load()']
+            ['info', 'schema_validator: load()']
           ]
         end
       end
@@ -104,8 +104,8 @@ describe Itly::Plugin::SchemaValidator do
         it do
           expect_log_lines_to_equal [
             ['info', 'load()'],
-            ['info', 'plugin-schema_validator: load()'],
-            ['info', 'plugin-schema_validator: plugin is disabled!']
+            ['info', 'schema_validator: load()'],
+            ['info', 'schema_validator: plugin is disabled!']
           ]
         end
       end
@@ -176,10 +176,10 @@ describe Itly::Plugin::SchemaValidator do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-schema_validator: load()'],
+              ['info', 'schema_validator: load()'],
               ['info', 'validate(event: #<Itly::Event: name: other_schema, properties: '\
                       '{:required_string=>"Required string", :optional_enum=>"Value 1"}>)'],
-              ['info', 'plugin-schema_validator: validate(event: #<Itly::Event: name: other_schema, '\
+              ['info', 'schema_validator: validate(event: #<Itly::Event: name: other_schema, '\
                       'properties: {:required_string=>"Required string", :optional_enum=>"Value 1"}>)'],
               ['error', 'Itly Error in Itly::Plugin::SchemaValidator. Itly::ValidationError: '\
                         'Event \'other_schema\' not found in tracking plan.']
@@ -208,10 +208,10 @@ describe Itly::Plugin::SchemaValidator do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-schema_validator: load()'],
+              ['info', 'schema_validator: load()'],
               ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                       '{"required_string"=>"Required string", "optional_enum"=>"Value 1"}>)'],
-              ['info', 'plugin-schema_validator: validate(event: #<Itly::Event: name: '\
+              ['info', 'schema_validator: validate(event: #<Itly::Event: name: '\
                       'context, properties: {"required_string"=>"Required string", "optional_enum"=>"Value 1"}>)']
             ]
           end
@@ -229,10 +229,10 @@ describe Itly::Plugin::SchemaValidator do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-schema_validator: load()'],
+              ['info', 'schema_validator: load()'],
               ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                       '{:required_string=>"Required string", :optional_enum=>"Value 1"}>)'],
-              ['info', 'plugin-schema_validator: validate(event: #<Itly::Event: name: '\
+              ['info', 'schema_validator: validate(event: #<Itly::Event: name: '\
                       'context, properties: {:required_string=>"Required string", :optional_enum=>"Value 1"}>)']
             ]
           end
@@ -246,10 +246,10 @@ describe Itly::Plugin::SchemaValidator do
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-schema_validator: load()'],
+              ['info', 'schema_validator: load()'],
               ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                       '{:required_string=>"Required string"}>)'],
-              ['info', 'plugin-schema_validator: validate(event: #<Itly::Event: name: '\
+              ['info', 'schema_validator: validate(event: #<Itly::Event: name: '\
                       'context, properties: {:required_string=>"Required string"}>)']
             ]
           end
@@ -274,15 +274,15 @@ describe Itly::Plugin::SchemaValidator do
             response = results[0]
             expect(response).to be_a(Itly::ValidationResponse)
             expect(response.valid).to be(false)
-            expect(response.plugin_id).to eq('plugin-schema_validator')
+            expect(response.plugin_id).to eq('schema_validator')
             expect(response.message).to eq('Passed in \'context\' properties did not validate against '\
               'your tracking plan. Error: missing_keys: required_string')
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-schema_validator: load()'],
+              ['info', 'schema_validator: load()'],
               ['info', 'validate(event: #<Itly::Event: name: context, properties: {:optional_enum=>"Value 1"}>)'],
-              ['info', 'plugin-schema_validator: validate(event: #<Itly::Event: name: context, properties: '\
+              ['info', 'schema_validator: validate(event: #<Itly::Event: name: context, properties: '\
                       '{:optional_enum=>"Value 1"}>)']
             ]
           end
@@ -302,16 +302,16 @@ describe Itly::Plugin::SchemaValidator do
             response = results[0]
             expect(response).to be_a(Itly::ValidationResponse)
             expect(response.valid).to be(false)
-            expect(response.plugin_id).to eq('plugin-schema_validator')
+            expect(response.plugin_id).to eq('schema_validator')
             expect(response.message).to eq('Passed in \'context\' properties did not validate '\
               'against your tracking plan. Error: Wrong value /optional_enum')
 
             expect_log_lines_to_equal [
               ['info', 'load()'],
-              ['info', 'plugin-schema_validator: load()'],
+              ['info', 'schema_validator: load()'],
               ['info', 'validate(event: #<Itly::Event: name: context, properties: '\
                       '{:required_string=>"Required string", :optional_enum=>"Wrong value"}>)'],
-              ['info', 'plugin-schema_validator: validate(event: #<Itly::Event: name: '\
+              ['info', 'schema_validator: validate(event: #<Itly::Event: name: '\
                       'context, properties: {:required_string=>"Required string", :optional_enum=>"Wrong value"}>)']
             ]
           end
@@ -332,16 +332,16 @@ describe Itly::Plugin::SchemaValidator do
         #     response = results[0]
         #     expect(response).to be_a(Itly::ValidationResponse)
         #     expect(response.valid).to be(false)
-        #     expect(response.plugin_id).to eq('plugin-schema_validator')
+        #     expect(response.plugin_id).to eq('schema_validator')
         #     expect(response.message).to eq('Passed in \'context\' properties did not validate against your '\
         #       'tracking plan. Error: 17 /required_string')
 
         #     expect_log_lines_to_equal [
         #       ['info', 'load()'],
-        #       ['info', 'plugin-schema_validator: load()'],
+        #       ['info', 'schema_validator: load()'],
         #       ['info', 'validate(event: #<Itly::Event: name: context, properties: {:required_string=>17, '\
         #                ':optional_enum=>"Value 1"}>)'],
-        #       ['info', 'plugin-schema_validator: validate(event: #<Itly::Event: name: context, properties: '\
+        #       ['info', 'schema_validator: validate(event: #<Itly::Event: name: context, properties: '\
         #                '{:required_string=>17, :optional_enum=>"Value 1"}>)']
         #     ]
         #   end
@@ -401,7 +401,7 @@ describe Itly::Plugin::SchemaValidator do
       response = plugin.send :return_validation_responses, event, result
       expect(response).to be_a(Itly::ValidationResponse)
       expect(response.valid).to be(false)
-      expect(response.plugin_id).to eq('plugin-schema_validator')
+      expect(response.plugin_id).to eq('schema_validator')
       expect(response.message).to eq('Passed in \'context\' properties did not validate against your '\
         'tracking plan. Error: field: message1, message2')
     end
@@ -414,7 +414,7 @@ describe Itly::Plugin::SchemaValidator do
       response = plugin.send :return_validation_responses, event, result
       expect(response).to be_a(Itly::ValidationResponse)
       expect(response.valid).to be(false)
-      expect(response.plugin_id).to eq('plugin-schema_validator')
+      expect(response.plugin_id).to eq('schema_validator')
       expect(response.message).to eq('Passed in \'context\' properties did not validate against your '\
         'tracking plan. Error: field: message1, message2. data: more info')
     end
@@ -427,7 +427,7 @@ describe Itly::Plugin::SchemaValidator do
       response = plugin.send :return_validation_responses, event, result
       expect(response).to be_a(Itly::ValidationResponse)
       expect(response.valid).to be(false)
-      expect(response.plugin_id).to eq('plugin-schema_validator')
+      expect(response.plugin_id).to eq('schema_validator')
       expect(response.message).to eq('Passed in \'context\' properties did not validate against your '\
         'tracking plan. Error: error_type error_details')
     end
@@ -441,7 +441,7 @@ describe Itly::Plugin::SchemaValidator do
       response = plugin.send :return_validation_responses, event, result
       expect(response).to be_a(Itly::ValidationResponse)
       expect(response.valid).to be(false)
-      expect(response.plugin_id).to eq('plugin-schema_validator')
+      expect(response.plugin_id).to eq('schema_validator')
       expect(response.message).to eq('Passed in \'context\' properties did not validate against your '\
         'tracking plan. Errors: field1: message1, message2. field2: message3')
     end

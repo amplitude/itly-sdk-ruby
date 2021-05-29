@@ -106,6 +106,15 @@ class Itly
         @client.shutdown force: force
       end
 
+      ##
+      # Get the plugin ID
+      #
+      # @return [String] plugin id
+      #
+      def id
+        'iteratively'
+      end
+
       private
 
       def enabled?

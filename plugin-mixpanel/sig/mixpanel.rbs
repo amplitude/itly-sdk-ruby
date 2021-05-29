@@ -9,6 +9,7 @@ class Itly
     def identify: (user_id: String user_id, properties: propertiesHash properties, ?options: Itly::Plugin::Mixpanel::IdentifyOptions? options) -> void
     def track: (user_id: String user_id, event: Itly::Event event, ?options: Itly::Plugin::Mixpanel::TrackOptions? options) -> void
     def alias: (user_id: String user_id, previous_id: String previous_id, ?options: Itly::Plugin::Mixpanel::AliasOptions? options) -> void
+    def id: () -> String
 
     private
 

@@ -163,6 +163,15 @@ class Itly
         end
       end
 
+      ##
+      # Get the plugin ID
+      #
+      # @return [String] plugin id
+      #
+      def id
+        'segment'
+      end
+
       private
 
       def enabled?

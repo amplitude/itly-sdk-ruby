@@ -15,6 +15,7 @@ class Itly
       def post_track: (user_id: String user_id, event: Itly::Event event, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
       def flush: () -> void
       def shutdown: (?force: bool force) -> void
+      def id: () -> String
 
       private
 

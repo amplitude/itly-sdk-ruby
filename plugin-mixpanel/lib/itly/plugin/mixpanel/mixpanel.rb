@@ -110,6 +110,15 @@ class Itly
         @client.alias user_id, previous_id
       end
 
+      ##
+      # Get the plugin ID
+      #
+      # @return [String] plugin id
+      #
+      def id
+        'mixpanel'
+      end
+
       private
 
       def enabled?
