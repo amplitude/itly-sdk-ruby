@@ -34,11 +34,8 @@ describe Itly::Plugin::Iteratively do
         expect(plugin.instance_variable_get('@api_key')).to eq('key123')
         expect(plugin.instance_variable_get('@disabled')).to be(nil)
         expect(plugin.instance_variable_get('@client_options')).to eq(
-          {
-            flush_queue_size: 10, batch_size: 100, flush_interval_ms: 1_000, max_retries: 25,
-            retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false,
-            branch: nil, version: nil
-          }
+          flush_queue_size: 10, batch_size: 100, flush_interval_ms: 1_000, max_retries: 25, retry_delay_min: 10.0,
+          retry_delay_max: 3600.0, omit_values: false, branch: nil, version: nil
         )
       end
     end
@@ -58,11 +55,8 @@ describe Itly::Plugin::Iteratively do
         expect(plugin.instance_variable_get('@api_key')).to eq('key123')
         expect(plugin.instance_variable_get('@disabled')).to be(true)
         expect(plugin.instance_variable_get('@client_options')).to eq(
-          {
-            flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2,
-            retry_delay_min: 3.0, retry_delay_max: 4.0, omit_values: true,
-            branch: 'feature/new', version: '1.2.3'
-          }
+          flush_queue_size: 1, batch_size: 5, flush_interval_ms: 6, max_retries: 2, retry_delay_min: 3.0,
+          retry_delay_max: 4.0, omit_values: true, branch: 'feature/new', version: '1.2.3'
         )
       end
     end
