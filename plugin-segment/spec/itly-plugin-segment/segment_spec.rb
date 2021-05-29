@@ -370,7 +370,7 @@ describe Itly::Plugin::Segment do
           before do
             expect(plugin.client).to receive(:group)
               .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' },
-                integrations: { 'content' => true })
+                    integrations: { 'content' => true })
               .and_return(response)
 
             itly.group(
@@ -540,7 +540,7 @@ describe Itly::Plugin::Segment do
           before do
             expect(plugin.client).to receive(:track)
               .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' },
-                integrations: { 'content' => true })
+                    integrations: { 'content' => true })
               .and_return(response)
 
             itly.track(
