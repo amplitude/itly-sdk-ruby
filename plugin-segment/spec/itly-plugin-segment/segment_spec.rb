@@ -192,22 +192,23 @@ describe Itly::Plugin::Segment do
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
               ['info', 'segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
-                       'options: #<Segment::IdentifyOptions integrations:  callback: provided>)'],
+                       'options: #<Segment::IdentifyOptions callback: provided>)'],
               ['info', 'from-callback: code: 201 body: raw data']
             ]
           end
         end
 
-        context 'with integrations' do
+        context 'with options' do
           before do
             expect(plugin.client).to receive(:identify)
-              .with(user_id: 'user_123', traits: { version: '4', some: 'data' }, integrations: { 'content' => true })
+              .with(user_id: 'user_123', traits: { version: '4', some: 'data' }, integrations: { 'content' => true },
+                    anonymous_id: 'anID')
               .and_return(response)
 
             itly.identify(
               user_id: 'user_123', properties: { version: '4', some: 'data' },
               options: { 'segment' => Itly::Plugin::Segment::IdentifyOptions.new(
-                integrations: { 'content' => true }
+                integrations: { 'content' => true }, anonymous_id: 'anID'
               ) }
             )
           end
@@ -219,7 +220,8 @@ describe Itly::Plugin::Segment do
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
               ['info', 'segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
-                       'options: #<Segment::IdentifyOptions integrations: {"content"=>true} callback: nil>)']
+                       'options: #<Segment::IdentifyOptions callback: nil '\
+                       'integrations: {"content"=>true} anonymous_id: anID>)']
             ]
           end
         end
@@ -360,23 +362,23 @@ describe Itly::Plugin::Segment do
               ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
               ['info', 'segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
-                       'options: #<Segment::GroupOptions integrations:  callback: provided>)'],
+                       'options: #<Segment::GroupOptions callback: provided>)'],
               ['info', 'from-callback: code: 201 body: raw data']
             ]
           end
         end
 
-        context 'with integrations' do
+        context 'with options' do
           before do
             expect(plugin.client).to receive(:group)
               .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' },
-                    integrations: { 'content' => true })
+                    integrations: { 'content' => true }, anonymous_id: 'anID')
               .and_return(response)
 
             itly.group(
               user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' },
               options: { 'segment' => Itly::Plugin::Segment::GroupOptions.new(
-                integrations: { 'content' => true }
+                integrations: { 'content' => true }, anonymous_id: 'anID'
               ) }
             )
           end
@@ -388,7 +390,8 @@ describe Itly::Plugin::Segment do
               ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
               ['info', 'segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
-                      'options: #<Segment::GroupOptions integrations: {"content"=>true} callback: nil>)']
+                       'options: #<Segment::GroupOptions callback: nil '\
+                       'integrations: {"content"=>true} anonymous_id: anID>)']
             ]
           end
         end
@@ -529,23 +532,23 @@ describe Itly::Plugin::Segment do
               ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
               ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
-                       'options: #<Segment::PageOptions integrations:  callback: provided>)'],
+                       'options: #<Segment::PageOptions callback: provided>)'],
               ['info', 'from-callback: code: 201 body: raw data']
             ]
           end
         end
 
-        context 'with integrations' do
+        context 'with options' do
           before do
             expect(plugin.client).to receive(:page)
               .with(user_id: 'user_123', name: 'pageABC', properties: { active: 'yes', category: 'Prd' },
-                    integrations: { 'content' => true })
+                    integrations: { 'content' => true }, anonymous_id: 'anID')
               .and_return(response)
 
             itly.page(
               user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { active: 'yes' },
               options: { 'segment' => Itly::Plugin::Segment::PageOptions.new(
-                integrations: { 'content' => true }
+                integrations: { 'content' => true }, anonymous_id: 'anID'
               ) }
             )
           end
@@ -557,7 +560,8 @@ describe Itly::Plugin::Segment do
               ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
               ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
-                      'options: #<Segment::PageOptions integrations: {"content"=>true} callback: nil>)']
+                       'options: #<Segment::PageOptions callback: nil integrations: {"content"=>true}'\
+                       ' anonymous_id: anID>)']
             ]
           end
         end
@@ -699,23 +703,23 @@ describe Itly::Plugin::Segment do
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
               ['info', 'segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
-                       'options: #<Segment::TrackOptions integrations:  callback: provided>)'],
+                       'options: #<Segment::TrackOptions callback: provided>)'],
               ['info', 'from-callback: code: 201 body: raw data']
             ]
           end
         end
 
-        context 'with integrations' do
+        context 'with options' do
           before do
             expect(plugin.client).to receive(:track)
               .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' },
-                    integrations: { 'content' => true })
+                    integrations: { 'content' => true }, anonymous_id: 'anID')
               .and_return(response)
 
             itly.track(
               user_id: 'user_123', event: event,
               options: { 'segment' => Itly::Plugin::Segment::TrackOptions.new(
-                integrations: { 'content' => true }
+                integrations: { 'content' => true }, anonymous_id: 'anID'
               ) }
             )
           end
@@ -727,7 +731,8 @@ describe Itly::Plugin::Segment do
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
               ['info', 'segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
-                       'options: #<Segment::TrackOptions integrations: {"content"=>true} callback: nil>)']
+                       'options: #<Segment::TrackOptions callback: nil integrations: {"content"=>true} '\
+                       'anonymous_id: anID>)']
             ]
           end
         end
@@ -845,7 +850,7 @@ describe Itly::Plugin::Segment do
           end
         end
 
-        context 'default' do
+        context 'with callback' do
           before do
             expect(plugin.client).to receive(:alias)
               .with(user_id: 'user_123', previous_id: 'old_user')
@@ -865,22 +870,23 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'alias(user_id: user_123, previous_id: old_user)'],
               ['info', 'segment: alias(user_id: user_123, previous_id: old_user, '\
-                       'options: #<Segment::AliasOptions integrations:  callback: provided>)'],
+                       'options: #<Segment::AliasOptions callback: provided>)'],
               ['info', 'from-callback: code: 201 body: raw data']
             ]
           end
         end
 
-        context 'default' do
+        context 'with options' do
           before do
             expect(plugin.client).to receive(:alias)
-              .with(user_id: 'user_123', previous_id: 'old_user', integrations: { 'content' => true })
+              .with(user_id: 'user_123', previous_id: 'old_user', integrations: { 'content' => true },
+                    anonymous_id: 'anID')
               .and_return(response)
 
             itly.alias(
               user_id: 'user_123', previous_id: 'old_user',
               options: { 'segment' => Itly::Plugin::Segment::AliasOptions.new(
-                integrations: { 'content' => true }
+                integrations: { 'content' => true }, anonymous_id: 'anID'
               ) }
             )
           end
@@ -891,7 +897,8 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'alias(user_id: user_123, previous_id: old_user)'],
               ['info', 'segment: alias(user_id: user_123, previous_id: old_user, '\
-                       'options: #<Segment::AliasOptions integrations: {"content"=>true} callback: nil>)']
+                       'options: #<Segment::AliasOptions callback: nil integrations: {"content"=>true} '\
+                       'anonymous_id: anID>)']
             ]
           end
         end

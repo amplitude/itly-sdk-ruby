@@ -2,14 +2,19 @@ class Itly
   class Plugin
     class Segment
       class CallOptions < Itly::PluginCallOptions
-        attr_reader integrations: Hash[String, bool]?
         attr_reader callback: (^(Integer?, String?) -> void)?
+        attr_reader integrations: Hash[String, bool]?
+        attr_reader context: Hash[String, bool]?
+        attr_reader message_id: String?
+        attr_reader timestamp: String?
+        attr_reader anonymous_id: String?
 
+        def to_hash: () -> untypedHash
         def to_s: () -> String
 
         private
 
-        def initialize: (?integrations: Hash[String, bool]? integrations, ?callback: (^(Integer?, String?) -> void)? callback) -> void
+        def initialize: (?callback: (^(Integer?, String?) -> void)? callback, ?integrations: Hash[String, bool]? integrations, ?context: Hash[String, bool]? context, ?message_id: String? message_id, ?timestamp: String? timestamp, ?anonymous_id: String? anonymous_id) -> void
       end
 
       class IdentifyOptions < CallOptions

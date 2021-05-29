@@ -76,7 +76,7 @@ class Itly
 
         # Send through the client
         payload = { user_id: user_id, traits: properties.dup }
-        payload[:integrations] = options.integrations unless options&.integrations.nil?
+        payload.merge! options.to_hash if options
 
         call_end_point(options&.callback) do
           @client.identify(**payload)
@@ -103,7 +103,7 @@ class Itly
 
         # Send through the client
         payload = { user_id: user_id, group_id: group_id, traits: properties.dup }
-        payload[:integrations] = options.integrations unless options&.integrations.nil?
+        payload.merge! options.to_hash if options
 
         call_end_point(options&.callback) do
           @client.group(**payload)
@@ -131,7 +131,7 @@ class Itly
 
         # Send through the client
         payload = { user_id: user_id, name: name, properties: properties.dup.merge(category: category) }
-        payload[:integrations] = options.integrations unless options&.integrations.nil?
+        payload.merge! options.to_hash if options
 
         call_end_point(options&.callback) do
           @client.page(**payload)
@@ -157,7 +157,7 @@ class Itly
 
         # Send through the client
         payload = { user_id: user_id, event: event.name, properties: event.properties.dup }
-        payload[:integrations] = options.integrations unless options&.integrations.nil?
+        payload.merge! options.to_hash if options
 
         call_end_point(options&.callback) do
           @client.track(**payload)
@@ -184,7 +184,7 @@ class Itly
 
         # Send through the client
         payload = { user_id: user_id, previous_id: previous_id }
-        payload[:integrations] = options.integrations unless options&.integrations.nil?
+        payload.merge! options.to_hash if options
 
         call_end_point(options&.callback) do
           @client.alias(**payload)
