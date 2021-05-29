@@ -58,7 +58,7 @@ class Itly
 
         # Send through the client
         call_end_point(options&.callback) do
-          ::AmplitudeAPI.send_identify user_id, nil, properties
+          ::AmplitudeAPI.send_identify user_id, nil, (options&.to_hash || {}).merge(properties)
         end
       end
 
@@ -81,7 +81,9 @@ class Itly
 
         # Send through the client
         call_end_point(options&.callback) do
-          ::AmplitudeAPI.send_event event.name, user_id, nil, event_properties: event.properties
+          ::AmplitudeAPI.send_event(
+            event.name, user_id, nil, event_properties: (options&.to_hash || {}).merge(event.properties)
+          )
         end
       end
 

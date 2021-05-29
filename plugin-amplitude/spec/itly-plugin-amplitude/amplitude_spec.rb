@@ -90,12 +90,6 @@ describe Itly::Plugin::Amplitude do
     describe 'enabled' do
       let(:plugin) { Itly::Plugin::Amplitude.new api_key: 'key123' }
 
-      before do
-        expect(AmplitudeAPI).to receive(:send_identify)
-          .with('user_123', nil, version: '4', some: 'data')
-          .and_return(response)
-      end
-
       context 'success' do
         let(:response) { double 'response', status: 200 }
 
@@ -104,6 +98,10 @@ describe Itly::Plugin::Amplitude do
             options.plugins = [plugin]
             options.logger = ::Logger.new logs
           end
+
+          expect(AmplitudeAPI).to receive(:send_identify)
+            .with('user_123', nil, version: '4', some: 'data')
+            .and_return(response)
 
           itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
         end
@@ -120,7 +118,7 @@ describe Itly::Plugin::Amplitude do
         end
       end
 
-      context 'with callback' do
+      context 'with call options' do
         let(:response) { double 'response', status: 201, body: 'raw data' }
         let(:logger) { ::Logger.new logs }
 
@@ -130,9 +128,14 @@ describe Itly::Plugin::Amplitude do
             options.logger = logger
           end
 
+          expect(AmplitudeAPI).to receive(:send_identify)
+            .with('user_123', nil, version: '4', some: 'data', device_id: 'DEVID', time: 123_456, app_version: 'v1.2.3')
+            .and_return(response)
+
           itly.identify(
             user_id: 'user_123', properties: { version: '4', some: 'data' },
             options: { 'amplitude' => Itly::Plugin::Amplitude::IdentifyOptions.new(
+              device_id: 'DEVID', time: 123_456, app_version: 'v1.2.3',
               callback: ->(code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
             ) }
           )
@@ -145,7 +148,8 @@ describe Itly::Plugin::Amplitude do
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
             ['info', 'amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
-                     'options: #<Amplitude::IdentifyOptions callback: provided>)'],
+                     'options: #<Amplitude::IdentifyOptions callback: provided device_id: DEVID time: 123456 '\
+                     'app_version: v1.2.3>)'],
             ['info', 'from-callback: code: 201 body: raw data']
 
           ]
@@ -154,6 +158,12 @@ describe Itly::Plugin::Amplitude do
 
       context 'failure' do
         let(:response) { double 'response', status: 500, body: 'wrong params' }
+
+        before do
+          expect(AmplitudeAPI).to receive(:send_identify)
+            .with('user_123', nil, version: '4', some: 'data')
+            .and_return(response)
+        end
 
         context 'development' do
           before do
@@ -253,7 +263,7 @@ describe Itly::Plugin::Amplitude do
         end
       end
 
-      context 'with callback' do
+      context 'with call options' do
         let(:response) { double 'response', status: 201, body: 'raw data' }
         let(:logger) { ::Logger.new logs }
 
@@ -264,12 +274,13 @@ describe Itly::Plugin::Amplitude do
           end
 
           expect(AmplitudeAPI).to receive(:send_event)
-            .with('custom_event', 'user_123', nil, event_properties: { view: 'video' })
+            .with('custom_event', 'user_1', nil, event_properties: { view: 'video', device_id: 'DEVID', time: 123_456 })
             .and_return(response)
 
           itly.track(
-            user_id: 'user_123', event: event,
+            user_id: 'user_1', event: event,
             options: { 'amplitude' => Itly::Plugin::Amplitude::TrackOptions.new(
+              device_id: 'DEVID', time: 123_456,
               callback: ->(code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
             ) }
           )
@@ -279,10 +290,10 @@ describe Itly::Plugin::Amplitude do
           expect_log_lines_to_equal [
             ['info', 'load()'],
             ['info', 'amplitude: load()'],
-            ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+            ['info', 'track(user_id: user_1, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-            ['info', 'amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
-                     'options: #<Amplitude::TrackOptions callback: provided>)'],
+            ['info', 'amplitude: track(user_id: user_1, event: custom_event, properties: {:view=>"video"}, '\
+                     'options: #<Amplitude::TrackOptions callback: provided device_id: DEVID time: 123456>)'],
             ['info', 'from-callback: code: 201 body: raw data']
           ]
         end

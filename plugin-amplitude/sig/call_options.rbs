@@ -4,11 +4,12 @@ class Itly
       class CallOptions < Itly::PluginCallOptions
         attr_reader callback: (^(Integer?, String?) -> void)?
 
+        def to_hash: () -> Hash[Symbol, String | Integer | Float | untypedHash]
         def to_s: () -> String
 
         private
 
-        def initialize: (?callback: (^(Integer?, String?) -> void)? callback) -> void
+        def initialize: (?callback: (^(Integer?, String?) -> void)? callback, ?device_id: String? device_id, ?time: Integer? time, ?groups: untypedHash? groups, ?app_version: String? app_version, ?platform: String? platform, ?os_name: String? os_name, ?os_version: String? os_version, ?device_brand: String? device_brand, ?device_manufacturer: String? device_manufacturer, ?device_model: String? device_model, ?carrier: String? carrier, ?country: String? country, ?region: String? region, ?city: String? city, ?dma: String? dma, ?language: String? language, ?price: Float? price, ?quantity: Integer? quantity, ?revenue: Float? revenue, ?productId: String? productId, ?revenueType: String? revenueType, ?location_lat: Float? location_lat, ?location_lng: Float? location_lng, ?ip: String? ip, ?idfa: String? idfa, ?idfv: String? idfv, ?adid: String? adid, ?android_id: String? android_id, ?event_id: Integer? event_id, ?session_id: Integer? session_id, ?insert_id: String? insert_id) -> void
       end
 
       class IdentifyOptions < CallOptions
