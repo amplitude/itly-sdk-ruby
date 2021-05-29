@@ -15,6 +15,8 @@ Metrics/BlockLength:
   Enabled: false
 Metrics/MethodLength:
   Enabled: false
+Metrics/ParameterLists:
+  Enabled: false
 Naming/PredicateName:
   Enabled: false
 Naming/FileName:

@@ -34,7 +34,6 @@ class Itly
         # @param [String] branch: Tracking plan branch name (e.g. feature/demo)
         # @param [String] version: Tracking plan version number (e.g. 1.0.0)
         #
-        # rubocop:disable Metrics/ParameterLists
         def initialize(
           url: DEFAULT_URL, disabled: nil, flush_queue_size: 10, batch_size: 100, flush_interval_ms: 1_000,
           max_retries: 25, retry_delay_min: 10.0, retry_delay_max: 3600.0, omit_values: false, branch: nil, version: nil
@@ -52,12 +51,11 @@ class Itly
           @branch = branch
           @version = version
         end
-        # rubocop:enable Metrics/ParameterLists
 
         ##
         # Returns a copy of this Options with any provided arguments used as overrides
         #
-        # rubocop:disable Metrics/ParameterLists, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         def with_overrides(
           url: nil, disabled: nil, flush_queue_size: nil, batch_size: nil, flush_interval_ms: nil,
           max_retries: nil, retry_delay_min: nil, retry_delay_max: nil, omit_values: nil, branch: nil, version: nil
@@ -76,7 +74,7 @@ class Itly
             version: version.nil? ? @version : version
           )
         end
-        # rubocop:enable Metrics/ParameterLists, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       end
     end
   end

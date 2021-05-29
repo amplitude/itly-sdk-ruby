@@ -14,7 +14,6 @@ class Itly
         attr_reader :api_key, :url, :logger, :flush_queue_size, :batch_size, :flush_interval_ms, :max_retries,
           :retry_delay_min, :retry_delay_max, :omit_values, :branch, :version
 
-        # rubocop:disable Metrics/ParameterLists
         def initialize(
           url:, api_key:, logger:, flush_queue_size:, batch_size:, flush_interval_ms:, max_retries:,
           retry_delay_min:, retry_delay_max:, omit_values:, branch:, version:
@@ -38,7 +37,6 @@ class Itly
           # Start the scheduler
           start_scheduler
         end
-        # rubocop:enable Metrics/ParameterLists
 
         def track(type:, event:, properties:, validation:)
           @buffer << ::Itly::Plugin::Iteratively::TrackModel.new(

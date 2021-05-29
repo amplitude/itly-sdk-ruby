@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ParameterLists
 shared_examples 'validate and run on plugins' do |
   method:, # Name of the method to call and to expect on plugins
   method_params:, # Params to pass to the method when calling it from Itly object
@@ -147,4 +146,3 @@ shared_examples 'validate and run on plugins' do |
     end
   end
 end
-# rubocop:enable Metrics/ParameterLists
