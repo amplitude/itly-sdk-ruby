@@ -125,20 +125,21 @@ class Itly
     # Validate and run on all plugins
     event = Event.new name: 'group', properties: properties
 
-    validate_and_send_to_plugins \
-      event: event,
-      action: ->(plugin, combined_event) {
-                plugin.group(
-                  user_id: user_id, group_id: group_id, properties: combined_event.properties,
-                  options: options[plugin.id]
-                )
-              },
-      post_action: ->(plugin, combined_event, validation_results) {
-                     plugin.post_group(
-                       user_id: user_id, group_id: group_id, properties: combined_event.properties,
-                       validation_results: validation_results
-                     )
-                   }
+    action = ->(plugin, combined_event) {
+      plugin.group(
+        user_id: user_id, group_id: group_id, properties: combined_event.properties,
+        options: options[plugin.id]
+      )
+    }
+
+    post_action = ->(plugin, combined_event, validation_results) {
+      plugin.post_group(
+        user_id: user_id, group_id: group_id, properties: combined_event.properties,
+        validation_results: validation_results
+      )
+    }
+
+    validate_and_send_to_plugins event: event, action: action, post_action: post_action
   end
 
   ##
@@ -173,15 +174,15 @@ class Itly
     logger&.info "track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
 
     # Validate and run on all plugins
-    validate_and_send_to_plugins \
-      event: event,
-      context: @context,
-      action: ->(plugin, combined_event) {
-                plugin.track user_id: user_id, event: combined_event, options: options[plugin.id]
-              },
-      post_action: ->(plugin, combined_event, validation_results) {
-                     plugin.post_track user_id: user_id, event: combined_event, validation_results: validation_results
-                   }
+    action = ->(plugin, combined_event) {
+      plugin.track user_id: user_id, event: combined_event, options: options[plugin.id]
+    }
+
+    post_action = ->(plugin, combined_event, validation_results) {
+      plugin.post_track user_id: user_id, event: combined_event, validation_results: validation_results
+    }
+
+    validate_and_send_to_plugins event: event, context: @context, action: action, post_action: post_action
   end
 
   ##
