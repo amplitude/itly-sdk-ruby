@@ -143,6 +143,54 @@ class Itly
   end
 
   ##
+  # The Page method lets you record page views, along with optional extra information about
+  # the page viewed by the user.
+  #
+  # Validates the +properties+ with all registered plugins first.
+  # Raises a Itly::ValidationError if one of the validations failed and
+  # if your set the +options.validation+ value to +ERROR_ON_INVALID+.
+  #
+  # Call +page+ on all plugins and call +post_page+ on all plugins.
+  #
+  # Example:
+  #
+  #     itly.page user_id: 'MyUser123', category: 'Products', name: 'MyPage456', name: 'Iteratively, Inc.'
+  #
+  # @param [String] user_id: the id of the user in your application
+  # @param [String] category: the category of the page
+  # @param [String] name: the name of the page.
+  # @param [Hash] properties: The list of properties to pass to your application
+  # @param [Hash] options: plugin specific option. The keys must correspond
+  #   to a plugin id, and the values will be passed only to the plugin identified by the key.
+  #
+  def page(user_id:, category:, name:, properties: {}, options: {})
+    # Run only if the object is enabled and was initialized
+    return unless was_initialized? && enabled?
+
+    # Log
+    logger&.info "page(user_id: #{user_id}, category: #{category}, name: #{name}, properties: #{properties})"
+
+    # Validate and run on all plugins
+    event = Event.new name: 'page', properties: properties
+
+    action = ->(plugin, combined_event) {
+      plugin.page(
+        user_id: user_id, category: category, name: name, properties: combined_event.properties,
+        options: options[plugin.id]
+      )
+    }
+
+    post_action = ->(plugin, combined_event, validation_results) {
+      plugin.post_page(
+        user_id: user_id, category: category, name: name, properties: combined_event.properties,
+        validation_results: validation_results
+      )
+    }
+
+    validate_and_send_to_plugins event: event, action: action, post_action: post_action
+  end
+
+  ##
   # Track an event, call the event's corresponding function on plugins.
   #
   # Validates the +properties+ of the +Event+ object passed as parameter

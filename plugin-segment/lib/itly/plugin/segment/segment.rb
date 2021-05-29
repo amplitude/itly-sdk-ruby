@@ -111,6 +111,34 @@ class Itly
       end
 
       ##
+      # Record page views
+      #
+      # Raise an error if the client fails
+      #
+      # @param [String] user_id: the id of the user in your application
+      # @param [String] category: the category of the page
+      # @param [String] name: the name of the page.
+      # @param [Hash] properties: the properties to pass to your application
+      # @param [Itly::Plugin::Segment::PageOptions] options: the plugin specific options
+      #
+      def page(user_id:, category:, name:, properties:, options: nil)
+        super
+        return unless enabled?
+
+        # Log
+        @logger&.info "#{id}: page(user_id: #{user_id}, category: #{category}, name: #{name}, "\
+          "properties: #{properties}, options: #{options})"
+
+        # Send through the client
+        payload = { user_id: user_id, name: name, properties: properties.dup.merge(category: category) }
+        payload[:integrations] = options.integrations unless options&.integrations.nil?
+
+        call_end_point(options&.callback) do
+          @client.page(**payload)
+        end
+      end
+
+      ##
       # Track an event
       #
       # Raise an error if the client fails

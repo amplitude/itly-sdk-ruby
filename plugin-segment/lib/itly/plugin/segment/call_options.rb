@@ -34,6 +34,12 @@ class Itly
       end
 
       ##
+      # Segment specific plugin options class for calls to +page+
+      #
+      class PageOptions < CallOptions
+      end
+
+      ##
       # Segment specific plugin options class for calls to +track+
       #
       class TrackOptions < CallOptions

@@ -7,6 +7,17 @@ class Itly
       class IdentifyOptions < CallOptions
       end
 
+      class PageOptions < CallOptions
+        attr_reader contexts: Array[Itly::Plugin::Snowplow::Context]?
+        attr_reader callback: (^(Integer?, String?) -> void)?
+
+        def to_s: () -> String
+
+        private
+
+        def initialize: (?contexts: Array[Itly::Plugin::Snowplow::Context]? contexts, ?callback: (^(Integer?, String?) -> void)? callback) -> void
+      end
+
       class TrackOptions < CallOptions
         attr_reader contexts: Array[Itly::Plugin::Snowplow::Context]?
         attr_reader callback: (^(Integer?, String?) -> void)?

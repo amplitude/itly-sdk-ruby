@@ -16,6 +16,25 @@ class Itly
       end
 
       ##
+      # Snowplow specific plugin options class for calls to +page+
+      #
+      class PageOptions < CallOptions
+        attr_reader :contexts, :callback
+
+        def initialize(contexts: nil, callback: nil)
+          super()
+          @contexts = contexts
+          @callback = callback
+        end
+
+        def to_s
+          class_name = self.class.name.split('::').last
+          contexts_str = contexts.collect(&:to_s).join ', '
+          "#<Snowplow::#{class_name} contexts: [#{contexts_str}] callback: #{callback.nil? ? 'nil' : 'provided'}>"
+        end
+      end
+
+      ##
       # Snowplow specific plugin options class for calls to +track+
       #
       class TrackOptions < CallOptions

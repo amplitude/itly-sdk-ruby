@@ -64,13 +64,44 @@ class Itly
       end
 
       ##
+      # Record page views
+      #
+      # Raise an error if the client fails
+      #
+      # @param [String] user_id: the id of the user in your application
+      # @param [String] category: the category of the page
+      # @param [String] name: the name of the page.
+      # @param [Hash] properties: the properties to pass to your application
+      # @param [Itly::Plugin::Snowplow::PageOptions] options: the plugin specific options
+      #
+      def page(user_id:, category:, name:, properties:, options: nil)
+        super
+        return unless enabled?
+
+        # Log
+        logger&.info "#{id}: page(user_id: #{user_id}, category: #{category}, name: #{name}, "\
+          "properties: #{properties}, options: #{options})"
+
+        # Identify the user
+        client.set_user_id user_id
+
+        # Send through the client
+        contexts = nil
+        if options&.contexts.is_a?(Array) && options.contexts.any?
+          contexts = options.contexts.collect(&:to_self_describing_json)
+        end
+
+        client.track_screen_view name, nil, contexts
+      end
+
+      ##
       # Track an event
       #
       # Raise an error if the client fails
       #
       # @param [String] user_id: the id of the user in your application
       # @param [Event] event: the Event object to pass to your application
-      # @param [Itly::Plugin::Snowplow::IdentifyOptions] options: the plugin specific options
+      # @param [Itly::Plugin::Snowplow::TrackOptions] options: the plugin specific options
       #
       def track(user_id:, event:, options: nil)
         super

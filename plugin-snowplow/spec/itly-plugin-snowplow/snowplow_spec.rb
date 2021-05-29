@@ -218,6 +218,109 @@ describe Itly::Plugin::Snowplow do
     end
   end
 
+  describe '#page' do
+    let(:logs) { StringIO.new }
+    let(:itly) { Itly.new }
+
+    describe 'enabled' do
+      let(:plugin_options) { Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123' }
+      let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
+
+      context 'success' do
+        before do
+          expect(plugin.client).to receive(:set_user_id).with('user_123')
+        end
+
+        before do
+          itly.load do |options|
+            options.plugins = [plugin]
+            options.logger = ::Logger.new logs
+          end
+
+          itly.page user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { ignored: 'data' }
+        end
+
+        it do
+          expect_log_lines_to_equal [
+            ['info', 'load()'],
+            ['info', 'snowplow: load()'],
+            ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:ignored=>"data"})'],
+            ['info', 'validate(event: #<Itly::Event: name: page, properties: {:ignored=>"data"}>)'],
+            ['info', 'snowplow: page(user_id: user_123, category: Prd, name: pageABC, '\
+                     'properties: {:ignored=>"data"}, options: )']
+          ]
+        end
+      end
+
+      context 'failure' do
+        before do
+          expect(plugin.client).to receive(:set_user_id).with('user_123')
+            .and_raise('Test rspec')
+        end
+
+        context 'development' do
+          before do
+            itly.load do |options|
+              options.plugins = [plugin]
+              options.logger = ::Logger.new logs
+              options.environment = Itly::Options::Environment::DEVELOPMENT
+            end
+          end
+
+          it do
+            expect do
+              itly.page user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { ignored: 'data' }
+            end.to raise_error(RuntimeError, 'Test rspec')
+          end
+        end
+
+        context 'production' do
+          before do
+            itly.load do |options|
+              options.plugins = [plugin]
+              options.logger = ::Logger.new logs
+              options.environment = Itly::Options::Environment::PRODUCTION
+            end
+
+            itly.page user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { ignored: 'data' }
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'snowplow: load()'],
+              ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:ignored=>"data"})'],
+              ['info', 'validate(event: #<Itly::Event: name: page, properties: {:ignored=>"data"}>)'],
+              ['info', 'snowplow: page(user_id: user_123, category: Prd, name: pageABC, '\
+                       'properties: {:ignored=>"data"}, options: )'],
+              ['error', 'Itly Error in Itly::Plugin::Snowplow. RuntimeError: Test rspec']
+            ]
+          end
+        end
+      end
+    end
+
+    context 'disabled' do
+      let(:plugin_options) do
+        Itly::Plugin::Snowplow::Options.new endpoint: 'endpoint123', disabled: true
+      end
+      let(:plugin) { Itly::Plugin::Snowplow.new vendor: 'vnd_name', options: plugin_options }
+
+      before do
+        itly.load do |options|
+          options.plugins = [plugin]
+          options.logger = ::Logger.new logs
+        end
+
+        expect(plugin.client).not_to receive(:set_user_id)
+      end
+
+      it do
+        itly.page user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { ignored: 'data' }
+      end
+    end
+  end
+
   describe '#track' do
     let(:logs) { StringIO.new }
     let(:itly) { Itly.new }

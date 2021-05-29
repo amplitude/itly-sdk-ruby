@@ -334,6 +334,107 @@ describe 'Itly' do
     end
   end
 
+  describe '#page', fake_plugins: 2 do
+    context 'Itly was not initialized' do
+      let(:itly) { Itly.new }
+      let!(:event) { Itly::Event.new name: 'Test' }
+
+      before do
+        expect(itly).not_to receive(:validate_and_send_to_plugins)
+      end
+
+      it do
+        expect do
+          itly.page user_id: '123', category: 'Product', name: 'Page1', properties: { data: '1', info: 'yes' }
+        end.to raise_error(Itly::InitializationError, 'Itly is not initialized. Call #load { |options| ... }')
+      end
+    end
+
+    context 'no validation error' do
+      include_examples 'validate and run on plugins',
+        method: :page, pass_data_as: :properties,
+        method_params: { user_id: '123',
+                         category: 'Product',
+                         name: 'Page1',
+                         properties: { data: '1', info: 'yes' },
+                         options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
+        expected_event_properties: { data: '1', info: 'yes' },
+        expected_log_info: 'page(user_id: 123, category: Product, name: Page1, properties: {:data=>"1", :info=>"yes"})'
+    end
+
+    context 'validation error' do
+      context 'options.validation = DISABLED' do
+        include_examples 'validate and run on plugins',
+          method: :page, pass_data_as: :properties,
+          method_params: { user_id: '123',
+                           category: 'Product',
+                           name: 'Page1',
+                           properties: { data: '1', info: 'yes' },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
+          validation_value: Itly::Options::Validation::DISABLED,
+          expected_event_properties: { data: '1', info: 'yes' },
+          expected_log_info: 'page(user_id: 123, category: Product, name: Page1, '\
+                             'properties: {:data=>"1", :info=>"yes"})',
+          generate_validation_error: true, expect_validation: false
+      end
+
+      context 'options.validation = TRACK_INVALID' do
+        include_examples 'validate and run on plugins',
+          method: :page, pass_data_as: :properties,
+          method_params: { user_id: '123',
+                           category: 'Product',
+                           name: 'Page1',
+                           properties: { data: '1', info: 'yes' },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
+          validation_value: Itly::Options::Validation::TRACK_INVALID,
+          expected_event_properties: { data: '1', info: 'yes' },
+          expected_log_info: 'page(user_id: 123, category: Product, name: Page1, '\
+                             'properties: {:data=>"1", :info=>"yes"})',
+          generate_validation_error: true
+      end
+
+      context 'options.validation = ERROR_ON_INVALID' do
+        include_examples 'validate and run on plugins',
+          method: :page, pass_data_as: :properties,
+          method_params: { user_id: '123',
+                           category: 'Product',
+                           name: 'Page1',
+                           properties: { data: '1', info: 'yes' },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
+          validation_value: Itly::Options::Validation::ERROR_ON_INVALID,
+          expected_event_properties: { data: '1', info: 'yes' },
+          expected_log_info: 'page(user_id: 123, category: Product, name: Page1, '\
+                             'properties: {:data=>"1", :info=>"yes"})',
+          generate_validation_error: true, expect_to_call_action: false, expect_exception: true
+      end
+    end
+
+    context 'disabled' do
+      let!(:fake_logger) { double 'logger', info: nil, warn: nil }
+      let!(:plugin_a) { FakePlugin0.new }
+      let!(:plugin_b) { FakePlugin1.new }
+      let!(:itly) { Itly.new }
+
+      before do
+        itly.load do |options|
+          options.disabled = true
+          options.plugins = [plugin_a, plugin_b]
+          options.logger = fake_logger
+        end
+      end
+
+      before do
+        expect(itly.options.logger).not_to receive(:info)
+        expect(itly.options.logger).not_to receive(:error)
+        expect(itly).not_to receive(:validate_and_send_to_plugins)
+      end
+
+      it do
+        itly.page user_id: '123', category: 'Product', name: 'Page1', properties: { data: '1', info: 'yes' }
+      end
+    end
+  end
+
   describe '#track', fake_plugins: 2 do
     context 'Itly was not initialized' do
       let(:itly) { Itly.new }

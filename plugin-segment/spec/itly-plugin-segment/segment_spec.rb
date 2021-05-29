@@ -469,6 +469,175 @@ describe Itly::Plugin::Segment do
     end
   end
 
+  describe '#page' do
+    let(:logs) { StringIO.new }
+    let(:itly) { Itly.new }
+
+    describe 'enabled' do
+      let(:plugin) { Itly::Plugin::Segment.new write_key: 'key123' }
+      let(:logger) { ::Logger.new logs }
+
+      context 'success' do
+        let(:response) { double 'response', code: '201', body: 'raw data' }
+
+        before do
+          itly.load do |options|
+            options.plugins = [plugin]
+            options.logger = logger
+          end
+        end
+
+        context 'default' do
+          before do
+            expect(plugin.client).to receive(:page)
+              .with(user_id: 'user_123', name: 'pageABC', properties: { active: 'yes', category: 'Prd' })
+              .and_return(response)
+
+            itly.page user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { active: 'yes' }
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'segment: load()'],
+              ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
+              ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
+              ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
+                      'options: )']
+            ]
+          end
+        end
+
+        context 'with callback' do
+          before do
+            expect(plugin.client).to receive(:page)
+              .with(user_id: 'user_123', name: 'pageABC', properties: { active: 'yes', category: 'Prd' })
+              .and_return(response)
+
+            itly.page(
+              user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { active: 'yes' },
+              options: { 'segment' => Itly::Plugin::Segment::PageOptions.new(
+                callback: ->(code, body) { logger.info "from-callback: code: #{code} body: #{body}" }
+              ) }
+            )
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'segment: load()'],
+              ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
+              ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
+              ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
+                       'options: #<Segment::PageOptions integrations:  callback: provided>)'],
+              ['info', 'from-callback: code: 201 body: raw data']
+            ]
+          end
+        end
+
+        context 'with integrations' do
+          before do
+            expect(plugin.client).to receive(:page)
+              .with(user_id: 'user_123', name: 'pageABC', properties: { active: 'yes', category: 'Prd' },
+                    integrations: { 'content' => true })
+              .and_return(response)
+
+            itly.page(
+              user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { active: 'yes' },
+              options: { 'segment' => Itly::Plugin::Segment::PageOptions.new(
+                integrations: { 'content' => true }
+              ) }
+            )
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'segment: load()'],
+              ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
+              ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
+              ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
+                      'options: #<Segment::PageOptions integrations: {"content"=>true} callback: nil>)']
+            ]
+          end
+        end
+      end
+
+      context 'failure' do
+        context 'development' do
+          before do
+            itly.load do |options|
+              options.plugins = [plugin]
+              options.logger = logger
+              options.environment = Itly::Options::Environment::DEVELOPMENT
+            end
+
+            expect(plugin.client).to receive(:page)
+              .with(user_id: 'user_123', name: 'pageABC', properties: { active: 'yes', category: 'Prd' })
+              .and_call_original
+
+            stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+          end
+
+          it do
+            expect do
+              itly.page user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { active: 'yes' }
+            end.to raise_error(Itly::RemoteError,
+              'The client returned an error. Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".')
+          end
+        end
+
+        context 'production' do
+          before do
+            itly.load do |options|
+              options.plugins = [plugin]
+              options.logger = logger
+              options.environment = Itly::Options::Environment::PRODUCTION
+            end
+
+            expect(plugin.client).to receive(:page)
+              .with(user_id: 'user_123', name: 'pageABC', properties: { active: 'yes', category: 'Prd' })
+              .and_call_original
+
+            stub_const 'SimpleSegment::Request::BASE_URL', 'not a url'
+
+            itly.page user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { active: 'yes' }
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'segment: load()'],
+              ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
+              ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
+              ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
+                       'options: )'],
+              ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
+                        'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
+            ]
+          end
+        end
+      end
+    end
+
+    context 'disabled' do
+      let(:plugin) { Itly::Plugin::Segment.new write_key: 'key123', disabled: true }
+
+      before do
+        itly.load do |options|
+          options.plugins = [plugin]
+          options.logger = ::Logger.new logs
+        end
+      end
+
+      it do
+        expect do
+          itly.page user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { active: 'yes' }
+        end.not_to raise_error
+      end
+    end
+  end
+
   describe '#track' do
     let(:logs) { StringIO.new }
     let(:itly) { Itly.new }

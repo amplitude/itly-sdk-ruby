@@ -41,6 +41,19 @@ class Itly
     def post_group(user_id:, group_id:, properties:, validation_results:); end
 
     ##
+    # Let record page views, along with optional extra information about the page viewed by the user.
+    #
+    # @param [String] user_id: the id of the user in your application
+    # @param [String] category: the category of the page
+    # @param [String] name: the name of the page.
+    # @param [Hash] properties: the properties to pass to your application
+    # @param [Itly::PluginCallOptions] options: plugin specific option.
+    #
+    def page(user_id:, category:, name:, properties:, options: nil); end
+
+    def post_page(user_id:, category:, name:, properties:, validation_results:); end
+
+    ##
     # Track an event, call the event's corresponding function.
     #
     # See +Itly#track+ for more information

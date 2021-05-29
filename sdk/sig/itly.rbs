@@ -8,6 +8,7 @@ class Itly
   def load: (?context: propertiesHash? context) ?{ (Itly::Options) -> void } -> void
   def identify: (user_id: String user_id, properties: propertiesHash properties, ?options: callOptions options) -> void
   def group: (user_id: String user_id, group_id: String group_id, properties: propertiesHash properties, ?options: callOptions options) -> void
+  def page: (user_id: String user_id, category: String category, name: String name, properties: propertiesHash properties, ?options: callOptions options) -> void
   def track: (user_id: String user_id, event: Itly::Event event, ?options: callOptions options) -> void
   def alias: (user_id: String user_id, previous_id: String previous_id, ?options: callOptions options) -> void
   def flush: () -> void
