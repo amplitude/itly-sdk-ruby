@@ -21,7 +21,7 @@ jobs:
       run: cd sdk; bundle install
 
     - name: Run tests for SDK
-      run: cd sdk; bin/rspec
+      run: cd sdk; bin/rspec --format documentation --order defined
 
   rspec-plugin-amplitude:
     runs-on: ubuntu-latest
@@ -42,7 +42,7 @@ jobs:
         cd sdk; bundle install
         cd ../plugin-amplitude; LOCAL_ITLY_GEM=true bundle install
     - name: Run tests for Plugin::Amplitude
-      run: cd plugin-amplitude; LOCAL_ITLY_GEM=true bin/rspec
+      run: cd plugin-amplitude; LOCAL_ITLY_GEM=true bin/rspec --format documentation --order defined
 
   rspec-plugin-mixpanel:
     runs-on: ubuntu-latest
@@ -63,7 +63,7 @@ jobs:
         cd sdk; bundle install
         cd ../plugin-mixpanel; LOCAL_ITLY_GEM=true bundle install
     - name: Run tests for Plugin::Mixpanel
-      run: cd plugin-mixpanel; LOCAL_ITLY_GEM=true bin/rspec
+      run: cd plugin-mixpanel; LOCAL_ITLY_GEM=true bin/rspec --format documentation --order defined
 
   rspec-plugin-schema-validator:
     runs-on: ubuntu-latest
@@ -84,7 +84,7 @@ jobs:
         cd sdk; bundle install
         cd ../plugin-schema-validator; LOCAL_ITLY_GEM=true bundle install
     - name: Run tests for Plugin::SchemaValidator
-      run: cd plugin-schema-validator; LOCAL_ITLY_GEM=true bin/rspec
+      run: cd plugin-schema-validator; LOCAL_ITLY_GEM=true bin/rspec --format documentation --order defined
 
   rspec-plugin-segment:
     runs-on: ubuntu-latest
@@ -105,7 +105,7 @@ jobs:
         cd sdk; bundle install
         cd ../plugin-segment; LOCAL_ITLY_GEM=true bundle install
     - name: Run tests for Plugin::Segment
-      run: cd plugin-segment; LOCAL_ITLY_GEM=true bin/rspec
+      run: cd plugin-segment; LOCAL_ITLY_GEM=true bin/rspec --format documentation --order defined
 
   rspec-plugin-snowplow:
     runs-on: ubuntu-latest
@@ -126,7 +126,7 @@ jobs:
         cd sdk; bundle install
         cd ../plugin-snowplow; LOCAL_ITLY_GEM=true bundle install
     - name: Run tests for Plugin::Snowplow
-      run: cd plugin-snowplow; LOCAL_ITLY_GEM=true bin/rspec
+      run: cd plugin-snowplow; LOCAL_ITLY_GEM=true bin/rspec --format documentation --order defined
 
   rspec-plugin-testing:
     runs-on: ubuntu-latest
@@ -147,7 +147,7 @@ jobs:
         cd sdk; bundle install
         cd ../plugin-testing; LOCAL_ITLY_GEM=true bundle install
     - name: Run tests for Plugin::Testing
-      run: cd plugin-testing; LOCAL_ITLY_GEM=true bin/rspec
+      run: cd plugin-testing; LOCAL_ITLY_GEM=true bin/rspec --format documentation --order defined
 
   lint:
     runs-on: ubuntu-latest
