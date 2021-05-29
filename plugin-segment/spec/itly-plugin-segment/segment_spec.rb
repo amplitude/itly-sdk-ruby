@@ -200,10 +200,10 @@ describe Itly::Plugin::Segment do
 
         context 'with options' do
           before do
-            expect(plugin.client).to receive(:identify)
-              .with(user_id: 'user_123', traits: { version: '4', some: 'data' }, integrations: { 'content' => true },
-                    anonymous_id: 'anID')
-              .and_return(response)
+            expect(plugin.client).to receive(:identify).with(
+              user_id: 'user_123', traits: { version: '4', some: 'data' }, integrations: { 'content' => true },
+              anonymous_id: 'anID'
+            ).and_return(response)
 
             itly.identify(
               user_id: 'user_123', properties: { version: '4', some: 'data' },
@@ -370,10 +370,10 @@ describe Itly::Plugin::Segment do
 
         context 'with options' do
           before do
-            expect(plugin.client).to receive(:group)
-              .with(user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' },
-                    integrations: { 'content' => true }, anonymous_id: 'anID')
-              .and_return(response)
+            expect(plugin.client).to receive(:group).with(
+              user_id: 'user_123', group_id: 'groupABC', traits: { active: 'yes' },
+              integrations: { 'content' => true }, anonymous_id: 'anID'
+            ).and_return(response)
 
             itly.group(
               user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' },
@@ -540,10 +540,10 @@ describe Itly::Plugin::Segment do
 
         context 'with options' do
           before do
-            expect(plugin.client).to receive(:page)
-              .with(user_id: 'user_123', name: 'pageABC', properties: { active: 'yes', category: 'Prd' },
-                    integrations: { 'content' => true }, anonymous_id: 'anID')
-              .and_return(response)
+            expect(plugin.client).to receive(:page).with(
+              user_id: 'user_123', name: 'pageABC', properties: { active: 'yes', category: 'Prd' },
+              integrations: { 'content' => true }, anonymous_id: 'anID'
+            ).and_return(response)
 
             itly.page(
               user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { active: 'yes' },
@@ -711,10 +711,10 @@ describe Itly::Plugin::Segment do
 
         context 'with options' do
           before do
-            expect(plugin.client).to receive(:track)
-              .with(user_id: 'user_123', event: 'custom_event', properties: { view: 'video' },
-                    integrations: { 'content' => true }, anonymous_id: 'anID')
-              .and_return(response)
+            expect(plugin.client).to receive(:track).with(
+              user_id: 'user_123', event: 'custom_event', properties: { view: 'video' },
+              integrations: { 'content' => true }, anonymous_id: 'anID'
+            ).and_return(response)
 
             itly.track(
               user_id: 'user_123', event: event,
@@ -878,10 +878,10 @@ describe Itly::Plugin::Segment do
 
         context 'with options' do
           before do
-            expect(plugin.client).to receive(:alias)
-              .with(user_id: 'user_123', previous_id: 'old_user', integrations: { 'content' => true },
-                    anonymous_id: 'anID')
-              .and_return(response)
+            expect(plugin.client).to receive(:alias).with(
+              user_id: 'user_123', previous_id: 'old_user', integrations: { 'content' => true },
+              anonymous_id: 'anID'
+            ).and_return(response)
 
             itly.alias(
               user_id: 'user_123', previous_id: 'old_user',
