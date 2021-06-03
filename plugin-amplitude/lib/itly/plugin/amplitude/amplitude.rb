@@ -81,9 +81,17 @@ class Itly
 
         # Send through the client
         call_end_point(options&.callback) do
-          ::AmplitudeAPI.send_event(
-            event.name, user_id, nil, event_properties: (options&.to_hash || {}).merge(event.properties)
-          )
+          ::AmplitudeAPI.track(::AmplitudeAPI::Event.new(
+            event_type: event.name,
+            user_id: user_id,
+            event_properties: event.properties,
+            device_id: options&.device_id,
+            insert_id: options&.insert_id,
+            country: options&.country,
+            platform: options&.platform,
+            # FIXME: Need to add all options values here
+            #   @Benjamin Is there a quick Ruby-ism we can use instead of adding each one?
+          ))
         end
       end
 
