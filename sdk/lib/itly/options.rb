@@ -56,12 +56,18 @@ class Itly
     ##
     # Create a new Options object with default values
     #
-    def initialize
-      @disabled = false
-      @environment = Itly::Options::Environment::DEVELOPMENT
-      @validation = nil
-      @plugins = []
-      @logger = nil
+    def initialize(
+      environment: Itly::Options::Environment::DEVELOPMENT,
+      disabled: false,
+      plugins: [],
+      validation: nil,
+      logger: nil
+    )
+      @environment = environment
+      @disabled = disabled
+      @plugins = plugins
+      @validation = validation
+      @logger = logger
     end
 
     ##
