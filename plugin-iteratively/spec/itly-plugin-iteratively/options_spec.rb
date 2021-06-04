@@ -4,7 +4,7 @@ describe Itly::Plugin::Iteratively::Options do
   include RspecLoggerHelpers
 
   it 'constants' do
-    expect(Itly::Plugin::Iteratively::Options::DEFAULT_URL).to eq('https://data-us-east1.iterative.ly/t')
+    expect(Itly::Plugin::Iteratively::Options::DEFAULT_URL).to eq('https://data.us-east2.iterative.ly/t')
   end
 
   describe 'instance attributes' do
@@ -30,7 +30,7 @@ describe Itly::Plugin::Iteratively::Options do
       let!(:plugin_options) { Itly::Plugin::Iteratively::Options.new }
 
       it do
-        expect(plugin_options.instance_variable_get('@url')).to eq('https://data-us-east1.iterative.ly/t')
+        expect(plugin_options.instance_variable_get('@url')).to eq('https://data.us-east2.iterative.ly/t')
         expect(plugin_options.instance_variable_get('@disabled')).to be(nil)
         expect(plugin_options.instance_variable_get('@flush_queue_size')).to eq(10)
         expect(plugin_options.instance_variable_get('@batch_size')).to eq(100)
