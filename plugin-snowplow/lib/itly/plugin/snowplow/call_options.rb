@@ -29,8 +29,8 @@ class Itly
 
         def to_s
           class_name = self.class.name.split('::').last
-          contexts_str = contexts.collect(&:to_s).join ', '
-          "#<Snowplow::#{class_name} contexts: [#{contexts_str}] callback: #{callback.nil? ? 'nil' : 'provided'}>"
+          contexts_str = contexts.nil? ? 'nil' : "[#{contexts.collect(&:to_s).join ', '}]"
+          "#<Snowplow::#{class_name} contexts: #{contexts_str} callback: #{callback.nil? ? 'nil' : 'provided'}>"
         end
       end
 
@@ -48,8 +48,8 @@ class Itly
 
         def to_s
           class_name = self.class.name.split('::').last
-          contexts_str = contexts.collect(&:to_s).join ', '
-          "#<Snowplow::#{class_name} contexts: [#{contexts_str}] callback: #{callback.nil? ? 'nil' : 'provided'}>"
+          contexts_str = contexts.nil? ? 'nil' : "[#{contexts.collect(&:to_s).join ', '}]"
+          "#<Snowplow::#{class_name} contexts: #{contexts_str} callback: #{callback.nil? ? 'nil' : 'provided'}>"
         end
       end
     end
