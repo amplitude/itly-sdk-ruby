@@ -88,7 +88,7 @@ class Itly
             device_id: options&.device_id,
             insert_id: options&.insert_id,
             country: options&.country,
-            platform: options&.platform,
+            platform: options&.platform
             # FIXME: Need to add all options values here
             #   @Benjamin Is there a quick Ruby-ism we can use instead of adding each one?
           ))
