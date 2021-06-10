@@ -86,9 +86,16 @@ class Itly
             user_id: user_id,
             event_properties: event.properties,
             device_id: options&.device_id,
+            device_brand: options&.device_brand,
+            device_model: options&.device_model,
             insert_id: options&.insert_id,
             country: options&.country,
-            platform: options&.platform
+            region: options&.region,
+            city: options&.city,
+            platform: options&.platform,
+            os_name: options&.os_name,
+            os_version: options&.os_version,
+            language: options&.language,
             # FIXME: Need to add all options values here
             #   @Benjamin Is there a quick Ruby-ism we can use instead of adding each one?
           ))
