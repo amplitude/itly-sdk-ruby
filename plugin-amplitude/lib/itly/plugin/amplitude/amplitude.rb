@@ -95,7 +95,7 @@ class Itly
             platform: options&.platform,
             os_name: options&.os_name,
             os_version: options&.os_version,
-            language: options&.language,
+            language: options&.language
             # FIXME: Need to add all options values here
             #   @Benjamin Is there a quick Ruby-ism we can use instead of adding each one?
           ))
