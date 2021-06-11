@@ -234,19 +234,24 @@ describe Itly::Plugin::Amplitude do
 
     describe 'enabled' do
       let(:plugin) { Itly::Plugin::Amplitude.new api_key: 'key123' }
+      let(:amplitude_event) { double 'amplitude_event' }
 
       context 'success' do
         let(:response) { double 'response', status: 200 }
 
         before do
+          # Set messages expectations
+          expect(AmplitudeAPI::Event).to receive(:new)
+            .with(user_id: 'user_123', event_type: 'custom_event', event_properties: { view: 'video' })
+            .and_return(amplitude_event)
+
+          expect(AmplitudeAPI).to receive(:track).with(amplitude_event).and_return(response)
+
+          # Track event
           itly.load do |options|
             options.plugins = [plugin]
             options.logger = ::Logger.new logs
           end
-
-          expect(AmplitudeAPI).to receive(:send_event)
-            .with('custom_event', 'user_123', nil, event_properties: { view: 'video' })
-            .and_return(response)
 
           itly.track user_id: 'user_123', event: event
         end
@@ -268,14 +273,20 @@ describe Itly::Plugin::Amplitude do
         let(:logger) { ::Logger.new logs }
 
         before do
+          # Set messages expectations
+          expect(AmplitudeAPI::Event).to receive(:new)
+            .with(
+              user_id: 'user_1', event_type: 'custom_event', event_properties: { view: 'video' },
+              device_id: 'DEVID', time: 123_456
+            ).and_return(amplitude_event)
+
+          expect(AmplitudeAPI).to receive(:track).with(amplitude_event).and_return(response)
+
+          # Track event
           itly.load do |options|
             options.plugins = [plugin]
             options.logger = logger
           end
-
-          expect(AmplitudeAPI).to receive(:send_event)
-            .with('custom_event', 'user_1', nil, event_properties: { view: 'video', device_id: 'DEVID', time: 123_456 })
-            .and_return(response)
 
           itly.track(
             user_id: 'user_1', event: event,
@@ -303,14 +314,19 @@ describe Itly::Plugin::Amplitude do
         let(:response) { double 'response', status: 200 }
 
         before do
+          # Set messages expectations
+          expect(AmplitudeAPI::Event).to receive(:new)
+            .with(
+              user_id: 'user_123', event_type: 'custom_event', event_properties: { app_version: '1.2.3', view: 'video' }
+            ).and_return(amplitude_event)
+
+          expect(AmplitudeAPI).to receive(:track).with(amplitude_event).and_return(response)
+
+          # Track event
           itly.load(context: { app_version: '1.2.3' }) do |options|
             options.plugins = [plugin]
             options.logger = ::Logger.new logs
           end
-
-          expect(AmplitudeAPI).to receive(:send_event)
-            .with('custom_event', 'user_123', nil, event_properties: { app_version: '1.2.3', view: 'video' })
-            .and_return(response)
 
           itly.track user_id: 'user_123', event: event
         end
@@ -332,9 +348,11 @@ describe Itly::Plugin::Amplitude do
         let(:response) { double 'response', status: 500, body: 'wrong params' }
 
         before do
-          expect(AmplitudeAPI).to receive(:send_event)
-            .with('custom_event', 'user_123', nil, event_properties: { view: 'video' })
-            .and_return(response)
+          expect(AmplitudeAPI::Event).to receive(:new)
+            .with(user_id: 'user_123', event_type: 'custom_event', event_properties: { view: 'video' })
+            .and_return(amplitude_event)
+
+          expect(AmplitudeAPI).to receive(:track).with(amplitude_event).and_return(response)
         end
 
         context 'development' do
