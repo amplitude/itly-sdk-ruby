@@ -72,7 +72,8 @@ class Itly
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: identify(user_id: #{user_id}, properties: #{properties}, options: #{options})"
+        log = Itly::Loggers.vars_to_log user_id: user_id, properties: properties, options: options
+        @logger&.info "#{id}: identify(#{log})"
 
         # Send through the client
         payload = { user_id: user_id, traits: properties.dup }
@@ -98,8 +99,10 @@ class Itly
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties}, "\
-          "options: #{options})"
+        log = Itly::Loggers.vars_to_log(
+          user_id: user_id, group_id: group_id, properties: properties, options: options
+        )
+        @logger&.info "#{id}: group(#{log})"
 
         # Send through the client
         payload = { user_id: user_id, group_id: group_id, traits: properties.dup }
@@ -126,8 +129,10 @@ class Itly
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: page(user_id: #{user_id}, category: #{category}, name: #{name}, "\
-          "properties: #{properties}, options: #{options})"
+        log = Itly::Loggers.vars_to_log(
+          user_id: user_id, category: category, name: name, properties: properties, options: options
+        )
+        @logger&.info "#{id}: page(#{log})"
 
         # Send through the client
         payload = { user_id: user_id, name: name, properties: properties.dup.merge(category: category) }
@@ -152,8 +157,10 @@ class Itly
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties}, "\
-          "options: #{options})"
+        log = Itly::Loggers.vars_to_log(
+          user_id: user_id, event: event&.name, properties: event&.properties, options: options
+        )
+        @logger&.info "#{id}: track(#{log})"
 
         # Send through the client
         payload = { user_id: user_id, event: event.name, properties: event.properties.dup }
@@ -180,7 +187,10 @@ class Itly
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: alias(user_id: #{user_id}, previous_id: #{previous_id}, options: #{options})"
+        log = Itly::Loggers.vars_to_log(
+          user_id: user_id, previous_id: previous_id, options: options
+        )
+        @logger&.info "#{id}: alias(#{log})"
 
         # Send through the client
         payload = { user_id: user_id, previous_id: previous_id }

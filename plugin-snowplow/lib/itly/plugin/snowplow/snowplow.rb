@@ -57,7 +57,8 @@ class Itly
         return unless enabled?
 
         # Log
-        logger&.info "#{id}: identify(user_id: #{user_id}, options: #{options})"
+        log = Itly::Loggers.vars_to_log user_id: user_id, options: options
+        logger&.info "#{id}: identify(#{log})"
 
         # Send through the client
         client.set_user_id user_id
@@ -79,8 +80,10 @@ class Itly
         return unless enabled?
 
         # Log
-        logger&.info "#{id}: page(user_id: #{user_id}, category: #{category}, name: #{name}, "\
-          "properties: #{properties}, options: #{options})"
+        log = Itly::Loggers.vars_to_log(
+          user_id: user_id, category: category, name: name, properties: properties, options: options
+        )
+        logger&.info "#{id}: page(#{log})"
 
         # Identify the user
         client.set_user_id user_id
@@ -108,8 +111,10 @@ class Itly
         return unless enabled?
 
         # Log
-        logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, version: #{event.version}, "\
-          "properties: #{event.properties}, options: #{options})"
+        log = Itly::Loggers.vars_to_log(
+          user_id: user_id, event: event&.name, version: event&.version, properties: event&.properties, options: options
+        )
+        logger&.info "#{id}: track(#{log})"
 
         # Identify the user
         client.set_user_id user_id

@@ -218,8 +218,7 @@ describe Itly::Plugin::Iteratively do
           ['info', 'iteratively: load()'],
           ['info', 'identify(user_id: user_123, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:some=>"data"}>)'],
-          ['info', 'iteratively: post_identify(user_id: user_123, properties: {:some=>"data"}, '\
-                   'validation_results: [])']
+          ['info', 'iteratively: post_identify(user_id: user_123, properties: {:some=>"data"})']
         ]
       end
     end
@@ -323,8 +322,7 @@ describe Itly::Plugin::Iteratively do
           ['info', 'iteratively: load()'],
           ['info', 'group(user_id: user_123, group_id: group456, properties: {:some=>"data"})'],
           ['info', 'validate(event: #<Itly::Event: name: group, properties: {:some=>"data"}>)'],
-          ['info', 'iteratively: post_group(user_id: user_123, group_id: group456, '\
-                   'properties: {:some=>"data"}, validation_results: [])']
+          ['info', 'iteratively: post_group(user_id: user_123, group_id: group456, properties: {:some=>"data"})']
         ]
       end
     end
@@ -432,7 +430,7 @@ describe Itly::Plugin::Iteratively do
           ['info', 'track(user_id: user_123, event: custom_event, properties: {:custom=>"info"})'],
           ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:custom=>"info"}>)'],
           ['info', 'iteratively: post_track(user_id: user_123, event: #<Itly::Event: '\
-                    'name: custom_event, properties: {:custom=>"info"}>, validation_results: [])']
+                    'name: custom_event, properties: {:custom=>"info"}>)']
         ]
       end
     end

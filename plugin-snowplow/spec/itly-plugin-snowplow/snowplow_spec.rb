@@ -145,7 +145,7 @@ describe Itly::Plugin::Snowplow do
             ['info', 'snowplow: load()'],
             ['info', 'identify(user_id: user_123, properties: {:ignored=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:ignored=>"data"}>)'],
-            ['info', 'snowplow: identify(user_id: user_123, options: )']
+            ['info', 'snowplow: identify(user_id: user_123)']
           ]
         end
       end
@@ -189,7 +189,7 @@ describe Itly::Plugin::Snowplow do
               ['info', 'snowplow: load()'],
               ['info', 'identify(user_id: user_123, properties: {:ignored=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:ignored=>"data"}>)'],
-              ['info', 'snowplow: identify(user_id: user_123, options: )'],
+              ['info', 'snowplow: identify(user_id: user_123)'],
               ['error', 'Itly Error in Itly::Plugin::Snowplow. RuntimeError: Test rspec']
             ]
           end
@@ -246,8 +246,7 @@ describe Itly::Plugin::Snowplow do
             ['info', 'snowplow: load()'],
             ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:ignored=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: page, properties: {:ignored=>"data"}>)'],
-            ['info', 'snowplow: page(user_id: user_123, category: Prd, name: pageABC, '\
-                     'properties: {:ignored=>"data"}, options: )']
+            ['info', 'snowplow: page(user_id: user_123, category: Prd, name: pageABC, properties: {:ignored=>"data"})']
           ]
         end
       end
@@ -292,7 +291,7 @@ describe Itly::Plugin::Snowplow do
               ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:ignored=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: page, properties: {:ignored=>"data"}>)'],
               ['info', 'snowplow: page(user_id: user_123, category: Prd, name: pageABC, '\
-                       'properties: {:ignored=>"data"}, options: )'],
+                       'properties: {:ignored=>"data"})'],
               ['error', 'Itly Error in Itly::Plugin::Snowplow. RuntimeError: Test rspec']
             ]
           end
@@ -360,7 +359,7 @@ describe Itly::Plugin::Snowplow do
             ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \
                      'properties: {:view=>"video"}>)'],
             ['info', 'snowplow: track(user_id: user_123, event: custom_event, '\
-                     'version: 1.2.3, properties: {:view=>"video"}, options: )']
+                     'version: 1.2.3, properties: {:view=>"video"})']
           ]
         end
       end
@@ -393,7 +392,9 @@ describe Itly::Plugin::Snowplow do
           expect_log_lines_to_equal [
             ['info', 'load()'],
             ['info', 'snowplow: load()'],
-            ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+            ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, options: '\
+                     '{"snowplow"=>#<Snowplow::TrackOptions contexts: [#<Snowplow::Context schema: 123 '\
+                     'data: {"cntx"=>1}>, #<Snowplow::Context schema: 456 data: {"cntx"=>2}>] callback: nil>})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \
                      'properties: {:view=>"video"}>)'],
             ['info', 'snowplow: track(user_id: user_123, event: custom_event, '\
@@ -446,7 +447,7 @@ describe Itly::Plugin::Snowplow do
               ['info', 'validate(event: #<Itly::Event: name: custom_event, version: 1.2.3, ' \
                        'properties: {:view=>"video"}>)'],
               ['info', 'snowplow: track(user_id: user_123, event: custom_event, '\
-                       'version: 1.2.3, properties: {:view=>"video"}, options: )'],
+                       'version: 1.2.3, properties: {:view=>"video"})'],
               ['error', 'Itly Error in Itly::Plugin::Snowplow. RuntimeError: Test rspec']
             ]
           end

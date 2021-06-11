@@ -62,7 +62,8 @@ class Itly
         return unless enabled?
 
         # Log
-        @logger&.info "#{id}: validate(event: #{event})"
+        log = Itly::Loggers.vars_to_log event: event
+        @logger&.info "#{id}: validate(#{log})"
 
         # Check that we have a schema for this event
         if @schemas[event.name.to_sym].nil?

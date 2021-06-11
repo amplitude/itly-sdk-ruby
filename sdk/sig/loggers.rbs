@@ -3,5 +3,6 @@ class Itly
     def self.itly_dot_log: () -> Logger
     def self.std_out: () -> Logger
     def self.nil_logger?: () -> nil
+    def self.vars_to_log: (Hash[Symbol, untyped]) -> String
   end
 end

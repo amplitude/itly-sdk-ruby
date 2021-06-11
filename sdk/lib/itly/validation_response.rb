@@ -28,5 +28,14 @@ class Itly
     def to_s
       "#<#{self.class.name}: valid: #{valid}, plugin_id: #{plugin_id}, message: #{message}>"
     end
+
+    ##
+    # Inspect the object
+    #
+    # @return [String] the object description
+    #
+    def inspect
+      to_s
+    end
   end
 end

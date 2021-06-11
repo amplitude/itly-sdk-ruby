@@ -26,7 +26,6 @@ class Itly
   #
   # @param [Hash, nil] context: to assign to the "context" Event object. Default to nil
   #
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def load(context: nil)
     # Ensure #load was not already called on this object
     raise InitializationError, 'Itly is already initialized.' if @is_initialized
@@ -49,7 +48,6 @@ class Itly
     # Mark that the #load method was called on this object
     @is_initialized = true
   end
-  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   ##
   # Identify a user in your application and associate all future events with
@@ -75,7 +73,8 @@ class Itly
     return unless was_initialized? && enabled?
 
     # Log
-    logger&.info "identify(user_id: #{user_id}, properties: #{properties})"
+    log = Itly::Loggers.vars_to_log user_id: user_id, properties: properties, options: options
+    logger&.info "identify(#{log})"
 
     # Validate and run on all plugins
     event = Event.new name: 'identify', properties: properties
@@ -120,7 +119,8 @@ class Itly
     return unless was_initialized? && enabled?
 
     # Log
-    logger&.info "group(user_id: #{user_id}, group_id: #{group_id}, properties: #{properties})"
+    log = Itly::Loggers.vars_to_log user_id: user_id, group_id: group_id, properties: properties, options: options
+    logger&.info "group(#{log})"
 
     # Validate and run on all plugins
     event = Event.new name: 'group', properties: properties
@@ -168,7 +168,10 @@ class Itly
     return unless was_initialized? && enabled?
 
     # Log
-    logger&.info "page(user_id: #{user_id}, category: #{category}, name: #{name}, properties: #{properties})"
+    log = Itly::Loggers.vars_to_log(
+      user_id: user_id, category: category, name: name, properties: properties, options: options
+    )
+    logger&.info "page(#{log})"
 
     # Validate and run on all plugins
     event = Event.new name: 'page', properties: properties
@@ -219,7 +222,10 @@ class Itly
     return unless was_initialized? && enabled?
 
     # Log
-    logger&.info "track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties})"
+    log = Itly::Loggers.vars_to_log(
+      user_id: user_id, event: event&.name, properties: event&.properties, options: options
+    )
+    logger&.info "track(#{log})"
 
     # Validate and run on all plugins
     action = ->(plugin, combined_event) {
@@ -250,7 +256,8 @@ class Itly
     return unless was_initialized? && enabled?
 
     # Log
-    logger&.info "alias(user_id: #{user_id}, previous_id: #{previous_id})"
+    log = Itly::Loggers.vars_to_log user_id: user_id, previous_id: previous_id, options: options
+    logger&.info "alias(#{log})"
 
     # Run on all plugins
     run_on_plugins do |plugin|
@@ -322,7 +329,8 @@ class Itly
     return unless was_initialized? && validation_enabled?
 
     # Log
-    logger&.info "validate(event: #{event})"
+    log = Itly::Loggers.vars_to_log event: event
+    logger&.info "validate(#{log})"
 
     # Run on all plugins
     run_on_plugins { |plugin| plugin.validate event: event }

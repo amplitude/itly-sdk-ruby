@@ -24,7 +24,8 @@ describe 'integration' do
           expect_log_lines_to_equal [
             ['info', 'load()'],
             ['debug', '(spec) loaded'],
-            ['info', 'alias(user_id: newID, previous_id: oldID)'],
+            ['info', 'alias(user_id: newID, previous_id: oldID, '\
+                     'options: {"acceptance_plugin"=>#<AcceptancePluginCallOptions: options for plugin>})'],
             ['debug', '(spec) alias [newID, oldID, #<AcceptancePluginCallOptions: options for plugin>]'],
             ['debug', '(spec) post_alias [newID, oldID]']
           ]
@@ -67,7 +68,8 @@ describe 'integration' do
           expect_log_lines_to_equal [
             ['info', 'load()'],
             ['debug', '(spec) loaded'],
-            ['info', 'identify(user_id: newID, properties: {:access_level=>"admin"})'],
+            ['info', 'identify(user_id: newID, properties: {:access_level=>"admin"}, '\
+                     'options: {"acceptance_plugin"=>#<AcceptancePluginCallOptions: options for plugin>})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:access_level=>"admin"}>)'],
             ['debug', '(spec) identify [newID, {:access_level=>"admin"}, '\
                       '#<AcceptancePluginCallOptions: options for plugin>]'],
@@ -141,7 +143,8 @@ describe 'integration' do
             expect_log_lines_to_equal [
               ['info', 'load()'],
               ['debug', '(spec) loaded'],
-              ['info', 'identify(user_id: newID, properties: {:access_level=>"employee"})'],
+              ['info', 'identify(user_id: newID, properties: {:access_level=>"employee"}, '\
+                       'options: {"acceptance_plugin"=>#<AcceptancePluginCallOptions: options for plugin>})'],
               ['debug', '(spec) identify [newID, {:access_level=>"employee"}, '\
                         '#<AcceptancePluginCallOptions: options for plugin>]'],
               ['debug', '(spec) post_identify [newID, {:access_level=>"employee"}, []]']

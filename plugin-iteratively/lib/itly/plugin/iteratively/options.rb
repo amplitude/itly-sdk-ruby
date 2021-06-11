@@ -55,7 +55,6 @@ class Itly
         ##
         # Returns a copy of this Options with any provided arguments used as overrides
         #
-        # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         def with_overrides(
           url: nil, disabled: nil, flush_queue_size: nil, batch_size: nil, flush_interval_ms: nil,
           max_retries: nil, retry_delay_min: nil, retry_delay_max: nil, omit_values: nil, branch: nil, version: nil
@@ -74,7 +73,6 @@ class Itly
             version: version.nil? ? @version : version
           )
         end
-        # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       end
     end
   end

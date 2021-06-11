@@ -31,5 +31,25 @@ class Itly
     def self.nil_logger
       nil
     end
+
+    ##
+    # Shorthand to filter variables in a log message
+    #
+    # Check if the variable has a value, and return a list for the log message
+    #
+    # @param [Hash] vars: list of variables
+    # @return [String] log message
+    #
+    def self.vars_to_log(vars)
+      vars.collect do |name, value|
+        next if value.nil?
+
+        if value.is_a?(Hash) || value.is_a?(Array)
+          "#{name}: #{value}" if value.any?
+        else
+          "#{name}: #{value}"
+        end
+      end.compact.join ', '
+    end
   end
 end

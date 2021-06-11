@@ -112,8 +112,7 @@ describe Itly::Plugin::Amplitude do
             ['info', 'amplitude: load()'],
             ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-            ['info', 'amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
-                     'options: )']
+            ['info', 'amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})']
           ]
         end
       end
@@ -145,7 +144,9 @@ describe Itly::Plugin::Amplitude do
           expect_log_lines_to_equal [
             ['info', 'load()'],
             ['info', 'amplitude: load()'],
-            ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
+            ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, options: '\
+                     '{"amplitude"=>#<Amplitude::IdentifyOptions callback: provided device_id: DEVID time: 123456 '\
+                     'app_version: v1.2.3>})'],
             ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
             ['info', 'amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
                      'options: #<Amplitude::IdentifyOptions callback: provided device_id: DEVID time: 123456 '\
@@ -199,8 +200,7 @@ describe Itly::Plugin::Amplitude do
               ['info', 'amplitude: load()'],
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-              ['info', 'amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
-                       'options: )'],
+              ['info', 'amplitude: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['error', 'Itly Error in Itly::Plugin::Amplitude. Itly::RemoteError: The remote end-point returned an '\
                         'error. Response status: 500. Raw body: wrong params']
             ]
@@ -262,8 +262,7 @@ describe Itly::Plugin::Amplitude do
             ['info', 'amplitude: load()'],
             ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-            ['info', 'amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
-                     'options: )']
+            ['info', 'amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})']
           ]
         end
       end
@@ -301,7 +300,8 @@ describe Itly::Plugin::Amplitude do
           expect_log_lines_to_equal [
             ['info', 'load()'],
             ['info', 'amplitude: load()'],
-            ['info', 'track(user_id: user_1, event: custom_event, properties: {:view=>"video"})'],
+            ['info', 'track(user_id: user_1, event: custom_event, properties: {:view=>"video"}, options: '\
+                     '{"amplitude"=>#<Amplitude::TrackOptions callback: provided device_id: DEVID time: 123456>})'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
             ['info', 'amplitude: track(user_id: user_1, event: custom_event, properties: {:view=>"video"}, '\
                      'options: #<Amplitude::TrackOptions callback: provided device_id: DEVID time: 123456>)'],
@@ -339,7 +339,7 @@ describe Itly::Plugin::Amplitude do
             ['info', 'validate(event: #<Itly::Event: name: context, properties: {:app_version=>"1.2.3"}>)'],
             ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
             ['info', 'amplitude: track(user_id: user_123, event: custom_event, properties: '\
-                    '{:view=>"video", :app_version=>"1.2.3"}, options: )']
+                     '{:view=>"video", :app_version=>"1.2.3"})']
           ]
         end
       end
@@ -389,8 +389,7 @@ describe Itly::Plugin::Amplitude do
               ['info', 'amplitude: load()'],
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-              ['info', 'amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
-                       'options: )'],
+              ['info', 'amplitude: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['error', 'Itly Error in Itly::Plugin::Amplitude. Itly::RemoteError: The remote end-point returned an '\
                         'error. Response status: 500. Raw body: wrong params']
             ]

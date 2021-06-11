@@ -54,7 +54,8 @@ class Itly
         return unless enabled?
 
         # Log
-        logger&.info "#{id}: identify(user_id: #{user_id}, properties: #{properties}, options: #{options})"
+        log = Itly::Loggers.vars_to_log user_id: user_id, properties: properties, options: options
+        logger&.info "#{id}: identify(#{log})"
 
         # Send through the client
         call_end_point(options&.callback) do
@@ -76,8 +77,10 @@ class Itly
         return unless enabled?
 
         # Log
-        logger&.info "#{id}: track(user_id: #{user_id}, event: #{event.name}, properties: #{event.properties}, "\
-          "options: #{options})"
+        log = Itly::Loggers.vars_to_log(
+          user_id: user_id, event: event&.name, properties: event&.properties, options: options
+        )
+        logger&.info "#{id}: track(#{log})"
 
         # Send through the client
         call_end_point(options&.callback) do

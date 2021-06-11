@@ -165,8 +165,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-              ['info', 'segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
-                       'options: )']
+              ['info', 'segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})']
             ]
           end
         end
@@ -189,7 +188,8 @@ describe Itly::Plugin::Segment do
             expect_log_lines_to_equal [
               ['info', 'load()'],
               ['info', 'segment: load()'],
-              ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
+              ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
+                       'options: {"segment"=>#<Segment::IdentifyOptions callback: provided>})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
               ['info', 'segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
                        'options: #<Segment::IdentifyOptions callback: provided>)'],
@@ -217,7 +217,9 @@ describe Itly::Plugin::Segment do
             expect_log_lines_to_equal [
               ['info', 'load()'],
               ['info', 'segment: load()'],
-              ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
+              ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, options: '\
+                       '{"segment"=>#<Segment::IdentifyOptions callback: nil '\
+                       'integrations: {"content"=>true} anonymous_id: anID>})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
               ['info', 'segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
                        'options: #<Segment::IdentifyOptions callback: nil '\
@@ -274,8 +276,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-              ['info', 'segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"}, '\
-                       'options: )'],
+              ['info', 'segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
                         'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]
@@ -335,8 +336,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
-              ['info', 'segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
-                      'options: )']
+              ['info', 'segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})']
             ]
           end
         end
@@ -359,7 +359,8 @@ describe Itly::Plugin::Segment do
             expect_log_lines_to_equal [
               ['info', 'load()'],
               ['info', 'segment: load()'],
-              ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
+              ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
+                       'options: {"segment"=>#<Segment::GroupOptions callback: provided>})'],
               ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
               ['info', 'segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
                        'options: #<Segment::GroupOptions callback: provided>)'],
@@ -387,7 +388,9 @@ describe Itly::Plugin::Segment do
             expect_log_lines_to_equal [
               ['info', 'load()'],
               ['info', 'segment: load()'],
-              ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
+              ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
+                       'options: {"segment"=>#<Segment::GroupOptions callback: nil '\
+                       'integrations: {"content"=>true} anonymous_id: anID>})'],
               ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
               ['info', 'segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
                        'options: #<Segment::GroupOptions callback: nil '\
@@ -444,8 +447,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
-              ['info', 'segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"}, '\
-                       'options: )'],
+              ['info', 'segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
               ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
                         'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]
@@ -505,6 +507,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
+              ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})']
               ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
                       'options: )']
             ]
@@ -529,7 +532,8 @@ describe Itly::Plugin::Segment do
             expect_log_lines_to_equal [
               ['info', 'load()'],
               ['info', 'segment: load()'],
-              ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
+              ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
+                       'options: {"segment"=>#<Segment::PageOptions callback: provided>})'],
               ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
               ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
                        'options: #<Segment::PageOptions callback: provided>)'],
@@ -557,11 +561,13 @@ describe Itly::Plugin::Segment do
             expect_log_lines_to_equal [
               ['info', 'load()'],
               ['info', 'segment: load()'],
-              ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
+              ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
+                       'options: {"segment"=>#<Segment::PageOptions callback: nil integrations: {"content"=>true} '\
+                       'anonymous_id: anID>})'],
               ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
               ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
-                       'options: #<Segment::PageOptions callback: nil integrations: {"content"=>true}'\
-                       ' anonymous_id: anID>)']
+                       'options: #<Segment::PageOptions callback: nil integrations: {"content"=>true} '\
+                       'anonymous_id: anID>)']
             ]
           end
         end
@@ -614,8 +620,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
-              ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
-                       'options: )'],
+              ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
               ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
                         'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]
@@ -676,8 +681,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-              ['info', 'segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
-                       'options: )']
+              ['info', 'segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})']
             ]
           end
         end
@@ -700,7 +704,8 @@ describe Itly::Plugin::Segment do
             expect_log_lines_to_equal [
               ['info', 'load()'],
               ['info', 'segment: load()'],
-              ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+              ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+                       'options: {"segment"=>#<Segment::TrackOptions callback: provided>})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
               ['info', 'segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
                        'options: #<Segment::TrackOptions callback: provided>)'],
@@ -728,7 +733,9 @@ describe Itly::Plugin::Segment do
             expect_log_lines_to_equal [
               ['info', 'load()'],
               ['info', 'segment: load()'],
-              ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+              ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
+                       'options: {"segment"=>#<Segment::TrackOptions callback: nil integrations: {"content"=>true} '\
+                       'anonymous_id: anID>})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
               ['info', 'segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
                        'options: #<Segment::TrackOptions callback: nil integrations: {"content"=>true} '\
@@ -785,8 +792,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-              ['info', 'segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"}, '\
-                       'options: )'],
+              ['info', 'segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
                         'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]
@@ -845,7 +851,7 @@ describe Itly::Plugin::Segment do
               ['info', 'load()'],
               ['info', 'segment: load()'],
               ['info', 'alias(user_id: user_123, previous_id: old_user)'],
-              ['info', 'segment: alias(user_id: user_123, previous_id: old_user, options: )']
+              ['info', 'segment: alias(user_id: user_123, previous_id: old_user)']
             ]
           end
         end
@@ -868,7 +874,8 @@ describe Itly::Plugin::Segment do
             expect_log_lines_to_equal [
               ['info', 'load()'],
               ['info', 'segment: load()'],
-              ['info', 'alias(user_id: user_123, previous_id: old_user)'],
+              ['info', 'alias(user_id: user_123, previous_id: old_user, '\
+                       'options: {"segment"=>#<Segment::AliasOptions callback: provided>})'],
               ['info', 'segment: alias(user_id: user_123, previous_id: old_user, '\
                        'options: #<Segment::AliasOptions callback: provided>)'],
               ['info', 'from-callback: code: 201 body: raw data']
@@ -895,7 +902,9 @@ describe Itly::Plugin::Segment do
             expect_log_lines_to_equal [
               ['info', 'load()'],
               ['info', 'segment: load()'],
-              ['info', 'alias(user_id: user_123, previous_id: old_user)'],
+              ['info', 'alias(user_id: user_123, previous_id: old_user, options: '\
+                       '{"segment"=>#<Segment::AliasOptions callback: nil integrations: {"content"=>true} '\
+                       'anonymous_id: anID>})'],
               ['info', 'segment: alias(user_id: user_123, previous_id: old_user, '\
                        'options: #<Segment::AliasOptions callback: nil integrations: {"content"=>true} '\
                        'anonymous_id: anID>)']
@@ -950,7 +959,7 @@ describe Itly::Plugin::Segment do
               ['info', 'load()'],
               ['info', 'segment: load()'],
               ['info', 'alias(user_id: user_123, previous_id: old_user)'],
-              ['info', 'segment: alias(user_id: user_123, previous_id: old_user, options: )'],
+              ['info', 'segment: alias(user_id: user_123, previous_id: old_user)'],
               ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
                         'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]
