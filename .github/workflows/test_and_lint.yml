@@ -7,12 +7,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@473e4d8fe5dd94ee328fdfca9f8c9c7afc9dae5e
-      with:
-        ruby-version: '2.6'
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6
 
-    - name: Lint
-      uses: moneyforward/rubocop-action@v0.1.2
+      - name: Install Rubocop gem
+        run: gem install rubocop
+
+      - name: Run Rubocop
+        run: rubocop
