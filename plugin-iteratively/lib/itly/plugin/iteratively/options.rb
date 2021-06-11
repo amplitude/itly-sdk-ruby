@@ -9,7 +9,7 @@ class Itly
       # Options for the Iteratively plugin class
       #
       class Options
-        DEFAULT_URL = 'https://data.us-east2.iterative.ly/t'
+        DEFAULT_URL = 'https://data.us-east-2.iterative.ly/t'
 
         attr_reader :url, :disabled, :flush_queue_size, :batch_size, :flush_interval_ms, :max_retries,
           :retry_delay_min, :retry_delay_max, :omit_values, :branch, :version
@@ -18,7 +18,7 @@ class Itly
         # Instantiate a new Options
         #
         # @param [String] url (optional): specify the url to push events to.
-        #   Default to https://data.us-east2.iterative.ly/t
+        #   Default to https://data.us-east-2.iterative.ly/t
         # @param [TrueClass/FalseClass] disabled: set to true to disable the Iteratively plugin.
         #   Default to +true+ in production environment, to +false+ otherwise
         # @param [Integer] flush_queue_size (optional): Number of event in the buffer before
