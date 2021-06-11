@@ -1,8 +1,6 @@
 AllCops:
   NewCops: enable
   TargetRubyVersion: 2.6
-Lint:
-  Severity: fatal
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
 Layout/MultilineMethodCallIndentation:
