@@ -49,7 +49,7 @@ class Itly
       # @param [Hash] properties: the properties containing user's traits to pass to your application
       # @param [Itly::Plugin::Amplitude::IdentifyOptions] options: the plugin specific options
       #
-      def identify(user_id:, properties:, options: nil)
+      def identify(user_id:, properties: nil, options: nil)
         super
         return unless enabled?
 
@@ -58,8 +58,12 @@ class Itly
         logger&.info "#{id}: identify(#{log})"
 
         # Send through the client
+        payload = {}
+        payload.merge! options.to_hash if options
+        payload.merge! properties if properties
+
         call_end_point(options&.callback) do
-          ::AmplitudeAPI.send_identify user_id, nil, (options&.to_hash || {}).merge(properties)
+          ::AmplitudeAPI.send_identify user_id, nil, payload
         end
       end
 

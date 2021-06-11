@@ -52,7 +52,7 @@ class Itly
       # @param [Hash] properties: unused
       # @param [Itly::Plugin::Snowplow::IdentifyOptions] options: the plugin specific options
       #
-      def identify(user_id:, properties:, options: nil)
+      def identify(user_id:, properties: nil, options: nil)
         super
         return unless enabled?
 

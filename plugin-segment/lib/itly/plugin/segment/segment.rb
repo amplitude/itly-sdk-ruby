@@ -67,7 +67,7 @@ class Itly
       # @param [Hash] properties: the properties containing user's traits to pass to your application
       # @param [Itly::Plugin::Segment::IdentifyOptions] options: the plugin specific options
       #
-      def identify(user_id:, properties:, options: nil)
+      def identify(user_id:, properties: nil, options: nil)
         super
         return unless enabled?
 
@@ -76,7 +76,8 @@ class Itly
         @logger&.info "#{id}: identify(#{log})"
 
         # Send through the client
-        payload = { user_id: user_id, traits: properties.dup }
+        payload = { user_id: user_id }
+        payload.merge! traits: properties.dup if properties
         payload.merge! options.to_hash if options
 
         call_end_point(options&.callback) do
@@ -94,7 +95,7 @@ class Itly
       # @param [Hash] properties: the properties to pass to your application
       # @param [Itly::Plugin::Segment::GroupOptions] options: the plugin specific options
       #
-      def group(user_id:, group_id:, properties:, options: nil)
+      def group(user_id:, group_id:, properties: nil, options: nil)
         super
         return unless enabled?
 
@@ -105,7 +106,8 @@ class Itly
         @logger&.info "#{id}: group(#{log})"
 
         # Send through the client
-        payload = { user_id: user_id, group_id: group_id, traits: properties.dup }
+        payload = { user_id: user_id, group_id: group_id }
+        payload.merge! traits: properties.dup if properties
         payload.merge! options.to_hash if options
 
         call_end_point(options&.callback) do

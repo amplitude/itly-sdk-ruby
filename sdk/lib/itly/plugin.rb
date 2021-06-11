@@ -23,7 +23,7 @@ class Itly
     # @param [Hash] properties: the properties containing user's traits to pass to your application
     # @param [Itly::PluginCallOptions] options: plugin specific options.
     #
-    def identify(user_id:, properties:, options: nil); end
+    def identify(user_id:, properties: nil, options: nil); end
 
     def post_identify(user_id:, properties:, validation_results:); end
 
@@ -36,7 +36,7 @@ class Itly
     # @param [Hash] properties: the properties to pass to your application
     # @param [Itly::PluginCallOptions] options: plugin specific option.
     #
-    def group(user_id:, group_id:, properties:, options: nil); end
+    def group(user_id:, group_id:, properties: nil, options: nil); end
 
     def post_group(user_id:, group_id:, properties:, validation_results:); end
 

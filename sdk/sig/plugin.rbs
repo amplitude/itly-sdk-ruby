@@ -1,10 +1,10 @@
 class Itly
   class Plugin
     def load: (options: Itly::PluginOptions options) -> void
-    def identify: (user_id: String user_id, properties: propertiesHash properties, ?options: Itly::PluginCallOptions? options) -> void
-    def post_identify: (user_id: String user_id, properties: propertiesHash properties, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
-    def group: (user_id: String user_id, group_id: String group_id, properties: propertiesHash properties, ?options: Itly::PluginCallOptions? options) -> void
-    def post_group: (user_id: String user_id, group_id: String group_id, properties: propertiesHash properties, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
+    def identify: (user_id: String user_id, ?properties: propertiesHash? properties, ?options: Itly::PluginCallOptions? options) -> void
+    def post_identify: (user_id: String user_id, properties: propertiesHash? properties, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
+    def group: (user_id: String user_id, group_id: String group_id, ?properties: propertiesHash? properties, ?options: Itly::PluginCallOptions? options) -> void
+    def post_group: (user_id: String user_id, group_id: String group_id, properties: propertiesHash? properties, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
     def page: (user_id: String user_id, ?category: String? category, ?name: String? name, ?properties: propertiesHash? properties, ?options: Itly::PluginCallOptions? options) -> void
     def post_page: (user_id: String user_id, category: String? category, name: String? name, properties: propertiesHash? properties, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
     def track: (user_id: String user_id, event: Itly::Event event, ?options: Itly::PluginCallOptions? options) -> void

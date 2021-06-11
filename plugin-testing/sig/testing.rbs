@@ -13,8 +13,8 @@ class Itly
       def first_of_type: (class_name: Class class_name, ?user_id: String? user_id) -> Itly::Event?
 
       def alias: (user_id: String user_id, previous_id: String previous_id, ?options: Itly::PluginCallOptions? options) -> void
-      def identify: (user_id: String user_id, properties: propertiesHash properties, ?options: Itly::PluginCallOptions? options) -> void
-      def group: (user_id: String user_id, group_id: String group_id, properties: propertiesHash properties, ?options: Itly::PluginCallOptions? options) -> void
+      def identify: (user_id: String user_id, ?properties: propertiesHash? properties, ?options: Itly::PluginCallOptions? options) -> void
+      def group: (user_id: String user_id, group_id: String group_id, ?properties: propertiesHash? properties, ?options: Itly::PluginCallOptions? options) -> void
       def track: (user_id: String user_id, event: Itly::Event event, ?options: Itly::PluginCallOptions? options) -> void
       def id: () -> String
 
