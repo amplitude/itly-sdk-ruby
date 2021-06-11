@@ -2,6 +2,7 @@
 
 class Itly
   class Plugin
+    # Segment plugin class for Itly SDK
     class Segment
       ##
       # Segment specific plugin options class

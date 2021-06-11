@@ -2,6 +2,7 @@
 
 class Itly
   class Plugin
+    # Testing plugin class for Itly SDK
     class Testing
       ##
       # Testing specific plugin options class

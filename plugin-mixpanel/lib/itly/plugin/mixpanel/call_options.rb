@@ -2,6 +2,7 @@
 
 class Itly
   class Plugin
+    # Mixpanel plugin class for Itly SDK
     class Mixpanel
       ##
       # Mixpanel specific plugin options class

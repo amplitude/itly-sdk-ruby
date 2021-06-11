@@ -2,6 +2,7 @@
 
 class Itly
   class Plugin
+    # Snowplow plugin class for Itly SDK
     class Snowplow
       ##
       # Snowplow specific plugin options class

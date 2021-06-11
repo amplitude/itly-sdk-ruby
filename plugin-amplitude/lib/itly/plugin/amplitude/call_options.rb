@@ -2,6 +2,7 @@
 
 class Itly
   class Plugin
+    # Amplitude plugin class for Itly SDK
     class Amplitude
       ##
       # Amplitude specific plugin options class
