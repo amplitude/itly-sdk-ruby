@@ -10,6 +10,9 @@ class Itly
       class GroupOptions < CallOptions
       end
 
+      class PageOptions < CallOptions
+      end
+
       class TrackOptions < CallOptions
       end
 

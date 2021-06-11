@@ -10,21 +10,15 @@ class Itly
       end
 
       ##
-      # Mixpanel specific plugin options class for calls to +identify+
+      # Mixpanel specific plugin options class for calls to plugin methods
       #
-      class IdentifyOptions < CallOptions
-      end
-
-      ##
-      # Mixpanel specific plugin options class for calls to +track+
-      #
-      class TrackOptions < CallOptions
-      end
-
-      ##
-      # Mixpanel specific plugin options class for calls to +alias+
-      #
-      class AliasOptions < CallOptions
+      %w[Identify Group Page Track Alias].each do |name|
+        class_eval(
+          <<-EVAL, __FILE__, __LINE__ + 1
+            class #{name}Options < CallOptions         # class IdentifyOptions < CallOptions
+            end                                        # end
+          EVAL
+        )
       end
     end
   end

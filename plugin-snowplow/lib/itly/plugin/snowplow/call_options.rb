@@ -10,12 +10,6 @@ class Itly
       end
 
       ##
-      # Snowplow specific plugin options class for calls to +identify+
-      #
-      class IdentifyOptions < CallOptions
-      end
-
-      ##
       # Snowplow specific plugin options class for calls to +page+
       #
       class PageOptions < CallOptions
@@ -51,6 +45,18 @@ class Itly
           contexts_str = contexts.nil? ? 'nil' : "[#{contexts.collect(&:to_s).join ', '}]"
           "#<Snowplow::#{class_name} contexts: #{contexts_str} callback: #{callback.nil? ? 'nil' : 'provided'}>"
         end
+      end
+
+      ##
+      # Snowplow specific plugin options class for calls to plugin methods
+      #
+      %w[Identify Group Alias].each do |name|
+        class_eval(
+          <<-EVAL, __FILE__, __LINE__ + 1
+            class #{name}Options < CallOptions         # class IdentifyOptions < CallOptions
+            end                                        # end
+          EVAL
+        )
       end
     end
   end

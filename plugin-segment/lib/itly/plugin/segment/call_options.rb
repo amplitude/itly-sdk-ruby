@@ -48,33 +48,15 @@ class Itly
       end
 
       ##
-      # Segment specific plugin options class for calls to +identify+
+      # Segment specific plugin options class for calls to plugin methods
       #
-      class IdentifyOptions < CallOptions
-      end
-
-      ##
-      # Segment specific plugin options class for calls to +group+
-      #
-      class GroupOptions < CallOptions
-      end
-
-      ##
-      # Segment specific plugin options class for calls to +page+
-      #
-      class PageOptions < CallOptions
-      end
-
-      ##
-      # Segment specific plugin options class for calls to +track+
-      #
-      class TrackOptions < CallOptions
-      end
-
-      ##
-      # Segment specific plugin options class for calls to +alias+
-      #
-      class AliasOptions < CallOptions
+      %w[Identify Group Page Track Alias].each do |name|
+        class_eval(
+          <<-EVAL, __FILE__, __LINE__ + 1
+            class #{name}Options < CallOptions         # class IdentifyOptions < CallOptions
+            end                                        # end
+          EVAL
+        )
       end
     end
   end
