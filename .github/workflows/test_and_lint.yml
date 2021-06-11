@@ -164,4 +164,4 @@ jobs:
       run: gem install rubocop
 
     - name: Lint
-      run: rubocop
+      run: rubocop -f g -c .rubocop.yml --fail-level F
