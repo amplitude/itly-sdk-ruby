@@ -2,7 +2,6 @@ name: Test and lint
 
 on:
   pull_request:
-    branches: [ * ]
   push:
     branches: [ master ]
 
