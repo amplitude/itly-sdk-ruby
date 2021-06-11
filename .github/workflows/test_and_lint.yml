@@ -14,6 +14,5 @@ jobs:
       with:
         ruby-version: '2.6'
 
-    - name: Rubocop checks
-      uses: gimenete/rubocop-action@1.0
-
+    - name: Lint
+      uses: moneyforward/rubocop-action@v0.1.2
