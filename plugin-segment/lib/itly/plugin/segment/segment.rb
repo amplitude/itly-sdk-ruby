@@ -124,7 +124,7 @@ class Itly
       # @param [Hash] properties: the properties to pass to your application
       # @param [Itly::Plugin::Segment::PageOptions] options: the plugin specific options
       #
-      def page(user_id:, category:, name:, properties:, options: nil)
+      def page(user_id:, category: nil, name: nil, properties: nil, options: nil)
         super
         return unless enabled?
 
@@ -135,8 +135,16 @@ class Itly
         @logger&.info "#{id}: page(#{log})"
 
         # Send through the client
-        payload = { user_id: user_id, name: name, properties: properties.dup.merge(category: category) }
+        payload = { user_id: user_id }
+        payload.merge! name: name if name
         payload.merge! options.to_hash if options
+        if properties && category
+          payload.merge! properties: properties.dup.merge(category: category)
+        elsif properties
+          payload.merge! properties: properties.dup
+        elsif category
+          payload.merge! properties: { category: category }
+        end
 
         call_end_point(options&.callback) do
           @client.page(**payload)

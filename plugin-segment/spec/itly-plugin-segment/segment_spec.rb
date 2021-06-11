@@ -508,8 +508,26 @@ describe Itly::Plugin::Segment do
               ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
               ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})']
-              ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"}, '\
-                      'options: )']
+            ]
+          end
+        end
+
+        context 'with minimum args' do
+          before do
+            expect(plugin.client).to receive(:page)
+              .with(user_id: 'user_123', properties: {})
+              .and_return(response)
+
+            itly.page user_id: 'user_123'
+          end
+
+          it do
+            expect_log_lines_to_equal [
+              ['info', 'load()'],
+              ['info', 'segment: load()'],
+              ['info', 'page(user_id: user_123)'],
+              ['info', 'validate(event: #<Itly::Event: name: page, properties: {}>)'],
+              ['info', 'segment: page(user_id: user_123)']
             ]
           end
         end

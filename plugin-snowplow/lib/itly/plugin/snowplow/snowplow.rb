@@ -75,7 +75,7 @@ class Itly
       # @param [Hash] properties: the properties to pass to your application
       # @param [Itly::Plugin::Snowplow::PageOptions] options: the plugin specific options
       #
-      def page(user_id:, category:, name:, properties:, options: nil)
+      def page(user_id:, category: nil, name: nil, properties: nil, options: nil)
         super
         return unless enabled?
 

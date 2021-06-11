@@ -49,7 +49,7 @@ class Itly
     # @param [Hash] properties: the properties to pass to your application
     # @param [Itly::PluginCallOptions] options: plugin specific option.
     #
-    def page(user_id:, category:, name:, properties:, options: nil); end
+    def page(user_id:, category: nil, name: nil, properties: nil, options: nil); end
 
     def post_page(user_id:, category:, name:, properties:, validation_results:); end
 

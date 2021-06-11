@@ -163,7 +163,7 @@ class Itly
   # @param [Hash] options: plugin specific option. The keys must correspond
   #   to a plugin id, and the values will be passed only to the plugin identified by the key.
   #
-  def page(user_id:, category:, name:, properties: {}, options: {})
+  def page(user_id:, category: nil, name: nil, properties: {}, options: {})
     # Run only if the object is enabled and was initialized
     return unless was_initialized? && enabled?
 
