@@ -1,0 +1,13 @@
+class Itly
+  class ValidationResponse
+    attr_reader valid: bool
+    attr_reader plugin_id: String
+    attr_reader message: String
+
+    def to_s: () -> String
+
+    private
+
+    def initialize: (valid: bool valid, plugin_id: String plugin_id, ?message: String message) -> void
+  end
+end

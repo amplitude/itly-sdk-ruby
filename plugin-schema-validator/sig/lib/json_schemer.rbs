@@ -1,0 +1,3 @@
+class JSONSchemer
+  def validate: (propertiesHash) -> untyped
+end

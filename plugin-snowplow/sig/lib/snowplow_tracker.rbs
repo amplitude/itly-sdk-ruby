@@ -1,0 +1,8 @@
+# Part of the gems
+class SnowplowTracker
+  class Tracker
+  end
+
+  class SelfDescribingJson
+  end
+end

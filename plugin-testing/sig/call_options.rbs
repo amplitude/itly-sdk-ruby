@@ -1,0 +1,23 @@
+class Itly
+  class Plugin
+    class Testing
+      class CallOptions < Itly::PluginCallOptions
+      end
+
+      class IdentifyOptions < CallOptions
+      end
+
+      class GroupOptions < CallOptions
+      end
+
+      class PageOptions < CallOptions
+      end
+
+      class TrackOptions < CallOptions
+      end
+
+      class AliasOptions < CallOptions
+      end
+    end
+  end
+end

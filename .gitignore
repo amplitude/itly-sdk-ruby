@@ -1,5 +1,7 @@
 *.gem
 *.rbc
+/.ruby-version
+/*/Gemfile.lock
 /.config
 /coverage/
 /InstalledFiles
@@ -54,3 +56,10 @@ build-iPhoneSimulator/
 
 # Used by RuboCop. Remote config files pulled in from inherit_from directive.
 # .rubocop-https?--*
+
+# Itly log file
+itly.log
+
+# Idea
+*.iml
+.idea

@@ -1,0 +1,25 @@
+class Itly
+  class Plugin
+    class Iteratively
+      class Options
+        DEFAULT_URL: String
+
+        attr_reader url: String
+        attr_reader disabled: bool?
+        attr_reader flush_queue_size: Integer
+        attr_reader batch_size: Integer
+        attr_reader flush_interval_ms: Integer
+        attr_reader max_retries: Integer
+        attr_reader retry_delay_min: Float
+        attr_reader retry_delay_max: Float
+        attr_reader omit_values: bool
+        attr_reader branch: String?
+        attr_reader version: String?
+
+        private
+
+        def initialize: (?url: String url, ?disabled: bool? disabled, ?flush_queue_size: Integer flush_queue_size, ?batch_size: Integer batch_size, ?flush_interval_ms: Integer flush_interval_ms, ?max_retries: Integer max_retries, ?retry_delay_min: Float retry_delay_min, ?retry_delay_max: Float retry_delay_max, ?omit_values: bool omit_values, ?branch: String? branch, ?version: String? version) -> void
+      end
+    end
+  end
+end

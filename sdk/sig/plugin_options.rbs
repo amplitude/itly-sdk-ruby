@@ -1,0 +1,10 @@
+class Itly
+  class PluginOptions
+    attr_reader environment: Symbol
+    attr_reader logger: Logger?
+
+    private
+
+    def initialize: (environment: Symbol environment, logger: Logger? logger) -> void
+  end
+end

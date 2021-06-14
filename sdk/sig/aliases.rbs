@@ -1,0 +1,3 @@
+type untypedHash = Hash[untyped, untyped]
+type propertiesHash = Hash[String | Symbol, untyped]
+type callOptions = Hash[String, Itly::PluginCallOptions]

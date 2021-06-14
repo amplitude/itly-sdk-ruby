@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+# Specify your gem's dependencies in itly-plugin-amplitude.gemspec
+gemspec
+
+gem 'rake', '~> 13.0'
+
+if ENV['LOCAL_ITLY_GEM']
+  # TODO: before publication to RubyGems, switch to version 1
+  gem 'itly-sdk', '~> 0.1', path: '../sdk'
+end
+
+gem 'rbs', '~> 1.0'
+gem 'rspec'
+gem 'steep', '~> 0.41'

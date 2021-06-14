@@ -1,0 +1,31 @@
+class Itly
+  class Plugin
+    class Iteratively
+      class Client
+        attr_reader api_key: String
+        attr_reader url: String
+        attr_reader logger: Logger?
+        attr_reader flush_queue_size: Integer
+        attr_reader batch_size: Integer
+        attr_reader flush_interval_ms: Integer
+        attr_reader max_retries: Integer
+        attr_reader retry_delay_min: Float
+        attr_reader retry_delay_max: Float
+        attr_reader branch: String?
+        attr_reader version: String?
+
+        def track: (type: String `type`, event: Itly::Event? event, properties: propertiesHash? properties, validation: Itly::ValidationResponse? validation) -> void
+        def flush: () -> void
+        def shutdown: (?force: bool force) -> void
+
+        private
+
+        def initialize: (url: String url, api_key: String api_key, logger: Logger? logger, flush_queue_size: Integer flush_queue_size, batch_size: Integer batch_size, flush_interval_ms: Integer flush_interval_ms, max_retries: Integer max_retries, retry_delay_min: Float retry_delay_min, retry_delay_max: Float retry_delay_max, omit_values: bool omit_values, branch: String? branch, version: String? version) -> void
+        def buffer_full?: () -> bool
+        def post_models: (Array[Itly::Plugin::Iteratively::TrackModel] model) -> bool
+        def runner_complete?: () -> bool
+        def delay_before_next_try: (Integer nbr_tries) -> Float
+      end
+    end
+  end
+end

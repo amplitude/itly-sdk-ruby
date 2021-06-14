@@ -1,0 +1,21 @@
+class Itly
+  class Plugin
+    def load: (options: Itly::PluginOptions options) -> void
+    def identify: (user_id: String user_id, ?properties: propertiesHash? properties, ?options: Itly::PluginCallOptions? options) -> void
+    def post_identify: (user_id: String user_id, properties: propertiesHash? properties, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
+    def group: (user_id: String user_id, group_id: String group_id, ?properties: propertiesHash? properties, ?options: Itly::PluginCallOptions? options) -> void
+    def post_group: (user_id: String user_id, group_id: String group_id, properties: propertiesHash? properties, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
+    def page: (user_id: String user_id, ?category: String? category, ?name: String? name, ?properties: propertiesHash? properties, ?options: Itly::PluginCallOptions? options) -> void
+    def post_page: (user_id: String user_id, category: String? category, name: String? name, properties: propertiesHash? properties, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
+    def track: (user_id: String user_id, event: Itly::Event event, ?options: Itly::PluginCallOptions? options) -> void
+    def post_track: (user_id: String user_id, event: Itly::Event event, validation_results: Array[Itly::ValidationResponse] validation_results) -> void
+    def alias: (user_id: String user_id, previous_id: String previous_id, ?options: Itly::PluginCallOptions? options) -> void
+    def post_alias: (user_id: String user_id, previous_id: String previous_id) -> void
+    def flush: () -> void
+    def shutdown: () -> void
+    def reset: () -> void
+    def validate: (event: Itly::Event event) -> Itly::ValidationResponse?
+    def get_plugin_options: (Itly::Options options) -> propertiesHash
+    def id: () -> String
+  end
+end

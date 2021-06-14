@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Configure and load RBS
+unless ENV['DISABLE_TYPE_CHECKING']
+  ENV['RBS_TEST_TARGET'] = 'Itly::*'
+  ENV['RBS_TEST_LOGLEVEL'] = 'warn'
+  ENV['RBS_TEST_DOUBLE_SUITE'] = 'rspec'
+  ENV['RBS_TEST_OPT'] = '-I./sig -I../sdk/sig'
+
+  require 'rbs/test/setup'
+end
+
+# Start RSpec
+require 'rspec/core'
+
+ENV['RSPEC_RUN_FROM_SCRIPT'] = 'true'
+RSpec::Core::Runner.invoke

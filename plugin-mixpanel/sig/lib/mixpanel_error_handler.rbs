@@ -1,0 +1,5 @@
+# Part of the gems
+class Mixpanel
+  class ErrorHandler
+  end
+end

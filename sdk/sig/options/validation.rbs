@@ -1,0 +1,10 @@
+class Itly
+  class Options
+    module Validation
+      DEFAULT: Integer
+      DISABLED: Integer
+      TRACK_INVALID: Integer
+      ERROR_ON_INVALID: Integer
+    end
+  end
+end

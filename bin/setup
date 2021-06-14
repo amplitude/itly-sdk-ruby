@@ -1,0 +1,25 @@
+#!/bin/bash
+
+cd sdk
+bundle install
+
+cd ../plugin-amplitude/
+bundle install
+
+cd ../plugin-iteratively/
+bundle install
+
+cd ../plugin-mixpanel/
+bundle install
+
+cd ../plugin-schema-validator/
+bundle install
+
+cd ../plugin-segment/
+bundle install
+
+cd ../plugin-snowplow/
+bundle install
+
+cd ../plugin-testing/
+bundle install

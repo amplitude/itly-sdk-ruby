@@ -1,0 +1,45 @@
+name: Publish Ruby Gems
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build and Publish gems
+    runs-on: ubuntu-latest
+
+    env:
+      GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_API_KEY}}"
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+
+    - name: Publish itly-sdk to RubyGems
+      run: ruby bin/publish_gems.rb sdk
+
+    - name: Publish plugin-amplitude to RubyGems
+      run: ruby bin/publish_gems.rb amplitude
+
+    - name: Publish plugin-iteratively to RubyGems
+      run: ruby bin/publish_gems.rb iteratively
+
+    - name: Publish plugin-mixpanel to RubyGems
+      run: ruby bin/publish_gems.rb mixpanel
+
+    - name: Publish plugin-schema-validator to RubyGems
+      run: ruby bin/publish_gems.rb schema-validator
+
+    - name: Publish plugin-segment to RubyGems
+      run: ruby bin/publish_gems.rb segment
+
+    - name: Publish plugin-snowplow to RubyGems
+      run: ruby bin/publish_gems.rb snowplow
+
+    - name: Publish plugin-testing to RubyGems
+      run: ruby bin/publish_gems.rb testing
