@@ -22,6 +22,8 @@ jobs:
         ruby-version: 2.6.x
 
     - name: Configure Ruby Credentials
+      env:
+        GEM_HOST_API_KEY: ${{ secrets.GEM_HOST_API_KEY }}
       run: |
         mkdir -p $HOME/.gem
         touch $HOME/.gem/credentials
@@ -29,25 +31,41 @@ jobs:
         printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
 
     - name: Publish itly-sdk to RubyGems
+      env:
+        GEM_HOST_API_KEY: ${{ secrets.GEM_HOST_API_KEY }}
       run: ruby bin/publish_gems.rb sdk
 
     - name: Publish plugin-amplitude to RubyGems
+      env:
+        GEM_HOST_API_KEY: ${{ secrets.GEM_HOST_API_KEY }}
       run: ruby bin/publish_gems.rb amplitude
 
     - name: Publish plugin-iteratively to RubyGems
+      env:
+        GEM_HOST_API_KEY: ${{ secrets.GEM_HOST_API_KEY }}
       run: ruby bin/publish_gems.rb iteratively
 
     - name: Publish plugin-mixpanel to RubyGems
+      env:
+        GEM_HOST_API_KEY: ${{ secrets.GEM_HOST_API_KEY }}
       run: ruby bin/publish_gems.rb mixpanel
 
     - name: Publish plugin-schema-validator to RubyGems
+      env:
+        GEM_HOST_API_KEY: ${{ secrets.GEM_HOST_API_KEY }}
       run: ruby bin/publish_gems.rb schema-validator
 
     - name: Publish plugin-segment to RubyGems
+      env:
+        GEM_HOST_API_KEY: ${{ secrets.GEM_HOST_API_KEY }}
       run: ruby bin/publish_gems.rb segment
 
     - name: Publish plugin-snowplow to RubyGems
+      env:
+        GEM_HOST_API_KEY: ${{ secrets.GEM_HOST_API_KEY }}
       run: ruby bin/publish_gems.rb snowplow
 
     - name: Publish plugin-testing to RubyGems
+      env:
+        GEM_HOST_API_KEY: ${{ secrets.GEM_HOST_API_KEY }}
       run: ruby bin/publish_gems.rb testing
