@@ -20,6 +20,13 @@ jobs:
       with:
         ruby-version: 2.6.x
 
+    - name: Configure Ruby Credentials
+      run: |
+        mkdir -p $HOME/.gem
+        touch $HOME/.gem/credentials
+        chmod 0600 $HOME/.gem/credentials
+        printf -- "---\n:github: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+
     - name: Publish itly-sdk to RubyGems
       run: ruby bin/publish_gems.rb sdk
 
