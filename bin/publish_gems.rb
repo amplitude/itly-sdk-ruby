@@ -65,7 +65,7 @@ version_file_path =
   case plugin_name
   when 'sdk'
     "#{gem_path}/lib/itly/version.rb"
-  when 'schema_validator'
+  when 'schema-validator'
     "#{gem_path}/lib/itly/plugin/schema_validator/version.rb"
   else
     "#{gem_path}/lib/itly/plugin/#{plugin_name}/version.rb"
