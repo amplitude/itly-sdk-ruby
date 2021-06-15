@@ -112,8 +112,10 @@ credentials_path = "#{ENV['HOME']}/.gem/credentials"
 
 FileUtils.mkdir_p "#{ENV['HOME']}/.gem"
 FileUtils.touch credentials_path
-File.write credentials_path, "---\n:rubygems_api_key: #{ENV['GEM_HOST_API_KEY']}\n"
 FileUtils.chmod 600, credentials_path
+File.open(credentials_path, 'w') do |f|
+  f.write "---\n:rubygems_api_key: #{ENV['GEM_HOST_API_KEY']}\n"
+end
 
 # Compile and publish
 FileUtils.cd gem_path
