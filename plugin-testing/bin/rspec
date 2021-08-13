@@ -8,7 +8,7 @@ unless ENV['DISABLE_TYPE_CHECKING']
   ENV['RBS_TEST_DOUBLE_SUITE'] = 'rspec'
   ENV['RBS_TEST_OPT'] = '-I./sig -I./spec/sig -I../sdk/sig'
 
-  require 'rbs/test/setup'
+  # require 'rbs/test/setup'
 end
 
 # Start RSpec
