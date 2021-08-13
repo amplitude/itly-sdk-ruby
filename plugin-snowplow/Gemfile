@@ -14,4 +14,4 @@ end
 
 gem 'rbs', '~> 1.0'
 gem 'rspec'
-gem 'steep', '~> 0.41'
+# gem 'steep', '~> 0.41'
