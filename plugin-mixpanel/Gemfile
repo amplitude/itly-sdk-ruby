@@ -12,6 +12,6 @@ if ENV['LOCAL_ITLY_GEM']
   gem 'itly-sdk', '~> 0.1', path: '../sdk'
 end
 
-gem 'rbs', '~> 1.0'
+# gem 'rbs', '~> 1.0'
 gem 'rspec'
 # gem 'steep', '~> 0.41'
