@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
                        'that works with all your 3rd party analytics providers.'
   spec.homepage      = 'https://github.com/iterativelyhq/itly-sdk-ruby'
   spec.license       = 'MIT'
-  spec.required_ruby_version = Gem::Requirement.new('>= 2.6.0')
+  spec.required_ruby_version = Gem::Requirement.new('>= 2.4.0')
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org/'
 
