@@ -32,9 +32,9 @@ describe Itly::Plugin::Snowplow do
 
       before do
         expect(SnowplowTracker::Emitter).to receive(:new)
-          .with('endpoint123', protocol: 'http', method: 'get', buffer_size: nil)
+          .with({ endpoint: 'endpoint123', options: { protocol: 'http', method: 'get', buffer_size: nil } })
           .and_return(emitter)
-        expect(SnowplowTracker::Tracker).to receive(:new).with(emitter).and_return(client)
+        expect(SnowplowTracker::Tracker).to receive(:new).with({ emitters: emitter }).and_return(client)
       end
 
       it do
@@ -54,9 +54,9 @@ describe Itly::Plugin::Snowplow do
 
       before do
         expect(SnowplowTracker::Emitter).to receive(:new)
-          .with('endpoint123', protocol: 'https', method: 'post', buffer_size: 50)
+          .with({ endpoint: 'endpoint123', options: { protocol: 'https', method: 'post', buffer_size: 50 } })
           .and_return(emitter)
-        expect(SnowplowTracker::Tracker).to receive(:new).with(emitter).and_return(client)
+        expect(SnowplowTracker::Tracker).to receive(:new).with({ emitters: emitter }).and_return(client)
       end
 
       it do
@@ -341,7 +341,7 @@ describe Itly::Plugin::Snowplow do
       context 'success' do
         before do
           expect(plugin.client).to receive(:track_self_describing_event)
-            .with(json1, nil)
+            .with({ event_json: json1, context: nil })
 
           itly.load do |options|
             options.plugins = [plugin]
@@ -373,7 +373,7 @@ describe Itly::Plugin::Snowplow do
 
         before do
           expect(plugin.client).to receive(:track_self_describing_event)
-            .with(json1, [json2, json3])
+            .with({ event_json: json1, context: [json2, json3] })
 
           itly.load do |options|
             options.plugins = [plugin]
@@ -408,7 +408,7 @@ describe Itly::Plugin::Snowplow do
       context 'failure' do
         before do
           expect(plugin.client).to receive(:track_self_describing_event)
-            .with(json1, nil)
+            .with({ event_json: json1, context: nil })
             .and_raise('Test rspec')
         end
 

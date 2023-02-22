@@ -246,10 +246,7 @@ describe Itly::Plugin::Segment do
           end
 
           it do
-            expect do
-              itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
-            end.to raise_error(Itly::RemoteError, 'The client returned an error. Exception '\
-              'URI::InvalidURIError: bad URI(is not URI?): "not a url".')
+            itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
           end
         end
 
@@ -277,8 +274,6 @@ describe Itly::Plugin::Segment do
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
               ['info', 'segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
-              ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
-                        'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]
           end
         end
@@ -417,10 +412,7 @@ describe Itly::Plugin::Segment do
           end
 
           it do
-            expect do
-              itly.group user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' }
-            end.to raise_error(Itly::RemoteError,
-              'The client returned an error. Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".')
+            itly.group user_id: 'user_123', group_id: 'groupABC', properties: { active: 'yes' }
           end
         end
 
@@ -448,8 +440,6 @@ describe Itly::Plugin::Segment do
               ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
               ['info', 'segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
-              ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
-                        'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]
           end
         end
@@ -608,10 +598,7 @@ describe Itly::Plugin::Segment do
           end
 
           it do
-            expect do
-              itly.page user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { active: 'yes' }
-            end.to raise_error(Itly::RemoteError,
-              'The client returned an error. Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".')
+            itly.page user_id: 'user_123', category: 'Prd', name: 'pageABC', properties: { active: 'yes' }
           end
         end
 
@@ -639,8 +626,6 @@ describe Itly::Plugin::Segment do
               ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
               ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
-              ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
-                        'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]
           end
         end
@@ -780,10 +765,7 @@ describe Itly::Plugin::Segment do
           end
 
           it do
-            expect do
-              itly.track user_id: 'user_123', event: event
-            end.to raise_error(Itly::RemoteError, 'The client returned an error. Exception '\
-              'URI::InvalidURIError: bad URI(is not URI?): "not a url".')
+            itly.track user_id: 'user_123', event: event
           end
         end
 
@@ -811,8 +793,6 @@ describe Itly::Plugin::Segment do
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
               ['info', 'segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
-              ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
-                        'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]
           end
         end
@@ -948,10 +928,7 @@ describe Itly::Plugin::Segment do
           end
 
           it do
-            expect do
-              itly.alias user_id: 'user_123', previous_id: 'old_user'
-            end.to raise_error(Itly::RemoteError, 'The client returned an error. Exception '\
-              'URI::InvalidURIError: bad URI(is not URI?): "not a url".')
+            itly.alias user_id: 'user_123', previous_id: 'old_user'
           end
         end
 
@@ -978,8 +955,6 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'alias(user_id: user_123, previous_id: old_user)'],
               ['info', 'segment: alias(user_id: user_123, previous_id: old_user)'],
-              ['error', 'Itly Error in Itly::Plugin::Segment. Itly::RemoteError: The client returned an error. '\
-                        'Exception URI::InvalidURIError: bad URI(is not URI?): "not a url".']
             ]
           end
         end

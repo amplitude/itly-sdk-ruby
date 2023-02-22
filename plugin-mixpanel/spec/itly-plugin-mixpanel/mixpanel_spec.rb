@@ -147,7 +147,7 @@ describe Itly::Plugin::Mixpanel do
           end
 
           expect(plugin.client.people).to receive(:set)
-            .with('user_123', version: '4', some: 'data')
+            .with('user_123', { version: '4', some: 'data' })
 
           itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
         end
@@ -173,7 +173,7 @@ describe Itly::Plugin::Mixpanel do
             end
 
             expect(plugin.client.people).to receive(:set)
-              .with('user_123', version: '4', some: 'data')
+              .with('user_123', { version: '4', some: 'data' })
               .and_call_original
 
             expect(Base64).to receive(:encode64).and_raise('Internal error')
@@ -195,7 +195,7 @@ describe Itly::Plugin::Mixpanel do
             end
 
             expect(plugin.client.people).to receive(:set)
-              .with('user_123', version: '4', some: 'data')
+              .with('user_123', { version: '4', some: 'data' })
               .and_call_original
 
             expect(Base64).to receive(:encode64).and_raise('Internal error')
@@ -251,7 +251,7 @@ describe Itly::Plugin::Mixpanel do
           end
 
           expect(plugin.client).to receive(:track)
-            .with('user_123', 'custom_event', view: 'video')
+            .with('user_123', 'custom_event', { view: 'video' })
 
           itly.track user_id: 'user_123', event: event
         end
@@ -277,7 +277,7 @@ describe Itly::Plugin::Mixpanel do
             end
 
             expect(plugin.client).to receive(:track)
-              .with('user_123', 'custom_event', view: 'video')
+              .with('user_123', 'custom_event', { view: 'video' })
               .and_call_original
 
             expect(Base64).to receive(:encode64).and_raise('Internal error')
@@ -299,7 +299,7 @@ describe Itly::Plugin::Mixpanel do
             end
 
             expect(plugin.client).to receive(:track)
-              .with('user_123', 'custom_event', view: 'video')
+              .with('user_123', 'custom_event', { view: 'video' })
               .and_call_original
 
             expect(Base64).to receive(:encode64).and_raise('Internal error')
