@@ -28,7 +28,9 @@ shared_examples 'validate and run on plugins' do |
       options.plugins = [plugin_a, plugin_b]
       options.validation = validation_value if validation_value
       options.logger = fake_logger
-      options.on_validation_error = lambda {|event, validations| fake_logger.error('on_validation_error') } if set_on_validation_error
+      if set_on_validation_error
+        options.on_validation_error = lambda { |_, _| fake_logger.error('on_validation_error') }
+      end
     end
   end
 

@@ -396,7 +396,7 @@ class Itly
     return if is_valid
 
     invalid_validations = validations.reject(&:valid)
-    @options.on_validation_error.call(event, invalid_validations) if @options.on_validation_error
+    @options.on_validation_error&.call(event, invalid_validations)
 
     return unless @options.validation == Itly::Options::Validation::ERROR_ON_INVALID
 
