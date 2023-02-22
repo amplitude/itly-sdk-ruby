@@ -1,6 +1,4 @@
 class Itly
-  include Itly::Plugins
-
   VERSION: String
 
   attr_reader options: Itly::Options

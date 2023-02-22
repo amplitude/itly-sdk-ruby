@@ -5,6 +5,7 @@ class Itly
     attr_accessor logger: Logger?
     attr_accessor plugins: Array[Itly::Plugin]
     attr_writer validation: Integer
+    attr_accessor on_validation_error: (^(Itly::Event event, Array[Itly::ValidationResponse] validations) -> void)?
 
     def for_plugin: () -> Itly::PluginOptions
     def validation: () -> Integer

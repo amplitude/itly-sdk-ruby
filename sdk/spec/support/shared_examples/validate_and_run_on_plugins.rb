@@ -12,7 +12,8 @@ shared_examples 'validate and run on plugins' do |
   expected_validation_name: nil, # Event name expected during validation. Defaults to method name
   expect_to_call_action: true, # Indicates if it is expected that the action method is called on the plugins
   expect_validation: true, # Indicates if it is expected to have validation done
-  expect_exception: false # Indicates if it is expected to raise an exception
+  expect_exception: false, # Indicates if it is expected to raise an exception
+  set_on_validation_error: false # Set "on_validation_error" callback for initializing Itly object
 |
 
   # Instantiate plugins and Itly object
@@ -27,6 +28,7 @@ shared_examples 'validate and run on plugins' do |
       options.plugins = [plugin_a, plugin_b]
       options.validation = validation_value if validation_value
       options.logger = fake_logger
+      options.on_validation_error = lambda {|event, validations| fake_logger.error('on_validation_error') } if set_on_validation_error
     end
   end
 
@@ -93,6 +95,10 @@ shared_examples 'validate and run on plugins' do |
     if generate_validation_error && expect_validation
       expect(itly.options.logger).to receive(:error)
         .with(%(Validation error for "#{expected_validation_name}" in plugin123. Message: Response2 message))
+      if set_on_validation_error
+        expect(itly.options.logger).to receive(:error)
+          .with('on_validation_error')
+      end
     end
     expect(itly.options.logger).not_to receive(:error)
 

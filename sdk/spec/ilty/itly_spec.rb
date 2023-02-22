@@ -216,6 +216,48 @@ describe 'Itly' do
             'options: {"fake_plugin0"=>#<FakeCallOptions: for plugin 0>})',
           generate_validation_error: true, expect_to_call_action: false, expect_exception: true
       end
+
+      context 'options.validation = DISABLED with on_validation_error' do
+        include_examples 'validate and run on plugins',
+                         method: :identify, pass_data_as: :properties,
+                         method_params: { user_id: '123',
+                                          properties: { data: '1', info: 'yes' },
+                                          options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
+                         validation_value: Itly::Options::Validation::DISABLED,
+                         set_on_validation_error: true,
+                         expected_event_properties: { data: '1', info: 'yes' },
+                         expected_log_info: 'identify(user_id: 123, properties: {:data=>"1", :info=>"yes"}, '\
+            'options: {"fake_plugin0"=>#<FakeCallOptions: for plugin 0>})',
+                         generate_validation_error: true, expect_validation: false
+      end
+
+      context 'options.validation = TRACK_INVALID with on_validation_error' do
+        include_examples 'validate and run on plugins',
+          method: :identify, pass_data_as: :properties,
+          method_params: { user_id: '123',
+                           properties: { data: '1', info: 'yes' },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
+          validation_value: Itly::Options::Validation::TRACK_INVALID,
+          set_on_validation_error: true,
+          expected_event_properties: { data: '1', info: 'yes' },
+          expected_log_info: 'identify(user_id: 123, properties: {:data=>"1", :info=>"yes"}, '\
+            'options: {"fake_plugin0"=>#<FakeCallOptions: for plugin 0>})',
+          generate_validation_error: true
+      end
+
+      context 'options.validation = ERROR_ON_INVALID with on_validation_error' do
+        include_examples 'validate and run on plugins',
+          method: :identify, pass_data_as: :properties,
+          method_params: { user_id: '123',
+                           properties: { data: '1', info: 'yes' },
+                           options: { 'fake_plugin0' => FakeCallOptions.new(data: 'for plugin 0') } },
+          validation_value: Itly::Options::Validation::ERROR_ON_INVALID,
+          set_on_validation_error: true,
+          expected_event_properties: { data: '1', info: 'yes' },
+          expected_log_info: 'identify(user_id: 123, properties: {:data=>"1", :info=>"yes"}, '\
+            'options: {"fake_plugin0"=>#<FakeCallOptions: for plugin 0>})',
+          generate_validation_error: true, expect_to_call_action: false, expect_exception: true
+      end
     end
 
     context 'disabled' do
