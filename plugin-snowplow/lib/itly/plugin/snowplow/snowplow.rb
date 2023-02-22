@@ -23,7 +23,9 @@ class Itly
         @disabled = options.disabled
 
         emitter = SnowplowTracker::Emitter.new \
-          endpoint: options.endpoint, options: { protocol: options.protocol, method: options.method, buffer_size: options.buffer_size }
+          endpoint: options.endpoint, options: {
+            protocol: options.protocol, method: options.method, buffer_size: options.buffer_size
+          }
         @client = SnowplowTracker::Tracker.new emitters: emitter
       end
 

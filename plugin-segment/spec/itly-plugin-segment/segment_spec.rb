@@ -273,7 +273,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
               ['info', 'validate(event: #<Itly::Event: name: identify, properties: {:version=>"4", :some=>"data"}>)'],
-              ['info', 'segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})'],
+              ['info', 'segment: identify(user_id: user_123, properties: {:version=>"4", :some=>"data"})']
             ]
           end
         end
@@ -439,7 +439,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: group, properties: {:active=>"yes"}>)'],
-              ['info', 'segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})'],
+              ['info', 'segment: group(user_id: user_123, group_id: groupABC, properties: {:active=>"yes"})']
             ]
           end
         end
@@ -625,7 +625,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
               ['info', 'validate(event: #<Itly::Event: name: page, properties: {:active=>"yes"}>)'],
-              ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})'],
+              ['info', 'segment: page(user_id: user_123, category: Prd, name: pageABC, properties: {:active=>"yes"})']
             ]
           end
         end
@@ -792,7 +792,7 @@ describe Itly::Plugin::Segment do
               ['info', 'segment: load()'],
               ['info', 'track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
               ['info', 'validate(event: #<Itly::Event: name: custom_event, properties: {:view=>"video"}>)'],
-              ['info', 'segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})'],
+              ['info', 'segment: track(user_id: user_123, event: custom_event, properties: {:view=>"video"})']
             ]
           end
         end
@@ -954,7 +954,7 @@ describe Itly::Plugin::Segment do
               ['info', 'load()'],
               ['info', 'segment: load()'],
               ['info', 'alias(user_id: user_123, previous_id: old_user)'],
-              ['info', 'segment: alias(user_id: user_123, previous_id: old_user)'],
+              ['info', 'segment: alias(user_id: user_123, previous_id: old_user)']
             ]
           end
         end
