@@ -100,7 +100,7 @@ describe Itly::Plugin::Amplitude do
           end
 
           expect(AmplitudeAPI).to receive(:send_identify)
-            .with('user_123', nil, version: '4', some: 'data')
+            .with('user_123', nil, { version: '4', some: 'data' })
             .and_return(response)
 
           itly.identify user_id: 'user_123', properties: { version: '4', some: 'data' }
@@ -128,7 +128,9 @@ describe Itly::Plugin::Amplitude do
           end
 
           expect(AmplitudeAPI).to receive(:send_identify)
-            .with('user_123', nil, version: '4', some: 'data', device_id: 'DEVID', time: 123_456, app_version: 'v1.2.3')
+            .with('user_123', nil, {
+              version: '4', some: 'data', device_id: 'DEVID', time: 123_456, app_version: 'v1.2.3'
+            })
             .and_return(response)
 
           itly.identify(
@@ -162,7 +164,7 @@ describe Itly::Plugin::Amplitude do
 
         before do
           expect(AmplitudeAPI).to receive(:send_identify)
-            .with('user_123', nil, version: '4', some: 'data')
+            .with('user_123', nil, { version: '4', some: 'data' })
             .and_return(response)
         end
 
