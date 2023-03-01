@@ -3,7 +3,7 @@
 class Itly
   class Plugin
     class Testing < Plugin
-      VERSION = '0.1.0'
+      VERSION = '0.1.1'
     end
   end
 end
