@@ -23,8 +23,10 @@ class Itly
         @disabled = options.disabled
 
         emitter = SnowplowTracker::Emitter.new \
-          options.endpoint, protocol: options.protocol, method: options.method, buffer_size: options.buffer_size
-        @client = SnowplowTracker::Tracker.new emitter
+          endpoint: options.endpoint, options: {
+            protocol: options.protocol, method: options.method, buffer_size: options.buffer_size
+          }
+        @client = SnowplowTracker::Tracker.new emitters: emitter
       end
 
       ##
@@ -94,7 +96,7 @@ class Itly
           contexts = options.contexts.collect(&:to_self_describing_json)
         end
 
-        client.track_screen_view name, nil, contexts
+        client.track_screen_view name: name, context: contexts
       end
 
       ##
@@ -132,7 +134,7 @@ class Itly
           contexts = options.contexts.collect(&:to_self_describing_json)
         end
 
-        client.track_self_describing_event event_json, contexts
+        client.track_self_describing_event event_json: event_json, context: contexts
       end
 
       ##

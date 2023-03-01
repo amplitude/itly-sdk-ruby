@@ -50,7 +50,7 @@ class Itly
   #   Deflault to nil, to disable Logging.
   #
   class Options
-    attr_accessor :disabled, :logger, :plugins, :environment
+    attr_accessor :disabled, :logger, :plugins, :environment, :on_validation_error
     attr_writer :validation
 
     ##
@@ -61,13 +61,15 @@ class Itly
       disabled: false,
       plugins: [],
       validation: nil,
-      logger: nil
+      logger: nil,
+      on_validation_error: nil
     )
       @environment = environment
       @disabled = disabled
       @plugins = plugins
       @validation = validation
       @logger = logger
+      @on_validation_error = on_validation_error
     end
 
     ##
