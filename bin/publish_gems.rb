@@ -53,7 +53,7 @@ if published
   line = Regexp.last_match(1)
   raise 'Cannot get the list of published versions' unless line.match(/\((.*)\)/)
 
-  published_version = Regexp.last_match(1).split(',').collect(&:strip).max_by { |v| Gem::Version.new(v) }
+  published_version = Regexp.last_match(1).split(',').collect { |v| Gem::Version.new(v.strip) }.max
 end
 
 ##
